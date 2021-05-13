@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="model.Author" table="author" schema="allcures" >
+      
+         <id name="author_id" type="java.lang.Integer">
+            <column name="author_id" />
+            <generator class="sequence" />
+        </id>
+         <property name="author_firstname" type="string">
+            <column name="author_firstname" length="20"  />
+        </property>
+         <property name="author_middlename" type="string">
+            <column name="author_middlename" length="20"  />
+        </property>
+        <property name="author_lastname" type="string">
+            <column name="author_lastname" length="20"  />
+        </property>
+         <property name="author_email" type="string">
+            <column name="author_email" length="20"  />
+        </property>
+        <property name="author_address" type="string">
+            <column name="author_address" length="20"  />
+        </property>
+         <property name="author_telephone" type="string">
+            <column name="author_telephone" length="20"  />
+        </property>
+        
+  
+        <property name="acceptance_condition" type="java.lang.Boolean">
+            <column name="acceptance_condition" length="40"  />
+        </property>
+         <property name="private_policy" type="java.lang.Boolean">
+            <column name="private_policy" length="20"  />
+        </property>
+        <property name="account_state" type="java.lang.Integer">
+            <column name="account_state" length="20"  />
+        </property>
+        
+        
+        <property name="remember_me" type="java.lang.Boolean">
+            <column name="remember_me" length="20"  />
+        </property>       
+        
+    </class>
+</hibernate-mapping>

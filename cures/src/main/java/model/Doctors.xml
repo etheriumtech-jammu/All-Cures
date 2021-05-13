@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="model.Doctors" table="doctors" schema="allcures" >
+        <id name="docid" type="java.lang.Integer">
+            <column name="docid" />
+            <generator class="identity" />
+        </id>
+        
+        <property name="gender" type="java.lang.Integer">
+            <column name="gender" length="20"  />
+        </property>
+         <property name="edu_training" type="string">
+            <column name="edu_training" length="20"  />
+        </property>
+        <property name="insurance_accept" type="boolean">
+            <column name="insurance_accept" length="20"  />
+        </property>
+        
+         <property name="hospital_affliated" type="string">
+         	 <column name="hospital_affliated"   length="40"   />
+        </property>
+        <property name="board_certifcate" type="string">
+            <column name="board_certifcate" length="40"  />
+        </property>
+         <property name="membership" type="string">
+            <column name="membership" length="40"  />
+        </property>
+        <property name="awards" type="string">
+            <column name="awards" length="40"  />
+        </property>
+        
+        
+        <property name="waiting_time" type="java.lang.Integer">
+            <column name="waiting_time" length="40"  />
+        </property>
+        <property name="availibity_for_appointment" type="java.sql.Timestamp">
+            <column name="availibity_for_appointment"  length="40"   />
+        </property>
+        <property name="doctor_location" type="string">
+            <column name="doctor_location" length="40"  />
+        </property>
+         <property name="telephone_nos" type="string">
+            <column name="telephone_nos" length="40"  />
+        </property>
+        <property name="primary_spl" type="java.lang.Integer">
+            <column name="primary_spl" length="40"  />
+        </property>
+        
+        <property name="other_spls" type="string">
+            <column name="other_spls" length="40"  />
+        </property>
+        <property name="sub_spls" type="java.lang.Integer">
+            <column name="sub_spls"  length="40"   />
+        </property>
+        <property name="address1" type="string">
+            <column name="address1" length="40"  />
+        </property>
+         <property name="address2" type="string">
+            <column name="address2" length="40"  />
+        </property>
+        <property name="city" type="string">
+            <column name="city" length="40"  />
+        </property>
+        
+        <property name="state" type="java.lang.Integer">
+            <column name="state" length="40"  />
+        </property>
+        <property name="country_code" type="java.lang.Integer">
+            <column name="country_code" length="40"  />
+        </property>
+        <property name="over_allrating" type="java.lang.Float">
+            <column name="over_allrating" length="40"  />
+        </property>
+        
+         <property name="create_date" type="java.sql.Timestamp">
+            <column name="create_date" length="40"  />
+        </property>
+        <property name="docactive" type="java.lang.Boolean">
+            <column name="docactive" length="40"  />
+        </property>
+       <property name="prefix" type="string">
+            <column name="prefix"  length="40"   />
+        </property>
+        <property name="docname_first" type="string">
+            <column name="docname_first"  length="40"   />
+        </property>
+        <property name="docname_middle" type="string">
+            <column name="docname_middle"  length="40"   />
+        </property>
+        <property name="docname_last" type="string">
+            <column name="docname_last"  length="40"   />
+        </property>
+        <property name="email" type="string">
+            <column name="email"  length="40"   />
+        </property>
+        
+        
+        
+        
+    </class>
+</hibernate-mapping>

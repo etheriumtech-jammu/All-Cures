@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="model.Languages" table="languages" schema="allcures" >
+      
+         <id name="language_id" type="java.lang.Integer">
+            <column name="language_id" />
+            <generator class="sequence" />
+        </id>
+         <property name="lang_name" type="string">
+            <column name="lang_name" length="20"  />
+        </property>
+           </class>
+</hibernate-mapping>

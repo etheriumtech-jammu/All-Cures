@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="model.Article" table="article" schema="allcures" >
+      
+         <id name="article_id" type="java.lang.Integer">
+            <column name="article_id" />
+            <generator class="identity" />
+        </id>
+         <property name="title" type="string">
+            <column name="title" length="20"  />
+        </property>
+         <property name="friendly_name" type="string">
+            <column name="friendly_name" length="20"  />
+        </property>
+        <property name="subheading" type="string">
+            <column name="subheading" length="20"  />
+        </property>
+         <property name="content_type" type="string">
+            <column name="content_type" length="20"  />
+        </property>
+        <property name="keywords" type="string">
+            <column name="keywords" length="20"  />
+        </property>
+ 		<property name="window_title" type="string">
+            <column name="window_title" length="20"  />
+        </property>
+        <property name="content_location" type="string">
+            <column name="content_location" length="20"  />
+        </property>
+ 		<property name="authored_by" type="java.lang.Integer">
+            <column name="authored_by" length="20"  />
+        </property>
+        <property name="published_by" type="java.lang.Integer">
+            <column name="published_by" length="40"  />
+        </property>
+         <property name="edited_by" type="java.lang.Integer">
+            <column name="edited_by" length="20"  />
+        </property>
+        <property name="copyright_id" type="java.lang.Integer">
+            <column name="copyright_id" length="20"  />
+        </property>
+        <property name="disclaimer_id" type="java.lang.Integer">
+            <column name="disclaimer_id" length="20"  />
+        </property>
+        <property name="create_date" type="java.util.Date">
+            <column name="create_date" length="20"  />
+        </property>
+        <property name="published_date" type="java.util.Date">
+            <column name="published_date" length="20"  />
+        </property>
+        <property name="pubstatus_id" type="java.lang.Integer">
+            <column name="pubstatus_id" length="20"  />
+        </property>
+        <property name="language_id" type="java.lang.Integer">
+            <column name="language_id" length="20"  />
+        </property>
+        
+    </class>
+</hibernate-mapping>

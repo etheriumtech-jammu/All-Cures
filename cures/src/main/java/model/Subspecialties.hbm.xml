@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="model.Subspecialties" table="subspecialties" schema="allcures" >
+        <id name="ssplid" type="java.lang.Integer">
+            <column name="ssplid" />
+            <generator class="identity" />
+        </id>
+        <property name="sspl_name" type="string">
+            <column name="sspl_name"  length="20"   />
+        </property>
+        <property name="created_by" type="string">
+            <column name="created_by" length="20"  />
+        </property>
+         <property name="create_date" type="java.util.Date">
+            <column name="create_date" length="20"  />
+        </property>
+        <property name="ssplactive" type="boolean">
+            <column name="ssplactive" length="20"  />
+        </property>
+        
+    </class>
+</hibernate-mapping>

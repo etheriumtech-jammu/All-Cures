@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="model.Registration" table="registration" schema="allcures" >
+      
+         <id name="registration_id" type="java.lang.Integer">
+            <column name="registration_id" />
+            <generator class="identity" />
+        </id>
+         <property name="first_name" type="string">
+            <column name="first_name" length="20"  />
+        </property>
+         <property name="last_name" type="string">
+            <column name="last_name" length="20"  />
+        </property>
+        <property name="email_address" type="string">
+            <column name="email_address" length="20"  />
+        </property>
+         <property name="pass_word" type="string">
+            <column name="pass_word" length="20"  />
+        </property>
+        <property name="registration_type" type="java.lang.Integer">
+            <column name="registration_type" length="20"  />
+        </property>
+        
+  
+        <property name="acceptance_condition" type="java.lang.Boolean">
+            <column name="acceptance_condition" length="40"  />
+        </property>
+         <property name="private_policy" type="java.lang.Boolean">
+            <column name="private_policy" length="20"  />
+        </property>
+        <property name="account_state" type="java.lang.Integer">
+            <column name="account_state" length="20"  />
+        </property>
+        
+        
+        <property name="remember_me" type="java.lang.Integer">
+            <column name="remember_me" length="20"  />
+        </property>
+       
+        
+        
+        
+        
+        
+    </class>
+</hibernate-mapping>

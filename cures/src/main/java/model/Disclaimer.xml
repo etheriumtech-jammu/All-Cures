@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="model.Disclaimer" table="disclaimer" schema="allcures" >
+      
+         <id name="disclaimer_id" type="java.lang.Integer">
+            <column name="disclaimer_id" />
+            <generator class="sequence" />
+        </id>
+         <property name="disclaimer_file_loc" type="string">
+            <column name="disclaimer_file_loc" length="20"  />
+        </property>
+         <property name="disclaimer_create_date" type="java.util.Date">
+            <column name="disclaimer_create_date" length="20"  />
+        </property>
+        <property name="disclaimer_effective_date" type="java.util.Date">
+            <column name="disclaimer_effective_date" length="20"  />
+        </property>
+         <property name="disclaimer_expiration_date" type="java.util.Date">
+            <column name="disclaimer_expiration_date" length="20"  />
+        </property>
+        <property name="disclaimer_status" type="java.lang.Integer">
+            <column name="disclaimer_status" length="20"  />
+        </property>
+        
+  
+        
+    </class>
+</hibernate-mapping>

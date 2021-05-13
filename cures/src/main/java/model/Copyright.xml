@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="model.Copyright" table="copyright" schema="allcures" >
+      
+         <id name="copyright_id" type="java.lang.Integer">
+            <column name="copyright_id" />
+            <generator class="sequence" />
+        </id>
+         <property name="copyright_file_loc" type="string">
+            <column name="copyright_file_loc" length="20"  />
+        </property>
+         <property name="copyright_create_date" type="java.util.Date">
+            <column name="copyright_create_date" length="20"  />
+        </property>
+        <property name="copyright_effective_date" type="java.util.Date">
+            <column name="copyright_effective_date" length="20"  />
+        </property>
+         <property name="copyright_expiration_date" type="java.util.Date">
+            <column name="copyright_expiration_date" length="20"  />
+        </property>
+        <property name="copyright_status" type="java.lang.Integer">
+            <column name="copyright_status" length="20"  />
+        </property>
+        
+  
+        
+    </class>
+</hibernate-mapping>
