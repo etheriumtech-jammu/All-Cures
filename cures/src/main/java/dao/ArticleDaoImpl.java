@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 import model.Article;
 import util.HibernateUtil;
 
+
+//1	active
+//7	WorkInProgress
 //@Component makes sure it is picked up by the ComponentScan (if it is in the right package). This allows @Autowired to work in other classes for instances of this class
 @Component
 public class ArticleDaoImpl {
@@ -27,7 +30,7 @@ public class ArticleDaoImpl {
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
-		Query query = session.createNativeQuery("select  article_id  from article  where pubstatus_id = 7;");
+		Query query = session.createNativeQuery("select  article_id  from article  where pubstatus_id = 1;");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
 
