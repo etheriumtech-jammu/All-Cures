@@ -10,8 +10,43 @@
 
 	<name>cures</name>
 	<url>http://maven.apache.org</url>
+	
+	<properties>
+        <spring.version>4.3.0.RELEASE</spring.version>
+        <jackson.version>2.7.4</jackson.version>
+        <logback.version>1.1.7</logback.version>
+    </properties>
 
 	<dependencies>
+	<!-- spring dependency -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- JSON dependency -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- Logging dependency -->
+<!--         <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency> -->
+
+        <!-- servlet api -->
+<!--         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency> -->
+        
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
