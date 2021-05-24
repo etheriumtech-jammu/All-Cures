@@ -49,7 +49,7 @@ public class ArticleDaoImpl {
 		Transaction trans = (Transaction) session.beginTransaction();
 
 		Query query = session
-				.createNativeQuery("select  article_id  from article where pubstatus_id = 1 and authored_by = 0 or edited_by = 0;");
+				.createNativeQuery("select  article_id  from article where status_discription_status_id = 1 and authored_by = 0 or edited_by = 0;");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
 
