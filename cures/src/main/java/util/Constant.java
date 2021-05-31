@@ -109,6 +109,8 @@ public class Constant{
 	 
 	public static final String SOLRSPLSEARCHJSONDATA = "solrsplsearchjsondata";
 	
+	public static final String dashboard_review_count = "DBRC";
+	
 	//Logging Related Settings
 	public static final boolean LoggingOn = true;
 	public static final int ALLOWED_MSG_LVL = 0; //0 = DEBUG; 1 = INFO; 2 = WARN; 3 = ERROR;
