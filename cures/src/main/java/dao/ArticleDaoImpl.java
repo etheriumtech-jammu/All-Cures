@@ -1,10 +1,14 @@
 package dao;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
-import org.hibernate.NonUniqueResultException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -121,10 +125,25 @@ public class ArticleDaoImpl {
 			article.setTitle((String) obj[1]);
 			article.setFriendly_name((String) obj[2]);
 			article.setSubheading((String) obj[3]);
-			//article.setContent_type((Integer) obj[4]); 
-			article.setKeywords((String) obj[5]);   
+			// article.setContent_type((Integer) obj[4]);
+			article.setKeywords((String) obj[5]);
 			article.setWindow_title((String) obj[6]);
 			article.setContent_location((String) obj[7]);
+			System.out.println((String) obj[7]);
+//			String file = (String) obj[7];
+			String file = "C:\\" + (String) obj[7];
+//			file = "C:\\test\\14\\2021\\05\\26\\article_"+(Integer) obj[0]+".json";
+			String contents = null;
+			try {
+				InputStream stream = Files.newInputStream(Paths.get(file));
+				// Convert stream to string
+				contents = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println(contents);
+
 			article.setAuthored_by((Integer) obj[8]);
 			article.setPublished_by((Integer) obj[9]);
 			article.setEdited_by((Integer) obj[10]);
@@ -134,6 +153,7 @@ public class ArticleDaoImpl {
 			article.setPublished_date((Date) obj[14]);
 			article.setPubstatus_id((Integer) obj[15]);
 			article.setLanguage_id((Integer) obj[16]);
+			article.setContent(contents);
 		}
 		return article;
 	}

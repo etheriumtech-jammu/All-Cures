@@ -63,6 +63,8 @@ public class Article implements Serializable{
 	@Column(name = "language_id")
 	private Integer language_id;
 	
+	private String content;
+	
 	/*
 	@OneToOne(targetEntity = Author.class)
 	private String author_firstname;
@@ -106,6 +108,14 @@ public class Article implements Serializable{
 	private Author author;
 	*/
 	
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
 
 	public Article() {
 		super();

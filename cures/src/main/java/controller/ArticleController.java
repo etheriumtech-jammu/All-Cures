@@ -27,13 +27,12 @@ public class ArticleController {
 	public @ResponseBody Article getArticleDetails(@PathVariable int article_id, HttpServletRequest request) {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpSession session = req.getSession(true);
-		int reg_id = 0;
-		if (session.getAttribute(Constant.USER) != null) {
-			Constant.log("#########USER IS IN SESSION########", 0);
-			Registration user = (Registration) session.getAttribute(Constant.USER);
-			reg_id = user.getRegistration_id();
-			System.out.println(reg_id);
-		}
+		/*
+		 * int reg_id = 0; if (session.getAttribute(Constant.USER) != null) {
+		 * Constant.log("#########USER IS IN SESSION########", 0); Registration user =
+		 * (Registration) session.getAttribute(Constant.USER); reg_id =
+		 * user.getRegistration_id(); System.out.println(reg_id); }
+		 */
 		return articleDaoImpl.getArticleDetails(article_id);
 
 	}
