@@ -137,7 +137,7 @@ public class ArticleDaoImpl {
 //			String file = (String) obj[7];
 			String file = "C:\\" + (String) obj[7];
 //			file = "C:\\test\\14\\2021\\05\\26\\article_"+(Integer) obj[0]+".json";
-			String contents = null;
+			String contents = "";
 			InputStream is = null;
 			DataInputStream dis = null;
 			try {
