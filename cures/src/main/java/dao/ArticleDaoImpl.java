@@ -1,5 +1,7 @@
 package dao;
 
+import java.io.DataInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -121,6 +123,8 @@ public class ArticleDaoImpl {
 		Iterator itr = articleList.iterator();
 		while (itr.hasNext()) {
 			Object[] obj = (Object[]) itr.next();
+			System.out.println((Integer) obj[0]);
+			System.out.println((String) obj[1]);
 			article.setArticle_id((Integer) obj[0]);
 			article.setTitle((String) obj[1]);
 			article.setFriendly_name((String) obj[2]);
@@ -134,13 +138,54 @@ public class ArticleDaoImpl {
 			String file = "C:\\" + (String) obj[7];
 //			file = "C:\\test\\14\\2021\\05\\26\\article_"+(Integer) obj[0]+".json";
 			String contents = null;
+			InputStream is = null;
+			DataInputStream dis = null;
 			try {
-				InputStream stream = Files.newInputStream(Paths.get(file));
-				// Convert stream to string
-				contents = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				// create file input stream
+				is = new FileInputStream(file);
+
+				// create new data input stream
+				dis = new DataInputStream(is);
+
+				// available stream to be read
+				int length = dis.available();
+
+				// create buffer
+				byte[] buf = new byte[length];
+
+				// read the full data into the buffer
+				dis.readFully(buf);
+
+				// for each byte in the buffer
+				for (byte b : buf) {
+
+					// convert byte to char
+					char c = (char) b;
+
+					// prints character
+					System.out.print(c);
+					contents = contents + c;
+				}
+
+			} catch (Exception e) {
+				// if any error occurs
 				e.printStackTrace();
+			} finally {
+				// releases all system resources from the streams
+				if (is != null)
+					try {
+						is.close();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				if (dis != null)
+					try {
+						dis.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 			}
 			System.out.println(contents);
 
