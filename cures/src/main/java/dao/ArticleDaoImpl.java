@@ -203,4 +203,51 @@ public class ArticleDaoImpl {
 		return article;
 	}
 
+	public static ArrayList<Article> getArticlesListAll() {
+
+		// creating seession factory object
+		SessionFactory factory = HibernateUtil.buildSessionFactory();
+
+		// creating session object
+		Session session = factory.getCurrentSession();
+
+		// creating transaction object
+		Transaction trans = (Transaction) session.beginTransaction();
+
+		Query query = session.createNativeQuery("SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
+				+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
+				+ "    `article`.`content_type`,\r\n" + "    `article`.`keywords`,\r\n"
+				+ "    `article`.`window_title`,\r\n" + "    `article`.`content_location`,\r\n"
+				+ "    `article`.`authored_by`,\r\n" + "    `article`.`published_by`,\r\n"
+				+ "    `article`.`edited_by`,\r\n" + "    `article`.`copyright_id`,\r\n"
+				+ "    `article`.`disclaimer_id`,\r\n" + "    `article`.`create_date`,\r\n"
+				+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
+				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`\r\n"
+				+ "FROM `allcures_schema`.`article`;\r\n" + ";");
+		// needs other condition too but unable to find correct column
+		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
+		System.out.println("result list article@@@@@@@@@@@@@" + list);
+
+		return list;
+	}
+
+	public static ArrayList getTablesDataListAll(String table_name) {
+
+		// creating seession factory object
+		SessionFactory factory = HibernateUtil.buildSessionFactory();
+
+		// creating session object
+		Session session = factory.getCurrentSession();
+
+		// creating transaction object
+		Transaction trans = (Transaction) session.beginTransaction();
+
+		Query query = session.createNativeQuery("SELECT * FROM `allcures_schema`.`" + table_name + "`;\r\n" + ";");
+		// needs other condition too but unable to find correct column
+		ArrayList list = (ArrayList) query.getResultList();
+		System.out.println("result list " + table_name + " all@@@@@@@@@" + list);
+
+		return list;
+	}
+
 }

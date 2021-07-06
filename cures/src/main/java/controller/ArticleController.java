@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -35,6 +37,16 @@ public class ArticleController {
 		 */
 		return articleDaoImpl.getArticleDetails(article_id);
 
+	}
+
+	@RequestMapping(value = "/all", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody ArrayList<Article> listArticlesAll() {
+		return articleDaoImpl.getArticlesListAll();
+	}
+
+	@RequestMapping(value = "/all/table/{table_name}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody ArrayList listTablesAllData(@PathVariable String table_name) {
+		return articleDaoImpl.getTablesDataListAll(table_name);
 	}
 
 }
