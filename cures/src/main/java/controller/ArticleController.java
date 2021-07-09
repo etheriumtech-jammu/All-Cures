@@ -1,13 +1,14 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dao.ArticleDaoImpl;
 import model.Article;
-import model.Registration;
-import util.Constant;
 
 @RestController
 @RequestMapping(path = "/article")
@@ -47,6 +46,16 @@ public class ArticleController {
 	@RequestMapping(value = "/all/table/{table_name}", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody ArrayList listTablesAllData(@PathVariable String table_name) {
 		return articleDaoImpl.getTablesDataListAll(table_name);
+	}
+
+	@RequestMapping(value = "/{article_id}", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody int updateArticle(@PathVariable int article_id, @RequestBody HashMap articleMap) {
+		return articleDaoImpl.updateArticleId(article_id, articleMap);
+	}
+
+	@RequestMapping(value = "/{article_id}", produces = "application/json", method = RequestMethod.DELETE)
+	public @ResponseBody int deleteArticle(@PathVariable int article_id) {
+		return articleDaoImpl.deleteArticleId(article_id);
 	}
 
 }

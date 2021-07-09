@@ -4,11 +4,9 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import org.hibernate.Session;
@@ -248,6 +246,68 @@ public class ArticleDaoImpl {
 		System.out.println("result list " + table_name + " all@@@@@@@@@" + list);
 
 		return list;
+	}
+	
+	
+	public static int updateArticleId(int article_id, HashMap articleMap) {
+
+		// creating seession factory object
+		SessionFactory factory = HibernateUtil.buildSessionFactory();
+
+		// creating session object
+		Session session = factory.getCurrentSession();
+
+		// creating transaction object
+		Transaction trans = (Transaction) session.beginTransaction();
+		
+		String updatestr = "";
+		if (articleMap.containsKey("title")) {updatestr +=  "`title` = '"+articleMap.get("title")+"',\r\n"; }
+		if (articleMap.containsKey("friendly_name")) {updatestr +=  "`friendly_name` = '"+articleMap.get("friendly_name")+"',\r\n"; }
+		if (articleMap.containsKey("subheading")) {updatestr +=  "`subheading` = '"+articleMap.get("subheading")+"',\r\n"; }
+		if (articleMap.containsKey("content_type")) {updatestr +=  "`content_type` = '"+articleMap.get("content_type")+"',\r\n"; }
+		if (articleMap.containsKey("keywords")) {updatestr +=  "`keywords` = '"+articleMap.get("keywords")+"',\r\n"; }
+		if (articleMap.containsKey("window_title")) {updatestr +=  "`window_title` = '"+articleMap.get("window_title")+"',\r\n"; }
+		if (articleMap.containsKey("content_location")) {updatestr +=  "`content_location` = '"+articleMap.get("content_location")+"',\r\n"; }
+		if (articleMap.containsKey("authored_by")) {updatestr +=  "`authored_by` = '"+articleMap.get("authored_by")+"',\r\n"; }
+		if (articleMap.containsKey("published_by")) {updatestr +=  "`published_by` = '"+articleMap.get("published_by")+"',\r\n"; }
+		if (articleMap.containsKey("edited_by")) {updatestr +=  "`edited_by` = '"+articleMap.get("edited_by")+"',\r\n"; }
+		if (articleMap.containsKey("copyright_id")) {updatestr +=  "`copyright_id` = '"+articleMap.get("copyright_id")+"',\r\n"; }
+		if (articleMap.containsKey("create_date")) {updatestr +=  "`create_date` = '"+articleMap.get("create_date")+"',\r\n"; }
+		if (articleMap.containsKey("published_date")) {updatestr +=  "`published_date` = '"+articleMap.get("published_date")+"',\r\n"; }
+		if (articleMap.containsKey("pubstatus_id")) {updatestr +=  "`pubstatus_id` = '"+articleMap.get("pubstatus_id")+"',\r\n"; }
+		if (articleMap.containsKey("language_id")) {updatestr +=  "`language_id` = '"+articleMap.get("language_id")+"',\r\n"; }
+		if (articleMap.containsKey("content")) {updatestr +=  "`content` = '"+articleMap.get("content")+"',\r\n"; }
+
+		updatestr = updatestr.replaceAll(",$", "");
+		Query query = session.createNativeQuery("UPDATE `article`\r\n"
+				+ "SET\r\n" +
+				updatestr
+				+ "WHERE `article_id` = "+ article_id+";");
+		// needs other condition too but unable to find correct column
+		int ret = query.executeUpdate();
+		trans.commit();
+		System.out.println("updated article table for article_id =  " + article_id);
+
+		return ret;
+	}
+	
+	public static int deleteArticleId(int article_id) {
+
+		// creating seession factory object
+		SessionFactory factory = HibernateUtil.buildSessionFactory();
+
+		// creating session object
+		Session session = factory.getCurrentSession();
+
+		// creating transaction object
+		Transaction trans = (Transaction) session.beginTransaction();
+
+		Query query = session.createNativeQuery("DELETE FROM ARTICLE WHERE ARTICLE_ID = "+article_id+";");
+		// needs other condition too but unable to find correct column
+		int ret = query.executeUpdate();
+		System.out.println("delete article_id =  " + article_id);
+		trans.commit();
+		return ret;
 	}
 
 }
