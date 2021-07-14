@@ -309,7 +309,8 @@ public class ArticleDaoImpl {
 			updatestr += "`content` = '" + articleMap.get("content") + "',\r\n";
 		}
 
-		//java.sql.Timestamp date = new java.sql.Timestamp(new java.util.Date().getTime());
+		// java.sql.Timestamp date = new java.sql.Timestamp(new
+		// java.util.Date().getTime());
 
 		updatestr = updatestr.replaceAll(",$", "");
 		Query query = session.createNativeQuery(
@@ -340,9 +341,15 @@ public class ArticleDaoImpl {
 
 		Query query = session.createNativeQuery("DELETE FROM ARTICLE WHERE ARTICLE_ID = " + article_id + ";");
 		// needs other condition too but unable to find correct column
-		int ret = query.executeUpdate();
-		System.out.println("delete article_id =  " + article_id);
-		trans.commit();
+		int ret = 0;
+		try {
+			ret = query.executeUpdate();
+			System.out.println("delete article_id =  " + article_id);
+			trans.commit();
+		} catch (Exception ex) {
+			trans.rollback();
+		}
+
 		return ret;
 	}
 
