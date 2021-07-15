@@ -63,6 +63,12 @@ public class Article implements Serializable{
 	@Column(name = "language_id")
 	private Integer language_id;
 	
+	@Column(name = "country_id")
+	private Integer country_id;
+	
+	@Column(name = "disease_condition_id")
+	private Integer disease_condition_id;
+	
 	private String content;
 	
 	/*
@@ -150,7 +156,7 @@ public class Article implements Serializable{
 		public Article(Integer article_id, String title, String friendly_name, String subheading, Integer contentTypeId,
 			String keywords, String window_title, String content_location, Integer authored_by, Integer published_by,
 			Integer edited_by, Integer copyright_id, Integer disclaimer_id, Date create_date, Date published_date,
-			Integer pubstatus_id, Integer language_id, Integer copyright_file_loc_id, Integer disclaimer_file_loc_id) {
+			Integer pubstatus_id, Integer language_id, Integer copyright_file_loc_id, Integer disclaimer_file_loc_id, Integer country_id, Integer disease_condition_id) {
 		super();
 		this.article_id = article_id;
 		this.title = title;
@@ -169,6 +175,8 @@ public class Article implements Serializable{
 		this.published_date = published_date;
 		this.pubstatus_id = pubstatus_id;
 		this.language_id = language_id;
+		this.disease_condition_id = disease_condition_id;
+		this.country_id = country_id;
 		/*
 		this.copyright_file_loc = copyright_file_loc_id;
 		this.disclaimer_file_loc = disclaimer_file_loc_id;
@@ -390,6 +398,22 @@ public class Article implements Serializable{
 
 	public void setLanguage_id(Integer language_id) {
 		this.language_id = language_id;
+	}
+
+	public Integer getCountry_id() {
+		return country_id;
+	}
+
+	public void setCountry_id(Integer country_id) {
+		this.country_id = country_id;
+	}
+
+	public Integer getDisease_condition_id() {
+		return disease_condition_id;
+	}
+
+	public void setDisease_condition_id(Integer disease_condition_id) {
+		this.disease_condition_id = disease_condition_id;
 	}
 
 /*

@@ -114,7 +114,7 @@ public class ArticleDaoImpl {
 
 		Query query = session.createNativeQuery(
 				"select article_id,  title , friendly_name,  subheading, content_type, keywords,  window_title,  content_location\r\n"
-						+ " ,authored_by, published_by, edited_by, copyright_id, disclaimer_id, create_date, published_date, pubstatus_id, language_id from article  where article_id = "
+						+ " ,authored_by, published_by, edited_by, copyright_id, disclaimer_id, create_date, published_date, pubstatus_id, language_id, disease_condition_id, country_id from article  where article_id = "
 						+ reg_id + ";");
 		ArrayList<Article> articleList = (ArrayList<Article>) query.getResultList();
 		Article article = new Article();
@@ -196,6 +196,8 @@ public class ArticleDaoImpl {
 			article.setPublished_date((Date) obj[14]);
 			article.setPubstatus_id((Integer) obj[15]);
 			article.setLanguage_id((Integer) obj[16]);
+			article.setDisease_condition_id((Integer) obj[17]);
+			article.setCountry_id((Integer) obj[18]);
 			article.setContent(contents);
 		}
 		return article;

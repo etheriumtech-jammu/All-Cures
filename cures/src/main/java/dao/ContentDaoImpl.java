@@ -38,7 +38,7 @@ public class ContentDaoImpl {
 	
 	public boolean createArticle(int pubStatus, int lang, int disclaimerId, int copyrightId, int authById, String title, String frndlyName, 
 			String subhead, int contentTypeId, String keywords, String windowTitle, 
-			String contentLocation, Integer reg_id, String articleContent) {
+			String contentLocation, Integer reg_id, String articleContent, Integer diseaseConditionId, Integer countryId) {
 			
 		boolean artCrtStatus = false;		
 		Constant.log("Saving Content in DB", 1);
@@ -71,6 +71,8 @@ public class ContentDaoImpl {
 			//article.setContent_location(content_loc);
 			article.setEdited_by(reg_id);
 			article.setAuthored_by(authById);
+			article.setCountry_id(countryId);
+			article.setDisease_condition_id(diseaseConditionId);
 			Constant.log("Saved Article Meta Data", 1);
 			session.save(article);
 			//Below will work assuming an author cannot pen 2 articles at the same time
