@@ -76,12 +76,13 @@ public class ContentActionController extends HttpServlet {
 		Constant.log("Creating Article with subHeading:"+subHead, 0);
 		//TODO: Need to create FK constraint in the DB for Content Types
 		String content_type=request.getParameter("contentType");
-		int iContentType = 1; //Article By Default
-		if(content_type != null && !"".equals(content_type.trim())){
-			iContentType = Integer.parseInt(content_type);
-		}
+//		int iContentType = 1; //Article By Default
+//		if(content_type != null && !"".equals(content_type.trim())){
+//			iContentType = Integer.parseInt(content_type);
+//		}
 		Constant.log("Creating Article with Content Type:"+content_type, 0);
 		String status= request.getParameter("articleStatus");
+		System.out.println("Test articleStatus Val"+status);
 		int iStatus = 1; //WIP By Default
 		if(status  != null && !"".equals(status.trim())){
 			iStatus = Integer.parseInt(status);
@@ -136,7 +137,7 @@ public class ContentActionController extends HttpServlet {
 			//TODO: Remove this hardcoding	
 			Constant.log("User object is in session; User is logged In; Adding Article Now", 0);
 			boolean bResult = contentDao.createArticle(iStatus, iLang, iDiscId, iCopyId, iAuthId, title, artFrndlyNm, subHead, 
-					iContentType, keyword, window_title, null, user.getRegistration_id().intValue(), articlecontent, iDiseaseConditionId, iCountryId);
+					content_type, keyword, window_title, null, user.getRegistration_id().intValue(), articlecontent, iDiseaseConditionId, iCountryId);
 			if(bResult == true){
 				result = 1;
 			}

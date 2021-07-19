@@ -35,7 +35,7 @@ public class Article implements Serializable{
 	@Column(name = "subheading")
 	private String subheading ;
 	@Column(name = "content_type")
-	private Integer content_type;
+	private String content_type;
 	@Column(name = "keywords")
 	private String keywords;
 	@Column(name = "window_title")
@@ -153,7 +153,7 @@ public class Article implements Serializable{
 		this.status_discription = status_discription;
 		*/
 	}
-		public Article(Integer article_id, String title, String friendly_name, String subheading, Integer contentTypeId,
+		public Article(Integer article_id, String title, String friendly_name, String subheading, String contentTypeId,
 			String keywords, String window_title, String content_location, Integer authored_by, Integer published_by,
 			Integer edited_by, Integer copyright_id, Integer disclaimer_id, Date create_date, Date published_date,
 			Integer pubstatus_id, Integer language_id, Integer copyright_file_loc_id, Integer disclaimer_file_loc_id, Integer country_id, Integer disease_condition_id) {
@@ -246,13 +246,13 @@ public class Article implements Serializable{
 
 
 
-	public Integer getContent_type() {
+	public String getContent_type() {
 		return content_type;
 	}
 
 
 
-	public void setContent_type(Integer content_type) {
+	public void setContent_type(String content_type) {
 		this.content_type = content_type;
 	}
 

@@ -37,7 +37,7 @@ public class ContentDaoImpl {
 	
 	
 	public boolean createArticle(int pubStatus, int lang, int disclaimerId, int copyrightId, int authById, String title, String frndlyName, 
-			String subhead, int contentTypeId, String keywords, String windowTitle, 
+			String subhead, String contentTypeId, String keywords, String windowTitle, 
 			String contentLocation, Integer reg_id, String articleContent, Integer diseaseConditionId, Integer countryId) {
 			
 		boolean artCrtStatus = false;		
@@ -152,7 +152,7 @@ public class ContentDaoImpl {
 				articleList.setTitle((String) obj[1]);
 				articleList.setFriendly_name((String) obj[2]);
 				articleList.setSubheading((String) obj[3]);
-				articleList.setContent_type((Integer) obj[4]);
+				articleList.setContent_type((String) obj[4]);
 				articleList.setKeywords((String) obj[5]);
 				articleList.setWindow_title((String) obj[6]); 
 				articleList.setContent_location((String) obj[7]);
