@@ -127,7 +127,7 @@ public class ArticleDaoImpl {
 			article.setTitle((String) obj[1]);
 			article.setFriendly_name((String) obj[2]);
 			article.setSubheading((String) obj[3]);
-			// article.setContent_type((Integer) obj[4]);
+			article.setContent_type((String) obj[4]);
 			article.setKeywords((String) obj[5]);
 			article.setWindow_title((String) obj[6]);
 			article.setContent_location((String) obj[7]);
