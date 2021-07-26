@@ -358,7 +358,7 @@ public class ArticleDaoImpl {
 				//Update the Content First
 				Article art = new ArticleDaoImpl().getArticleDetails(article_id);
 				String art_location = art.getContent_location();
-				String content = (String) articleMap.get("articleContent");
+				String content = articleMap.get("articleContent") == null ? "" : (String) articleMap.get("articleContent");
 				//String content = "{\"time\":1625577023180,\"blocks\":[{\"id\":\"w6K2r9k_v4\",\"type\":\"paragraph\",\"data\":{\"text\":\"hellow anil article 12341111111\"}},{\"id\":\"kuKfW7EeAv\",\"type\":\"paragraph\",\"data\":{\"text\":\"adhdsfa\"}},{\"id\":\"Rh0WezPDqG\",\"type\":\"paragraph\",\"data\":{\"text\":\"thanks,\"}},{\"id\":\"4C5yZUQ9GV\",\"type\":\"paragraph\",\"data\":{\"text\":\"anil 123211111\"}}],\"version\":\"2.21.0\"}";
 				value = ArticleUtils.updateArticleContent(art_location, content, article_id, 1);		
 				value = true;
