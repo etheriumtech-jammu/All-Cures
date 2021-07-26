@@ -68,6 +68,7 @@ public class ArticleUtils {
 				artFile = new File(artLoc);
 			}
 			FileWriter myWriter = new FileWriter(artFile);
+			Constant.log(artFile.toString(),1);
 			Constant.log("Writing Article Content to Filesystem", 1);
 			myWriter.write(articleContent);
 			myWriter.flush();
