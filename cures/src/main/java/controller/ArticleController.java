@@ -58,4 +58,10 @@ public class ArticleController {
 		return articleDaoImpl.deleteArticleId(article_id);
 	}
 
+	@RequestMapping(value = "/readfile", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody String readFile(@RequestBody HashMap filepath) {
+		String fp = (String) filepath.get("filepath");
+		return articleDaoImpl.readFile(fp);
+	}
+
 }

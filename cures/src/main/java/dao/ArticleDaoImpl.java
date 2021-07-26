@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import model.Article;
 import util.HibernateUtil;
+import util.ReadFileUtil;
 
 //1	active
 //7	WorkInProgress
@@ -353,6 +354,11 @@ public class ArticleDaoImpl {
 		}
 
 		return ret;
+	}
+
+	public static String readFile(String filePath) {
+		return new ReadFileUtil().readFilebyPath(filePath);
+
 	}
 
 }
