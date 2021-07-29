@@ -21,10 +21,10 @@ public class StatesDaoImpl {
 
 
 		// creating seession factory object
-		SessionFactory factory= HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
@@ -32,7 +32,7 @@ public class StatesDaoImpl {
 		Query query = session.createNativeQuery("select distinct statename  from states;");
 		ArrayList<States> list= (ArrayList<States>) query.getResultList();
 		System.out.println("result list StateList@@@@@@@@@@@@@"+list);
-
+		session.close();
 		return list;
 	}
 

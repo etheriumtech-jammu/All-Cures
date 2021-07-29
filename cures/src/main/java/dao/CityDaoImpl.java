@@ -27,10 +27,10 @@ public class CityDaoImpl {
 	public static ArrayList<City> findAllCity() {
 
 		// creating seession factory object
-		SessionFactory factory = HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -38,17 +38,17 @@ public class CityDaoImpl {
 		Query query = session.createNativeQuery("select distinct(cityname) from city;");
 		ArrayList<City> list = (ArrayList<City>) query.getResultList();
 		System.out.println("result list City@@@@@@@@@@@@@" + list);
-
+		session.close();
 		return list;
 	}
 
 	public static ArrayList<City> findAllPincode() {
 
 		// creating seession factory object
-		SessionFactory factory = HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -56,17 +56,17 @@ public class CityDaoImpl {
 		Query query = session.createNativeQuery("select pincode from city;");
 		ArrayList<City> list = (ArrayList<City>) query.getResultList();
 		System.out.println("result list City@@@@@@@@@@@@@" + list);
-
+		session.close();
 		return list;
 	}
 
 	public static List getAllCityDetails() {
 
 		// creating seession factory object
-		SessionFactory factory = HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -82,6 +82,7 @@ public class CityDaoImpl {
 			hm.put("Pincode", pincode);
 			hmFinal.add(hm);
 		}
+		session.close();
 		return hmFinal;
 	}
 

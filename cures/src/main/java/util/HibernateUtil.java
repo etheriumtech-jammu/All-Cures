@@ -10,41 +10,37 @@ import org.hibernate.cfg.Configuration;
 
 @SuppressWarnings(Constant.UNUSED)
 public class HibernateUtil {
-	private static StandardServiceRegistry registry;
+	// private static StandardServiceRegistry registry;
 	// private static SessionFactory sessionFactory;
 
-	private static final SessionFactory sessionFactory = buildSessionFactory();
+//	private static final SessionFactory sessionFactory = buildSessionFactory();
+
 	private static SessionFactory factory;
 
 	static {
 		factory = new Configuration().configure().buildSessionFactory();
 	}
 
-	public Session getSession() {
+	public static Session buildSessionFactory() {
 		return factory.openSession();
 	}
 
-	public void doWork() {
-		Session session = getSession();
-		// do work.
-		session.close();
-	}
+//	  public void doWork() { Session session = buildSessionFactory(); // do work.
+//	  session.close(); }
 
 	// Call this during shutdown
-	public static void close() {
+	public static void shutdown() {
 		factory.close();
 	}
 
-	public static SessionFactory buildSessionFactory() {
-		try {
-			// Create the SessionFactory from hibernate.cfg.xml
-			return new Configuration().configure().buildSessionFactory();
-		} catch (Throwable ex) {
-			// Make sure you log the exception, as it might be swallowed
-			System.err.println("//////////Initial SessionFactory creation failed." + ex);
-			throw new ExceptionInInitializerError(ex);
-		}
-	}
+	/*
+	 * public static SessionFactory buildSessionFactory() { try { // Create the
+	 * SessionFactory from hibernate.cfg.xml return new
+	 * Configuration().configure().buildSessionFactory(); } catch (Throwable ex) {
+	 * // Make sure you log the exception, as it might be swallowed
+	 * System.err.println("//////////Initial SessionFactory creation failed." + ex);
+	 * throw new ExceptionInInitializerError(ex); } }
+	 */
 
 	/*
 	 * public static SessionFactory getSessionFactory() { if(sessionFactory== null){
@@ -60,12 +56,11 @@ public class HibernateUtil {
 	 * sessionFactory; }
 	 */
 
-	public static void shutdown() {
-		// Close caches and connection pools
-		if (registry != null) {
-			StandardServiceRegistryBuilder.destroy(registry);
-		}
-
-	}
+	/*
+	 * public static void shutdown() { // Close caches and connection pools if
+	 * (registry != null) { StandardServiceRegistryBuilder.destroy(registry); }
+	 * 
+	 * }
+	 */
 
 }

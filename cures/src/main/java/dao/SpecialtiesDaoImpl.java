@@ -19,10 +19,10 @@ public class SpecialtiesDaoImpl {
 
 
 		// creating seession factory object
-		SessionFactory factory= HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
@@ -30,7 +30,7 @@ public class SpecialtiesDaoImpl {
 		Query query = session.createNativeQuery("select spl_name from specialties;");
 		ArrayList<Specialties> list= (ArrayList<Specialties>) query.getResultList();
 		System.out.println("result list Spl@@@@@@@@@@@@@"+list);
-
+		session.close();
 		return list;
 	}
 

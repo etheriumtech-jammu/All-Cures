@@ -32,10 +32,10 @@ public class DoctorsDaoImpl {
 		Constant.log("Finding All Docs", 1);
 
 		// creating seession factory object
-		SessionFactory factory= HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
@@ -67,18 +67,18 @@ public class DoctorsDaoImpl {
 			}
 		}
 		Constant.log("Total Doctors Found in the Doctors List:"+docList.size(), 1);
-
+		session.close();
 		return  docList;
 
 	}
 
 	public static Doctors getAllDoctorsInfo(int docid) {
 		// creating seession factory object
-		SessionFactory factory= HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 		Constant.log("In DoctorsDAO, Getting Doctors Info For:"+docid, 1);
 
 		// creating session object
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
@@ -136,16 +136,17 @@ public class DoctorsDaoImpl {
 			}
 			Constant.log("--Returning from DoctorsDao, Doc Object for ID:"+ doc.getDocid(), 1);
 		}
+		session.close();
 		return doc;
 	}
 
 	public static void saveDoctors(Integer docid ,String f_name,String l_name, String email) {
 		// creating seession factory object
-		SessionFactory factory= HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 		Constant.log("Saving New Doctor with Firstname to DB:"+f_name, 0);
 
 		// creating session object
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 		Doctors doc = new Doctors();
 
 		try {
@@ -164,6 +165,8 @@ public class DoctorsDaoImpl {
 		} catch (Exception e) {
 			Constant.log(e.getStackTrace().toString(), 3);
 			session.getTransaction().rollback();
+		}finally {
+			session.close();
 		}
 
 	}

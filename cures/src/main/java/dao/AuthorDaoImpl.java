@@ -19,9 +19,9 @@ public class AuthorDaoImpl {
 	
 	public List<Author> getAuthors(int authorId, int numAuthors, int authStatus){
 		// creating seession factory object
-		SessionFactory factory= HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 		// creating transaction object
 		Transaction trans =(Transaction)session.beginTransaction();		
 		boolean whereClauseAdded = false;
@@ -53,14 +53,17 @@ public class AuthorDaoImpl {
 			e.printStackTrace();
 			Constant.log("Error while Getting Authors ", 3);
 		}
+		finally {
+			session.close();
+		}
 		return authList;
 	}
 	
 	public List<Author> getTopAuthors(int numAuthors, int authStatus){
 		// creating seession factory object
-		SessionFactory factory= HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 		// creating transaction object
 		Transaction trans =(Transaction)session.beginTransaction();		
 		boolean whereClauseAdded = false;
@@ -83,6 +86,8 @@ public class AuthorDaoImpl {
 		}catch(Exception e){
 			e.printStackTrace();
 			Constant.log("Error while Getting Top Authors ", 3);
+		}finally {
+			session.close();
 		}
 		return authList;		
 	}
@@ -90,9 +95,9 @@ public class AuthorDaoImpl {
 	public Author createAuthor(String fName, String mName, String lName, String aEmail, String aAddress, String aTel, Integer aStatus){
 		Author createdAuthor = new Author();		
 		Constant.log("Saving New Author in DB", 1);
-		SessionFactory factory= HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory.getCurrentSession();		
+		Session session = factory;		
 		try {
 			session.getTransaction().begin();
 			createdAuthor.setAuthor_firstname(fName);
@@ -111,7 +116,10 @@ public class AuthorDaoImpl {
 			e.printStackTrace();
 			createdAuthor = null;
 			session.getTransaction().rollback();
+		}finally {
+			session.close();
 		}
+		
 		return createdAuthor;		
 	}
 

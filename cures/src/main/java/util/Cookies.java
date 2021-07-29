@@ -29,9 +29,9 @@ import model.Registration;
 public class Cookies {
 
 	public String storeCookiee(String email , String pass){
-		SessionFactory factory= HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
@@ -53,13 +53,14 @@ public class Cookies {
 			}
 			cookie=""+docid+"|"+type+"";
 		}
+		session.close();
 		return cookie;
 	}
 	
 	public Registration getUserFromPermCookie(String cookieValue){
-		SessionFactory factory= HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
@@ -108,6 +109,7 @@ public class Cookies {
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
 		}
+		session.close();
 		return register;
 	}
 	

@@ -29,14 +29,18 @@ public class ArticleDaoImpl {
 
 	public static ArrayList<Article> findPublishedArticle(int reg_id) {
 
+//		HibernateUtil hu = new HibernateUtil();
+//		Session session = hu.getSession();
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+
+		// creating session object 
+		Session session = factory;
+		 
 		/*
-		 * // creating seession factory object SessionFactory factory =
-		 * HibernateUtil.buildSessionFactory();
-		 * 
-		 * // creating session object Session session = factory.getCurrentSession();
+		 * HibernateUtil hu = new HibernateUtil(); 
+		 Session session = hu.getSession();
 		 */
-		HibernateUtil hu = new HibernateUtil();
-		Session session = hu.getSession();
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
@@ -44,20 +48,18 @@ public class ArticleDaoImpl {
 				"select  article_id  from article  where pubstatus_id = 3 and authored_by = " + reg_id + ";");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
-
+		
+		session.close();
 		return list;
 	}
 
 	public static ArrayList<Article> findDraftAricle(int reg_id) {
 
-		/*
-		 * // creating seession factory object SessionFactory factory =
-		 * HibernateUtil.buildSessionFactory();
-		 * 
-		 * // creating session object Session session = factory.getCurrentSession();
-		 */
-		HibernateUtil hu = new HibernateUtil();
-		Session session = hu.getSession();
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+
+		// creating session object 
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -67,41 +69,36 @@ public class ArticleDaoImpl {
 						+ " or edited_by = " + reg_id + ";");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
+		session.close();
+		session.close();
 
 		return list;
 	}
 
 	public static ArrayList<Article> findReviwArticle(int reg_id) {
 
-		/*
-		 * // creating seession factory object SessionFactory factory =
-		 * HibernateUtil.buildSessionFactory();
-		 * 
-		 * // creating session object Session session = factory.getCurrentSession();
-		 */
-		HibernateUtil hu = new HibernateUtil();
-		Session session = hu.getSession();
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+
+		// creating session object 
+		Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
 		Query query = session.createNativeQuery("select  article_id  from article  where pubstatus_id = 2;");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
-
+		session.close();
 		return list;
 	}
 
 	public static ArrayList<Article> findApprovalArticle(int reg_id) {
 
-		/*
-		 * // creating seession factory object SessionFactory factory =
-		 * HibernateUtil.buildSessionFactory();
-		 * 
-		 * // creating session object Session session = factory.getCurrentSession();
-		 */
-		
-		HibernateUtil hu = new HibernateUtil();
-		Session session = hu.getSession();
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+
+		// creating session object 
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -110,21 +107,18 @@ public class ArticleDaoImpl {
 		// needs other condition too but unable to find correct column
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
+		session.close();
 
 		return list;
 	}
 
 	public Article getArticleDetails(int reg_id) {
 
-		/*
-		 * // creating seession factory object SessionFactory factory =
-		 * HibernateUtil.buildSessionFactory();
-		 * 
-		 * // creating session object Session session = factory.getCurrentSession();
-		 */
-		
-		HibernateUtil hu = new HibernateUtil();
-		Session session = hu.getSession();
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+
+		// creating session object 
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -217,20 +211,18 @@ public class ArticleDaoImpl {
 			article.setCountry_id((Integer) obj[18]);
 			article.setContent(contents);
 		}
+		session.close();
+
 		return article;
 	}
 
 	public static ArrayList<Article> getArticlesListAll() {
 
-		/*
-		 * // creating seession factory object SessionFactory factory =
-		 * HibernateUtil.buildSessionFactory();
-		 * 
-		 * // creating session object Session session = factory.getCurrentSession();
-		 */
-		
-		HibernateUtil hu = new HibernateUtil();
-		Session session = hu.getSession();
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+
+		// creating session object 
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -248,20 +240,18 @@ public class ArticleDaoImpl {
 		// needs other condition too but unable to find correct column
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
+		session.close();
 
 		return list;
 	}
 
 	public static ArrayList getTablesDataListAll(String table_name) {
 
-//		// creating seession factory object
-//		SessionFactory factory = HibernateUtil.buildSessionFactory();
-//
-//		// creating session object
-//		Session session = factory.getCurrentSession();
-		
-		HibernateUtil hu = new HibernateUtil();
-		Session session = hu.getSession();
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+
+		// creating session object 
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -270,20 +260,18 @@ public class ArticleDaoImpl {
 		// needs other condition too but unable to find correct column
 		ArrayList list = (ArrayList) query.getResultList();
 		System.out.println("result list " + table_name + " all@@@@@@@@@" + list);
+		session.close();
 
 		return list;
 	}
 
 	public static int updateArticleId(int article_id, HashMap articleMap) {
 
-		/*
-		 * // creating seession factory object SessionFactory factory =
-		 * HibernateUtil.buildSessionFactory();
-		 * 
-		 * // creating session object Session session = factory.getCurrentSession();
-		 */
-		HibernateUtil hu = new HibernateUtil();
-		Session session = hu.getSession();
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+
+		// creating session object 
+		Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
@@ -329,6 +317,12 @@ public class ArticleDaoImpl {
 		}
 		if (articleMap.containsKey("pubstatus_id")) {
 			updatestr += "`pubstatus_id` = " + articleMap.get("pubstatus_id") + ",\r\n";
+			// in case article is set to be PUBLISHED status_id=3 set published_date to
+			// current date
+			if ((String) articleMap.get("pubstatus_id") == "3") {
+				java.util.Date date = new java.util.Date();
+				updatestr += "`published_date` = '" + date + "',\r\n";
+			}
 		}
 		if (articleMap.containsKey("language_id")) {
 			updatestr += "`language_id` = " + articleMap.get("language_id") + ",\r\n";
@@ -354,24 +348,31 @@ public class ArticleDaoImpl {
 			trans.commit();
 			System.out.println("updated article table for article_id =  " + article_id);
 			Boolean value = true;
-			try{
-				//Update the Content First
+			try {
+				// Update the Content First
 				Article art = new ArticleDaoImpl().getArticleDetails(article_id);
 				String art_location = art.getContent_location();
-				String content = articleMap.get("articleContent") == null ? "" : (String) articleMap.get("articleContent");
-				//String content = "{\"time\":1625577023180,\"blocks\":[{\"id\":\"w6K2r9k_v4\",\"type\":\"paragraph\",\"data\":{\"text\":\"hellow anil article 12341111111\"}},{\"id\":\"kuKfW7EeAv\",\"type\":\"paragraph\",\"data\":{\"text\":\"adhdsfa\"}},{\"id\":\"Rh0WezPDqG\",\"type\":\"paragraph\",\"data\":{\"text\":\"thanks,\"}},{\"id\":\"4C5yZUQ9GV\",\"type\":\"paragraph\",\"data\":{\"text\":\"anil 123211111\"}}],\"version\":\"2.21.0\"}";
-				value = ArticleUtils.updateArticleContent(art_location, content, article_id, 1);		
+				String content = articleMap.get("articleContent") == null ? ""
+						: (String) articleMap.get("articleContent");
+				// String content =
+				// "{\"time\":1625577023180,\"blocks\":[{\"id\":\"w6K2r9k_v4\",\"type\":\"paragraph\",\"data\":{\"text\":\"hellow
+				// anil article
+				// 12341111111\"}},{\"id\":\"kuKfW7EeAv\",\"type\":\"paragraph\",\"data\":{\"text\":\"adhdsfa\"}},{\"id\":\"Rh0WezPDqG\",\"type\":\"paragraph\",\"data\":{\"text\":\"thanks,\"}},{\"id\":\"4C5yZUQ9GV\",\"type\":\"paragraph\",\"data\":{\"text\":\"anil
+				// 123211111\"}}],\"version\":\"2.21.0\"}";
+				value = ArticleUtils.updateArticleContent(art_location, content, article_id, 1);
 				value = true;
-				}catch (Exception e) {
-					e.printStackTrace();
-					value = false;
-				}
-			
+			} catch (Exception e) {
+				e.printStackTrace();
+				value = false;
+			}
+
 		} catch (Exception ex) {
 			trans.rollback();
-		}finally {
+		} finally {
+			//session.close();
 			session.close();
 		}
+		//session.close();
 
 		return ret;
 	}
@@ -379,12 +380,10 @@ public class ArticleDaoImpl {
 	public static int deleteArticleId(int article_id) {
 
 		// creating seession factory object
-		//SessionFactory factory = HibernateUtil.buildSessionFactory();
-		HibernateUtil hu = new HibernateUtil();
-		Session session = hu.getSession();
+		Session factory = HibernateUtil.buildSessionFactory();
 
-		// creating session object
-		//Session session = factory.getCurrentSession();
+		// creating session object 
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -399,6 +398,7 @@ public class ArticleDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
+			//session.close();
 			session.close();
 		}
 

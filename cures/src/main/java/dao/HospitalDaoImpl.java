@@ -16,10 +16,10 @@ public class HospitalDaoImpl {
 	public static ArrayList<Hospital> findAllHospital() {
 
 		// creating seession factory object
-		SessionFactory factory = HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -27,7 +27,7 @@ public class HospitalDaoImpl {
 		Query query = session.createNativeQuery("select  hospital_affliated  from hospital;");
 		ArrayList<Hospital> list = (ArrayList<Hospital>) query.getResultList();
 		System.out.println("result list hospitalList@@@@@@@@@@@@@" + list);
-
+		session.close();
 		return list;
 	}
 

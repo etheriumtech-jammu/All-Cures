@@ -15,10 +15,10 @@ public class StandaloneRating {
 	public static Float findByTargeTypeIds (){
 		Targetbytype target = new Targetbytype();
 		Float avg_rating =null;
-		SessionFactory factory= HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
@@ -52,6 +52,7 @@ public class StandaloneRating {
 			}
 		}
 	}	
+		session.close();
 		return avg_rating;
 
 	}

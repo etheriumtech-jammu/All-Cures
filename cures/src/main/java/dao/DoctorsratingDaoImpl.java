@@ -25,10 +25,10 @@ public class DoctorsratingDaoImpl {
 	public static Float getAllDoctorsOverallratingInfo(int id) {
 
 		// creating seession factory object
-		SessionFactory factory= HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
@@ -49,10 +49,10 @@ public class DoctorsratingDaoImpl {
 	public static Doctorsrating getAllDoctorsDetailratingInfo(int id) {
 
 		// creating seession factory object
-		SessionFactory factory= HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
@@ -75,6 +75,7 @@ public class DoctorsratingDaoImpl {
 				docrating.setRatingVal((Float)obj[6]);
 			}
 		}
+		session.close();
 		return docrating;  
 
 	}
@@ -82,10 +83,10 @@ public class DoctorsratingDaoImpl {
 	public static String saveRating(String comments, Integer ratedbyid, Integer ratedbytype,Integer targetid, 
 			Integer targetTypeid, Float ratingval){
 		
-		SessionFactory factory= HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 		session.getTransaction().begin();
 		Doctorsrating docrate= new Doctorsrating();
 		String value= null;
@@ -105,6 +106,8 @@ public class DoctorsratingDaoImpl {
 			// TODO: handle exception
 			session.getTransaction().rollback();
 			value = "error";
+		}finally {
+			session.close();
 		}
 		return value;
 		

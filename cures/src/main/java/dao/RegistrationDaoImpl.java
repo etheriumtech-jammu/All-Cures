@@ -28,10 +28,10 @@ public class RegistrationDaoImpl {
 		// creating seession factory object
 
 		Registration user = null;
-		SessionFactory factory= HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 		
 		Constant.log("Registering User with Firstname to DB:"+f_name, 0);
 		/*
@@ -117,9 +117,9 @@ public class RegistrationDaoImpl {
 //Used for Login Lookup
 	public static Registration findAllUsers(String email, String pwd) {
 		// creating seession factory object
-		SessionFactory factory= HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 		//Only Logging Password in Logs in Debug Mode
 		Constant.log("Finding users with email:"+email+" and pass: " + pwd, 0);
 		
@@ -153,15 +153,16 @@ public class RegistrationDaoImpl {
 				Constant.log(Constant.PREFIX + obj[0], 0);
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
-		}		
+		}
+		session.close();
 		return  register;
 	}
 
 	public static Registration findUserByEmail(String email) {
 		// creating seession factory object
-		SessionFactory factory= HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
@@ -193,14 +194,15 @@ public class RegistrationDaoImpl {
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
 		}		
+		session.close();
 		return  register;
 	}
 
 	public static Registration findUserByRegId(int regid) {
 		// creating seession factory object
-		SessionFactory factory= HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
@@ -231,7 +233,8 @@ public class RegistrationDaoImpl {
 				Constant.log(Constant.PREFIX + obj[0], 0);
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
-		}		
+		}	
+		session.close();
 		return  register;
 	}
 

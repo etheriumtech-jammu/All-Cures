@@ -18,10 +18,10 @@ public class countriesDaoImpl {
 
 
 		// creating seession factory object
-		SessionFactory factory= HibernateUtil.buildSessionFactory();
+		Session factory = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory.getCurrentSession();
+		Session session = factory;
 
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
@@ -29,7 +29,7 @@ public class countriesDaoImpl {
 		Query query = session.createNativeQuery("SELECT countryname FROM countries;");
 		ArrayList<countries> list= (ArrayList<countries>) query.getResultList();
 		System.out.println("result list countries@@@@@@@@@@@@@"+list);
-
+		session.close();
 		return list;
 	}
 
