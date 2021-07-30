@@ -1,6 +1,8 @@
 package dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -17,7 +19,7 @@ import util.HibernateUtil;
 public class DiseaseANDConditionDaoImpl {
 	private static ArrayList list = new ArrayList();
 
-	public static ArrayList<Article> getAllMatchingDCList(String search_str) {
+	public static List getAllMatchingDCList(String search_str) {
 
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -38,11 +40,57 @@ public class DiseaseANDConditionDaoImpl {
 				+ "or window_title  like '%"+search_str+"%'\r\n" + "or countryname like '%"+search_str+"%'\r\n" + "or lang_name like '%"+search_str+"%'\r\n"
 				+ ")\r\n" + "and pubstatus_id = 3 \r\n" + "\r\n" + "");
 		// needs other condition too but unable to find correct column
-		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
-		System.out.println("result list article@@@@@@@@@@@@@" + list);
+		//ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
+		System.out.println("result list searched article count@@@@@@@@@@@@@" + search_str);
+		List<Object[]> results = (List<Object[]>) query.getResultList();
+		List hmFinal = new ArrayList();
+		for (Object[] objects : results) {
+			HashMap hm = new HashMap();
+			int article_id = (int) objects[0];
+			String title = (String) objects[1];
+			String friendly_name = (String) objects[2];
+			String subheading = (String) objects[3];
+			String content_type = (String) objects[4];
+			String keywords = (String) objects[5];
+			String window_title = (String) objects[6];
+			String content_location = (String) objects[7];
+			int authored_by = (int) objects[8];
+			int published_by = objects[9] !=null ? (int) objects[9] : 0;
+			int edited_by = (int) objects[10];
+			int copyright_id = (int) objects[11];
+			int disclaimer_id = (int) objects[12];
+			java.sql.Date create_date = (java.sql.Date) objects[13];
+			java.sql.Date published_date = (java.sql.Date) objects[14];
+			int pubstatus_id = (int) objects[15];
+			int language_id = (int) objects[16];
+			int disease_condition_id = (int) objects[17];
+			int country_id = (int) objects[18];
+			
+			hm.put("article_id", article_id);
+			hm.put("title", title);
+			hm.put("friendly_name", friendly_name);
+			hm.put("subheading", subheading);
+			hm.put("content_type", content_type);
+			hm.put("keywords", keywords);
+			hm.put("window_title", window_title);
+			hm.put("content_location", content_location);
+			hm.put("authored_by", authored_by);
+			hm.put("published_by", published_by);
+			hm.put("edited_by", edited_by);
+			hm.put("copyright_id", copyright_id);
+			hm.put("disclaimer_id", disclaimer_id);
+			hm.put("create_date", create_date);
+			hm.put("published_date", published_date);
+			hm.put("pubstatus_id", pubstatus_id);
+			hm.put("language_id", language_id);
+			hm.put("disease_condition_id", disease_condition_id);
+			hm.put("country_id", country_id);
+			hmFinal.add(hm);
+			System.out.println(hm);
+		}
 		session.close();
 
-		return list;
+		return hmFinal;
 	}
 
 }

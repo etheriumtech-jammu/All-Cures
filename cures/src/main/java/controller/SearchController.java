@@ -1,21 +1,15 @@
 package controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import dao.DiseaseANDConditionDaoImpl;
-import model.Article;
 
 @RestController
 @RequestMapping(path = "/isearch")
@@ -44,7 +38,7 @@ public class SearchController {
 //	}
 
 	@RequestMapping(value = "/{search_string}", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody ArrayList listDataFromMatchingString(@PathVariable String search_string) {
+	public @ResponseBody List listDataFromMatchingString(@PathVariable String search_string) {
 		return diseaseANDconditionDaoImpl.getAllMatchingDCList(search_string);
 	}
 
