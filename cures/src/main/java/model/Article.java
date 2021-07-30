@@ -71,6 +71,8 @@ public class Article implements Serializable{
 	
 	private String content;
 	
+	private String dc_name;
+	
 	/*
 	@OneToOne(targetEntity = Author.class)
 	private String author_firstname;
@@ -414,6 +416,14 @@ public class Article implements Serializable{
 
 	public void setDisease_condition_id(Integer disease_condition_id) {
 		this.disease_condition_id = disease_condition_id;
+	}
+
+	public String getDc_name() {
+		return dc_name;
+	}
+
+	public void setDc_name(String dc_name) {
+		this.dc_name = dc_name;
 	}
 
 /*

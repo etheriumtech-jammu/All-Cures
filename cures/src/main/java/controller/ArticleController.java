@@ -2,6 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -41,6 +42,11 @@ public class ArticleController {
 	@RequestMapping(value = "/all", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody ArrayList<Article> listArticlesAll() {
 		return articleDaoImpl.getArticlesListAll();
+	}
+
+	@RequestMapping(value = "/allkv", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List listArticlesAllKeys() {
+		return articleDaoImpl.getArticlesListAllKeys();
 	}
 
 	@RequestMapping(value = "/all/table/{table_name}", produces = "application/json", method = RequestMethod.GET)

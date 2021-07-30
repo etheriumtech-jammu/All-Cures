@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -34,12 +35,11 @@ public class ArticleDaoImpl {
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
 
-		// creating session object 
+		// creating session object
 		Session session = factory;
-		 
+
 		/*
-		 * HibernateUtil hu = new HibernateUtil(); 
-		 Session session = hu.getSession();
+		 * HibernateUtil hu = new HibernateUtil(); Session session = hu.getSession();
 		 */
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -48,7 +48,7 @@ public class ArticleDaoImpl {
 				"select  article_id  from article  where pubstatus_id = 3 and authored_by = " + reg_id + ";");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
-		
+
 		session.close();
 		return list;
 	}
@@ -58,7 +58,7 @@ public class ArticleDaoImpl {
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
 
-		// creating session object 
+		// creating session object
 		Session session = factory;
 
 		// creating transaction object
@@ -80,7 +80,7 @@ public class ArticleDaoImpl {
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
 
-		// creating session object 
+		// creating session object
 		Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -97,7 +97,7 @@ public class ArticleDaoImpl {
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
 
-		// creating session object 
+		// creating session object
 		Session session = factory;
 
 		// creating transaction object
@@ -117,16 +117,37 @@ public class ArticleDaoImpl {
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
 
-		// creating session object 
+		// creating session object
 		Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
 		Query query = session.createNativeQuery(
-				"select article_id,  title , friendly_name,  subheading, content_type, keywords,  window_title,  content_location\r\n"
-						+ " ,authored_by, published_by, edited_by, copyright_id, disclaimer_id, create_date, published_date, pubstatus_id, language_id, disease_condition_id, country_id from article  where article_id = "
-						+ reg_id + ";");
+				" SELECT `article`.`article_id`,\r\n"
+				+ "    `article`.`title`,\r\n"
+				+ "    `article`.`friendly_name`,\r\n"
+				+ "    `article`.`subheading`,\r\n"
+				+ "    `article`.`content_type`,\r\n"
+				+ "    `article`.`keywords`,\r\n"
+				+ "    `article`.`window_title`,\r\n"
+				+ "    `article`.`content_location`,\r\n"
+				+ "    `article`.`authored_by`,\r\n"
+				+ "    `article`.`published_by`,\r\n"
+				+ "    `article`.`edited_by`,\r\n"
+				+ "    `article`.`copyright_id`,\r\n"
+				+ "    `article`.`disclaimer_id`,\r\n"
+				+ "    `article`.`create_date`,\r\n"
+				+ "    `article`.`published_date`,\r\n"
+				+ "    `article`.`pubstatus_id`,\r\n"
+				+ "    `article`.`language_id`,\r\n"
+				+ "    `article`.`content`,\r\n"
+				+ "    `article`.`country_id`,\r\n"
+				+ "    `article`.`disease_condition_id`,\r\n"
+				+ "    `dc`.`dc_name`\r\n"
+				+ "FROM `allcures_schema`.`article`\r\n"
+				+ "inner join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
+				+ " where article_id =  "+ reg_id + ";");
 		ArrayList<Article> articleList = (ArrayList<Article>) query.getResultList();
 		Article article = new Article();
 		Iterator itr = articleList.iterator();
@@ -207,9 +228,10 @@ public class ArticleDaoImpl {
 			article.setPublished_date((Date) obj[14]);
 			article.setPubstatus_id((Integer) obj[15]);
 			article.setLanguage_id((Integer) obj[16]);
-			article.setDisease_condition_id((Integer) obj[17]);
 			article.setCountry_id((Integer) obj[18]);
+			article.setDisease_condition_id((Integer) obj[19]);
 			article.setContent(contents);
+			article.setDc_name((String) obj[20]);
 		}
 		session.close();
 
@@ -221,7 +243,7 @@ public class ArticleDaoImpl {
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
 
-		// creating session object 
+		// creating session object
 		Session session = factory;
 
 		// creating transaction object
@@ -245,12 +267,87 @@ public class ArticleDaoImpl {
 		return list;
 	}
 
+	public static List getArticlesListAllKeys() {
+
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+
+		// creating session object
+		Session session = factory;
+
+		// creating transaction object
+		Transaction trans = (Transaction) session.beginTransaction();
+
+		Query query = session.createNativeQuery("SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
+				+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
+				+ "    `article`.`content_type`,\r\n" + "    `article`.`keywords`,\r\n"
+				+ "    `article`.`window_title`,\r\n" + "    `article`.`content_location`,\r\n"
+				+ "    `article`.`authored_by`,\r\n" + "    `article`.`published_by`,\r\n"
+				+ "    `article`.`edited_by`,\r\n" + "    `article`.`copyright_id`,\r\n"
+				+ "    `article`.`disclaimer_id`,\r\n" + "    `article`.`create_date`,\r\n"
+				+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
+				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`\r\n"
+				+ "FROM `allcures_schema`.`article`;\r\n" + ";");
+		// needs other condition too but unable to find correct column
+		List<Object[]> results = (List<Object[]>) query.getResultList();
+		System.out.println("result list article@@@@@@@@@@@@@" + results);
+		session.close();
+
+		List hmFinal = new ArrayList();
+		for (Object[] objects : results) {
+			HashMap hm = new HashMap();
+			int article_id = (int) objects[0];
+			String title = (String) objects[1];
+			String friendly_name = (String) objects[2];
+			String subheading = (String) objects[3];
+			String content_type = (String) objects[4];
+			String keywords = (String) objects[5];
+			String window_title = (String) objects[6];
+			String content_location = (String) objects[7];
+			int authored_by = objects[8] != null ? (int) objects[8] : 0;
+			int published_by = objects[9] != null ? (int) objects[9] : 0;
+			int edited_by = (int) objects[10];
+			int copyright_id = (int) objects[11];
+			int disclaimer_id = (int) objects[12];
+			java.sql.Date create_date = (java.sql.Date) objects[13];
+			java.sql.Date published_date = (java.sql.Date) objects[14];
+			int pubstatus_id = (int) objects[15];
+			int language_id = (int) objects[16];
+			String content = (String) objects[17];
+
+			hm.put("article_id", article_id);
+			hm.put("title", title);
+			hm.put("friendly_name", friendly_name);
+			hm.put("subheading", subheading);
+			hm.put("content_type", content_type);
+			hm.put("keywords", keywords);
+			hm.put("window_title", window_title);
+			hm.put("content_location", content_location);
+			hm.put("authored_by", authored_by);
+			hm.put("published_by", published_by);
+			hm.put("edited_by", edited_by);
+			hm.put("copyright_id", copyright_id);
+			hm.put("disclaimer_id", disclaimer_id);
+			hm.put("create_date", create_date);
+			hm.put("published_date", published_date);
+			hm.put("pubstatus_id", pubstatus_id);
+			hm.put("language_id", language_id);
+			hm.put("content", content);
+
+			hmFinal.add(hm);
+			System.out.println(hm);
+		}
+		session.close();
+
+		return hmFinal;
+	}
+
 	public static ArrayList getTablesDataListAll(String table_name) {
 
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
 
-		// creating session object 
+		// creating session object
 		Session session = factory;
 
 		// creating transaction object
@@ -270,7 +367,7 @@ public class ArticleDaoImpl {
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
 
-		// creating session object 
+		// creating session object
 		Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -369,10 +466,10 @@ public class ArticleDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			//session.close();
+			// session.close();
 			session.close();
 		}
-		//session.close();
+		// session.close();
 
 		return ret;
 	}
@@ -382,15 +479,17 @@ public class ArticleDaoImpl {
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
 
-		// creating session object 
+		// creating session object
 		Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
-		//Query query = session.createNativeQuery("DELETE FROM ARTICLE WHERE ARTICLE_ID = " + article_id + ";");
-		//SOFT delte done instead of hard delete form database
-		Query query = session.createNativeQuery("UPDATE ARTICLE SET pubstatus_id=0 WHERE ARTICLE_ID = " + article_id + ";");
+		// Query query = session.createNativeQuery("DELETE FROM ARTICLE WHERE ARTICLE_ID
+		// = " + article_id + ";");
+		// SOFT delte done instead of hard delete form database
+		Query query = session
+				.createNativeQuery("UPDATE ARTICLE SET pubstatus_id=0 WHERE ARTICLE_ID = " + article_id + ";");
 		// needs other condition too but unable to find correct column
 		int ret = 0;
 		try {
@@ -400,7 +499,7 @@ public class ArticleDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			//session.close();
+			// session.close();
 			session.close();
 		}
 
