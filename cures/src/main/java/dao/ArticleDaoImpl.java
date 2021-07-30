@@ -388,12 +388,14 @@ public class ArticleDaoImpl {
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
-		Query query = session.createNativeQuery("DELETE FROM ARTICLE WHERE ARTICLE_ID = " + article_id + ";");
+		//Query query = session.createNativeQuery("DELETE FROM ARTICLE WHERE ARTICLE_ID = " + article_id + ";");
+		//SOFT delte done instead of hard delete form database
+		Query query = session.createNativeQuery("UPDATE ARTICLE SET pubstatus_id=0 WHERE ARTICLE_ID = " + article_id + ";");
 		// needs other condition too but unable to find correct column
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
-			System.out.println("delete article_id =  " + article_id);
+			System.out.println("soft deleteed article_id =  " + article_id);
 			trans.commit();
 		} catch (Exception ex) {
 			trans.rollback();
