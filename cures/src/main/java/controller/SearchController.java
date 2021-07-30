@@ -42,6 +42,11 @@ public class SearchController {
 		return diseaseANDconditionDaoImpl.getAllMatchingDCList(search_string);
 	}
 
+	@RequestMapping(value = "/hierarchy/{parent_id}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List listParentChildDiseaseCondtion(@PathVariable Integer parent_id) {
+		return diseaseANDconditionDaoImpl.getParentChildDataDiseaseConditon(parent_id);
+	}
+
 //	@RequestMapping(value = "/{article_id}", produces = "application/json", method = RequestMethod.POST)
 //	public @ResponseBody int updateArticle(@PathVariable int article_id, @RequestBody HashMap articleMap) {
 //		return articleDaoImpl.updateArticleId(article_id, articleMap);
