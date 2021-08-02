@@ -32,13 +32,14 @@ public class DiseaseANDConditionDaoImpl {
 
 		Query query = session.createNativeQuery(
 				"SELECT a.article_id,  a.title , a.friendly_name,  a.subheading, a.content_type, a.keywords,  a.window_title,  a.content_location \r\n"
-						+ " ,a.authored_by, a.published_by, a.edited_by, a.copyright_id, a.disclaimer_id, a.create_date, a.published_date, a.pubstatus_id, a.language_id, a.disease_condition_id, a.country_id \r\n"
+						+ " ,a.authored_by, a.published_by, a.edited_by, a.copyright_id, a.disclaimer_id, a.create_date, a.published_date, a.pubstatus_id,"
+						+ " a.language_id, a.disease_condition_id, a.country_id \r\n"
 						+ " ,dc.dc_name , dc.parent_dc_id \r\n" 
 						+ " FROM allcures_schema.article a \r\n" 
 						+ "inner join disease_condition dc on a.disease_condition_id = dc.dc_id\r\n"
 						+ "inner join languages l on a.language_id = l.language_id\r\n"
-						+ "inner join countries c on c.countrycodeid = a.country_id\r\n" + "where (dc_name like '%"
-						+ search_str + "%' \r\n" + "or dc_desc like '%" + search_str + "%'\r\n" + "or title  like '%"
+						+ "inner join countries c on c.countrycodeid = a.country_id\r\n" + "where (dc.dc_name like '%"
+						+ search_str + "%' \r\n" + "or dc.dc_desc like '%" + search_str + "%'\r\n" + "or title  like '%"
 						+ search_str + "%'\r\n" + "or friendly_name  like '%" + search_str + "%'\r\n"
 						+ "or window_title  like '%" + search_str + "%'\r\n" + "or countryname like '%" + search_str
 						+ "%'\r\n" + "or lang_name like '%" + search_str + "%'\r\n" + ")\r\n"
