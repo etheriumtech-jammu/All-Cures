@@ -13,7 +13,7 @@ import util.Constant;
 
 
 @Entity
-@Table(name = Constant.PATIENT)
+@Table(name = "patient")
 public class Patient implements Serializable {
 	@Id
 	@Column

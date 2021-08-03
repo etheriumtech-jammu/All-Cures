@@ -56,7 +56,13 @@
         </property>
         <property name="language_id" type="java.lang.Integer">
             <column name="language_id" length="20"  />
-        </property>
+        </property> 
+         <property name="country_id" type="java.lang.Integer">
+            <column name="country_id" length="20"  />
+        </property>        
+       	<property name="disease_condition_id" type="java.lang.Integer">
+            <column name="disease_condition_id" length="20"  />
+        </property>	
         
     </class>
 </hibernate-mapping>

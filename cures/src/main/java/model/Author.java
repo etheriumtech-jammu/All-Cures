@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 @Entity
-@Table(name = "Author")
+@Table(name = "author")
 public class Author implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)

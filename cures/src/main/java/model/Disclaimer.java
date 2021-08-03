@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 @Entity
-@Table(name = "Disclaimer")
+@Table(name = "disclaimer")
 public class Disclaimer implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)

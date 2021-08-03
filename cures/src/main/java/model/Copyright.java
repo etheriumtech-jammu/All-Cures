@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 @Entity
-@Table(name = "Copyright")
+@Table(name = "copyright")
 public class Copyright implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)

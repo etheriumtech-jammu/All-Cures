@@ -17,7 +17,7 @@ import javax.persistence.Table;
 import util.Constant;
 
 @Entity
-@Table(name = "Languages")
+@Table(name = "languages")
 public class Languages implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)

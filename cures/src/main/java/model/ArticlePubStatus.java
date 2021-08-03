@@ -17,7 +17,7 @@ import javax.persistence.Table;
 import util.Constant;
 
 @Entity
-@Table(name = "ArticlePubStatus")
+@Table(name = "articlepubstatus")
 public class ArticlePubStatus implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

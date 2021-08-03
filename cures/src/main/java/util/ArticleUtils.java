@@ -35,8 +35,8 @@ public class ArticleUtils {
 	public static String getContentLocation(int artId, int userId, boolean returnFileName){
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");  
         LocalDateTime now = LocalDateTime.now();
-		String contentDir="\\test\\"+userId+"\\"+dtf.format(now);
-		String fileName = "\\article_"+artId+".json";
+		String contentDir="test/"+userId+"/"+dtf.format(now);
+		String fileName = "/article_"+artId+".json";
 		if(returnFileName)
 			return contentDir + fileName;
 		else
@@ -58,13 +58,22 @@ public class ArticleUtils {
 			if(artLoc == null){
 				//New File Usecase
 				Constant.log("Since art loc does not exist, creating a new file", 1);
-				artDir = new File(getContentLocation(articleId, userId, false));
+				String file = getContentLocation(articleId, userId, false);
+				//file = file.replace("\\", "/");//.replace("/", "/");
+
+				artDir = new File(file);
 				boolean isCreated = artDir.mkdirs();
-				artFile = new File(getContentLocation(articleId, userId, true));
+				file = getContentLocation(articleId, userId, true);
+				//file = file.replace("\\", "/");//.replace("/", "/");
+
+				artFile = new File(file);
+				System.out.println("111111111>>>>"+artFile);
 				artFile.createNewFile();
 				Constant.log("Created Article File to Filesystem", 1);
 			}else{
 				//Editing an existing File
+				//artLoc = artLoc.replace("\\", "/");//.replace("/", "/");
+				System.out.println("22222222>>>>>>>>"+artLoc);
 				artFile = new File(artLoc);
 			}
 			FileWriter myWriter = new FileWriter(artFile);

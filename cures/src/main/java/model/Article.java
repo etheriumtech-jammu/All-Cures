@@ -21,7 +21,7 @@ import org.hibernate.annotations.CascadeType;
 
 import util.Constant;
 @Entity
-@Table(name = "Article")
+@Table(name = "article")
 
 public class Article implements Serializable{
 	@Id

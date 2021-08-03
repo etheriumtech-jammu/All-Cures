@@ -164,8 +164,11 @@ public class ArticleDaoImpl {
 			article.setWindow_title((String) obj[6]);
 			article.setContent_location((String) obj[7]);
 			System.out.println((String) obj[7]);
-//			String file = (String) obj[7];
-			String file = "C:\\" + (String) obj[7];
+			String file = (String) obj[7];
+			//file = "/home/administrator/uat/"+
+			//file = file.replace("\\", "/");//.replace("/", "/");
+			System.out.println("FILENAME===>>>>>>>>>>"+file);
+			//String file = "C:\\" + (String) obj[7];
 //			file = "C:\\test\\14\\2021\\05\\26\\article_"+(Integer) obj[0]+".json";
 			String contents = "";
 			InputStream is = null;
@@ -489,7 +492,7 @@ public class ArticleDaoImpl {
 		// = " + article_id + ";");
 		// SOFT delte done instead of hard delete form database
 		Query query = session
-				.createNativeQuery("UPDATE ARTICLE SET pubstatus_id=0 WHERE ARTICLE_ID = " + article_id + ";");
+				.createNativeQuery("UPDATE article SET pubstatus_id=0 WHERE article_id = " + article_id + ";");
 		// needs other condition too but unable to find correct column
 		int ret = 0;
 		try {

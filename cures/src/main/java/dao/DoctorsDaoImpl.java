@@ -40,7 +40,7 @@ public class DoctorsDaoImpl {
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
 		
-		Query query = session.createNativeQuery("select prefix, docname_first, docname_middle , docname_last from Doctors;");
+		Query query = session.createNativeQuery("select prefix, docname_first, docname_middle , docname_last from doctors;");
 		List<Doctors> list= ( List<Doctors>) query.getResultList();
 		
 		Constant.log("Got Results", 1);
