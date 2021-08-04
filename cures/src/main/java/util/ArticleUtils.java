@@ -32,16 +32,42 @@ import util.SolrUtil;
 
 public class ArticleUtils {
 	
+    private static String OS = System.getProperty("os.name").toLowerCase();
+
 	public static String getContentLocation(int artId, int userId, boolean returnFileName){
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");  
         LocalDateTime now = LocalDateTime.now();
+        String OS = System.getProperty("os.name").toLowerCase();
+        System.out.println("os.name: " + OS);
 		String contentDir="test/"+userId+"/"+dtf.format(now);
+        if (isWindows()) {
+            System.out.println("This is Windows");
+    		contentDir="C:/test/"+userId+"/"+dtf.format(now);
+        }
 		String fileName = "/article_"+artId+".json";
 		if(returnFileName)
 			return contentDir + fileName;
 		else
 			return contentDir;
 	}
+        
+        public static boolean isWindows() {
+            return (OS.indexOf("win") >= 0);
+        }
+
+        public static boolean isMac() {
+            return (OS.indexOf("mac") >= 0);
+        }
+
+        public static boolean isUnix() {
+            return (OS.indexOf("nix") >= 0
+                    || OS.indexOf("nux") >= 0
+                    || OS.indexOf("aix") > 0);
+        }
+
+        public static boolean isSolaris() {
+            return (OS.indexOf("sunos") >= 0);
+        }
 	
 	public static String getContentLocation(Article article, Registration user, boolean returnFileName){
 		String contentLoc = getContentLocation(article.getArticle_id(), user.getRegistration_id(), returnFileName);
