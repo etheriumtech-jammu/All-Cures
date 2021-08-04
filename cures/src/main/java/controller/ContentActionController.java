@@ -112,7 +112,7 @@ public class ContentActionController extends HttpServlet {
 		String keyword=request.getParameter("keywords");
 		String window_title=request.getParameter("winTitle");;
 		String articlecontent= request.getParameter("articleContent");
-		
+		System.out.println("##############RAINA###"+articlecontent);
 		String countryId = request.getParameter("countryId");;
 		int iCountryId = -1; //Negative indicates error
 		if(countryId != null && !"".equals(countryId.trim())){

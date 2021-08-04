@@ -11,7 +11,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Component;
 import model.Article;
 import util.ArticleUtils;
 import util.HibernateUtil;
-import util.ReadFileUtil;
 
 //1	active
 //7	WorkInProgress
@@ -507,11 +505,6 @@ public class ArticleDaoImpl {
 		}
 
 		return ret;
-	}
-
-	public static String readFile(String filePath) {
-		return new ReadFileUtil().readFilebyPath(filePath);
-
 	}
 
 }
