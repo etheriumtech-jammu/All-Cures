@@ -43,7 +43,7 @@ public class ArticleDaoImpl {
 		Transaction trans = (Transaction) session.beginTransaction();
 
 		Query query = session.createNativeQuery(
-				"select  article_id  from article  where pubstatus_id = 3 and authored_by = " + reg_id + ";");
+				"select  article_id  from article  where pubstatus_id = 3 and edited_by = " + reg_id + ";");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
 
@@ -63,8 +63,7 @@ public class ArticleDaoImpl {
 		Transaction trans = (Transaction) session.beginTransaction();
 
 		Query query = session
-				.createNativeQuery("select  article_id  from article where pubstatus_id = 1 and authored_by = " + reg_id
-						+ " or edited_by = " + reg_id + ";");
+				.createNativeQuery("select  article_id  from article where pubstatus_id = 1 and edited_by = " + reg_id + ";");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
 		session.close();
@@ -83,7 +82,7 @@ public class ArticleDaoImpl {
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
-		Query query = session.createNativeQuery("select  article_id  from article  where pubstatus_id = 2;");
+		Query query = session.createNativeQuery("select  article_id  from article  where pubstatus_id = 2 and edited_by = " + reg_id + ";");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
 		session.close();
@@ -101,7 +100,7 @@ public class ArticleDaoImpl {
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
-		Query query = session.createNativeQuery("select  article_id  from article  where pubstatus_id = 2;");
+		Query query = session.createNativeQuery("select  article_id  from article  where pubstatus_id = 2 and authored_by = " + reg_id+";");
 		// needs other condition too but unable to find correct column
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
