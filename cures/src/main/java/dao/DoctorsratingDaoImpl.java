@@ -92,7 +92,7 @@ public class DoctorsratingDaoImpl {
 		String value= null;
 		try{
 			docrate.setComments(comments);
-			docrate.setRate_id(ratedbyid);
+			docrate.setRatedBy_id(ratedbyid);
 			docrate.setRatedBy_type_id(ratedbytype);
 			docrate.setTarget_id(targetid);
 			docrate.setTarget_type_id(targetTypeid);

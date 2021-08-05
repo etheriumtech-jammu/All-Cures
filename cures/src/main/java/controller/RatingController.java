@@ -19,9 +19,15 @@ public class RatingController {
 	private RatingDaoImpl ratingDaoImpl;
 
 	@RequestMapping(value = "/target/{target_id}/targettype/{target_type_id}", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody List getCityDetails(@PathVariable int target_id, @PathVariable int target_type_id) {
+	public @ResponseBody List getRatingDetails(@PathVariable int target_id, @PathVariable int target_type_id) {
 		return ratingDaoImpl.findRatingByIdandType(target_id, target_type_id);
 
+	}
+	
+	@RequestMapping(value = "/target/{target_id}/targettype/{target_type_id}/avg", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody Float getAverageRatingDetails(@PathVariable int target_id, @PathVariable int target_type_id) {
+		return ratingDaoImpl.findAverageRatingByIdandType(target_id, target_type_id);
+		
 	}
 
 }
