@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dao.ArticleDaoImpl;
 import model.Article;
+import model.Article_dc_name;
 
 @RestController
 @RequestMapping(path = "/article")
@@ -26,7 +27,7 @@ public class ArticleController {
 	private ArticleDaoImpl articleDaoImpl;
 
 	@RequestMapping(value = "/{article_id}", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody Article getArticleDetails(@PathVariable int article_id, HttpServletRequest request) {
+	public @ResponseBody Article_dc_name getArticleDetails(@PathVariable int article_id, HttpServletRequest request) {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpSession session = req.getSession(true);
 		/*

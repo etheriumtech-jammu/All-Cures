@@ -16,6 +16,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
 
 import model.Article;
+import model.Article_dc_name;
 import util.ArticleUtils;
 import util.HibernateUtil;
 
@@ -109,7 +110,7 @@ public class ArticleDaoImpl {
 		return list;
 	}
 
-	public Article getArticleDetails(int reg_id) {
+	public Article_dc_name getArticleDetails(int reg_id) {
 
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -146,7 +147,7 @@ public class ArticleDaoImpl {
 				+ "inner join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
 				+ " where article_id =  "+ reg_id + ";");
 		ArrayList<Article> articleList = (ArrayList<Article>) query.getResultList();
-		Article article = new Article();
+		Article_dc_name article = new Article_dc_name();
 		Iterator itr = articleList.iterator();
 		while (itr.hasNext()) {
 			Object[] obj = (Object[]) itr.next();
@@ -286,8 +287,12 @@ public class ArticleDaoImpl {
 				+ "    `article`.`edited_by`,\r\n" + "    `article`.`copyright_id`,\r\n"
 				+ "    `article`.`disclaimer_id`,\r\n" + "    `article`.`create_date`,\r\n"
 				+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
-				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`\r\n"
-				+ "FROM `allcures_schema`.`article`;\r\n" + ";");
+				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n"
+				+ "    `dc`.`dc_name`\r\n"
+
+				+ "FROM `allcures_schema`.`article`\r\n"
+				+ "inner join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
+				+ ";");
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + results);
@@ -314,6 +319,8 @@ public class ArticleDaoImpl {
 			int pubstatus_id = (int) objects[15];
 			int language_id = (int) objects[16];
 			String content = (String) objects[17];
+			String dc_name =(String) objects[18];
+
 
 			hm.put("article_id", article_id);
 			hm.put("title", title);
@@ -333,6 +340,7 @@ public class ArticleDaoImpl {
 			hm.put("pubstatus_id", pubstatus_id);
 			hm.put("language_id", language_id);
 			hm.put("content", content);
+			hm.put("dc_name", dc_name);
 
 			hmFinal.add(hm);
 			System.out.println(hm);
@@ -447,7 +455,7 @@ public class ArticleDaoImpl {
 			Boolean value = true;
 			try {
 				// Update the Content First
-				Article art = new ArticleDaoImpl().getArticleDetails(article_id);
+				Article_dc_name art = new ArticleDaoImpl().getArticleDetails(article_id);
 				String art_location = art.getContent_location();
 				String content = articleMap.get("articleContent") == null ? ""
 						: (String) articleMap.get("articleContent");
