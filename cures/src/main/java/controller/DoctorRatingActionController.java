@@ -62,7 +62,7 @@ public class DoctorRatingActionController extends HttpServlet {
 				ratedByType);
 		if (null != listOfRatings && listOfRatings.size() > 0) {
 			System.out.println("rating updated");
-			int value = ratingDao.updateRating(target, targetType, ratedBy, ratedByType, rating, comments);
+			int value = ratingDao.updateRatingCommentsCombined(target, targetType, ratedBy, ratedByType, rating, comments);
 		} else {
 			System.out.println("rating created");
 			DoctorsratingDaoImpl docrating = new DoctorsratingDaoImpl();

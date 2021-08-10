@@ -3,23 +3,91 @@ package dao;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Component;
 
 import model.Doctors;
 import model.Registration;
 import util.Constant;
+import util.EnDeCryptor;
 import util.HibernateUtil;
 
+@Component
 public class DoctorsDaoImpl {
 	public static void main(String[] args) {
 		Doctors check = new Doctors();
 		check = DoctorsDaoImpl.getAllDoctorsInfo(6);
 		Constant.log(("main doctors dao values" + check.getCountry_code()), 1);
+	}
+
+	public static int verifyDoctor(HashMap doctorsMap) {
+		String updatestr = "";
+		String updatestrPassword = "";
+		String email = "";
+		if (doctorsMap.containsKey("email")) {
+			email = (String) doctorsMap.get("email");
+		}
+		if (doctorsMap.containsKey("uprn")) {
+			updatestr += " uprn = " + doctorsMap.get("uprn") + ",\r\n";
+		}
+		if (doctorsMap.containsKey("registration_number")) {
+			updatestr += " registration_number = " + doctorsMap.get("registration_number") + ",\r\n";
+		}
+		if (doctorsMap.containsKey("stateid")) {
+			updatestr += " statename_codeid = " + doctorsMap.get("stateid") + ",\r\n";
+		}
+		if (doctorsMap.containsKey("verified")) {
+			updatestr += " verified = " + doctorsMap.get("verified") + ",\r\n";
+		}
+		updatestr = updatestr.replaceAll(",$", "");
+		String hashedPass = null;
+		if (doctorsMap.containsKey("password")) {
+			updatestrPassword = (String) doctorsMap.get("password");
+			EnDeCryptor encrypt = new EnDeCryptor();
+			final String secretKey = Constant.SECRETE;
+			hashedPass = encrypt.encrypt(updatestrPassword, secretKey);
+		}
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+		// creating session object
+		Session session = factory;
+		// creating transaction object
+		Transaction trans = (Transaction) session.beginTransaction();
+
+		Query query = session
+				.createNativeQuery("UPDATE doctors " + "SET " + updatestr + " WHERE email = '" + email + "';");
+		Query queryPassword = session.createNativeQuery(
+				"UPDATE registration " + "SET pass_word='" + hashedPass + "' WHERE email_address = '" + email + "';");
+		int ret = 0;
+		int docid = 0;
+
+		try {
+			ret = query.executeUpdate();
+			ret = queryPassword.executeUpdate();
+			System.out.println("updated doctors table for email =  " + email);
+//			Session session2 = factory;
+//			// creating transaction object
+//			Transaction trans2 = (Transaction) session.beginTransaction();
+			// prepare to return docid using email id
+			Query queryDocId = session.createNativeQuery("select docid from doctors WHERE email = '" + email + "';");
+			ArrayList list = (ArrayList) queryDocId.getResultList();
+			docid = (list.get(0) != null ? (Integer) list.get(0) : 0);
+			Constant.log(">>>>>>>>>>>>>>>>>>User Found for EMAILID:" + email + " docid="+docid, 1);
+			trans.commit();
+		} catch (Exception ex) {
+			trans.rollback();
+		} finally {
+			session.close();
+		}
+
+
+		return docid;
 	}
 
 	public static ArrayList<String> findAllDoctors() {
