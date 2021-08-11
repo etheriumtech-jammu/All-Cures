@@ -27,11 +27,15 @@ public class DoctorsDaoImpl {
 	}
 
 	public static int updateProfile(HashMap profileMap) {
-		String docid = "";
+		int docid = 0;
 		String updatestr = "";
 		if (profileMap.containsKey("docid")) {
-			docid = (String) profileMap.get("docid");
+			docid = (int) profileMap.get("docid");
 		}
+		if (docid == 0) {
+			Constant.log("docid not provided in request",3);
+			return 0;
+		} // return error
 		if (profileMap.containsKey("gender")) {
 			updatestr += " gender = " + profileMap.get("gender") + ",\r\n";
 		}
@@ -153,6 +157,8 @@ public class DoctorsDaoImpl {
 		if (profileMap.containsKey("registration_number")) {
 			updatestr += " registration_number = " + profileMap.get("registration_number") + ",\r\n";
 		}
+		
+		updatestr = updatestr.replaceAll(",$", "");
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
 		// creating session object
