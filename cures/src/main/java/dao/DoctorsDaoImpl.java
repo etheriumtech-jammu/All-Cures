@@ -26,6 +26,156 @@ public class DoctorsDaoImpl {
 		Constant.log(("main doctors dao values" + check.getCountry_code()), 1);
 	}
 
+	public static int updateProfile(HashMap profileMap) {
+		String docid = "";
+		String updatestr = "";
+		if (profileMap.containsKey("docid")) {
+			docid = (String) profileMap.get("docid");
+		}
+		if (profileMap.containsKey("gender")) {
+			updatestr += " gender = " + profileMap.get("gender") + ",\r\n";
+		}
+		if (profileMap.containsKey("edu_training")) {
+			updatestr += " edu_training = '" + profileMap.get("edu_training") + "',\r\n";
+		}
+		if (profileMap.containsKey("insurance_accept")) {
+			updatestr += " insurance_accept = " + profileMap.get("insurance_accept") + ",\r\n";
+		}
+		if (profileMap.containsKey("hospital_affliated")) {
+			updatestr += " hospital_affliated = " + profileMap.get("hospital_affliated") + ",\r\n";
+		}
+		if (profileMap.containsKey("board_certifcate")) {
+			updatestr += " board_certifcate = '" + profileMap.get("board_certifcate") + "',\r\n";
+		}
+		if (profileMap.containsKey("membership")) {
+			updatestr += " membership = '" + profileMap.get("membership") + "',\r\n";
+		}
+		if (profileMap.containsKey("awards")) {
+			updatestr += " awards = " + profileMap.get("awards") + ",\r\n";
+		}
+		if (profileMap.containsKey("availibity_for_appointment")) {
+			updatestr += " availibity_for_appointment = " + profileMap.get("availibity_for_appointment") + ",\r\n";
+		}
+		if (profileMap.containsKey("doctor_location")) {
+			updatestr += " doctor_location = '" + profileMap.get("doctor_location") + "',\r\n";
+		}
+		if (profileMap.containsKey("telephone_nos")) {
+			updatestr += " telephone_nos = " + profileMap.get("telephone_nos") + ",\r\n";
+		}
+		if (profileMap.containsKey("primary_spl")) {
+			updatestr += " primary_spl = " + profileMap.get("primary_spl") + ",\r\n";
+		}
+		if (profileMap.containsKey("other_spls")) {
+			updatestr += " other_spls = " + profileMap.get("other_spls") + ",\r\n";
+		}
+		if (profileMap.containsKey("sub_spls")) {
+			updatestr += " sub_spls = " + profileMap.get("sub_spls") + ",\r\n";
+		}
+		if (profileMap.containsKey("address1")) {
+			updatestr += " address1 = '" + profileMap.get("address1") + "',\r\n";
+		}
+		if (profileMap.containsKey("address2")) {
+			updatestr += " address2 = '" + profileMap.get("address2") + "',\r\n";
+		}
+		if (profileMap.containsKey("city")) {
+			updatestr += " city = " + profileMap.get("city") + ",\r\n";
+		}
+		if (profileMap.containsKey("state")) {
+			updatestr += " state = " + profileMap.get("state") + ",\r\n";
+		}
+		if (profileMap.containsKey("country_code")) {
+			updatestr += " country_code = " + profileMap.get("country_code") + ",\r\n";
+		}
+		if (profileMap.containsKey("over_allrating")) {
+			updatestr += " over_allrating = " + profileMap.get("over_allrating") + ",\r\n";
+		}
+		if (profileMap.containsKey("create_date")) {
+			updatestr += " create_date = " + profileMap.get("create_date") + ",\r\n";
+		}
+		if (profileMap.containsKey("docactive")) {
+			updatestr += " docactive = " + profileMap.get("docactive") + ",\r\n";
+		}
+		if (profileMap.containsKey("prefix")) {
+			updatestr += " prefix = '" + profileMap.get("prefix") + "',\r\n";
+		}
+		if (profileMap.containsKey("docname_first")) {
+			updatestr += " docname_first = '" + profileMap.get("docname_first") + "',\r\n";
+		}
+		if (profileMap.containsKey("docname_middle")) {
+			updatestr += " docname_middle = '" + profileMap.get("docname_middle") + "',\r\n";
+		}
+		if (profileMap.containsKey("docname_last")) {
+			updatestr += " docname_last = '" + profileMap.get("docname_last") + "',\r\n";
+		}
+		if (profileMap.containsKey("email")) {
+			updatestr += " email = '" + profileMap.get("email") + "',\r\n";
+		}
+		if (profileMap.containsKey("waiting_time")) {
+			updatestr += " waiting_time = " + profileMap.get("waiting_time") + ",\r\n";
+		}
+		if (profileMap.containsKey("citycode")) {
+			updatestr += " citycode = " + profileMap.get("citycode") + ",\r\n";
+		}
+		if (profileMap.containsKey("cityname_citycode")) {
+			updatestr += " cityname_citycode = " + profileMap.get("cityname_citycode") + ",\r\n";
+		}
+		if (profileMap.containsKey("countrycodeid")) {
+			updatestr += " countrycodeid = " + profileMap.get("countrycodeid") + ",\r\n";
+		}
+		if (profileMap.containsKey("country_code_codeid")) {
+			updatestr += " country_code_codeid = " + profileMap.get("country_code_codeid") + ",\r\n";
+		}
+		if (profileMap.containsKey("hospitalid")) {
+			updatestr += " hospitalid = " + profileMap.get("hospitalid") + ",\r\n";
+		}
+		if (profileMap.containsKey("hospital_affliated_hospitalid")) {
+			updatestr += " hospital_affliated_hospitalid = " + profileMap.get("hospital_affliated_hospitalid")
+					+ ",\r\n";
+		}
+		if (profileMap.containsKey("primary_spl_splid")) {
+			updatestr += " primary_spl_splid = " + profileMap.get("primary_spl_splid") + ",\r\n";
+		}
+		if (profileMap.containsKey("splid")) {
+			updatestr += " splid = " + profileMap.get("splid") + ",\r\n";
+		}
+		if (profileMap.containsKey("statename_codeid")) {
+			updatestr += " statename_codeid = " + profileMap.get("statename_codeid") + ",\r\n";
+		}
+		if (profileMap.containsKey("codeid")) {
+			updatestr += " codeid = " + profileMap.get("codeid") + ",\r\n";
+		}
+		if (profileMap.containsKey("verified")) {
+			updatestr += " verified = " + profileMap.get("verified") + ",\r\n";
+		}
+		if (profileMap.containsKey("uprn")) {
+			updatestr += " uprn = " + profileMap.get("uprn") + ",\r\n";
+		}
+		if (profileMap.containsKey("registration_number")) {
+			updatestr += " registration_number = " + profileMap.get("registration_number") + ",\r\n";
+		}
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+		// creating session object
+		Session session = factory;
+		// creating transaction object
+		Transaction trans = (Transaction) session.beginTransaction();
+
+		Query query = session
+				.createNativeQuery("UPDATE doctors " + "SET " + updatestr + " WHERE docid = " + docid + ";");
+		int ret = 0;
+		try {
+			ret = query.executeUpdate();
+			System.out.println("updated doctors table for docid =  " + docid);
+			Constant.log(">>>>>>>>>>>>>>>>>>updated doctors table for docid =  " + docid, 1);
+			trans.commit();
+		} catch (Exception ex) {
+			trans.rollback();
+		} finally {
+			session.close();
+		}
+		return ret;
+	}
+
 	public static int verifyDoctor(HashMap doctorsMap) {
 		String updatestr = "";
 		String updatestrPassword = "";
@@ -78,14 +228,13 @@ public class DoctorsDaoImpl {
 			Query queryDocId = session.createNativeQuery("select docid from doctors WHERE email = '" + email + "';");
 			ArrayList list = (ArrayList) queryDocId.getResultList();
 			docid = (list.get(0) != null ? (Integer) list.get(0) : 0);
-			Constant.log(">>>>>>>>>>>>>>>>>>User Found for EMAILID:" + email + " docid="+docid, 1);
+			Constant.log(">>>>>>>>>>>>>>>>>>User Found for EMAILID:" + email + " docid=" + docid, 1);
 			trans.commit();
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
 			session.close();
 		}
-
 
 		return docid;
 	}
