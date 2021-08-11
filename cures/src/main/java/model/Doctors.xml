@@ -78,9 +78,7 @@
          <property name="create_date" type="java.sql.Timestamp">
             <column name="create_date" length="40"  />
         </property>
-        <property name="docactive" type="java.lang.Boolean">
-            <column name="docactive" length="40"  />
-        </property>
+        
        <property name="prefix" type="string">
             <column name="prefix"  length="40"   />
         </property>

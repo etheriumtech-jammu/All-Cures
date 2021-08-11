@@ -64,13 +64,13 @@ public class DoctorsDaoImpl {
 			updatestr += " doctor_location = '" + profileMap.get("doctor_location") + "',\r\n";
 		}
 		if (profileMap.containsKey("telephone_nos")) {
-			updatestr += " telephone_nos = " + profileMap.get("telephone_nos") + ",\r\n";
+			updatestr += " telephone_nos = '" + profileMap.get("telephone_nos") + "',\r\n";
 		}
 		if (profileMap.containsKey("primary_spl")) {
 			updatestr += " primary_spl = " + profileMap.get("primary_spl") + ",\r\n";
 		}
 		if (profileMap.containsKey("other_spls")) {
-			updatestr += " other_spls = " + profileMap.get("other_spls") + ",\r\n";
+			updatestr += " other_spls = '" + profileMap.get("other_spls") + "',\r\n";
 		}
 		if (profileMap.containsKey("sub_spls")) {
 			updatestr += " sub_spls = " + profileMap.get("sub_spls") + ",\r\n";
@@ -96,9 +96,6 @@ public class DoctorsDaoImpl {
 		if (profileMap.containsKey("create_date")) {
 			updatestr += " create_date = " + profileMap.get("create_date") + ",\r\n";
 		}
-		if (profileMap.containsKey("docactive")) {
-			updatestr += " docactive = " + profileMap.get("docactive") + ",\r\n";
-		}
 		if (profileMap.containsKey("prefix")) {
 			updatestr += " prefix = '" + profileMap.get("prefix") + "',\r\n";
 		}
@@ -117,18 +114,6 @@ public class DoctorsDaoImpl {
 		if (profileMap.containsKey("waiting_time")) {
 			updatestr += " waiting_time = " + profileMap.get("waiting_time") + ",\r\n";
 		}
-		if (profileMap.containsKey("citycode")) {
-			updatestr += " citycode = " + profileMap.get("citycode") + ",\r\n";
-		}
-		if (profileMap.containsKey("cityname_citycode")) {
-			updatestr += " cityname_citycode = " + profileMap.get("cityname_citycode") + ",\r\n";
-		}
-		if (profileMap.containsKey("countrycodeid")) {
-			updatestr += " countrycodeid = " + profileMap.get("countrycodeid") + ",\r\n";
-		}
-		if (profileMap.containsKey("country_code_codeid")) {
-			updatestr += " country_code_codeid = " + profileMap.get("country_code_codeid") + ",\r\n";
-		}
 		if (profileMap.containsKey("hospitalid")) {
 			updatestr += " hospitalid = " + profileMap.get("hospitalid") + ",\r\n";
 		}
@@ -136,17 +121,8 @@ public class DoctorsDaoImpl {
 			updatestr += " hospital_affliated_hospitalid = " + profileMap.get("hospital_affliated_hospitalid")
 					+ ",\r\n";
 		}
-		if (profileMap.containsKey("primary_spl_splid")) {
-			updatestr += " primary_spl_splid = " + profileMap.get("primary_spl_splid") + ",\r\n";
-		}
-		if (profileMap.containsKey("splid")) {
-			updatestr += " splid = " + profileMap.get("splid") + ",\r\n";
-		}
 		if (profileMap.containsKey("statename_codeid")) {
 			updatestr += " statename_codeid = " + profileMap.get("statename_codeid") + ",\r\n";
-		}
-		if (profileMap.containsKey("codeid")) {
-			updatestr += " codeid = " + profileMap.get("codeid") + ",\r\n";
 		}
 		if (profileMap.containsKey("verified")) {
 			updatestr += " verified = " + profileMap.get("verified") + ",\r\n";
@@ -156,6 +132,9 @@ public class DoctorsDaoImpl {
 		}
 		if (profileMap.containsKey("registration_number")) {
 			updatestr += " registration_number = " + profileMap.get("registration_number") + ",\r\n";
+		}
+		if (profileMap.containsKey("about")) {
+			updatestr += " about = '" + profileMap.get("about") + "',\r\n";
 		}
 		
 		updatestr = updatestr.replaceAll(",$", "");
@@ -309,7 +288,8 @@ public class DoctorsDaoImpl {
 						+ "doctors.gender, doctors.edu_training, hospital.hospital_affliated, doctors.board_certifcate, doctors.membership, doctors.awards, "
 						+ "doctors.availibity_for_appointment, doctors.doctor_location, doctors.telephone_nos, "
 						+ "specialties.spl_name, doctors.other_spls, doctors.address1, doctors.address2, city.cityname, "
-						+ "doctors.over_allrating, doctors.email, doctors.waiting_time,  states.statename , countries.countryname "
+						+ "doctors.over_allrating, doctors.email, doctors.waiting_time,  states.statename , countries.countryname ,"
+						+ "doctors.primary_spl, doctors.sub_spls, doctors.about, doctors.city, doctors.state, doctors.country_code,doctors.hospital_affliated as hospital_affliated_code "
 						+ "FROM doctors , hospital , specialties, city, states, countries "
 						+ "WHERE  doctors.hospital_affliated = hospital.hospitalid  and "
 						+ "doctors.primary_spl = specialties.splid and doctors.city = city.citycode and doctors.state = states.codeid and "
@@ -352,6 +332,15 @@ public class DoctorsDaoImpl {
 				doc.setWaiting_time(obj[21] != null ? (Integer) obj[21] : null);
 				doc.setStatename(obj[22] != null ? (String) obj[22] : "");
 				doc.setCountry_code(obj[23] != null ? (String) obj[23] : "");
+
+				doc.setPrimary_spl_code(obj[24] != null ? (Integer) obj[24] : 0);
+				//doc.setOther_spls_code(obj[25] != null ? (Integer) obj[25] : 0);
+				doc.setSub_spls_code(obj[25] != null ? (Integer) obj[25] : 0);
+				doc.setAbout(obj[26] != null ? (String) obj[26] : "");
+				doc.setCity_code(obj[27] != null ? (Integer) obj[27] : 0);
+				doc.setState_code(obj[28] != null ? (Integer) obj[28] : 0);
+				doc.setCountries_code(obj[29] != null ? (Integer) obj[29] : 0);
+				doc.setHospital_affliated_code(obj[30] != null ? (Integer) obj[30] : 0);
 			}
 			Constant.log("--Returning from DoctorsDao, Doc Object for ID:" + doc.getDocid(), 1);
 		}

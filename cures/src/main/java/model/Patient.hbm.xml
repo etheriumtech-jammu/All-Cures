@@ -3,49 +3,35 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="model.Patient" table="patient" schema="allcures" >
-        <id name="patient_id" type="java.lang.Integer">
-            <column name="patient_id" />
-            <generator class="identity" />
-        </id>
-        
-        <property name="first_name" type="string">
-            <column name="first_name" length="20"  />
-        </property>
-         <property name="last_name" type="string">
-            <column name="last_name" length="20"  />
-        </property>
-        <property name="age" type="java.lang.Integer">
-            <column name="age" length="20"  />
-        </property>
-        
-         <property name="gender" type="java.lang.Integer">
-            <column name="gender"  length="40"   />
-        </property>
-        <property name="disease_case_history" type="string">
-            <column name="disease_case_history" length="40"  />
-        </property>
-         <property name="patient_testimony" type="string">
-            <column name="patient_testimony" length="40"  />
-        </property>
-        <property name="last_precribtion" type="string">
-            <column name="last_precribtion" length="40"  />
-        </property>
-        <property name="last_precribtion" type="string">
-            <column name="last_precribtion" length="40"  />
-        </property>
-        
-        
-        <property name="teatement_detail" type="string">
-            <column name="teatement_detail" length="40"  />
-        </property>
-        <property name="docid" type="java.lang.Integer">
-            <column name="docid"  length="40"   />
-        </property>
-        
-        <property name="email" type="string">
-            <column name="email" length="40"  />
-        </property>
-       
-    </class>
+	<class name="model.Patient" table="patient" schema="allcures">
+		<id name="patient_id" type="java.lang.Integer">
+			<column name="patient_id" />
+			<generator class="identity" />
+		</id>
+
+		<property name="first_name" type="string">
+			<column name="first_name" length="20" />
+		</property>
+		<property name="last_name" type="string">
+			<column name="last_name" length="20" />
+		</property>
+		<property name="age" type="java.lang.Integer">
+			<column name="age" length="20" />
+		</property>
+
+		<property name="gender" type="java.lang.Integer">
+			<column name="gender" length="40" />
+		</property>
+		<property name="docid" type="java.lang.Integer">
+			<column name="docid" length="40" />
+		</property>
+
+		<property name="email" type="string">
+			<column name="email" length="40" />
+		</property>
+		<property name="about" type="string">
+			<column name="about" length="40" />
+		</property>
+
+	</class>
 </hibernate-mapping>

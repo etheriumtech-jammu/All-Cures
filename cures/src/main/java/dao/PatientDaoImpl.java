@@ -67,13 +67,8 @@ public class PatientDaoImpl {
 				patList.setLast_name((String) obj[2]);
 				patList.setAge((Integer) obj[3]);
 				patList.setGender((Integer) obj[4]);
-				patList.setDisease_case_history((String) obj[5]);
-				patList.setPatient_testimony((String) obj[6]);
-				patList.setLast_precribtion((String) obj[7]);
-				patList.setTeatement_detail((String) obj[8]);
-				patList.setDocid((Integer) obj[9]);
-				patList.setEmail((String) obj[10]);
-
+				patList.setDocid((Integer) obj[5]);
+				patList.setEmail((String) obj[6]);
 
 			}
 
