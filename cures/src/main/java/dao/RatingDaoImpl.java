@@ -205,6 +205,38 @@ public class RatingDaoImpl {
 
 		return ret;
 	}
+	
+	public int getReviewDone(HashMap reviewedRateIdsCombined, int reviewed_by) {
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+		// creating session object
+		Session session = factory;
+		// creating transaction object
+		Transaction trans = (Transaction) session.beginTransaction();
+		String rateidsAcceptedStr = (String) reviewedRateIdsCombined.get("rateids_accepted");
+		String rateidsRejectedStr = (String) reviewedRateIdsCombined.get("rateids_rejected");
+		
+		System.out.println(reviewedRateIdsCombined);
+		Query queryApproved = session.createNativeQuery("UPDATE doctorsrating SET reviewed=1 , reviewedBy = "
+				+ reviewed_by + " WHERE rate_id in ( " + rateidsAcceptedStr + " );");
+		Query queryRejected = session.createNativeQuery("UPDATE doctorsrating SET reviewed=0 , reviewedBy = "
+				+ reviewed_by + " WHERE rate_id in ( " + rateidsRejectedStr + " );");
+		int ret = 0;
+		try {
+			ret = queryApproved.executeUpdate();
+			ret = queryRejected.executeUpdate();
+			trans.commit();
+			System.out.println("updated doctorsrating table for rate_id =  " + rateidsRejectedStr + " ,reviewed=0" );
+			System.out.println("updated doctorsrating table for rate_id =  " + rateidsAcceptedStr + " ,reviewed=1" );
+			
+		} catch (Exception ex) {
+			trans.rollback();
+		} finally {
+			session.close();
+		}
+		
+		return ret;
+	}
 
 	public List allcommentsByReviewedStatus(int reviewed) {
 		Session factory = HibernateUtil.buildSessionFactory();

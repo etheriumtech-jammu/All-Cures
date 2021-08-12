@@ -41,16 +41,26 @@ public class RatingController {
 
 	}
 
+	@RequestMapping(value = "/reviewedby/{reviewed_by}/combined", produces = "application/json", method = RequestMethod.PUT)
+	public @ResponseBody int getReviewDone(@PathVariable int reviewed_by,
+			@RequestBody HashMap reviewedRateIdsCombined) {
+		// rateids is comma separated rate id's
+		return ratingDaoImpl.getReviewDone(reviewedRateIdsCombined, reviewed_by);
+
+	}
+
 	@RequestMapping(value = "/comments/{reviewed}", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List allcommentsByReviewedStatus(@PathVariable int reviewed) {
 		return ratingDaoImpl.allcommentsByReviewedStatus(reviewed);
 
 	}
-	//above also using same method in ratingDaoimpl.allcommentsByReviewedStatus with {reviewed} removed
+
+	// above also using same method in ratingDaoimpl.allcommentsByReviewedStatus
+	// with {reviewed} removed
 	@RequestMapping(value = "/comments", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List allcommentsByReviewedStatusNoPathVariable() {
 		return ratingDaoImpl.allcommentsByReviewedStatus(-1);
-		
+
 	}
 
 }

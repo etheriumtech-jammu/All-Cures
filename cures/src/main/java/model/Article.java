@@ -66,6 +66,9 @@ public class Article implements Serializable{
 	@Column(name = "country_id")
 	private Integer country_id;
 	
+	@Column(name = "comments")
+	private String comments;
+	
 	@Column(name = "disease_condition_id")
 	private Integer disease_condition_id;
 	
@@ -414,6 +417,14 @@ public class Article implements Serializable{
 
 	public void setDisease_condition_id(Integer disease_condition_id) {
 		this.disease_condition_id = disease_condition_id;
+	}
+
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
 
 /*

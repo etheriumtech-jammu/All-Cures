@@ -46,7 +46,7 @@ public class DoctorsActionController extends HttpServlet {
 			docid = Integer.parseInt(id);
 			cacheString = findDocInCache(docid);	
 			String jsondata = null;
-			if(cacheString == null || "".equals(cacheString)){
+			if(cacheString == null || "".equals(cacheString) || "null".equalsIgnoreCase(cacheString)){
 				//Doctor Not Found in MemCache
 				Constant.log("Got Null From MemCache on the Doc:"+id, 1);
 				doctorDao = new DoctorsDaoImpl();

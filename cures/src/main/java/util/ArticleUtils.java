@@ -4,30 +4,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
+import java.util.Base64;
+import java.util.Base64.Decoder;
 
 import model.Article;
-import model.ArticlePubStatus;
-import model.Author;
-import model.Copyright;
-import model.Disclaimer;
-import model.Doctor;
-import model.Doctors;
-import model.Languages;
 import model.Registration;
-import net.bytebuddy.asm.Advice.Return;
-import net.bytebuddy.asm.Advice.This;
-import util.Constant;
-import util.HibernateUtil;
-import util.SolrUtil;
 
 
 public class ArticleUtils {
@@ -106,6 +87,15 @@ public class ArticleUtils {
 			Constant.log(artFile.toString(),1);
 			Constant.log("Writing Article Content to Filesystem", 1);
 			System.out.println("_______________________");
+			System.out.println(articleContent);
+			EncodingUtil encodeUtil = new EncodingUtil();
+			System.out.println(encodeUtil.encodeURIComponent(articleContent));
+			System.out.println(encodeUtil.decodeURIComponent(articleContent));
+//			Decoder decoder = Base64.getDecoder();
+//			byte[] bytes = decoder.decode(articleContent);
+//					
+//			System.out.println(new String(bytes));
+			System.out.println("<<<------###################--------------------->>>>>");
 			System.out.println(articleContent);
 			myWriter.write(articleContent);
 			myWriter.flush();

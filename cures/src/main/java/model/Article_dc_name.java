@@ -63,6 +63,9 @@ public class Article_dc_name implements Serializable {
 
 	@Column(name = "country_id")
 	private Integer country_id;
+	
+	@Column(name = "comments")
+	private String comments;
 
 	@Column(name = "disease_condition_id")
 	private Integer disease_condition_id;
@@ -350,6 +353,14 @@ public class Article_dc_name implements Serializable {
 
 	public void setDc_name(String dc_name) {
 		this.dc_name = dc_name;
+	}
+
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
 
 	/*

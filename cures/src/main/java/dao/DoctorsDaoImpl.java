@@ -1,6 +1,7 @@
 
 package dao;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,14 +13,24 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import model.Doctors;
 import model.Registration;
+import net.spy.memcached.AddrUtil;
+import net.spy.memcached.ConnectionFactoryBuilder;
+import net.spy.memcached.FailureMode;
+import net.spy.memcached.MemcachedClient;
 import util.Constant;
 import util.EnDeCryptor;
 import util.HibernateUtil;
 
 @Component
 public class DoctorsDaoImpl {
+
+	public static MemcachedClient mcc = null;
+
 	public static void main(String[] args) {
 		Doctors check = new Doctors();
 		check = DoctorsDaoImpl.getAllDoctorsInfo(6);
@@ -33,7 +44,7 @@ public class DoctorsDaoImpl {
 			docid = (int) profileMap.get("docid");
 		}
 		if (docid == 0) {
-			Constant.log("docid not provided in request",3);
+			Constant.log("docid not provided in request", 3);
 			return 0;
 		} // return error
 		if (profileMap.containsKey("gender")) {
@@ -136,7 +147,7 @@ public class DoctorsDaoImpl {
 		if (profileMap.containsKey("about")) {
 			updatestr += " about = '" + profileMap.get("about") + "',\r\n";
 		}
-		
+
 		updatestr = updatestr.replaceAll(",$", "");
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -152,13 +163,70 @@ public class DoctorsDaoImpl {
 			ret = query.executeUpdate();
 			System.out.println("updated doctors table for docid =  " + docid);
 			Constant.log(">>>>>>>>>>>>>>>>>>updated doctors table for docid =  " + docid, 1);
+//			int check = new DoctorsDaoImpl().memcacheUpdateDoctor(docid);
+			if (mcc == null)
+				new DoctorsDaoImpl().initializeCacheClient();
+			// Remove the Doctor Found to the Cache since the same ID will be updated in
+			// next fetch
+			// mcc.replace(Constant.DOCID + "_" + docid, 360000, jsondata).getStatus();
+			mcc.delete(Constant.DOCID + "_" + docid);
 			trans.commit();
+
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
 			session.close();
 		}
 		return ret;
+	}
+
+//	public static int memcacheUpdateDoctor(int docid) {
+//		// String id=request.getParameter("docid");
+//		Constant.log("Update memache Req for Profile For DocID: " + docid, 1);
+//		DoctorsDaoImpl doctorDao = null;
+//		Doctors doctorObj = null;
+//		doctorDao = new DoctorsDaoImpl();
+//		Constant.log("Got Null From MemCache on the Doc:" + docid, 1);
+//		doctorObj = doctorDao.getAllDoctorsInfo(docid);
+//		if (mcc == null)
+//			doctorDao.initializeCacheClient();
+//		// Add the Doctor Found to the Cache since the ID was not there
+//		Gson gson = new GsonBuilder().serializeNulls().create();
+//		String jsondata = gson.toJson(doctorObj);
+//		//mcc.replace(Constant.DOCID + "_" + docid, 360000, jsondata).getStatus();
+//		//mcc.replace(Constant.DOCID + "_" + docid, 360000, jsondata).getStatus();
+//		mcc.delete(Constant.DOCID + "_" + docid);
+//		return docid;
+//	}
+
+	public MemcachedClient initializeCacheClient() {
+		try {
+			Constant.log("Trying Connection to Memcache server", 0);
+			mcc = new MemcachedClient(
+					new ConnectionFactoryBuilder().setDaemon(true).setFailureMode(FailureMode.Retry).build(),
+					AddrUtil.getAddresses(Constant.ADDRESS));
+			Constant.log("Connection to Memcache server Sucessful", 0);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Constant.log("Connection to Memcache server UN-Sucessful", 3);
+		}
+		return mcc;
+	}
+
+	public String findDocInCache(int docId) {
+		String cacheString = null;
+
+		// This is the ADDRESS OF MEMCACHE
+		// TODO: Move to a Config Entry in Web.xml
+		if (mcc == null) {
+			initializeCacheClient();
+		}
+		Constant.log("Getting docid from MemCache", 0);
+		if (mcc.get(Constant.DOCID + "_" + docId) != null)
+			cacheString = mcc.get(Constant.DOCID + "_" + docId).toString();
+		Constant.log("Found In MemCache:" + cacheString, 0);
+		return cacheString;
 	}
 
 	public static int verifyDoctor(HashMap doctorsMap) {
@@ -329,12 +397,12 @@ public class DoctorsDaoImpl {
 				float overall = (float) (obj[19] != null ? (Float) obj[19] : 0.0);
 				doc.setOver_allrating(overall);
 				doc.setEmail(obj[20] != null ? (String) obj[20] : "");
-				doc.setWaiting_time(obj[21] != null ? (Integer) obj[21] : null);
+				doc.setWaiting_time(obj[21] != null ? (Integer) obj[21] : 0);
 				doc.setStatename(obj[22] != null ? (String) obj[22] : "");
 				doc.setCountry_code(obj[23] != null ? (String) obj[23] : "");
 
 				doc.setPrimary_spl_code(obj[24] != null ? (Integer) obj[24] : 0);
-				//doc.setOther_spls_code(obj[25] != null ? (Integer) obj[25] : 0);
+				// doc.setOther_spls_code(obj[25] != null ? (Integer) obj[25] : 0);
 				doc.setSub_spls_code(obj[25] != null ? (Integer) obj[25] : 0);
 				doc.setAbout(obj[26] != null ? (String) obj[26] : "");
 				doc.setCity_code(obj[27] != null ? (Integer) obj[27] : 0);
