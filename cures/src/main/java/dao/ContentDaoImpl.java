@@ -38,7 +38,7 @@ public class ContentDaoImpl {
 	
 	public boolean createArticle(int pubStatus, int lang, int disclaimerId, int copyrightId, int authById, String title, String frndlyName, 
 			String subhead, String contentTypeId, String keywords, String windowTitle, 
-			String contentLocation, Integer reg_id, String articleContent, Integer diseaseConditionId, Integer countryId) {
+			String contentLocation, Integer reg_id, String articleContent, Integer diseaseConditionId, Integer countryId, String comments) {
 			
 		boolean artCrtStatus = false;		
 		Constant.log("Saving Content in DB", 1);
@@ -87,6 +87,7 @@ public class ContentDaoImpl {
 			java.sql.Date sqlDate=new java.sql.Date(date.getTime());
 			//java.sql.Timestamp sqlTime=new java.sql.Timestamp(date.getTime());
 			article.setCreate_date(sqlDate);
+			article.setComments(comments);
 			session.save(article);
 			session.getTransaction().commit();
 			//session.close();			

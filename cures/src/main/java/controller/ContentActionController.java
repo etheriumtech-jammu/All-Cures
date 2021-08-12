@@ -127,6 +127,8 @@ public class ContentActionController extends HttpServlet {
 		}
 		Constant.log("Creating Article with Author:"+diseaseConditionId, 0);
 		Constant.log("Saving Content in Dao", 1);
+		String comments= request.getParameter("comments");
+		Constant.log("comments:"+comments, 0);
 		//User Object in Session is coming Null Here and Causing a Null Pointer Exception on the next line
 		//This should never be the case as the user has to be logged  in to create an article
 		int result=-1;		
@@ -137,7 +139,7 @@ public class ContentActionController extends HttpServlet {
 			//TODO: Remove this hardcoding	
 			Constant.log("User object is in session; User is logged In; Adding Article Now", 0);
 			boolean bResult = contentDao.createArticle(iStatus, iLang, iDiscId, iCopyId, iAuthId, title, artFrndlyNm, subHead, 
-					content_type, keyword, window_title, null, user.getRegistration_id().intValue(), articlecontent, iDiseaseConditionId, iCountryId);
+					content_type, keyword, window_title, null, user.getRegistration_id().intValue(), articlecontent, iDiseaseConditionId, iCountryId,comments);
 			if(bResult == true){
 				result = 1;
 			}
