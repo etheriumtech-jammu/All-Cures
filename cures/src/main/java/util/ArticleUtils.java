@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Base64;
-import java.util.Base64.Decoder;
 
 import model.Article;
 import model.Registration;
@@ -87,10 +85,10 @@ public class ArticleUtils {
 			Constant.log(artFile.toString(),1);
 			Constant.log("Writing Article Content to Filesystem", 1);
 			System.out.println("_______________________");
-			System.out.println(articleContent);
-			EncodingUtil encodeUtil = new EncodingUtil();
-			System.out.println(encodeUtil.encodeURIComponent(articleContent));
-			System.out.println(encodeUtil.decodeURIComponent(articleContent));
+			//System.out.println(articleContent);
+//			EncodingUtil encodeUtil = new EncodingUtil();
+//			System.out.println(encodeUtil.encodeURIComponent(articleContent));
+//			System.out.println(encodeUtil.decodeURIComponent(articleContent));
 //			Decoder decoder = Base64.getDecoder();
 //			byte[] bytes = decoder.decode(articleContent);
 //					
