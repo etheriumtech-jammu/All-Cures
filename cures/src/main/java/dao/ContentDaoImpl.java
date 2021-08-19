@@ -38,7 +38,7 @@ public class ContentDaoImpl {
 	
 	public boolean createArticle(int pubStatus, int lang, int disclaimerId, int copyrightId, int authById, String title, String frndlyName, 
 			String subhead, String contentTypeId, String keywords, String windowTitle, 
-			String contentLocation, Integer reg_id, String articleContent, Integer diseaseConditionId, Integer countryId, String comments) {
+			String contentLocation, Integer reg_id, String articleContent, Integer diseaseConditionId, Integer countryId, String comments, Integer promoId, Integer promoStage) {
 			
 		boolean artCrtStatus = false;		
 		Constant.log("Saving Content in DB", 1);
@@ -72,6 +72,8 @@ public class ContentDaoImpl {
 			article.setEdited_by(reg_id);
 			article.setAuthored_by(authById);
 			article.setCountry_id(countryId);
+			article.setPromo_id(promoId);
+			article.setPromo_stage(promoStage);
 			article.setDisease_condition_id(diseaseConditionId);
 			Constant.log("Saved Article Meta Data", 1);
 			session.save(article);

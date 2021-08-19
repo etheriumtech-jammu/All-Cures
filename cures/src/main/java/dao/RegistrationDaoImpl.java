@@ -3,23 +3,19 @@ package dao;
 
 
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Component;
 
-import model.Doctors;
-import model.Patient;
 import model.Registration;
 import util.Constant;
 import util.HibernateUtil;
 
+@Component
 public class RegistrationDaoImpl {
 
 
@@ -237,5 +233,27 @@ public class RegistrationDaoImpl {
 		session.close();
 		return  register;
 	}
+	public int updatePassword(String password, int reg_id) {
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+		// creating session object
+		Session session = factory;
+		// creating transaction object
+		Transaction trans = (Transaction) session.beginTransaction();
+		Query queryApproved = session.createNativeQuery("UPDATE registration SET pass_word= '"+ password+"' where registration_id = "+reg_id+" );");
+
+		int ret = 0;
+		try {
+			ret = queryApproved.executeUpdate();
+			trans.commit();
+			System.out.println("updated registration table password for registration_id =  " + reg_id );
+			
+		} catch (Exception ex) {
+			trans.rollback();
+		} finally {
+			session.close();
+		}
+		
+		return ret;	}
 
 }

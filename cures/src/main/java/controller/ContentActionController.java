@@ -126,6 +126,15 @@ public class ContentActionController extends HttpServlet {
 			iDiseaseConditionId = Integer.parseInt(diseaseConditionId);
 		}
 		Constant.log("Creating Article with Author:"+diseaseConditionId, 0);
+		
+		String promoId = request.getParameter("promoId");;
+		int ipromoId = -1; //Negative indicates error
+		int promoStage = -1; //Negative indicates error
+		if(promoId != null && !"".equals(promoId.trim())){
+			ipromoId = Integer.parseInt(promoId);
+			promoStage = 1 ; // promoStage < 0 or null ==> No promo applied, promo promoStage = 0 ==> promo applied no paid, promoStage =1 ==> promo applied and paid
+		}
+		Constant.log("Creating Article with promoId:"+promoId, 0);
 		Constant.log("Saving Content in Dao", 1);
 		String comments= request.getParameter("comments");
 		Constant.log("comments:"+comments, 0);
@@ -139,7 +148,7 @@ public class ContentActionController extends HttpServlet {
 			//TODO: Remove this hardcoding	
 			Constant.log("User object is in session; User is logged In; Adding Article Now", 0);
 			boolean bResult = contentDao.createArticle(iStatus, iLang, iDiscId, iCopyId, iAuthId, title, artFrndlyNm, subHead, 
-					content_type, keyword, window_title, null, user.getRegistration_id().intValue(), articlecontent, iDiseaseConditionId, iCountryId,comments);
+					content_type, keyword, window_title, null, user.getRegistration_id().intValue(), articlecontent, iDiseaseConditionId, iCountryId,comments,ipromoId,promoStage);
 			if(bResult == true){
 				result = 1;
 			}

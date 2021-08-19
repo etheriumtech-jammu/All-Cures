@@ -72,6 +72,12 @@ public class Article implements Serializable{
 	@Column(name = "disease_condition_id")
 	private Integer disease_condition_id;
 	
+	@Column(name = "promo_id")
+	private Integer promo_id;
+	
+	@Column(name = "promo_stage")
+	private Integer promo_stage;
+	
 	private String content;
 		
 	/*
@@ -159,7 +165,8 @@ public class Article implements Serializable{
 		public Article(Integer article_id, String title, String friendly_name, String subheading, String contentTypeId,
 			String keywords, String window_title, String content_location, Integer authored_by, Integer published_by,
 			Integer edited_by, Integer copyright_id, Integer disclaimer_id, Date create_date, Date published_date,
-			Integer pubstatus_id, Integer language_id, Integer copyright_file_loc_id, Integer disclaimer_file_loc_id, Integer country_id, Integer disease_condition_id) {
+			Integer pubstatus_id, Integer language_id, Integer copyright_file_loc_id, Integer disclaimer_file_loc_id, Integer country_id, Integer disease_condition_id,
+			Integer promoId, Integer promoStage) {
 		super();
 		this.article_id = article_id;
 		this.title = title;
@@ -180,6 +187,8 @@ public class Article implements Serializable{
 		this.language_id = language_id;
 		this.disease_condition_id = disease_condition_id;
 		this.country_id = country_id;
+		this.promo_id = promoId;
+		this.promo_stage = promoStage;
 		/*
 		this.copyright_file_loc = copyright_file_loc_id;
 		this.disclaimer_file_loc = disclaimer_file_loc_id;
@@ -425,6 +434,22 @@ public class Article implements Serializable{
 
 	public void setComments(String comments) {
 		this.comments = comments;
+	}
+
+	public Integer getPromo_id() {
+		return promo_id;
+	}
+
+	public void setPromo_id(Integer promo_id) {
+		this.promo_id = promo_id;
+	}
+
+	public Integer getPromo_stage() {
+		return promo_stage;
+	}
+
+	public void setPromo_stage(Integer promo_stage) {
+		this.promo_stage = promo_stage;
 	}
 
 /*
