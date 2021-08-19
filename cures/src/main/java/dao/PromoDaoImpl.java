@@ -254,7 +254,7 @@ public class PromoDaoImpl {
 
 		Query query = session.createNativeQuery(
 				"SELECT article_id, title,friendly_name,window_title,ar.promo_id,pm.promo_code,promo_stage \r\n"
-						+ " FROM article ar\r\n" + " inner join promo_master pm on pm.promo_id = ar.promo_id " + where
+						+ " FROM article ar \r\n" + " inner join promo_master pm on pm.promo_id = ar.promo_id " + where
 						+ ";");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();

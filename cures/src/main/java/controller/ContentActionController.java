@@ -132,7 +132,7 @@ public class ContentActionController extends HttpServlet {
 		int promoStage = -1; //Negative indicates error
 		if(promoId != null && !"".equals(promoId.trim())){
 			ipromoId = Integer.parseInt(promoId);
-			promoStage = 1 ; // promoStage < 0 or null ==> No promo applied, promo promoStage = 0 ==> promo applied no paid, promoStage =1 ==> promo applied and paid
+			promoStage = 0 ; // promoStage < 0 or null ==> No promo applied, promo promoStage = 0 ==> promo applied no paid, promoStage =1 ==> promo applied and paid
 		}
 		Constant.log("Creating Article with promoId:"+promoId, 0);
 		Constant.log("Saving Content in Dao", 1);

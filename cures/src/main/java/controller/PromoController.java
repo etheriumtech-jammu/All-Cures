@@ -45,6 +45,12 @@ public class PromoController {
 		return promoDaoImpl.allArticleByPromotStage(stage);
 
 	}
+	
+	@RequestMapping(value = "/articlespromostage", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List allArticleByPromotStageAll() {
+		return promoDaoImpl.allArticleByPromotStage(-1);
+
+	}
 
 	@RequestMapping(value = "/paidstage/combined", produces = "application/json", method = RequestMethod.PUT)
 	public @ResponseBody int setPromoPaidStage(@PathVariable int reviewed_by, @RequestBody HashMap articlePromoIds) {
