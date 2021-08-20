@@ -181,25 +181,25 @@ public class PromoDaoImpl {
 			updatestr += "`promo_code` = '" + articleMap.get("promo_code") + "',\r\n";
 		}
 		if (articleMap.containsKey("promo_max_limit")) {
-			updatestr += "`promo_max_limit` = '" + articleMap.get("promo_max_limit") + "',\r\n";
+			updatestr += "`promo_max_limit` = " + articleMap.get("promo_max_limit") + ",\r\n";
 		}
 		if (articleMap.containsKey("promo_start_datetime")) {
 			updatestr += "`promo_start_datetime` = '" + articleMap.get("promo_start_datetime") + "',\r\n";
 		}
 		if (articleMap.containsKey("promo_end_datetime")) {
-			updatestr += "`promo_end_datetime` = " + articleMap.get("promo_end_datetime") + ",\r\n";
+			updatestr += "`promo_end_datetime` = '" + articleMap.get("promo_end_datetime") + "',\r\n";
 		}
 		if (articleMap.containsKey("promo_updated_date")) {
 			updatestr += "`promo_updated_date` = '" + articleMap.get("promo_updated_date") + "',\r\n";
 		}
-//		if (articleMap.containsKey("promo_updated_by")) {
-//			updatestr += "`promo_updated_by` = '" + articleMap.get("promo_updated_by") + "',\r\n";
-//		}
+		if (articleMap.containsKey("promo_updated_by")) {
+			updatestr += "`promo_updated_by` = " + articleMap.get("promo_updated_by") + ",\r\n";
+		}
 		
 		java.util.Date date=new java.util.Date();
 		java.sql.Timestamp sqlDate=new java.sql.Timestamp(date.getTime());
 		String promo_updated_date = sqlDate.toString();
-		updatestr += " `promo_updated_by` = '" + promo_updated_date + "',\r\n";
+		updatestr += " `promo_updated_date` = '" + promo_updated_date + "',\r\n";
 		System.out.println("promo_updated_date>>>>>"+promo_updated_date);
 		
 		if (articleMap.containsKey("promo_active")) {
@@ -271,9 +271,9 @@ public class PromoDaoImpl {
 
 		System.out.println(articlePromoIds);
 		Query queryArticlePromoPaid = session
-				.createNativeQuery("UPDATE article SET promo_state=1  WHERE article_id in ( " + paidArticleIds + " );");
+				.createNativeQuery("UPDATE article SET promo_stage=1  WHERE article_id in ( " + paidArticleIds + " );");
 		Query queryArticlePromoUnpaid = session.createNativeQuery(
-				"UPDATE article SET promo_state=0  WHERE article_id in ( " + unpaidArticleIds + " );");
+				"UPDATE article SET promo_stage=0  WHERE article_id in ( " + unpaidArticleIds + " );");
 		int ret = 0;
 		try {
 			ret = queryArticlePromoPaid.executeUpdate();
@@ -302,7 +302,7 @@ public class PromoDaoImpl {
 
 		System.out.println(articlePromoIds);
 		Query queryArticlePromoPaid = session.createNativeQuery(
-				"UPDATE article SET promo_state=" + stage + "  WHERE article_id in ( " + articleIds + " );");
+				"UPDATE article SET promo_stage=" + stage + "  WHERE article_id in ( " + articleIds + " );");
 
 		int ret = 0;
 		try {
