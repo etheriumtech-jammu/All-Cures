@@ -57,6 +57,49 @@ public class PromoDaoImpl {
 		session.close();
 		return (ArrayList) hmFinal;
 	}
+	public static ArrayList getPromoDetailsById(int promo_id) {
+		
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+		
+		// creating session object
+		Session session = factory;
+		
+		// creating transaction object
+		Transaction trans = (Transaction) session.beginTransaction();
+		
+		Query query = session.createNativeQuery("SELECT `promo_master`.`promo_id`,\r\n"
+				+ "    `promo_master`.`promo_code`,\r\n" + "    `promo_master`.`promo_start_datetime`,\r\n"
+				+ "    `promo_master`.`promo_end_datetime`,\r\n" + "    `promo_master`.`promo_max_limit`,\r\n"
+				+ "    `promo_master`.`promo_updated_by`,\r\n" + "    `promo_master`.`promo_updated_date`,\r\n"
+				+ "    `promo_master`.`promo_active`\r\n" + "FROM `allcures_schema`.`promo_master` where promo_id="+promo_id+";");
+		List<Object[]> results = (List<Object[]>) query.getResultList();
+		System.out.println("result list Promo@@@@@@@@@@@@@ size=" + results.size());
+		List hmFinal = new ArrayList();
+		for (Object[] objects : results) {
+			HashMap hm = new HashMap();
+			int promo_id1 = (int) objects[0];
+			String promo_code = (String) objects[1];
+			java.sql.Timestamp promo_start_datetime = (java.sql.Timestamp) objects[2];
+			java.sql.Timestamp promo_end_datetime = (java.sql.Timestamp) objects[3];
+			int promo_max_limit = (int) objects[4];
+			int promo_updated_by = (int) objects[5];
+			java.sql.Timestamp promo_updated_date = (java.sql.Timestamp) objects[6];
+			Integer promo_active = (Integer) objects[7];
+			
+			hm.put("promo_id", promo_id1);
+			hm.put("promo_code", promo_code);
+			hm.put("promo_start_datetime", promo_start_datetime);
+			hm.put("promo_end_datetime", promo_end_datetime);
+			hm.put("promo_max_limit", promo_max_limit);
+			hm.put("promo_updated_by", promo_updated_by);
+			hm.put("promo_updated_date", promo_updated_date);
+			hm.put("promo_active", promo_active);
+			hmFinal.add(hm);
+		}
+		session.close();
+		return (ArrayList) hmFinal;
+	}
 
 	public static int addPromoDetails(HashMap promoMap) {
 
@@ -83,22 +126,26 @@ public class PromoDaoImpl {
 			promo_end_datetime = (String) promoMap.get("promo_end_datetime");
 		}
 		if (promoMap.containsKey("promo_max_limit")) {
-			promo_max_limit = (int) promoMap.get("promo_max_limit");
+			promo_max_limit = Integer.parseInt( (String) promoMap.get("promo_max_limit") );
 		}
 		if (promoMap.containsKey("promo_updated_by")) {
-			promo_updated_by = (int) promoMap.get("promo_updated_by");
+			promo_updated_by = Integer.parseInt( (String)promoMap.get("promo_updated_by") );
 		}
-		if (promoMap.containsKey("promo_updated_date")) {
-			promo_updated_date = (String) promoMap.get("promo_updated_date");
-		}
+//		if (promoMap.containsKey("promo_updated_date")) {
+//			promo_updated_date = (String) promoMap.get("promo_updated_date");
+			java.util.Date date=new java.util.Date();
+			java.sql.Timestamp sqlDate=new java.sql.Timestamp(date.getTime());
+			promo_updated_date = sqlDate.toString();
+			System.out.println("promo_updated_date>>>>>"+promo_updated_date);
+		//}
 		if (promoMap.containsKey("promo_active")) {
-			promo_active = (int) promoMap.get("promo_active");
+			promo_active = Integer.parseInt( (String)promoMap.get("promo_active") );
 		}
 		Query query = session
 				.createNativeQuery("INSERT INTO `allcures_schema`.`promo_master`\r\n" + " (`promo_code`,\r\n"
 						+ " `promo_start_datetime`,\r\n" + " `promo_end_datetime`,\r\n" + " `promo_max_limit`,\r\n"
 						+ " `promo_updated_by`,\r\n" + " `promo_updated_date`,\r\n" + " `promo_active`)\r\n"
-						+ " VALUES\r\n" + " (" + promo_code + ",\r\n" + " '" + promo_start_datetime + "',\r\n" + " '"
+						+ " VALUES\r\n" + " ('" + promo_code + "',\r\n" + " '" + promo_start_datetime + "',\r\n" + " '"
 						+ promo_end_datetime + "',\r\n" + " " + promo_max_limit + ",\r\n" + " " + promo_updated_by
 						+ ",\r\n" + " '" + promo_updated_date + "',\r\n" + " " + promo_active + ");\r\n" + "");
 		// needs other condition too but unable to find correct column
@@ -145,9 +192,16 @@ public class PromoDaoImpl {
 		if (articleMap.containsKey("promo_updated_date")) {
 			updatestr += "`promo_updated_date` = '" + articleMap.get("promo_updated_date") + "',\r\n";
 		}
-		if (articleMap.containsKey("promo_updated_by")) {
-			updatestr += "`promo_updated_by` = '" + articleMap.get("promo_updated_by") + "',\r\n";
-		}
+//		if (articleMap.containsKey("promo_updated_by")) {
+//			updatestr += "`promo_updated_by` = '" + articleMap.get("promo_updated_by") + "',\r\n";
+//		}
+		
+		java.util.Date date=new java.util.Date();
+		java.sql.Timestamp sqlDate=new java.sql.Timestamp(date.getTime());
+		String promo_updated_date = sqlDate.toString();
+		updatestr += " `promo_updated_by` = '" + promo_updated_date + "',\r\n";
+		System.out.println("promo_updated_date>>>>>"+promo_updated_date);
+		
 		if (articleMap.containsKey("promo_active")) {
 			updatestr += "`promo_active` = " + articleMap.get("promo_active") + ",\r\n";
 		}
@@ -227,6 +281,34 @@ public class PromoDaoImpl {
 			trans.commit();
 			System.out.println("updated article table for promo_id  =  " + paidArticleIds + " ,promo_stage=0 (unpaid)");
 			System.out.println("updated article table for promo_id  =  " + unpaidArticleIds + " ,promo_stage=1(paid)");
+
+		} catch (Exception ex) {
+			trans.rollback();
+		} finally {
+			session.close();
+		}
+
+		return ret;
+	}
+
+	public int setPromoPaidStage(HashMap articlePromoIds, int reviewed_by, int stage) {
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+		// creating session object
+		Session session = factory;
+		// creating transaction object
+		Transaction trans = (Transaction) session.beginTransaction();
+		String articleIds = (String) articlePromoIds.get("articles_ids");
+
+		System.out.println(articlePromoIds);
+		Query queryArticlePromoPaid = session.createNativeQuery(
+				"UPDATE article SET promo_state=" + stage + "  WHERE article_id in ( " + articleIds + " );");
+
+		int ret = 0;
+		try {
+			ret = queryArticlePromoPaid.executeUpdate();
+			trans.commit();
+			System.out.println("updated article table for promo_id  =  " + stage + " ,promo_stage=0 (unpaid)");
 
 		} catch (Exception ex) {
 			trans.rollback();

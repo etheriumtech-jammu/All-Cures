@@ -24,6 +24,11 @@ public class PromoController {
 	public @ResponseBody List getAllPromoDetails() {
 		return promoDaoImpl.getAllPromoDetails();
 	}
+	
+	@RequestMapping(value = "/{promo_id}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List getPromoDetailsById(@PathVariable int promo_id) {
+		return promoDaoImpl.getPromoDetailsById(promo_id);
+	}
 
 	@RequestMapping(value = "/create", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody int addPromoDetails(@RequestBody HashMap promoMasterMap) {
@@ -56,6 +61,14 @@ public class PromoController {
 	public @ResponseBody int setPromoPaidStage(@PathVariable int reviewed_by, @RequestBody HashMap articlePromoIds) {
 		// articlePromoIds is comma separated id's
 		return promoDaoImpl.setPromoPaidStage(articlePromoIds, reviewed_by);
+	}
+	
+	@RequestMapping(value = "/reviewedby/{reviewed_by}/stage/{stage}", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody int getReviewDone(@PathVariable int reviewed_by, @PathVariable int stage,
+			@RequestBody HashMap articleIds) {
+		// rateids is comma separated rate id's
+		return promoDaoImpl.setPromoPaidStage(articleIds, reviewed_by, stage);
+
 	}
 
 }
