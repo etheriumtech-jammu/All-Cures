@@ -21,9 +21,10 @@ public class UserController {
 	@Autowired
 	private RegistrationDaoImpl registrationDaoImpl;
 
-	@RequestMapping(value = "/updatepassword/{reg_id}", produces = "application/json", method = RequestMethod.PUT)
-	public @ResponseBody int updatePassword(@RequestBody HashMap reqBody, @PathVariable int reg_id) {
+	@RequestMapping(value = "/updatepassword", produces = "application/json", method = RequestMethod.PUT)
+	public @ResponseBody String updatePassword(@RequestBody HashMap reqBody) {
 		String saltedPassword = (String) reqBody.get("updated_password");
+		String email = (String) reqBody.get("email");
 		String hashedPassword = null;
 		final String secretKey = Constant.SECRETE;
 		Encryption encrypt = new Encryption();
@@ -31,7 +32,7 @@ public class UserController {
 		hashedPassword = encrypt.encrypt(saltedPassword, secretKey);
 		Constant.log("????????????????????????::::::::::::::" + hashedPassword, 0);
 
-		return registrationDaoImpl.updatePassword(hashedPassword, reg_id);
+		return registrationDaoImpl.updatePassword(hashedPassword, email);
 	}
 
 }
