@@ -49,29 +49,29 @@ public class DashboardController {
 		map.put("review_article", articleDaoImpl.findReviwArticle(reg_id).size());
 		
 		
-		String cacheCityString = null;
-		String cachepinString = null;
-
-		MemcachedClient mcc = null;
-		String address = Constant.ADDRESS;
-
-		try {
-			mcc = new MemcachedClient(new ConnectionFactoryBuilder().setDaemon(true).setFailureMode(FailureMode.Retry).build(), AddrUtil.getAddresses(address));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}   
-		System.out.println("Connection to server sucessfully");
-		System.out.println("Get from Cache cityname:"+"'"+mcc.gets(Constant.CITY)+"'");
-		System.out.println("Get from Cache pincode:"+"'"+mcc.gets(Constant.PIN)+"'");
-		cacheCityString =  (""+mcc.get(Constant.CITY)+"").toString();
-		cachepinString  =(""+mcc.get(Constant.PIN)+"").toString();
-		
-
-	    //System.out.println("add status:"+mcc.add("ct", 900, "Delhi").done);  
-		System.out.println("Adding up in cache:"+ mcc.add(Constant.dashboard_review_count,360000 ,map.get("review_article")).getStatus());
-
-	    System.out.println("Get from Cache ct:"+mcc.get(Constant.dashboard_review_count)); 
+//		String cacheCityString = null;
+//		String cachepinString = null;
+//
+//		MemcachedClient mcc = null;
+//		String address = Constant.ADDRESS;
+//
+//		try {
+//			mcc = new MemcachedClient(new ConnectionFactoryBuilder().setDaemon(true).setFailureMode(FailureMode.Retry).build(), AddrUtil.getAddresses(address));
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}   
+//		System.out.println("Connection to server sucessfully");
+//		System.out.println("Get from Cache cityname:"+"'"+mcc.gets(Constant.CITY)+"'");
+//		System.out.println("Get from Cache pincode:"+"'"+mcc.gets(Constant.PIN)+"'");
+//		cacheCityString =  (""+mcc.get(Constant.CITY)+"").toString();
+//		cachepinString  =(""+mcc.get(Constant.PIN)+"").toString();
+//		
+//
+//	    //System.out.println("add status:"+mcc.add("ct", 900, "Delhi").done);  
+//		System.out.println("Adding up in cache:"+ mcc.add(Constant.dashboard_review_count,360000 ,map.get("review_article")).getStatus());
+//
+//	    System.out.println("Get from Cache ct:"+mcc.get(Constant.dashboard_review_count)); 
 		
 		
 		return map;

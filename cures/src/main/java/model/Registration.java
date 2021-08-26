@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import util.Constant;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;;
 
@@ -40,6 +41,11 @@ public class Registration implements Serializable {
 	private Integer account_state;
 	 @Column(name = Constant.REMEMBER_ME)
 	private Integer remember_me;
+	 
+	 @Column(name = Constant.LOGIN_ATTEMPT)
+	 private Integer login_attempt;
+	 @Column(name = Constant.LAST_LOGIN_DATETIME)
+	 private Date last_login_datatime;
 	
 	
 	public Registration() {
@@ -48,7 +54,7 @@ public class Registration implements Serializable {
 	}
 	public Registration(Integer registration_id, String first_name, String last_name, String email_address,
 			String pass_word, Integer registration_type, Boolean acceptance_condition, Boolean privacy_policy,
-			Integer account_state, Integer remember_me) {
+			Integer account_state, Integer remember_me, Integer login_attempt, Date last_login_datatime) {
 		super();
 		this.registration_id = registration_id;
 		this.first_name = first_name;
@@ -60,6 +66,8 @@ public class Registration implements Serializable {
 		this.privacy_policy= privacy_policy;
 		this.account_state = account_state;
 		this.remember_me = remember_me;
+		this.login_attempt = login_attempt;
+		this.last_login_datatime = last_login_datatime;
 	}
 	public Integer getRegistration_id() {
 		return registration_id;
@@ -120,6 +128,18 @@ public class Registration implements Serializable {
 	}
 	public void setRemember_me(Integer remember_me) {
 		this.remember_me = remember_me;
+	}
+	public Integer getLogin_attempt() {
+		return login_attempt;
+	}
+	public void setLogin_attempt(Integer login_attempt) {
+		this.login_attempt = login_attempt;
+	}
+	public Date getLast_login_datatime() {
+		return last_login_datatime;
+	}
+	public void setLast_login_datatime(Date last_login_datatime) {
+		this.last_login_datatime = last_login_datatime;
 	}
 	
 	

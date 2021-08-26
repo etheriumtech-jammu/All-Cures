@@ -63,12 +63,22 @@ public class LoginActionController extends HttpServlet {
 		String remme= (request.getParameter(Constant.REMPWD) == null || "".equals(request.getParameter(Constant.REMPWD))) ? Constant.OFF : Constant.ON;
 		//ToDo: This implementation should not be static as this will cause overwrite issues in a multi user environment
 		Registration user = RegistrationDaoImpl.findAllUsers(email, hashedPassword);
-		
 		if(user != null){
+
 			//Logging Password in Logs only in DEBUG Mode
 			Constant.log("Found at least one user with:"+email+" and pass combination"+hashedPassword, 0);
+			if (null != user.getLogin_attempt() && user.getLogin_attempt() > Constant.login_attempts_max) {
+				Constant.log("Maximum login attemps limit crossed, Please contact ADMIN", 0);
+				response.sendRedirect("Maximum login attemps limit crossed, Please contact ADMIN");
+				return;
+			}
+			
+			RegistrationDaoImpl.resetLoginDetails(user.getRegistration_id());
+
+			
 			//User should be logged in now
 			session.setAttribute(Constant.USER, user);
+
 			if(remme.equalsIgnoreCase(Constant.ON)){
 				//Cookie[] cookies = nul
 				Constant.log("Remember Me On So Storing Cookies", 0);
@@ -111,6 +121,7 @@ public class LoginActionController extends HttpServlet {
 				}
 			}
 		}else{
+			RegistrationDaoImpl.updateLoginDetails(email);
 			//No user found with credentials
 			Constant.log("Going to login page with error and destination url", 0);
 			response.sendRedirect("/cures/login1.jsp?errMsg=99&destinationUrl="+destinationUrl);

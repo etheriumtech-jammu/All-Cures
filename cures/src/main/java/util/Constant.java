@@ -94,6 +94,8 @@ public class Constant{
 	public static final String PRIVACY_POLICY= "privacy_policy";
 	public static final String ACCOUNT_STATE= "account_state";
 	public static final String REMEMBER_ME= "remember_me";
+	public static final String LAST_LOGIN_DATETIME= "last_login_datatime";
+	public static final String LOGIN_ATTEMPT= "login_attempt";
 	public static final String SPECIALTIESTABLE= "specialties";
 	public static final String STATES="states";
 	public static final String AUTH="Incorrect password";
@@ -111,6 +113,8 @@ public class Constant{
 	
 	public static final String dashboard_review_count = "DBRC";
 	
+	public static final int login_attempts_max = 5;
+
 	//Logging Related Settings
 	public static final boolean LoggingOn = true;
 	public static final int ALLOWED_MSG_LVL = 0; //0 = DEBUG; 1 = INFO; 2 = WARN; 3 = ERROR;

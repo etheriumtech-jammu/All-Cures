@@ -1,6 +1,8 @@
 package dao;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -9,7 +11,9 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
 
+import model.Article_dc_name;
 import model.Registration;
+import util.ArticleUtils;
 import util.Constant;
 import util.HibernateUtil;
 
@@ -130,7 +134,7 @@ public class RegistrationDaoImpl {
 		Registration register = null;
 		Query query = session
 				.createNativeQuery("select registration_id, first_name, last_name, email_address, pass_word, "
-						+ "registration_type, acceptance_condition, privacy_policy, account_state, remember_me from registration "
+						+ "registration_type, acceptance_condition, privacy_policy, account_state, remember_me, login_attempt,last_login_datatime from registration "
 						+ "where email_address='" + email + "' and pass_word='" + pwd + "'");
 
 		ArrayList<Registration> regList = (ArrayList<Registration>) query.getResultList();
@@ -153,6 +157,8 @@ public class RegistrationDaoImpl {
 				register.setprivacy_policy(obj[7] != null ? (Boolean) obj[7] : false);
 				register.setAccount_state(obj[8] != null ? (Integer) obj[8] : 3);
 				register.setRemember_me(obj[9] != null ? (Integer) obj[9] : 0);
+				register.setLogin_attempt(obj[10] != null ? (Integer) obj[10] : 0);
+				register.setLast_login_datatime((java.util.Date) obj[11]);
 				Constant.log(Constant.PREFIX + obj[0], 0);
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
@@ -252,7 +258,6 @@ public class RegistrationDaoImpl {
 		// Query queryApproved = session.createNativeQuery("UPDATE registration SET
 		// pass_word= '"+ password+"' where registration_id = "+reg_id+" );");
 
-		
 		int ret = 0;
 		try {
 			Query checkEmailExists = session.createNativeQuery(
@@ -280,6 +285,112 @@ public class RegistrationDaoImpl {
 		}
 
 		return ret + "";
+	}
+
+	public int checkEmail(String email) {
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+		// creating session object
+		Session session = factory;
+		// creating transaction object
+		Transaction trans = (Transaction) session.beginTransaction();
+		// Query queryApproved = session.createNativeQuery("UPDATE registration SET
+		// pass_word= '"+ password+"' where registration_id = "+reg_id+" );");
+
+		int ret = 0;
+		try {
+			Query checkEmailExists = session.createNativeQuery(
+					"select email_address from  registration where email_address = '" + email + "' ;");
+
+			List<Object[]> results = (List<Object[]>) checkEmailExists.getResultList();
+			System.out.println("result list Email Check@@@@@@@@@@@@@ size=" + results.size());
+			if (results.size() == 0) {
+				return 0;
+			} else {
+				return 1;
+			}
+//			System.out.println("check email exists in  registration table for email passed from UI =  " + email);
+
+		} catch (Exception ex) {
+			trans.rollback();
+		} finally {
+			session.close();
+		}
+
+		return ret;
+	}
+	
+	
+	public static int updateLoginDetails(String email) {
+
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+
+		// creating session object
+		Session session = factory;
+		// creating transaction object
+		Transaction trans = (Transaction) session.beginTransaction();
+		
+		java.sql.Timestamp last_login_datetime = new java.sql.Timestamp(new java.util.Date().getTime());
+		Query query = session.createNativeQuery(
+				"update registration  as dest , (\r\n"
+				+ " SELECT (case when login_attempt IS NULL then 1\r\n"
+				+ "             else login_attempt + 1\r\n"
+				+ "        end) as login_attempt\r\n"
+				+ " FROM registration\r\n"
+				+ " WHERE email_address = '"+email+"'\r\n"
+				+ " ) as src\r\n"
+				+ " set dest.login_attempt = src.login_attempt\r\n"
+				+ " , dest.last_login_datetime = '"+last_login_datetime+"'\r\n"
+				+ " where dest.email_address ='"+email+"';");
+		// needs other condition too but unable to find correct column
+		int ret = 0;
+		try {
+			ret = query.executeUpdate();
+			trans.commit();
+			System.out.println("updated registration table for email_address =  " + email);
+
+		} catch (Exception ex) {
+			trans.rollback();
+		} finally {
+			// session.close();
+			session.close();
+		}
+		// session.close();
+
+		return ret;
+	}
+	public static int resetLoginDetails(int regId) {
+		
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+		
+		// creating session object
+		Session session = factory;
+		// creating transaction object
+		Transaction trans = (Transaction) session.beginTransaction();
+		
+		java.sql.Timestamp last_login_datetime = new java.sql.Timestamp(new java.util.Date().getTime());
+		Query query = session.createNativeQuery(
+				"update registration set login_attempt = 0 \r\n"
+						+ " , last_login_datetime = '"+last_login_datetime+"'\r\n"
+						+ " where registration_id ="+regId+";");
+		// needs other condition too but unable to find correct column
+		int ret = 0;
+		try {
+			ret = query.executeUpdate();
+			trans.commit();
+			System.out.println("reset registration table for reg_id =  " + regId);
+			
+		} catch (Exception ex) {
+			trans.rollback();
+		} finally {
+			// session.close();
+			session.close();
+		}
+		// session.close();
+		
+		return ret;
 	}
 
 }
