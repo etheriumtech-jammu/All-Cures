@@ -59,6 +59,7 @@ public class LoginActionController extends HttpServlet {
 		String hashedPassword = null;
 		final String secretKey = Constant.SECRETE;		
 		hashedPassword = encrypt.encrypt(saltedPassword, secretKey);		
+		PrintWriter out = response.getWriter();
 
 		String remme= (request.getParameter(Constant.REMPWD) == null || "".equals(request.getParameter(Constant.REMPWD))) ? Constant.OFF : Constant.ON;
 		//ToDo: This implementation should not be static as this will cause overwrite issues in a multi user environment
@@ -69,8 +70,10 @@ public class LoginActionController extends HttpServlet {
 			Constant.log("Found at least one user with:"+email+" and pass combination"+hashedPassword, 0);
 			if (null != user.getLogin_attempt() && user.getLogin_attempt() > Constant.login_attempts_max) {
 				Constant.log("Maximum login attemps limit crossed, Please contact ADMIN", 0);
-				response.sendRedirect("Maximum login attemps limit crossed, Please contact ADMIN");
-				return;
+				//response.sendRedirect("Maximum login attemps limit crossed, Please contact ADMIN");
+				response.setStatus(401);
+				out.write("Maximum login attemps limit crossed, Please contact ADMIN");
+				out.flush();
 			}
 			
 			RegistrationDaoImpl.resetLoginDetails(user.getRegistration_id());
@@ -102,8 +105,8 @@ public class LoginActionController extends HttpServlet {
 			if(cmd != null && "login".equalsIgnoreCase(cmd)){
 				Constant.log("Ajax Request for Login Made", 0);
 				try{
-					PrintWriter out = response.getWriter();
 					Gson gson = new GsonBuilder().serializeNulls().create();	
+					response.setStatus(200);
 					String jsondata = gson.toJson(user);
 					out.write(jsondata);
 					out.flush();
@@ -124,7 +127,16 @@ public class LoginActionController extends HttpServlet {
 			RegistrationDaoImpl.updateLoginDetails(email);
 			//No user found with credentials
 			Constant.log("Going to login page with error and destination url", 0);
-			response.sendRedirect("/cures/login1.jsp?errMsg=99&destinationUrl="+destinationUrl);
+			//response.sendRedirect("/cures/login1.jsp?errMsg=99&destinationUrl="+destinationUrl);
+			Registration user2 =RegistrationDaoImpl.findUserByEmail(email);
+			Integer additionsMsg = 1;
+			if (null != user2) {
+				additionsMsg = user2.getLogin_attempt();
+			}
+			response.setStatus(401);
+			//response.sendRedirect("Incorrect email/password! attemps#"+additionsMsg);
+			out.write("Incorrect email/password! attemps#"+additionsMsg);
+			out.flush();
 		}
 	}
 

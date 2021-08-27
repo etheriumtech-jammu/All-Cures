@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -200,6 +201,8 @@ public class RegistrationDaoImpl {
 				register.setprivacy_policy(obj[7] != null ? (Boolean) obj[7] : false);
 				register.setAccount_state(obj[8] != null ? (Integer) obj[8] : 3);
 				register.setRemember_me(obj[9] != null ? (Integer) obj[9] : 0);
+				register.setLast_login_datatime((Timestamp) obj[10]);
+				register.setLogin_attempt(obj[11] != null ? (Integer) obj[11] : 0);
 				Constant.log(Constant.PREFIX + obj[0], 0);
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}

@@ -130,7 +130,7 @@ public class RegistrationActionController extends HttpServlet {
 			}
 		}else{
 			if(!errMsg.equals("")){
-				response.setStatus(403);
+				response.setStatus(200);
 				response.setHeader("errMsg", errMsg);
 				//out.write("/cures/index.jsp?errMsg="+errMsg);
 				out.write(errMsg);
