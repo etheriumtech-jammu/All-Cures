@@ -72,8 +72,10 @@ public class ContentDaoImpl {
 			article.setEdited_by(reg_id);
 			article.setAuthored_by(authById);
 			article.setCountry_id(countryId);
-			article.setPromo_id(promoId);
-			article.setPromo_stage(promoStage);
+			if (null != promoId && promoId != -1) {
+				article.setPromo_id(promoId);
+				article.setPromo_stage(promoStage);
+			}
 			article.setDisease_condition_id(diseaseConditionId);
 			Constant.log("Saved Article Meta Data", 1);
 			session.save(article);
