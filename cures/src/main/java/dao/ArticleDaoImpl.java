@@ -19,6 +19,7 @@ import model.Article;
 import model.Article_dc_name;
 import util.ArticleUtils;
 import util.HibernateUtil;
+import util.SendEmailUtil;
 
 //1	active
 //7	WorkInProgress
@@ -220,7 +221,7 @@ public class ArticleDaoImpl {
 			}
 			System.out.println(contents);
 
-			article.setAuthored_by((Integer) obj[8]);
+			article.setAuthored_by((String) obj[8]);
 			article.setPublished_by((Integer) obj[9]);
 			article.setEdited_by((Integer) obj[10]);
 			article.setCopyright_id((Integer) obj[11]);
@@ -372,6 +373,8 @@ public class ArticleDaoImpl {
 
 	public static int updateArticleId(int article_id, HashMap articleMap) {
 
+		//SendEmailUtil.shootEmail(null, "Article updated top ", "Hi aritcleid="+article_id);
+
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
 
@@ -424,7 +427,7 @@ public class ArticleDaoImpl {
 			updatestr += "`pubstatus_id` = " + articleMap.get("pubstatus_id") + ",\r\n";
 			// in case article is set to be PUBLISHED status_id=3 set published_date to
 			// current date
-			if ((String) articleMap.get("pubstatus_id") == "3") {
+			if ((int) articleMap.get("pubstatus_id") == 3) {
 				java.util.Date date = new java.util.Date();
 				updatestr += "`published_date` = '" + date + "',\r\n";
 			}
@@ -469,6 +472,8 @@ public class ArticleDaoImpl {
 				// 123211111\"}}],\"version\":\"2.21.0\"}";
 				value = ArticleUtils.updateArticleContent(art_location, content, article_id, 1);
 				value = true;
+				SendEmailUtil.shootEmail(null, "Article updated ", "Hi aritcleid="+article_id);
+
 			} catch (Exception e) {
 				e.printStackTrace();
 				value = false;

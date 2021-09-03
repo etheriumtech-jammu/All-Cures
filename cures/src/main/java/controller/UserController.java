@@ -49,7 +49,8 @@ public class UserController {
 		return registrationDaoImpl.checkEmail(email);
 	}
 
-	//@RequestMapping(value = "/getemaildecrypt?e={em}", produces = "application/json", method = RequestMethod.GET)
+	// @RequestMapping(value = "/getemaildecrypt?e={em}", produces =
+	// "application/json", method = RequestMethod.GET)
 	@RequestMapping(value = "/getemdecrypt", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody String getEmailDecrypted(@RequestParam String em) {
 		String email = null;
@@ -61,7 +62,7 @@ public class UserController {
 
 		return email;
 	}
-	
+
 	@RequestMapping(value = "/getemdecrypt", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody String getEmailDecryptedPost(@RequestBody HashMap reqBody) {
 		String email = (String) reqBody.get("email");
@@ -73,7 +74,7 @@ public class UserController {
 
 		return em;
 	}
-	
+
 	@RequestMapping(value = "/getemencrypt", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody String getEmailEncrypted(@RequestParam String em) {
 		String emailEnc = null;
@@ -84,6 +85,30 @@ public class UserController {
 		Constant.log("????????????????????????::::::::::::::" + em, 0);
 
 		return emailEnc;
+	}
+
+	@RequestMapping(value = "/subscribe/{mobile}", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody int subscribe(@PathVariable long mobile, @RequestBody HashMap ns_map) {
+
+		Constant.log("????????????????????????::::::::::::::" + mobile, 0);
+
+		return registrationDaoImpl.subscribe(mobile, ns_map);
+	}
+
+	@RequestMapping(value = "/updatesubscribe/{mobile}", produces = "application/json", method = RequestMethod.PUT)
+	public @ResponseBody int updatesubscribe(@PathVariable long mobile, @RequestBody HashMap ns_map) {
+
+		Constant.log("????????????????????????::::::::::::::" + mobile, 0);
+
+		return registrationDaoImpl.updatesubscribe(mobile, ns_map);
+	}
+
+	@RequestMapping(value = "/unsubscribe/{mobile}", produces = "application/json", method = RequestMethod.DELETE)
+	public @ResponseBody int unsubscribe(@PathVariable long mobile) {
+
+		Constant.log(" unsubscribe????????????????????????::::::::::::::" + mobile, 0);
+
+		return registrationDaoImpl.unsubscribe(mobile);
 	}
 
 }

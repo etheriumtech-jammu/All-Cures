@@ -36,7 +36,7 @@ public class ContentDaoImpl {
 	}
 	
 	
-	public boolean createArticle(int pubStatus, int lang, int disclaimerId, int copyrightId, int authById, String title, String frndlyName, 
+	public boolean createArticle(int pubStatus, int lang, int disclaimerId, int copyrightId, String authById, String title, String frndlyName, 
 			String subhead, String contentTypeId, String keywords, String windowTitle, 
 			String contentLocation, Integer reg_id, String articleContent, Integer diseaseConditionId, Integer countryId, String comments, Integer promoId, Integer promoStage) {
 			

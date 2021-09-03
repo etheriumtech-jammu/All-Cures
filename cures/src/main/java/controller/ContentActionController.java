@@ -103,12 +103,12 @@ public class ContentActionController extends HttpServlet {
 		}
 		Constant.log("Creating Article with Copyright:"+c_loc, 0);
 		
-		String authId = request.getParameter("authById");;
-		int iAuthId = -1; //Negative indicates error
-		if(authId != null && !"".equals(authId.trim())){
-			iAuthId = Integer.parseInt(authId);
-		}
-		Constant.log("Creating Article with Author:"+authId, 0);
+		String authIdS = request.getParameter("authById");;
+//		int iAuthId = -1; //Negative indicates error
+//		if(authId != null && !"".equals(authId.trim())){
+//			iAuthId = Integer.parseInt(authId);
+//		}
+		Constant.log("Creating Article with Author:"+authIdS, 0);
 		String keyword=request.getParameter("keywords");
 		String window_title=request.getParameter("winTitle");;
 		String articlecontent= request.getParameter("articleContent");
@@ -118,7 +118,7 @@ public class ContentActionController extends HttpServlet {
 		if(countryId != null && !"".equals(countryId.trim())){
 			iCountryId = Integer.parseInt(countryId);
 		}
-		Constant.log("Creating Article with Author:"+authId, 0);
+		Constant.log("Creating Article with Authors:"+authIdS, 0);
 		
 		String diseaseConditionId = request.getParameter("diseaseConditionId");;
 		int iDiseaseConditionId = -1; //Negative indicates error
@@ -147,7 +147,7 @@ public class ContentActionController extends HttpServlet {
 		}else{
 			//TODO: Remove this hardcoding	
 			Constant.log("User object is in session; User is logged In; Adding Article Now", 0);
-			boolean bResult = contentDao.createArticle(iStatus, iLang, iDiscId, iCopyId, iAuthId, title, artFrndlyNm, subHead, 
+			boolean bResult = contentDao.createArticle(iStatus, iLang, iDiscId, iCopyId, authIdS, title, artFrndlyNm, subHead, 
 					content_type, keyword, window_title, null, user.getRegistration_id().intValue(), articlecontent, iDiseaseConditionId, iCountryId,comments,ipromoId,promoStage);
 			if(bResult == true){
 				result = 1;

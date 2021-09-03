@@ -76,5 +76,8 @@
         <aop:advisor advice-ref="handlerExceptionResolverLoggingInterceptor"
             pointcut="execution(* org.springframework.web.servlet.HandlerExceptionResolver.resolveException(..))" />
     </aop:config> -->
-
+	<!-- bean class="com.concretepage.config.SwaggerConfig"/> 
+	<mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/>
+	<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
+	 -->
 </beans>

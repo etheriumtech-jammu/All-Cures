@@ -41,7 +41,7 @@ public class Article_dc_name implements Serializable {
 	@Column(name = "content_location")
 	private String content_location;
 	@Column(name = "authored_by")
-	private Integer authored_by;
+	private String authored_by;
 	@Column(name = "published_by")
 	private Integer published_by;
 	@Column(name = "edited_by")
@@ -159,7 +159,7 @@ public class Article_dc_name implements Serializable {
 	}
 
 	public Article_dc_name(Integer article_id, String title, String friendly_name, String subheading,
-			String contentTypeId, String keywords, String window_title, String content_location, Integer authored_by,
+			String contentTypeId, String keywords, String window_title, String content_location, String authored_by,
 			Integer published_by, Integer edited_by, Integer copyright_id, Integer disclaimer_id, Date create_date,
 			Date published_date, Integer pubstatus_id, Integer language_id, Integer copyright_file_loc_id,
 			Integer disclaimer_file_loc_id, Integer country_id, Integer disease_condition_id) {
@@ -259,11 +259,11 @@ public class Article_dc_name implements Serializable {
 		this.content_location = content_location;
 	}
 
-	public Integer getAuthored_by() {
+	public String getAuthored_by() {
 		return authored_by;
 	}
 
-	public void setAuthored_by(Integer authored_by) {
+	public void setAuthored_by(String authored_by) {
 		this.authored_by = authored_by;
 	}
 

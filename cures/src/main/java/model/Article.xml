@@ -30,7 +30,7 @@
         <property name="content_location" type="string">
             <column name="content_location" length="20"  />
         </property>
- 		<property name="authored_by" type="java.lang.Integer">
+ 		<property name="authored_by" type="string">
             <column name="authored_by" length="20"  />
         </property>
         <property name="published_by" type="java.lang.Integer">

@@ -7,16 +7,24 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import controller.UserController;
 import model.Article_dc_name;
 import model.Registration;
 import util.ArticleUtils;
 import util.Constant;
 import util.HibernateUtil;
+import util.SendEmailUtil;
 
 @Component
 public class RegistrationDaoImpl {
@@ -114,6 +122,8 @@ public class RegistrationDaoImpl {
 				// sessionFactory.close();
 				// TODO: LogUserIn
 			}
+			SendEmailUtil.shootEmail(email, "Welcome Allcures",
+					"Hi " + f_name + "," + " Thanks for the registration with allcures.");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			session.getTransaction().rollback();
@@ -310,6 +320,9 @@ public class RegistrationDaoImpl {
 			if (results.size() == 0) {
 				return 0;
 			} else {
+				String encEmail = new UserController().getEmailEncrypted(email);
+				String link = "http://localhost:3000/loginForm/ResetPass/?em=" + encEmail;
+				SendEmailUtil.shootEmail(email, "Test subject", "Password reset link here...\n" + link);
 				return 1;
 			}
 //			System.out.println("check email exists in  registration table for email passed from UI =  " + email);
@@ -322,8 +335,7 @@ public class RegistrationDaoImpl {
 
 		return ret;
 	}
-	
-	
+
 	public static int updateLoginDetails(String email) {
 
 		// creating seession factory object
@@ -333,19 +345,14 @@ public class RegistrationDaoImpl {
 		Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
-		
+
 		java.sql.Timestamp last_login_datetime = new java.sql.Timestamp(new java.util.Date().getTime());
 		Query query = session.createNativeQuery(
-				"update registration  as dest , (\r\n"
-				+ " SELECT (case when login_attempt IS NULL then 1\r\n"
-				+ "             else login_attempt + 1\r\n"
-				+ "        end) as login_attempt\r\n"
-				+ " FROM registration\r\n"
-				+ " WHERE email_address = '"+email+"'\r\n"
-				+ " ) as src\r\n"
-				+ " set dest.login_attempt = src.login_attempt\r\n"
-				+ " , dest.last_login_datetime = '"+last_login_datetime+"'\r\n"
-				+ " where dest.email_address ='"+email+"';");
+				"update registration  as dest , (\r\n" + " SELECT (case when login_attempt IS NULL then 1\r\n"
+						+ "             else login_attempt + 1\r\n" + "        end) as login_attempt\r\n"
+						+ " FROM registration\r\n" + " WHERE email_address = '" + email + "'\r\n" + " ) as src\r\n"
+						+ " set dest.login_attempt = src.login_attempt\r\n" + " , dest.last_login_datetime = '"
+						+ last_login_datetime + "'\r\n" + " where dest.email_address ='" + email + "';");
 		// needs other condition too but unable to find correct column
 		int ret = 0;
 		try {
@@ -363,28 +370,28 @@ public class RegistrationDaoImpl {
 
 		return ret;
 	}
+
 	public static int resetLoginDetails(int regId) {
-		
+
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
-		
+
 		// creating session object
 		Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
-		
+
 		java.sql.Timestamp last_login_datetime = new java.sql.Timestamp(new java.util.Date().getTime());
-		Query query = session.createNativeQuery(
-				"update registration set login_attempt = 0 \r\n"
-						+ " , last_login_datetime = '"+last_login_datetime+"'\r\n"
-						+ " where registration_id ="+regId+";");
+		Query query = session
+				.createNativeQuery("update registration set login_attempt = 0 \r\n" + " , last_login_datetime = '"
+						+ last_login_datetime + "'\r\n" + " where registration_id =" + regId + ";");
 		// needs other condition too but unable to find correct column
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
 			trans.commit();
 			System.out.println("reset registration table for reg_id =  " + regId);
-			
+
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
@@ -392,7 +399,153 @@ public class RegistrationDaoImpl {
 			session.close();
 		}
 		// session.close();
+
+		return ret;
+	}
+
+	public static int subscribe(long mobile, HashMap ns_map) {
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+
+		// creating session object
+		Session session = factory;
+		// creating transaction object
+		Transaction trans = (Transaction) session.beginTransaction();
+
+		java.util.Date date = new java.util.Date();
+		java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+		String nl_start_date = sqlDate.toString();
+
+		int nl_subscription_disease_id = (int) ns_map.get("nl_subscription_disease_id");
+		int nl_sub_type = (int) ns_map.get("nl_sub_type");
+		int nl_subscription_cures_id = (int) ns_map.get("nl_subscription_cures_id");
+		System.out.println("Subscribe create_date>>>>>" + nl_start_date);
+		// set active =1 for new subscription
+		Query query = session.createNativeQuery("INSERT INTO `allcures_schema`.`newsletter` (\r\n" + "\r\n"
+				+ "`nl_subscription_disease_id`,\r\n" + "`nl_start_date`,\r\n" + "`nl_sub_type`,\r\n" + "`mobile`,\r\n"
+				+ "`nl_subscription_cures_id`, `active`)\r\n" + " VALUES \r\n" + "(" + "\r\n"
+				+ nl_subscription_disease_id + ",\r\n '" + nl_start_date + "' ,\r\n" + nl_sub_type + ",\r\n" + mobile
+				+ ",\r\n" + nl_subscription_cures_id + ",1);\r\n");
+		// needs other condition too but unable to find correct column
+		System.out.println(query);
+		int ret = 0;
+		try {
+			ret = query.executeUpdate();
+			trans.commit();
+			System.out.println("inserted new entry to newsletter table for mobile =  " + mobile);
+
+		} catch (Exception ex) {
+			trans.rollback();
+		} finally {
+			// session.close();
+			session.close();
+		}
+		// session.close();
+
+		return ret;
+	}
+
+	public static int updatesubscribe(long mobile, HashMap ns_map) {
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+		// creating session object
+		Session session = factory;
+		// creating transaction object
+		Transaction trans = (Transaction) session.beginTransaction();
+		/*
+		 * HttpServletRequest request = ((ServletRequestAttributes)
+		 * RequestContextHolder.currentRequestAttributes()) .getRequest(); HttpSession
+		 * sessionreq = request.getSession(true);
+		 * 
+		 * int reg_id = 0; if (sessionreq.getAttribute(Constant.USER) != null) {
+		 * Constant.log("update subscription #########USER IS IN SESSION########", 0);
+		 * Registration user = (Registration) sessionreq.getAttribute(Constant.USER);
+		 * reg_id = user.getRegistration_id(); System.out.println(reg_id); // to =
+		 * user.getEmail_address(); } System.out.println(reg_id);
+		 */
+
+		int nl_subscription_disease_id = (int) ns_map.get("nl_subscription_disease_id");
+		int nl_sub_type = (int) ns_map.get("nl_sub_type");
+		int nl_subscription_cures_id = (int) ns_map.get("nl_subscription_cures_id");
+
+		String updateStr = "";
+//		if ((mobile + "").equals("")) {
+//			updateStr += " mobile=" + mobile + ",";
+//		}
+		if (!(nl_subscription_disease_id + "").equals("")) {
+			updateStr += " nl_subscription_disease_id=" + nl_subscription_disease_id + ",";
+		}
+		if (!(nl_sub_type + "").equals("")) {
+			updateStr += " nl_sub_type=" + nl_sub_type + ",";
+		}
+		if (!(nl_subscription_cures_id + "").equals("")) {
+			updateStr += " nl_subscription_cures_id=" + nl_subscription_cures_id + ",";
+		}
+
+		updateStr = updateStr.replaceAll(",$", "");
+
+		Query queryArticlePromoPaid = session
+				.createNativeQuery("UPDATE newsletter SET " + updateStr + "  WHERE mobile = " + mobile + ";");
+
+		int ret = 0;
+		try {
+			ret = queryArticlePromoPaid.executeUpdate();
+			trans.commit();
+			System.out.println("updated newsletter table for mobile  =  " + mobile);
+//			SendEmailUtil.shootEmail(null, "updated scbscription ",
+//					"Hi, \n\r updated newsletter table for mobile  =  " + mobile);
+
+		} catch (Exception ex) {
+			trans.rollback();
+		} finally {
+			session.close();
+		}
+
+		return ret;
+	}
+
+	public int unsubscribe(long mobile) {
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+		// creating session object
+		Session session = factory;
+		// creating transaction object
+		Transaction trans = (Transaction) session.beginTransaction();
+//		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+//				.getRequest();
+//		HttpSession sessionreq = request.getSession(true);
+//
+//		int reg_id = 0;
+//		if (sessionreq.getAttribute(Constant.USER) != null) {
+//			Constant.log("update subscription #########USER IS IN SESSION########", 0);
+//			Registration user = (Registration) sessionreq.getAttribute(Constant.USER);
+//			reg_id = user.getRegistration_id();
+//			System.out.println(reg_id);
+//			// to = user.getEmail_address();
+//		}
+//		System.out.println(reg_id);
+
+		java.util.Date date = new java.util.Date();
+		java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+		String nl_end_date = sqlDate.toString();
 		
+		Query queryArticlePromoPaid = session.createNativeQuery(
+				"UPDATE newsletter SET active=0  and nl_end_date = '"+nl_end_date+"' WHERE mobile=" + mobile + ");");
+
+		int ret = 0;
+		try {
+			ret = queryArticlePromoPaid.executeUpdate();
+			trans.commit();
+			System.out.println("unscribe newsletter table for mobile = " + mobile);
+//			SendEmailUtil.shootEmail(null, "Unscribed allcures ",
+//					"Hi, \n\r updated newsletter table for reg_id  =  " + reg_id);
+
+		} catch (Exception ex) {
+			trans.rollback();
+		} finally {
+			session.close();
+		}
+
 		return ret;
 	}
 
