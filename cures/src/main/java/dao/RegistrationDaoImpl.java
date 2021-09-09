@@ -528,9 +528,9 @@ public class RegistrationDaoImpl {
 		java.util.Date date = new java.util.Date();
 		java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 		String nl_end_date = sqlDate.toString();
-		
-		Query queryArticlePromoPaid = session.createNativeQuery(
-				"UPDATE newsletter SET active=0  and nl_end_date = '"+nl_end_date+"' WHERE mobile=" + mobile + ");");
+
+		Query queryArticlePromoPaid = session.createNativeQuery("UPDATE newsletter SET active=0  and nl_end_date = '"
+				+ nl_end_date + "' WHERE mobile=" + mobile + ");");
 
 		int ret = 0;
 		try {
@@ -547,6 +547,52 @@ public class RegistrationDaoImpl {
 		}
 
 		return ret;
+	}
+
+	public static ArrayList getSubscriptionDetail(long mobile) {
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+		// creating session object
+		Session session = factory;
+		// Only Logging Password in Logs in Debug Mode
+		Constant.log("Finding users with mobile:" + mobile, 0);
+
+		// creating transaction object
+		Transaction trans = (Transaction) session.beginTransaction();
+		Registration register = null;
+		Query query = session.createNativeQuery(
+				"SELECT `newsletter`.`user_id`,\r\n" + "    `newsletter`.`nl_subscription_disease_id`,\r\n"
+						+ "    `newsletter`.`nl_start_date`,\r\n" + "    `newsletter`.`nl_sub_type`,\r\n"
+						+ "    `newsletter`.`mobile`,\r\n" + "    `newsletter`.`nl_subscription_cures_id`,\r\n"
+						+ "    `newsletter`.`active`,\r\n" + "    `newsletter`.`nl_end_date`\r\n"
+						+ " FROM `allcures_schema`.`newsletter`\r\n" + " where mobile=" + mobile + ";");
+
+		List<Object[]> results = (List<Object[]>) query.getResultList();
+		System.out.println("result list Promo@@@@@@@@@@@@@ size=" + results.size());
+		List hmFinal = new ArrayList();
+		for (Object[] objects : results) {
+			HashMap hm = new HashMap();
+			int user_id = objects[0] != null ? (int) objects[0] : 0;
+			String nl_subscription_disease_id = (String) objects[1];
+			java.sql.Date nl_start_date = (java.sql.Date) objects[2];
+			int nl_sub_type = objects[3] != null ? (int) objects[3] : 0;
+			Double mobile1 = (Double) objects[4];
+			String nl_subscription_cures_id = (String) objects[5];
+			Integer active = objects[6] != null ? (int) objects[6] : 0;
+			java.sql.Date nl_end_date = (java.sql.Date) objects[7];
+
+			hm.put("user_id", user_id);
+			hm.put("nl_subscription_disease_id", nl_subscription_disease_id);
+			hm.put("nl_start_date", nl_start_date);
+			hm.put("nl_sub_type", nl_sub_type);
+			hm.put("mobile", mobile1);
+			hm.put("nl_subscription_cures_id", nl_subscription_cures_id);
+			hm.put("active", active);
+			hm.put("nl_end_date", nl_end_date);
+			hmFinal.add(hm);
+		}
+		session.close();
+		return (ArrayList) hmFinal;
 	}
 
 }

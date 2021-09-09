@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,6 +110,14 @@ public class UserController {
 		Constant.log(" unsubscribe????????????????????????::::::::::::::" + mobile, 0);
 
 		return registrationDaoImpl.unsubscribe(mobile);
+	}
+
+	@RequestMapping(value = "/subscriptiondetails/{mobile}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody ArrayList getSubscriptionDetails(@PathVariable long mobile) {
+
+		Constant.log("????????????????????????::::::::::::::" + mobile, 0);
+
+		return registrationDaoImpl.getSubscriptionDetail(mobile);
 	}
 
 }
