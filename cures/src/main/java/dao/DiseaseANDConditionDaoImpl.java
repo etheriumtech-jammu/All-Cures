@@ -38,10 +38,12 @@ public class DiseaseANDConditionDaoImpl {
 						+ " FROM allcures_schema.article a \r\n" 
 						+ "inner join disease_condition dc on a.disease_condition_id = dc.dc_id\r\n"
 						+ "inner join languages l on a.language_id = l.language_id\r\n"
-						+ "inner join countries c on c.countrycodeid = a.country_id\r\n" + "where (dc.dc_name like '%"
+						//+ "inner join countries c on c.countrycodeid = a.country_id\r\n" 
+						+ "where (dc.dc_name like '%"
 						+ search_str + "%' \r\n" + "or dc.dc_desc like '%" + search_str + "%'\r\n" + "or title  like '%"
 						+ search_str + "%'\r\n" + "or friendly_name  like '%" + search_str + "%'\r\n"
-						+ "or window_title  like '%" + search_str + "%'\r\n" + "or countryname like '%" + search_str
+						+ "or window_title  like '%" + search_str + "%'\r\n" 
+						//+ "or countryname like '%" + search_str
 						+ "%'\r\n" + "or lang_name like '%" + search_str + "%'\r\n" + ")\r\n"
 						+ "and pubstatus_id = 3 \r\n" + "\r\n" + "");
 		// needs other condition too but unable to find correct column
@@ -59,7 +61,7 @@ public class DiseaseANDConditionDaoImpl {
 			String keywords = (String) objects[5];
 			String window_title = (String) objects[6];
 			String content_location = (String) objects[7];
-			int authored_by = (int) objects[8];
+			String authored_by = (String) objects[8];
 			int published_by = objects[9] != null ? (int) objects[9] : 0;
 			int edited_by = (int) objects[10];
 			int copyright_id = (int) objects[11];

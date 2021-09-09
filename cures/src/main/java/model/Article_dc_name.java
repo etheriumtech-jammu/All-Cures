@@ -73,6 +73,10 @@ public class Article_dc_name implements Serializable {
 	private String content;
 
 	private String dc_name;
+	
+	
+	@Column(name = "type")
+	private String type;
 
 	/*
 	 * @OneToOne(targetEntity = Author.class) private String author_firstname;
@@ -137,8 +141,8 @@ public class Article_dc_name implements Serializable {
 	}
 
 	public Article_dc_name(Integer article_id, String title, String friendly_name, String subheading,
-			Integer content_type_id, String keywords, String window_title, String content_location, Integer lang_id,
-			Integer copyright_file_id, Integer disclaimer_file_id, Integer pubStatus) {
+			String content_type, String keywords, String window_title, String content_location, Integer lang_id,
+			Integer copyright_file_id, Integer disclaimer_file_id, Integer pubStatus, String type) {
 		super();
 		this.article_id = article_id;
 		this.title = title;
@@ -148,6 +152,7 @@ public class Article_dc_name implements Serializable {
 		this.keywords = keywords;
 		this.window_title = window_title;
 		this.content_location = content_location;
+		this.type = type;
 		/*
 		 * this.author_firstname = author_firstname; this.author_middlename =
 		 * author_middlename; this.author_lastname = author_lastname; this.author_email
@@ -162,7 +167,7 @@ public class Article_dc_name implements Serializable {
 			String contentTypeId, String keywords, String window_title, String content_location, String authored_by,
 			Integer published_by, Integer edited_by, Integer copyright_id, Integer disclaimer_id, Date create_date,
 			Date published_date, Integer pubstatus_id, Integer language_id, Integer copyright_file_loc_id,
-			Integer disclaimer_file_loc_id, Integer country_id, Integer disease_condition_id) {
+			Integer disclaimer_file_loc_id, Integer country_id, Integer disease_condition_id, String type) {
 		super();
 		this.article_id = article_id;
 		this.title = title;
@@ -183,6 +188,7 @@ public class Article_dc_name implements Serializable {
 		this.language_id = language_id;
 		this.disease_condition_id = disease_condition_id;
 		this.country_id = country_id;
+		this.type = type;
 		/*
 		 * this.copyright_file_loc = copyright_file_loc_id; this.disclaimer_file_loc =
 		 * disclaimer_file_loc_id; this.status_discription = status_discription_id;
@@ -361,6 +367,14 @@ public class Article_dc_name implements Serializable {
 
 	public void setComments(String comments) {
 		this.comments = comments;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	/*

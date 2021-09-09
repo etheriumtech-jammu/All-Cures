@@ -81,6 +81,10 @@ public class ContentActionController extends HttpServlet {
 //			iContentType = Integer.parseInt(content_type);
 //		}
 		Constant.log("Creating Article with Content Type:"+content_type, 0);
+		
+		String type=request.getParameter("type");
+		Constant.log("Creating Article with Type:"+type, 0);
+
 		String status= request.getParameter("articleStatus");
 		System.out.println("Test articleStatus Val"+status);
 		int iStatus = 1; //WIP By Default
@@ -148,7 +152,8 @@ public class ContentActionController extends HttpServlet {
 			//TODO: Remove this hardcoding	
 			Constant.log("User object is in session; User is logged In; Adding Article Now", 0);
 			boolean bResult = contentDao.createArticle(iStatus, iLang, iDiscId, iCopyId, authIdS, title, artFrndlyNm, subHead, 
-					content_type, keyword, window_title, null, user.getRegistration_id().intValue(), articlecontent, iDiseaseConditionId, iCountryId,comments,ipromoId,promoStage);
+					content_type, keyword, window_title, null, user.getRegistration_id().intValue(), articlecontent, iDiseaseConditionId, iCountryId,comments,
+					ipromoId,promoStage,type);
 			if(bResult == true){
 				result = 1;
 			}
@@ -225,12 +230,13 @@ public class ContentActionController extends HttpServlet {
 			if(!ajaxCall){
 				//Set the article object in the session or servlet Context
 				Constant.log("Sending status to article.jsp:"+status, 1);
-				status = 1;
+				//status = 1;
 				response.sendRedirect("/cures/article.jsp?status="+status);
 			}else{
 				Constant.log("Ajax Call Response:"+status, 1);
-				status = 1;
-				out.write("staus="+status);
+				//status = 1;
+				Constant.log("staus="+status,1);
+				out.write(""+status);
 				out.flush();
 				out.close();
 			}				

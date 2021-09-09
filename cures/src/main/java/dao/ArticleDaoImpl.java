@@ -143,6 +143,7 @@ public class ArticleDaoImpl {
 				+ "    `article`.`content`,\r\n"
 				+ "    `article`.`country_id`,\r\n"
 				+ "    `article`.`disease_condition_id`,\r\n"
+				+ "    `article`.`type`,\r\n"
 				+ "    `dc`.`dc_name`\r\n"
 				+ "FROM `allcures_schema`.`article`\r\n"
 				+ "inner join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
@@ -232,8 +233,9 @@ public class ArticleDaoImpl {
 			article.setLanguage_id((Integer) obj[16]);
 			article.setCountry_id((Integer) obj[18]);
 			article.setDisease_condition_id((Integer) obj[19]);
+			article.setType((String) obj[20]);
 			article.setContent(contents);
-			article.setDc_name((String) obj[20]);
+			article.setDc_name((String) obj[21]);
 		}
 		session.close();
 
@@ -259,7 +261,8 @@ public class ArticleDaoImpl {
 				+ "    `article`.`edited_by`,\r\n" + "    `article`.`copyright_id`,\r\n"
 				+ "    `article`.`disclaimer_id`,\r\n" + "    `article`.`create_date`,\r\n"
 				+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
-				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`\r\n"
+				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n"
+				+ "    `article`.`type`\r\n"
 				+ "FROM `allcures_schema`.`article`;\r\n" + ";");
 		// needs other condition too but unable to find correct column
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
@@ -310,7 +313,7 @@ public class ArticleDaoImpl {
 			String keywords = (String) objects[5];
 			String window_title = (String) objects[6];
 			String content_location = (String) objects[7];
-			int authored_by = objects[8] != null ? (int) objects[8] : 0;
+			String authored_by = (String) objects[8];
 			int published_by = objects[9] != null ? (int) objects[9] : 0;
 			int edited_by = (int) objects[10];
 			int copyright_id = (int) objects[11];
@@ -394,7 +397,7 @@ public class ArticleDaoImpl {
 			updatestr += "`subheading` = '" + articleMap.get("subheading") + "',\r\n";
 		}
 		if (articleMap.containsKey("content_type")) {
-			updatestr += "`content_type` = " + articleMap.get("content_type") + ",\r\n";
+			updatestr += "`content_type` = '" + articleMap.get("content_type") + "',\r\n";
 		}
 		if (articleMap.containsKey("keywords")) {
 			updatestr += "`keywords` = '" + articleMap.get("keywords") + "',\r\n";
@@ -406,7 +409,7 @@ public class ArticleDaoImpl {
 			updatestr += "`content_location` = '" + articleMap.get("content_location") + "',\r\n";
 		}
 		if (articleMap.containsKey("authored_by")) {
-			updatestr += "`authored_by` = " + articleMap.get("authored_by") + ",\r\n";
+			updatestr += "`authored_by` = '" + articleMap.get("authored_by") + "',\r\n";
 		}
 		if (articleMap.containsKey("published_by")) {
 			updatestr += "`published_by` = " + articleMap.get("published_by") + ",\r\n";
@@ -420,16 +423,17 @@ public class ArticleDaoImpl {
 		if (articleMap.containsKey("create_date")) {
 			updatestr += "`create_date` = '" + articleMap.get("create_date") + "',\r\n";
 		}
-		if (articleMap.containsKey("published_date")) {
-			updatestr += "`published_date` = '" + articleMap.get("published_date") + "',\r\n";
-		}
+//		if (articleMap.containsKey("published_date")) {
+//			updatestr += "`published_date` = '" + articleMap.get("published_date") + "',\r\n";
+//		}
 		if (articleMap.containsKey("pubstatus_id")) {
 			updatestr += "`pubstatus_id` = " + articleMap.get("pubstatus_id") + ",\r\n";
 			// in case article is set to be PUBLISHED status_id=3 set published_date to
 			// current date
 			if ((int) articleMap.get("pubstatus_id") == 3) {
 				java.util.Date date = new java.util.Date();
-				updatestr += "`published_date` = '" + date + "',\r\n";
+				java.sql.Date sqlDate=new java.sql.Date(date.getTime());
+				updatestr += "`published_date` = '" + sqlDate + "',\r\n";
 			}
 		}
 		if (articleMap.containsKey("language_id")) {
