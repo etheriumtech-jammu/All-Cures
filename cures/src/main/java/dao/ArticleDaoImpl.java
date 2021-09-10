@@ -144,7 +144,8 @@ public class ArticleDaoImpl {
 				+ "    `article`.`country_id`,\r\n"
 				+ "    `article`.`disease_condition_id`,\r\n"
 				+ "    `article`.`type`,\r\n"
-				+ "    `dc`.`dc_name`\r\n"
+				+ "    `dc`.`dc_name`,\r\n"
+				+ "    `article`.`comments`\r\n"
 				+ "FROM `allcures_schema`.`article`\r\n"
 				+ "inner join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
 				+ " where article_id =  "+ reg_id + ";");
@@ -236,6 +237,7 @@ public class ArticleDaoImpl {
 			article.setType((String) obj[20]);
 			article.setContent(contents);
 			article.setDc_name((String) obj[21]);
+			article.setComments((String) obj[22]);
 		}
 		session.close();
 
@@ -262,7 +264,7 @@ public class ArticleDaoImpl {
 				+ "    `article`.`disclaimer_id`,\r\n" + "    `article`.`create_date`,\r\n"
 				+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
 				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n"
-				+ "    `article`.`type`\r\n"
+				+ "    `article`.`type`,\r\n"+ "    `article`.`comments`\r\n"
 				+ "FROM `allcures_schema`.`article`;\r\n" + ";");
 		// needs other condition too but unable to find correct column
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
