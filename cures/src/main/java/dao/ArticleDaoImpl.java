@@ -294,7 +294,7 @@ public class ArticleDaoImpl {
 				+ "    `article`.`disclaimer_id`,\r\n" + "    `article`.`create_date`,\r\n"
 				+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
 				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n"
-				+ "    `dc`.`dc_name`\r\n"
+				+ "    `dc`.`dc_name`\r\n,"+" `article`.comments\r\n,"+" `article`.type "
 
 				+ "FROM `allcures_schema`.`article`\r\n"
 				+ "inner join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
@@ -326,6 +326,8 @@ public class ArticleDaoImpl {
 			int language_id = (int) objects[16];
 			String content = (String) objects[17];
 			String dc_name =(String) objects[18];
+			String comments =(String) objects[19];
+			String type =(String) objects[20];
 
 
 			hm.put("article_id", article_id);
@@ -347,6 +349,8 @@ public class ArticleDaoImpl {
 			hm.put("language_id", language_id);
 			hm.put("content", content);
 			hm.put("dc_name", dc_name);
+			hm.put("comments", comments);
+			hm.put("type", type);
 
 			hmFinal.add(hm);
 			System.out.println(hm);
