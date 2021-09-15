@@ -1,33 +1,30 @@
 package dao;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import controller.UserController;
-import model.Article_dc_name;
+import model.EmailDTO;
 import model.Registration;
-import util.ArticleUtils;
+import service.SendEmailService;
 import util.Constant;
 import util.HibernateUtil;
-import util.SendEmailUtil;
 
 @Component
 public class RegistrationDaoImpl {
+
+	@Autowired
+	private SendEmailService emailUtil;
 
 	public Registration saveRegistration(String f_name, String l_name, String pwd, String email, Boolean accept,
 			Integer type, Boolean policy, Integer state, Integer rem) {
@@ -122,8 +119,16 @@ public class RegistrationDaoImpl {
 				// sessionFactory.close();
 				// TODO: LogUserIn
 			}
-			SendEmailUtil.shootEmail(email, "Welcome Allcures",
-					"Hi " + f_name + "," + " Thanks for the registration with allcures.");
+
+			EmailDTO emaildto = new EmailDTO();
+
+			emaildto.setTo(email);
+			emaildto.setSubject("Registeration user email..");
+			emaildto.setEmailtext("Hi " + f_name + "," + " Thanks for the registration with allcures.");
+
+			String returnEmail = emailUtil.shootEmail(emaildto);
+			// new SendEmailUtil().shootEmail(email, "Welcome Allcures",
+			// "Hi " + f_name + "," + " Thanks for the registration with allcures.");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			session.getTransaction().rollback();
@@ -322,7 +327,29 @@ public class RegistrationDaoImpl {
 			} else {
 				String encEmail = new UserController().getEmailEncrypted(email);
 				String link = "http://localhost:3000/loginForm/ResetPass/?em=" + encEmail;
-				SendEmailUtil.shootEmail(email, "Test subject", "Password reset link here...\n" + link);
+				// new SendEmailUtil().shootEmail(email, "Test subject", "Password reset link
+				// here...\n" + link);
+				EmailDTO emaildto = new EmailDTO();
+
+				emaildto.setTo(email);
+				emaildto.setSubject("Forgot password..");
+				emaildto.setEmailtext("Dear User \n Password reset link here...\n" + link);
+
+				String returnEmail = emailUtil.shootEmail(emaildto);
+				
+				//second email also using template
+				EmailDTO emaildto2 = new EmailDTO();
+
+				emaildto2.setTo(email);
+				emaildto2.setSubject("Forgot password..");
+				// Populate the template data
+				Map<String, Object> templateData = new HashMap<>();
+				templateData.put("templatefile", "email/forgotpassword.ftlh");
+				templateData.put("name", email);
+				templateData.put("linkforgotpassword", link);
+				emaildto2.setEmailTemplateData(templateData);
+
+				returnEmail = emailUtil.shootEmail(emaildto2);
 				return 1;
 			}
 //			System.out.println("check email exists in  registration table for email passed from UI =  " + email);
@@ -492,7 +519,7 @@ public class RegistrationDaoImpl {
 			ret = queryArticlePromoPaid.executeUpdate();
 			trans.commit();
 			System.out.println("updated newsletter table for mobile  =  " + mobile);
-//			SendEmailUtil.shootEmail(null, "updated scbscription ",
+//			SendEmailUtil.shootEmail(null, "updated subscription ",
 //					"Hi, \n\r updated newsletter table for mobile  =  " + mobile);
 
 		} catch (Exception ex) {

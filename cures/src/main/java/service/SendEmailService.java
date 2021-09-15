@@ -1,8 +1,9 @@
-package util;
+package service;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -15,19 +16,67 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.stereotype.Service;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
+import controller.SpringUtils;
+import model.EmailDTO;
 import model.Registration;
+import util.Constant;
+import util.EnDeCryptor;
 
-public class SendEmailUtil {
+@Service
+@Configurable
+public class SendEmailService {
+
+//	@Autowired
+//	private JavaMailSender emailSender;
+
+//	@Autowired
+//	private SpringTemplateEngine templateEngine;
+
+//	@Autowired
+//	private static Configuration freemarkerConfig;
+//	@Autowired
+//	private static FreeMarkerConfigurer freeMarkerConfigurer;
+
+	public void sendEmail(String to, String subject, String messageText) throws MessagingException, IOException {
+
+//        Mail mail = new Mail();
+//
+//		Map<String, Object> model = new HashMap<String, Object>();
+//        model.put("name", "Developer!");
+//        model.put("location", "United States");
+//        model.put("sign", "Java Developer");
+//        mail.setProps(model);
+
+//		MimeMessage message = emailSender.createMimeMessage();
+//		MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+//				StandardCharsets.UTF_8.name());
+//		helper.addAttachment("template-cover.png", new ClassPathResource("javabydeveloper-email.PNG"));
+//		Context context = new Context();
+//		// context.setVariables(mail.getProps());
+//
+//		String html = templateEngine.process("newsletter-template", context);
+//		helper.setTo(to);
+//		helper.setText(html, true);
+//		helper.setSubject(subject);
+//		helper.setFrom("info@etheriumtech.com");
+//		emailSender.send(message);
+	}
 
 //	@Autowired
 //	static    HttpServletRequest request; 
-	public static String shootEmail(String to, String subject, String messageText) throws IOException {
+	// public String shootEmail(String to, String subject, String
+	// mailContentHtml,Map<String, Object> templateData) throws IOException {
+	public String shootEmail(EmailDTO email) throws IOException {
 
 		// Recipient's email ID needs to be mentioned.
-		// String to = "anilraina@etheriumtech.com";
+		String to = email.getTo();
 		if (null == to) {
 			// HttpServletRequest req = (HttpServletRequest) request;
 			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
@@ -46,7 +95,7 @@ public class SendEmailUtil {
 
 		// FileReader reader = new FileReader("cures.properties");
 		String propFileName = "cures.properties";
-		InputStream inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream(propFileName);
+		InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
 		final Properties prop = new Properties();
 
 		if (inputStream != null) {
@@ -85,13 +134,26 @@ public class SendEmailUtil {
 			// Create a default MimeMessage object.
 			MimeMessage message = new MimeMessage(session);
 			// Set From: header field of the header.
-			message.setFrom(new InternetAddress(prop.getProperty("SMTP_EMAIL_FROM_INFO")));
+			if (null != email.getFrom())
+				message.setFrom(email.getFrom());
+			else
+				message.setFrom(new InternetAddress(prop.getProperty("SMTP_EMAIL_FROM_INFO")));
 			// Set To: header field of the header.
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 			// Set Subject: header field
-			message.setSubject(subject);
+			message.setSubject(email.getSubject());
 			// Now set the actual message
-			message.setText(messageText);
+			// message.setText(messageText);
+			System.out.println("###### Email sending initiated ######");
+
+			String mailContentHtml2;
+			if (null != email.getEmailtext())
+				mailContentHtml2 = email.getEmailtext();
+			else
+				mailContentHtml2 = geFreeMarkerTemplateContent(email.getEmailTemplateData());
+
+			message.setContent(mailContentHtml2, "text/html;charset=utf-8");
+
 			System.out.println("sending Email...");
 			// Send message
 			Transport.send(message);
@@ -99,11 +161,25 @@ public class SendEmailUtil {
 		} catch (MessagingException mex) {
 			mex.printStackTrace();
 			return "Error in email sending.";
+		}
+		return "Email sent successfully";
+	}
+
+	private String geFreeMarkerTemplateContent(Map<String, Object> model) {
+		StringBuffer content = new StringBuffer();
+		try {
+			FreeMarkerConfigurer myBean = (FreeMarkerConfigurer) SpringUtils.ctx.getBean(FreeMarkerConfigurer.class);
+			String templateFile = (String) model.get("templatefile");
+			content.append(FreeMarkerTemplateUtils
+					.processTemplateIntoString(myBean.getConfiguration().getTemplate(templateFile), model));
+			// .processTemplateIntoString(myBean.getConfiguration().getTemplate("welcome.ftlh"),
+			// model));
+			return content.toString();
+		} catch (Exception e) {
+			System.out.println("Exception occured while processing fmtemplate:" + e.getMessage());
 
 		}
-
-		return "Email sent successfully";
-
+		return "ERROR!";
 	}
 
 }

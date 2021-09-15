@@ -13,19 +13,25 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import model.Article;
 import model.Article_dc_name;
+import model.EmailDTO;
+import service.SendEmailService;
 import util.ArticleUtils;
 import util.HibernateUtil;
-import util.SendEmailUtil;
 
 //1	active
 //7	WorkInProgress
 //@Component makes sure it is picked up by the ComponentScan (if it is in the right package). This allows @Autowired to work in other classes for instances of this class
 @Component
 public class ArticleDaoImpl {
+	
+	@Autowired
+	private SendEmailService emailUtil;
+	
 	private static ArrayList list = new ArrayList();
 
 	public static ArrayList<Article> findPublishedArticle(int reg_id) {
@@ -380,7 +386,7 @@ public class ArticleDaoImpl {
 		return list;
 	}
 
-	public static int updateArticleId(int article_id, HashMap articleMap) {
+	public int updateArticleId(int article_id, HashMap articleMap) {
 
 		//SendEmailUtil.shootEmail(null, "Article updated top ", "Hi aritcleid="+article_id);
 
@@ -482,7 +488,13 @@ public class ArticleDaoImpl {
 				// 123211111\"}}],\"version\":\"2.21.0\"}";
 				value = ArticleUtils.updateArticleContent(art_location, content, article_id, 1);
 				value = true;
-				SendEmailUtil.shootEmail(null, "Article updated ", "Hi aritcleid="+article_id);
+				//new SendEmailUtil().shootEmail(null, "Article updated ", "Hi aritcleid="+article_id);
+				//String returnEmail = emailUtil.shootEmail("anilraina@etheriumtech.com", "test sub 3", message);
+				EmailDTO emaildto = new EmailDTO();
+				emaildto.setSubject("Article updated ");
+				emaildto.setEmailtext("Hi aritcleid="+article_id);
+
+				String returnEmail = emailUtil.shootEmail(emaildto);
 
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -1,7 +1,13 @@
 package controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,8 +19,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import dao.RegistrationDaoImpl;
+import model.EmailDTO;
+import service.SendEmailService;
 import util.Constant;
 import util.Encryption;
+import util.Test;
 
 @RestController
 @RequestMapping(path = "/users")
@@ -22,6 +31,8 @@ public class UserController {
 
 	@Autowired
 	private RegistrationDaoImpl registrationDaoImpl;
+	@Autowired
+	private SendEmailService emailUtil;
 
 	@RequestMapping(value = "/updatepassword", produces = "application/json", method = RequestMethod.PUT)
 	public @ResponseBody String updatePassword(@RequestBody HashMap reqBody) {
@@ -118,6 +129,35 @@ public class UserController {
 		Constant.log("????????????????????????::::::::::::::" + mobile, 0);
 
 		return registrationDaoImpl.getSubscriptionDetail(mobile);
+	}
+
+	@RequestMapping(value = "/testemail", method = RequestMethod.POST)
+	@ResponseBody
+	public String sendMail(@RequestBody HashMap messageHtml) throws MessagingException {
+		String message = (String) messageHtml.get("message");
+		message = "Hi User,\r\n" + message + "\r\n<b>Thanks</>\r\n Anil Raina";
+		try {
+			EmailDTO email = new EmailDTO();
+
+			email.setTo("anilraina@etheriumtech.com");
+			email.setFrom("anilraina@etheriumtech.com");
+			email.setSubject("1Welcome Letter via Spring Boot + FreeMarker");
+
+			// Populate the template data
+			Map<String, Object> templateData = new HashMap<>();
+			templateData.put("templatefile", "welcome.ftlh");
+			templateData.put("name", "Arnav Koul1");
+			// List of team members...
+			List<String> teamMembers = Arrays.asList("Anil1", "Ajay1", "Ayush", "Arnav");
+			templateData.put("teamMembers", teamMembers);
+			templateData.put("location", "Jammu, India");
+			email.setEmailTemplateData(templateData);
+			String returnEmail = emailUtil.shootEmail(email);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return "Email Sent Successfully.!";
 	}
 
 }
