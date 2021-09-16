@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import model.Article;
 import model.Article_dc_name;
 import model.EmailDTO;
+import model.Registration;
 import service.SendEmailService;
 import util.ArticleUtils;
 import util.HibernateUtil;
@@ -28,13 +29,13 @@ import util.HibernateUtil;
 //@Component makes sure it is picked up by the ComponentScan (if it is in the right package). This allows @Autowired to work in other classes for instances of this class
 @Component
 public class ArticleDaoImpl {
-	
+
 	@Autowired
 	private SendEmailService emailUtil;
-	
+
 	private static ArrayList list = new ArrayList();
 
-	public static ArrayList<Article> findPublishedArticle(int reg_id) {
+	public static ArrayList<Article> findPublishedArticle(Registration user) {
 
 //		HibernateUtil hu = new HibernateUtil();
 //		Session session = hu.getSession();
@@ -49,9 +50,27 @@ public class ArticleDaoImpl {
 		 */
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
+		String conditionMatch = "";
+		// Admin user
+		if (user.getRegistration_type() == 9)
+			conditionMatch = "  ";
+		// Reviewer
+		if (user.getRegistration_type() == 7)
+			conditionMatch = " and  published_by = " + user.getRegistration_id() ;
+		// Editorial
+		if (user.getRegistration_type() == 4)
+			conditionMatch = " and 1=-1 " ;
+		// Author
+		if (user.getRegistration_type() == 3)
+			conditionMatch = " and 1=-1 " ;
+		// patient or doctor
+		if (user.getRegistration_type() == 2 || user.getRegistration_type() == 1)
+			conditionMatch = " and 1=-1 " ;
+
+			//conditionMatch = " and ( authored_by " + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
 
 		Query query = session.createNativeQuery(
-				"select  article_id  from article  where pubstatus_id = 3 and published_by = " + reg_id + ";");
+				"select  article_id  from article  where pubstatus_id = 3 " + conditionMatch + " ;");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
 
@@ -59,7 +78,7 @@ public class ArticleDaoImpl {
 		return list;
 	}
 
-	public static ArrayList<Article> findDraftAricle(int reg_id) {
+	public static ArrayList<Article> findDraftAricle(Registration user) {
 
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -69,9 +88,26 @@ public class ArticleDaoImpl {
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
+		
+		String conditionMatch = "";
+		// Admin user
+		if (user.getRegistration_type() == 9)
+			conditionMatch = "  ";
+		// Reviewer
+		if (user.getRegistration_type() == 7)
+			conditionMatch = " and ( authored_by " + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
+		// Editorial
+		if (user.getRegistration_type() == 4)
+			conditionMatch = " and edited_by = " + user.getRegistration_id() +"  ";
+		// Author
+		if (user.getRegistration_type() == 3)
+			conditionMatch = " and ( authored_by " + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
+		// paitent or doctor
+		if (user.getRegistration_type() == 2 || user.getRegistration_type() == 1)
+			conditionMatch = " and ( authored_by " + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
 
 		Query query = session
-				.createNativeQuery("select  article_id  from article where pubstatus_id = 1 and edited_by = " + reg_id + ";");
+				.createNativeQuery("select  article_id  from article where pubstatus_id = 1 " + conditionMatch + " ;");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
 		session.close();
@@ -80,7 +116,7 @@ public class ArticleDaoImpl {
 		return list;
 	}
 
-	public static ArrayList<Article> findReviwArticle(int reg_id) {
+	public static ArrayList<Article> findReviwArticle(Registration user) {
 
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -89,15 +125,33 @@ public class ArticleDaoImpl {
 		Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
+		
+		String conditionMatch = "";
+		// Admin user
+		if (user.getRegistration_type() == 9)
+			conditionMatch = "  ";
+		// Reviewer
+		if (user.getRegistration_type() == 7)
+			conditionMatch = " ";
+		// Editorial
+		if (user.getRegistration_type() == 4)
+			conditionMatch = " and  edited_by = " + user.getRegistration_id() +" ";
+		// Author
+		if (user.getRegistration_type() == 3)
+			conditionMatch = " 1=-1 ";
+		// paitent or doctor
+		if (user.getRegistration_type() == 2 || user.getRegistration_type() == 1)
+			conditionMatch = " 1=-1 ";
 
-		Query query = session.createNativeQuery("select  article_id  from article  where pubstatus_id = 2 and edited_by = " + reg_id + ";");
+		Query query = session
+				.createNativeQuery("select  article_id  from article  where pubstatus_id = 2 " + conditionMatch + " ;");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
 		session.close();
 		return list;
 	}
 
-	public static ArrayList<Article> findApprovalArticle(int reg_id) {
+	public static ArrayList<Article> findApprovalArticle(Registration user) {
 
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -107,8 +161,25 @@ public class ArticleDaoImpl {
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
+		
+		String conditionMatch = "";
+		// Admin user
+		if (user.getRegistration_type() == 9)
+			conditionMatch = "  ";
+		// Reviewer
+		if (user.getRegistration_type() == 7)
+			conditionMatch = " and 1=-1 ";
+		// Editorial
+		if (user.getRegistration_type() == 4)
+			conditionMatch = " and  edited_by = " + user.getRegistration_id() +" ";
+		// Author
+		if (user.getRegistration_type() == 3)
+			conditionMatch = " and ( authored_by " + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
+		// patient or doctor
+		if (user.getRegistration_type() == 2 || user.getRegistration_type() == 1)
+			conditionMatch = " and ( authored_by " + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
 
-		Query query = session.createNativeQuery("select  article_id  from article  where pubstatus_id = 2 ;");
+		Query query = session.createNativeQuery("select  article_id  from article  where pubstatus_id = 2 " + conditionMatch + " ;");
 		// needs other condition too but unable to find correct column
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
@@ -128,33 +199,20 @@ public class ArticleDaoImpl {
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
-		Query query = session.createNativeQuery(
-				" SELECT `article`.`article_id`,\r\n"
-				+ "    `article`.`title`,\r\n"
-				+ "    `article`.`friendly_name`,\r\n"
-				+ "    `article`.`subheading`,\r\n"
-				+ "    `article`.`content_type`,\r\n"
-				+ "    `article`.`keywords`,\r\n"
-				+ "    `article`.`window_title`,\r\n"
-				+ "    `article`.`content_location`,\r\n"
-				+ "    `article`.`authored_by`,\r\n"
-				+ "    `article`.`published_by`,\r\n"
-				+ "    `article`.`edited_by`,\r\n"
-				+ "    `article`.`copyright_id`,\r\n"
-				+ "    `article`.`disclaimer_id`,\r\n"
-				+ "    `article`.`create_date`,\r\n"
-				+ "    `article`.`published_date`,\r\n"
-				+ "    `article`.`pubstatus_id`,\r\n"
-				+ "    `article`.`language_id`,\r\n"
-				+ "    `article`.`content`,\r\n"
-				+ "    `article`.`country_id`,\r\n"
-				+ "    `article`.`disease_condition_id`,\r\n"
-				+ "    `article`.`type`,\r\n"
-				+ "    `dc`.`dc_name`,\r\n"
-				+ "    `article`.`comments`\r\n"
+		Query query = session.createNativeQuery(" SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
+				+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
+				+ "    `article`.`content_type`,\r\n" + "    `article`.`keywords`,\r\n"
+				+ "    `article`.`window_title`,\r\n" + "    `article`.`content_location`,\r\n"
+				+ "    `article`.`authored_by`,\r\n" + "    `article`.`published_by`,\r\n"
+				+ "    `article`.`edited_by`,\r\n" + "    `article`.`copyright_id`,\r\n"
+				+ "    `article`.`disclaimer_id`,\r\n" + "    `article`.`create_date`,\r\n"
+				+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
+				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n"
+				+ "    `article`.`country_id`,\r\n" + "    `article`.`disease_condition_id`,\r\n"
+				+ "    `article`.`type`,\r\n" + "    `dc`.`dc_name`,\r\n" + "    `article`.`comments`\r\n"
 				+ "FROM `allcures_schema`.`article`\r\n"
 				+ "inner join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
-				+ " where article_id =  "+ reg_id + ";");
+				+ " where article_id =  " + reg_id + ";");
 		ArrayList<Article> articleList = (ArrayList<Article>) query.getResultList();
 		Article_dc_name article = new Article_dc_name();
 		Iterator itr = articleList.iterator();
@@ -172,10 +230,10 @@ public class ArticleDaoImpl {
 			article.setContent_location((String) obj[7]);
 			System.out.println((String) obj[7]);
 			String file = (String) obj[7];
-			//file = "/home/administrator/uat/"+
-			//file = file.replace("\\", "/");//.replace("/", "/");
-			System.out.println("FILENAME===>>>>>>>>>>"+file);
-			//String file = "C:\\" + (String) obj[7];
+			// file = "/home/administrator/uat/"+
+			// file = file.replace("\\", "/");//.replace("/", "/");
+			System.out.println("FILENAME===>>>>>>>>>>" + file);
+			// String file = "C:\\" + (String) obj[7];
 //			file = "C:\\test\\14\\2021\\05\\26\\article_"+(Integer) obj[0]+".json";
 			String contents = "";
 			InputStream is = null;
@@ -269,9 +327,8 @@ public class ArticleDaoImpl {
 				+ "    `article`.`edited_by`,\r\n" + "    `article`.`copyright_id`,\r\n"
 				+ "    `article`.`disclaimer_id`,\r\n" + "    `article`.`create_date`,\r\n"
 				+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
-				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n"
-				+ "    `article`.`type`,\r\n"+ "    `article`.`comments`\r\n"
-				+ "FROM `allcures_schema`.`article`;\r\n" + ";");
+				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n" + "    `article`.`type`,\r\n"
+				+ "    `article`.`comments`\r\n" + "FROM `allcures_schema`.`article`;\r\n" + ";");
 		// needs other condition too but unable to find correct column
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
@@ -299,12 +356,11 @@ public class ArticleDaoImpl {
 				+ "    `article`.`edited_by`,\r\n" + "    `article`.`copyright_id`,\r\n"
 				+ "    `article`.`disclaimer_id`,\r\n" + "    `article`.`create_date`,\r\n"
 				+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
-				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n"
-				+ "    `dc`.`dc_name`\r\n,"+" `article`.comments\r\n,"+" `article`.type "
+				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n" + "    `dc`.`dc_name`\r\n,"
+				+ " `article`.comments\r\n," + " `article`.type "
 
 				+ "FROM `allcures_schema`.`article`\r\n"
-				+ "inner join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
-				+ ";");
+				+ "inner join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n" + ";");
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + results);
@@ -331,10 +387,9 @@ public class ArticleDaoImpl {
 			int pubstatus_id = (int) objects[15];
 			int language_id = (int) objects[16];
 			String content = (String) objects[17];
-			String dc_name =(String) objects[18];
-			String comments =(String) objects[19];
-			String type =(String) objects[20];
-
+			String dc_name = (String) objects[18];
+			String comments = (String) objects[19];
+			String type = (String) objects[20];
 
 			hm.put("article_id", article_id);
 			hm.put("title", title);
@@ -388,7 +443,8 @@ public class ArticleDaoImpl {
 
 	public int updateArticleId(int article_id, HashMap articleMap) {
 
-		//SendEmailUtil.shootEmail(null, "Article updated top ", "Hi aritcleid="+article_id);
+		// SendEmailUtil.shootEmail(null, "Article updated top ", "Hi
+		// aritcleid="+article_id);
 
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -444,7 +500,7 @@ public class ArticleDaoImpl {
 			// current date
 			if ((int) articleMap.get("pubstatus_id") == 3) {
 				java.util.Date date = new java.util.Date();
-				java.sql.Date sqlDate=new java.sql.Date(date.getTime());
+				java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 				updatestr += "`published_date` = '" + sqlDate + "',\r\n";
 			}
 		}
@@ -488,11 +544,13 @@ public class ArticleDaoImpl {
 				// 123211111\"}}],\"version\":\"2.21.0\"}";
 				value = ArticleUtils.updateArticleContent(art_location, content, article_id, 1);
 				value = true;
-				//new SendEmailUtil().shootEmail(null, "Article updated ", "Hi aritcleid="+article_id);
-				//String returnEmail = emailUtil.shootEmail("anilraina@etheriumtech.com", "test sub 3", message);
+				// new SendEmailUtil().shootEmail(null, "Article updated ", "Hi
+				// aritcleid="+article_id);
+				// String returnEmail = emailUtil.shootEmail("anilraina@etheriumtech.com", "test
+				// sub 3", message);
 				EmailDTO emaildto = new EmailDTO();
 				emaildto.setSubject("Article updated ");
-				emaildto.setEmailtext("Hi aritcleid="+article_id);
+				emaildto.setEmailtext("Hi aritcleid=" + article_id);
 
 				String returnEmail = emailUtil.shootEmail(emaildto);
 
