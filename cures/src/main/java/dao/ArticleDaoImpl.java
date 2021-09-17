@@ -67,7 +67,7 @@ public class ArticleDaoImpl {
 		if (user.getRegistration_type() == 2 || user.getRegistration_type() == 1)
 			conditionMatch = " and 1=-1 " ;
 
-			//conditionMatch = " and ( authored_by " + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
+			//conditionMatch = " and ( authored_by =" + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
 
 		Query query = session.createNativeQuery(
 				"select  article_id  from article  where pubstatus_id = 3 " + conditionMatch + " ;");
@@ -95,16 +95,16 @@ public class ArticleDaoImpl {
 			conditionMatch = "  ";
 		// Reviewer
 		if (user.getRegistration_type() == 7)
-			conditionMatch = " and ( authored_by " + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
+			conditionMatch = " and ( authored_by =" + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
 		// Editorial
 		if (user.getRegistration_type() == 4)
 			conditionMatch = " and edited_by = " + user.getRegistration_id() +"  ";
 		// Author
 		if (user.getRegistration_type() == 3)
-			conditionMatch = " and ( authored_by " + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
+			conditionMatch = " and ( authored_by =" + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
 		// paitent or doctor
 		if (user.getRegistration_type() == 2 || user.getRegistration_type() == 1)
-			conditionMatch = " and ( authored_by " + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
+			conditionMatch = " and ( authored_by =" + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
 
 		Query query = session
 				.createNativeQuery("select  article_id  from article where pubstatus_id = 1 " + conditionMatch + " ;");
@@ -174,10 +174,10 @@ public class ArticleDaoImpl {
 			conditionMatch = " and  edited_by = " + user.getRegistration_id() +" ";
 		// Author
 		if (user.getRegistration_type() == 3)
-			conditionMatch = " and ( authored_by " + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
+			conditionMatch = " and ( authored_by =" + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
 		// patient or doctor
 		if (user.getRegistration_type() == 2 || user.getRegistration_type() == 1)
-			conditionMatch = " and ( authored_by " + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
+			conditionMatch = " and ( authored_by =" + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
 
 		Query query = session.createNativeQuery("select  article_id  from article  where pubstatus_id = 2 " + conditionMatch + " ;");
 		// needs other condition too but unable to find correct column
