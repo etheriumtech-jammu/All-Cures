@@ -13,6 +13,8 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import controller.UserController;
 import model.EmailDTO;
 import model.Registration;
@@ -122,11 +124,29 @@ public class RegistrationDaoImpl {
 
 			EmailDTO emaildto = new EmailDTO();
 
+//			emaildto.setTo(email);
+//			emaildto.setSubject("Registration user email..");
+//			emaildto.setEmailtext("Hi " + f_name + "," + " Thanks for the registration with allcures.");
+//			EmailDTO emaildto2 = new EmailDTO();
+
 			emaildto.setTo(email);
-			emaildto.setSubject("Registeration user email..");
-			emaildto.setEmailtext("Hi " + f_name + "," + " Thanks for the registration with allcures.");
+			emaildto.setSubject("Registration User ");
+			// Populate the template data
+			Map<String, Object> templateData = new HashMap<>();
+			templateData.put("templatefile", "email/registration.ftlh");
+			templateData.put("first_name", f_name);
+			String link = "http://localhost:3000";
+			templateData.put("linkverfiy", link);
+			
+			// object -> Map
+	        ObjectMapper oMapper = new ObjectMapper();
+	        Map<String, Object> mapUser = oMapper.convertValue(user, Map.class);
+	        templateData.putAll(mapUser);
+			emaildto.setEmailTemplateData(templateData);
+			System.out.println(emaildto);
 
 			String returnEmail = emailUtil.shootEmail(emaildto);
+
 			// new SendEmailUtil().shootEmail(email, "Welcome Allcures",
 			// "Hi " + f_name + "," + " Thanks for the registration with allcures.");
 		} catch (Exception e) {
@@ -329,13 +349,13 @@ public class RegistrationDaoImpl {
 				String link = "http://localhost:3000/loginForm/ResetPass/?em=" + encEmail;
 				// new SendEmailUtil().shootEmail(email, "Test subject", "Password reset link
 				// here...\n" + link);
-				EmailDTO emaildto = new EmailDTO();
-
-				emaildto.setTo(email);
-				emaildto.setSubject("Forgot password..");
-				emaildto.setEmailtext("Dear User \n Password reset link here...\n" + link);
-
-				String returnEmail = emailUtil.shootEmail(emaildto);
+//				EmailDTO emaildto = new EmailDTO();
+//
+//				emaildto.setTo(email);
+//				emaildto.setSubject("Forgot password..");
+//				emaildto.setEmailtext("Dear User \n Password reset link here...\n" + link);
+//
+//				String returnEmail = emailUtil.shootEmail(emaildto);
 				
 				//second email also using template
 				EmailDTO emaildto2 = new EmailDTO();
@@ -349,7 +369,7 @@ public class RegistrationDaoImpl {
 				templateData.put("linkforgotpassword", link);
 				emaildto2.setEmailTemplateData(templateData);
 
-				returnEmail = emailUtil.shootEmail(emaildto2);
+				String returnEmail = emailUtil.shootEmail(emaildto2);
 				return 1;
 			}
 //			System.out.println("check email exists in  registration table for email passed from UI =  " + email);

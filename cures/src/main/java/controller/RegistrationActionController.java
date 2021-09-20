@@ -2,10 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.security.NoSuchAlgorithmException;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,10 +12,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import dao.RegistrationDaoImpl;
-import util.Constant;
-import util.EnDeCryptor;
-import util.CookieManager;
 import model.Registration;
+import util.Constant;
+import util.CookieManager;
+import util.EnDeCryptor;
 
 /**
  * Servlet implementation class RegistrationActionController
@@ -165,7 +162,10 @@ public class RegistrationActionController extends HttpServlet {
 			String hashedPass = null;
 			final String secretKey = Constant.SECRETE;
 			hashedPass = encrypt.encrypt(pass, secretKey);	
-			user = regDao.saveRegistration(fName, lName, hashedPass, email, acceptTerms, docOrPat, acceptPolicy, state, remPwd);	
+			//just to load spring features
+			RegistrationDaoImpl myBean = (RegistrationDaoImpl) SpringUtils.ctx.getBean(RegistrationDaoImpl.class);
+
+			user = myBean.saveRegistration(fName, lName, hashedPass, email, acceptTerms, docOrPat, acceptPolicy, state, remPwd);	
 		}catch(Exception e){
 			Constant.log("Error While Trying to Register User", 3);
 			e.printStackTrace();

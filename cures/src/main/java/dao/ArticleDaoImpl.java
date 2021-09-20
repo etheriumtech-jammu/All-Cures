@@ -132,16 +132,16 @@ public class ArticleDaoImpl {
 			conditionMatch = "  ";
 		// Reviewer
 		if (user.getRegistration_type() == 7)
-			conditionMatch = " ";
+			conditionMatch = " and  reviewed_by = " + user.getRegistration_id() +" ";
 		// Editorial
 		if (user.getRegistration_type() == 4)
-			conditionMatch = " and  edited_by = " + user.getRegistration_id() +" ";
+			conditionMatch = " and 1=-1  ";
 		// Author
 		if (user.getRegistration_type() == 3)
-			conditionMatch = " 1=-1 ";
+			conditionMatch = " and 1=-1 ";
 		// paitent or doctor
 		if (user.getRegistration_type() == 2 || user.getRegistration_type() == 1)
-			conditionMatch = " 1=-1 ";
+			conditionMatch = " and 1=-1 ";
 
 		Query query = session
 				.createNativeQuery("select  article_id  from article  where pubstatus_id = 2 " + conditionMatch + " ;");
