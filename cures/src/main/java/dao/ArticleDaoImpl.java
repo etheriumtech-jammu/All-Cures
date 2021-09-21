@@ -132,7 +132,7 @@ public class ArticleDaoImpl {
 			conditionMatch = "  ";
 		// Reviewer
 		if (user.getRegistration_type() == 7)
-			conditionMatch = " and  reviewed_by = " + user.getRegistration_id() +" ";
+			conditionMatch = " and  published_by = " + user.getRegistration_id() +" ";
 		// Editorial
 		if (user.getRegistration_type() == 4)
 			conditionMatch = " and 1=-1  ";
