@@ -467,6 +467,9 @@ public class ArticleDaoImpl {
 		if (articleMap.containsKey("content_type")) {
 			updatestr += "`content_type` = '" + articleMap.get("content_type") + "',\r\n";
 		}
+		if (articleMap.containsKey("type")) {
+			updatestr += "`type` = '" + articleMap.get("type") + "',\r\n";
+		}
 		if (articleMap.containsKey("keywords")) {
 			updatestr += "`keywords` = '" + articleMap.get("keywords") + "',\r\n";
 		}
