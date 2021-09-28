@@ -36,7 +36,7 @@ public class ContentDaoImpl {
 	}
 	
 	
-	public boolean createArticle(int pubStatus, int lang, int disclaimerId, int copyrightId, String authById, String title, String frndlyName, 
+	public boolean createArticle(Integer pubStatus, Integer lang, Integer disclaimerId, Integer copyrightId, String authById, String title, String frndlyName, 
 			String subhead, String contentTypeId, String keywords, String windowTitle, 
 			String contentLocation, Integer reg_id, String articleContent, Integer diseaseConditionId, Integer countryId, String comments, Integer promoId, Integer promoStage
 			,String type) {
@@ -58,20 +58,20 @@ public class ContentDaoImpl {
 			//article.setAuthor(author);
 			//article.setCopyright(copy);
 			//article.setDisclaimer(disclaimer);
-			article.setPubstatus_id(pubStatus);
-			article.setLanguage_id(lang);
-			article.setDisclaimer_id(disclaimerId);
-			article.setCopyright_id(copyrightId);
-			article.setTitle(title);
-			article.setFriendly_name(frndlyName);
-			article.setSubheading(subhead);
-			article.setContent_type(contentTypeId);
-			article.setKeywords(keywords);
-			article.setWindow_title(windowTitle);
+			if(null != pubStatus) article.setPubstatus_id(pubStatus);
+			if(null != lang) article.setLanguage_id(lang);
+			if(null != disclaimerId) article.setDisclaimer_id(disclaimerId);
+			if(null != copyrightId) article.setCopyright_id(copyrightId);
+			if(null != title) article.setTitle(title);
+			if(null != frndlyName) article.setFriendly_name(frndlyName);
+			if(null != subhead) article.setSubheading(subhead);
+			if(null != contentTypeId) article.setContent_type(contentTypeId);
+			if(null != keywords) article.setKeywords(keywords);
+			if(null != windowTitle) article.setWindow_title(windowTitle);
 			//update content location after you know the id of the row that was just inserted
 			//article.setContent_location(content_loc);
 			article.setEdited_by(reg_id);
-			article.setAuthored_by(authById);
+			if(null != authById) article.setAuthored_by(authById);
 			if(null != countryId && countryId != -1) {
 			article.setCountry_id(countryId);
 			}
@@ -79,7 +79,7 @@ public class ContentDaoImpl {
 				article.setPromo_id(promoId);
 				article.setPromo_stage(promoStage);
 			}
-			article.setDisease_condition_id(diseaseConditionId);
+			if(null != diseaseConditionId && diseaseConditionId != -1) article.setDisease_condition_id(diseaseConditionId);
 			Constant.log("Saved Article Meta Data", 1);
 			session.save(article);
 			//Below will work assuming an author cannot pen 2 articles at the same time
@@ -94,8 +94,8 @@ public class ContentDaoImpl {
 			java.sql.Date sqlDate=new java.sql.Date(date.getTime());
 			//java.sql.Timestamp sqlTime=new java.sql.Timestamp(date.getTime());
 			article.setCreate_date(sqlDate);
-			article.setComments(comments);
-			article.setType(type);
+			if(null != comments) article.setComments(comments);
+			if(null != type) article.setType(type);
 			session.save(article);
 			session.getTransaction().commit();
 			//session.close();			

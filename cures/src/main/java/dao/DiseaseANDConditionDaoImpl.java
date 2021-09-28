@@ -37,7 +37,7 @@ public class DiseaseANDConditionDaoImpl {
 						+ " FROM allcures_schema.article a \r\n" 
 						+ " inner join disease_condition dc on a.disease_condition_id = dc.dc_id\r\n"
 						+ " inner join languages l on a.language_id = l.language_id\r\n"
-						+ "inner join countries c on c.countrycodeid = a.country_id\r\n" 
+						+ "inner join countries c on c.countrycodeid = a.country_id or a.country_id is null \r\n" 
 						+ " where (dc.dc_name like '%"
 						+ search_str + "%' \r\n" + "or dc.dc_desc like '%" + search_str + "%'\r\n" + "or title  like '%"
 						+ search_str + "%'\r\n" + "or friendly_name  like '%" + search_str + "%'\r\n"
@@ -70,7 +70,7 @@ public class DiseaseANDConditionDaoImpl {
 			int pubstatus_id = (int) objects[15];
 			int language_id = (int) objects[16];
 			int disease_condition_id = (int) objects[17];
-			int country_id = (int) objects[18];
+			int country_id = objects[18] != null ? (int) objects[18] : 0;
 			String dc_name = (String) objects[19];
 			int parent_dc_id = objects[20] != null ? (int) objects[20] : 0;
 
