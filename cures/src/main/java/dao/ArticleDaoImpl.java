@@ -211,7 +211,7 @@ public class ArticleDaoImpl {
 				+ "    `article`.`country_id`,\r\n" + "    `article`.`disease_condition_id`,\r\n"
 				+ "    `article`.`type`,\r\n" + "    `dc`.`dc_name`,\r\n" + "    `article`.`comments`\r\n"
 				+ "FROM `allcures_schema`.`article`\r\n"
-				+ "inner join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
+				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
 				+ " where article_id =  " + reg_id + ";");
 		ArrayList<Article> articleList = (ArrayList<Article>) query.getResultList();
 		Article_dc_name article = new Article_dc_name();
