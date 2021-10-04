@@ -96,7 +96,7 @@ public class DoctorsratingDaoImpl {
 			docrate.setRatedBy_type_id(ratedbytype);
 			docrate.setTarget_id(targetid);
 			docrate.setTarget_type_id(targetTypeid);
-			docrate.setRatingVal(ratingval);
+			if (ratingval == 0.0f) docrate.setRatingVal(ratingval);
 			session.save(docrate);
 			session.getTransaction().commit();
 

@@ -155,12 +155,12 @@ public class RatingDaoImpl {
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 		String updatestr = "";
-		if ("null" != "" + ratingVal) {
+		if ("null" != "" + ratingVal && 0.0f != ratingVal ) {
 			updatestr += "`ratingVal` = " + ratingVal + ",\r\n";
 		}
 		// if comments are updated set it for review each time its updated
 		if ("null" != "" + comments) {
-			updatestr += "`comments` = " + comments + ",\r\n";
+			updatestr += "`comments` = '" + comments + "',\r\n";
 			updatestr += " reviewed = 0 ";
 		}
 		updatestr = updatestr.replaceAll(",$", "");

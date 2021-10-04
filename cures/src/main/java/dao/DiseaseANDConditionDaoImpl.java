@@ -33,18 +33,15 @@ public class DiseaseANDConditionDaoImpl {
 				"SELECT a.article_id,  a.title , a.friendly_name,  a.subheading, a.content_type, a.keywords,  a.window_title,  a.content_location \r\n"
 						+ " ,a.authored_by, a.published_by, a.edited_by, a.copyright_id, a.disclaimer_id, a.create_date, a.published_date, a.pubstatus_id,"
 						+ " a.language_id, a.disease_condition_id, a.country_id \r\n"
-						+ " ,dc.dc_name , dc.parent_dc_id \r\n" 
-						+ " FROM allcures_schema.article a \r\n" 
+						+ " ,dc.dc_name , dc.parent_dc_id \r\n" + " FROM allcures_schema.article a \r\n"
 						+ " inner join disease_condition dc on a.disease_condition_id = dc.dc_id\r\n"
 						+ " inner join languages l on a.language_id = l.language_id\r\n"
-						+ "inner join countries c on c.countrycodeid = a.country_id or a.country_id is null \r\n" 
-						+ " where (dc.dc_name like '%"
-						+ search_str + "%' \r\n" + "or dc.dc_desc like '%" + search_str + "%'\r\n" + "or title  like '%"
-						+ search_str + "%'\r\n" + "or friendly_name  like '%" + search_str + "%'\r\n"
-						+ " or window_title  like '%" + search_str + "%'\r\n" 
-						+ " or countryname like '%" + search_str + "%'\r\n" 
-						+ " or lang_name like '%" + search_str + "%'\r\n" + ")\r\n"
-						+ " and pubstatus_id = 3 \r\n" + "\r\n" + "");
+						+ "inner join countries c on c.countrycodeid = a.country_id or a.country_id is null \r\n"
+						+ " where (dc.dc_name like '%" + search_str + "%' \r\n" + "or dc.dc_desc like '%" + search_str
+						+ "%'\r\n" + "or title  like '%" + search_str + "%'\r\n" + "or friendly_name  like '%"
+						+ search_str + "%'\r\n" + " or window_title  like '%" + search_str + "%'\r\n"
+						+ " or countryname like '%" + search_str + "%'\r\n" + " or lang_name like '%" + search_str
+						+ "%'\r\n" + ")\r\n" + " and pubstatus_id = 3 \r\n" + "\r\n" + "");
 		// needs other condition too but unable to find correct column
 		// ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list searched article count@@@@@@@@@@@@@" + query);
@@ -73,7 +70,6 @@ public class DiseaseANDConditionDaoImpl {
 			int country_id = objects[18] != null ? (int) objects[18] : 0;
 			String dc_name = (String) objects[19];
 			int parent_dc_id = objects[20] != null ? (int) objects[20] : 0;
-
 
 			hm.put("article_id", article_id);
 			hm.put("title", title);
@@ -116,17 +112,16 @@ public class DiseaseANDConditionDaoImpl {
 		Transaction trans = (Transaction) session.beginTransaction();
 		String logic_here = "";
 
-		if (parent_id == null ||  parent_id == 0) {
-			logic_here = " is null  " ;
-		}else {
-			logic_here = " = "+parent_id;
+		if (parent_id == null || parent_id == 0) {
+			logic_here = " is null  ";
+		} else {
+			logic_here = " = " + parent_id;
 		}
-		
+
 		Query query = session.createNativeQuery(
 				"with recursive cte (dc_id, dc_desc, is_disease, dc_name, dc_status, parent_dc_id) as (\r\n"
 						+ "  select     p.dc_id, p.dc_desc, p.is_disease, p.dc_name, p.dc_status, p.parent_dc_id\r\n"
-						+ "  from       disease_condition p\r\n" + "  where      p.parent_dc_id"
-								+ logic_here + "\r\n"
+						+ "  from       disease_condition p\r\n" + "  where      p.parent_dc_id" + logic_here + "\r\n"
 						+ "  union all\r\n"
 						+ "  select     q.dc_id, q.dc_desc, q.is_disease, q.dc_name, q.dc_status, q.parent_dc_id\r\n"
 						+ "  from       disease_condition q\r\n" + "  inner join cte\r\n"
@@ -154,6 +149,37 @@ public class DiseaseANDConditionDaoImpl {
 			hm.put("parent_dc_id", parent_dc_id);
 			hmFinal.add(hm);
 			System.out.println(hm);
+		}
+		session.close();
+
+		return hmFinal;
+	}
+
+	public List listDataMatchingStrDiseaseConditonAndArticleTables(String search_str) {
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+
+		// creating session object
+		Session session = factory;
+
+		// creating transaction object
+		Transaction trans = (Transaction) session.beginTransaction();
+
+		Query query = session.createNativeQuery(
+				"(SELECT a.title, a.window_title FROM article a where a.pubstatus_id = 3 and a.title like '%"
+						+ search_str + "%')\r\n"
+						+ "union (select dc.dc_name, dc.dc_desc from disease_condition dc where dc.dc_status=1 and dc.dc_name like '%"
+						+ search_str + "%')");
+		System.out.println("result list searched article and dis_condi table query>@@@@@@@@@@@@@" + query);
+		List<Object[]> results = (List<Object[]>) query.getResultList();
+		List hmFinal = new ArrayList();
+		for (Object[] objects : results) {
+//			HashMap hm = new HashMap();
+			String searchresult = (String) objects[0];
+//			hm.put("searchresult", searchresult);
+//			hmFinal.add(hm);
+//			System.out.println(hm);
+			hmFinal.add(searchresult);
 		}
 		session.close();
 

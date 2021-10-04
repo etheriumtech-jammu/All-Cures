@@ -93,8 +93,10 @@ public class DoctorRatingActionController extends HttpServlet {
 		} else if (ratedbytype != null && (ratedbytype.equals("patient") || "2".equalsIgnoreCase(targetType))) {
 			ratebyTypeid = 2;
 		}
-		rateAsset(comments, Integer.parseInt(ratedbyid), Integer.parseInt(targetid), targetTypeid, ratebyTypeid,
-				Float.parseFloat(ratingval));
+		Float rv = 0.0f;
+		if (ratingval !=null)
+			rv = Float.parseFloat(ratingval);
+		rateAsset(comments, Integer.parseInt(ratedbyid), Integer.parseInt(targetid), targetTypeid, ratebyTypeid,rv);
 	}
 
 }
