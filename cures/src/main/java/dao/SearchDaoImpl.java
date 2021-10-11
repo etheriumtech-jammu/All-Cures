@@ -133,10 +133,11 @@ public class SearchDaoImpl {
 			doc.setWaiting_time(waiting_time);
 			String pincode = (String) document.getFieldValue(Constant.PIN);
 			doc.setPincode(pincode);
-			/*String latitude = (String) document.getFieldValue(Constant.LATITUDE);
-			doc.setLatitude(latitude);
-			String longitude = (String) document.getFieldValue(Constant.LONGITUDE);
-			doc.setLongitude(longitude);*/
+			/*
+			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
+			 * doc.setLatitude(latitude); String longitude = (String)
+			 * document.getFieldValue(Constant.LONGITUDE); doc.setLongitude(longitude);
+			 */
 			System.out.println("doctor" + doc.getPrimary_spl());
 			// docarr.add("gender:"+doc.getGender()+",city:"+doc.getCity()+",waiting_time:"+doc.getWaiting_time()+",prefix:"+doc.getPrefix()+",sub_spls:"+doc.getSub_spls()+",docactive:"+docactive+",telephone_nos:"+telephone_nos+",docname_last:"+docname_last+",country_code:"+country_code+",over_allrating:"+over_allrating+",
 			// doctorid:"+doctorid+", docname_first:"+doc.getDocname_first()+",
@@ -151,18 +152,17 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getAddress2(), doc.getCity(), doc.getState(), doc.getCountry_code(),
 					doc.getOver_allrating(), doc.getCreate_date(), doc.getDocactive(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
-					doc.getEmail(), doc.getWaiting_time(), doc.getPincode(),doc.getLatlon()));
-			//System.out.println("id: " + doctorid + "; for: " + docname_first);
+					doc.getEmail(), doc.getWaiting_time(), doc.getPincode(), doc.getLatlon()));
+			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}
-		//System.out.println("SSSSSSSSSSSSSSSSSS" + docarr.size());
-		
+		// System.out.println("SSSSSSSSSSSSSSSSSS" + docarr.size());
 
 		return docarr;
 	}
 
 	public static List<Doctor> searchByDocSpl(String docdetails, String lat, String lon) {
-		
+
 		SolrClient client = SolrUtil.buildSolrFactory();
 		Doctor doc = new Doctor();
 		List<Doctor> docarr = new ArrayList<Doctor>();
@@ -175,28 +175,30 @@ public class SearchDaoImpl {
 		// //queryParamMap.put("fl", "id, name");
 		// //queryParamMap.put("sort", "id asc");
 		// MapSolrParams queryParams = new MapSolrParams(queryParamMap);
-		System.out.println("Lat"+lat);
-		System.out.println("Lon"+lon);
-		String docloc=lat+","+lon;
+		System.out.println("Lat" + lat);
+		System.out.println("Lon" + lon);
+		String docloc = lat + "," + lon;
 		SolrQuery query = new SolrQuery();
 		String[] dname = docdetails.split(" ");
-		System.out.println("length"+dname.length);
-		if(dname[0].contains("Dr")){
-			if(dname.length<=3){
-		query.add("q","docname_first:" +dname[1]+Constant.OR +"docname_last:"+dname[2])	;
-			}else{
-				query.add("q","docname_first:" +dname[1]+Constant.OR +"docname_middle:"+dname[2]+Constant.OR+"docname_last:"+dname[3])	;
+		System.out.println("length" + dname.length);
+		if (dname[0].contains("Dr")) {
+			if (dname.length <= 3) {
+				query.add("q", "docname_first:" + dname[1] + Constant.OR + "docname_last:" + dname[2]);
+			} else {
+				query.add("q", "docname_first:" + dname[1] + Constant.OR + "docname_middle:" + dname[2] + Constant.OR
+						+ "docname_last:" + dname[3]);
+			}
+		} else {
+			query.add("q", Constant.NAME + ":" + docdetails + Constant.OR + Constant.PRIMARY_SPL + ":" + docdetails
+					+ Constant.OR + Constant.SUB_SPLS + ":" + docdetails);
+			// query.set("q", "city:"+cityname +" or pincode:"+ cityname );
+			// query.set("q", "name:"+docdetails +" or primary_spl:"+ docdetails +"
+			// or sub_spls:"+ docdetails);
 		}
-		}else{
-		query.add("q", Constant.NAME+":" +docdetails  +Constant.OR +Constant.PRIMARY_SPL+":" + docdetails  +Constant.OR +Constant.SUB_SPLS+":" + docdetails);
-		// query.set("q", "city:"+cityname +" or pincode:"+ cityname );
-		// query.set("q", "name:"+docdetails +" or primary_spl:"+ docdetails +"
-		// or sub_spls:"+ docdetails);
-	}
-		query.add("sort","geodist() asc");
-		query.add("pt",   docloc);
-		query.add("sfield","docloc1");
-		query.add("d","20");
+		query.add("sort", "geodist() asc");
+		query.add("pt", docloc);
+		query.add("sfield", "docloc1");
+		query.add("d", "20");
 		QueryResponse response = null;
 		try {
 			response = client.query(query);
@@ -275,12 +277,13 @@ public class SearchDaoImpl {
 			doc.setWaiting_time(waiting_time);
 			String pincode = (String) document.getFieldValue(Constant.PIN);
 			doc.setPincode(pincode);
-			/*String latitude = (String) document.getFieldValue(Constant.LATITUDE);
-			doc.setLatitude(latitude);
-			String longitude = (String) document.getFieldValue(Constant.LONGITUDE);
-			doc.setLongitude(longitude);*/
-			
-			//System.out.println("doctor" + doc.getDocname_first());
+			/*
+			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
+			 * doc.setLatitude(latitude); String longitude = (String)
+			 * document.getFieldValue(Constant.LONGITUDE); doc.setLongitude(longitude);
+			 */
+
+			// System.out.println("doctor" + doc.getDocname_first());
 			// docarr.add("gender:"+doc.getGender()+",city:"+doc.getCity()+",waiting_time:"+doc.getWaiting_time()+",prefix:"+doc.getPrefix()+",sub_spls:"+doc.getSub_spls()+",docactive:"+docactive+",telephone_nos:"+telephone_nos+",docname_last:"+docname_last+",country_code:"+country_code+",over_allrating:"+over_allrating+",
 			// doctorid:"+doctorid+", docname_first:"+doc.getDocname_first()+",
 			// state:"+state+"
@@ -294,12 +297,11 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getAddress2(), doc.getCity(), doc.getState(), doc.getCountry_code(),
 					doc.getOver_allrating(), doc.getCreate_date(), doc.getDocactive(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
-					doc.getEmail(), doc.getWaiting_time(), doc.getPincode(),doc.getLatlon()));
-			//System.out.println("id: " + doctorid + "; for: " + docname_first);
+					doc.getEmail(), doc.getWaiting_time(), doc.getPincode(), doc.getLatlon()));
+			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}
-		//System.out.println("SSSSSSSSSSSSSSSSSS" + docarr.size());
-		
+		// System.out.println("SSSSSSSSSSSSSSSSSS" + docarr.size());
 
 		return docarr;
 	}
@@ -310,7 +312,7 @@ public class SearchDaoImpl {
 		List<Doctor> docarr = new ArrayList<Doctor>();
 		// Map<String,List<String>> doctorSolr = new
 		// HashMap<String,List<String>>();
-		System.out.println("Got Solr Client for SearchBy Both, Doctor:"+docdetails+": and city:"+cityname);
+		System.out.println("Got Solr Client for SearchBy Both, Doctor:" + docdetails + ": and city:" + cityname);
 		// final Map<String, String> queryParamMap = new HashMap<String,
 		// String>();
 		// queryParamMap.put("q", "location:"+city);
@@ -319,8 +321,10 @@ public class SearchDaoImpl {
 		// MapSolrParams queryParams = new MapSolrParams(queryParamMap);
 
 		SolrQuery query = new SolrQuery();
-		query.set("q", Constant.NAME+":" + docdetails + Constant.OR + Constant.PRIMARY_SPL + ":" + docdetails + Constant.OR + Constant.SUB_SPLS+":" + docdetails
-				+ Constant.AND + Constant.CITYVALUE+ ":" + cityname + Constant.OR + Constant.PIN+":" + cityname);
+		query.set("q",
+				Constant.NAME + ":" + docdetails + Constant.OR + Constant.PRIMARY_SPL + ":" + docdetails + Constant.OR
+						+ Constant.SUB_SPLS + ":" + docdetails + Constant.AND + Constant.CITYVALUE + ":" + cityname
+						+ Constant.OR + Constant.PIN + ":" + cityname);
 		// query.set("q", "city:"+cityname +" or pincode:"+ cityname );
 		// query.set("q", "name:"+docdetails +" or primary_spl:"+ docdetails +"
 		// or sub_spls:"+ docdetails);
@@ -402,12 +406,13 @@ public class SearchDaoImpl {
 			doc.setWaiting_time(waiting_time);
 			String pincode = (String) document.getFieldValue(Constant.PIN);
 			doc.setPincode(pincode);
-			/*String latitude = (String) document.getFieldValue(Constant.LATITUDE);
-			doc.setLatitude(latitude);
-			String longitude = (String) document.getFieldValue(Constant.LONGITUDE);
-			doc.setLongitude(longitude);*/
-			
-			//System.out.println("doctor" + doc.getDocname_first());
+			/*
+			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
+			 * doc.setLatitude(latitude); String longitude = (String)
+			 * document.getFieldValue(Constant.LONGITUDE); doc.setLongitude(longitude);
+			 */
+
+			// System.out.println("doctor" + doc.getDocname_first());
 			// docarr.add("gender:"+doc.getGender()+",city:"+doc.getCity()+",waiting_time:"+doc.getWaiting_time()+",prefix:"+doc.getPrefix()+",sub_spls:"+doc.getSub_spls()+",docactive:"+docactive+",telephone_nos:"+telephone_nos+",docname_last:"+docname_last+",country_code:"+country_code+",over_allrating:"+over_allrating+",
 			// doctorid:"+doctorid+", docname_first:"+doc.getDocname_first()+",
 			// state:"+state+"
@@ -421,16 +426,15 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getAddress2(), doc.getCity(), doc.getState(), doc.getCountry_code(),
 					doc.getOver_allrating(), doc.getCreate_date(), doc.getDocactive(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
-					doc.getEmail(), doc.getWaiting_time(), doc.getPincode(),doc.getLatlon()));
-			//System.out.println("id: " + doctorid + "; for: " + docname_first);
+					doc.getEmail(), doc.getWaiting_time(), doc.getPincode(), doc.getLatlon()));
+			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}
-		//System.out.println("SSSSSSSSSSSSSSSSSS" + docarr.size());
-		
+		// System.out.println("SSSSSSSSSSSSSSSSSS" + docarr.size());
 
 		return docarr;
 	}
-	
+
 	public static List findRegionsNameForDiseaseId(int dc_id) {
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -440,22 +444,22 @@ public class SearchDaoImpl {
 		// creating transaction object
 		// Transaction trans = (Transaction) session.beginTransaction();
 
-		Query query = session.createNativeQuery("select c.countryname, a.article_id, a.type, a.disease_condition_id FROM allcures_schema.article a\r\n"
-				+ " inner join countries c on a.country_id = c.countrycodeid\r\n"
-				+ " group by country_id \r\n"
-				+ " having a.disease_condition_id = "+dc_id+"\r\n"
-				+ " and FIND_IN_SET (2, a.type) > 0 ;");
+		Query query = session.createNativeQuery(
+				"select c.countryname,a.country_id, a.type, a.disease_condition_id FROM allcures_schema.article a\r\n"
+						+ " inner join countries c on a.country_id = c.countrycodeid\r\n"
+						+ " group by a.country_id, a.disease_condition_id, a.type \r\n"
+						+ " having a.disease_condition_id = " + dc_id + "\r\n" + " and FIND_IN_SET (2, a.type) > 0 ;");
 
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
 			HashMap hm = new HashMap();
 			String countryname = (String) objects[0];
-			Integer article_id = (Integer) objects[1];
+			Integer country_id = (Integer) objects[1];
 			String type = (String) objects[2];
 			Integer disease_condition_id = (Integer) objects[3];
 			hm.put("countryname", countryname);
-			hm.put("article_id", article_id);
+			hm.put("country_id", country_id);
 			hm.put("type", type);
 			hm.put("disease_condition_id", disease_condition_id);
 			hmFinal.add(hm);
