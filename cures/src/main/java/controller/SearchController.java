@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import dao.DiseaseANDConditionDaoImpl;
+import dao.SearchDaoImpl;
 
 @RestController
 @RequestMapping(path = "/isearch")
@@ -17,6 +18,9 @@ public class SearchController {
 
 	@Autowired
 	private DiseaseANDConditionDaoImpl diseaseANDconditionDaoImpl;
+	
+	@Autowired
+	private SearchDaoImpl searchDaoImpl;
 
 //	@RequestMapping(value = "/{article_id}", produces = "application/json", method = RequestMethod.GET)
 //	public @ResponseBody Article getArticleDetails(@PathVariable int article_id, HttpServletRequest request) {
@@ -50,6 +54,11 @@ public class SearchController {
 	@RequestMapping(value = "/combo/{search_string}", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List listDataMatchingStrDiseaseConditonAndArticleTables(@PathVariable String search_string) {
 		return diseaseANDconditionDaoImpl.listDataMatchingStrDiseaseConditonAndArticleTables(search_string);
+	}
+	
+	@RequestMapping(value = "/treatmentregions/{dc_id}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List listDataMatchingStrDiseaseConditonAndArticleTables(@PathVariable Integer dc_id) {
+		return searchDaoImpl.findRegionsNameForDiseaseId(dc_id);
 	}
 
 //	@RequestMapping(value = "/{article_id}", produces = "application/json", method = RequestMethod.POST)

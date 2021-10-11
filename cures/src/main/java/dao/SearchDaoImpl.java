@@ -17,12 +17,17 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.MapSolrParams;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+import org.springframework.stereotype.Component;
 
 import model.Doctor;
 import model.Doctors;
 import util.Constant;
+import util.HibernateUtil;
 import util.SolrUtil;
 
+@Component
 public class SearchDaoImpl {
 
 	public static void main(String[] args) {
@@ -424,5 +429,39 @@ public class SearchDaoImpl {
 		
 
 		return docarr;
+	}
+	
+	public static List findRegionsNameForDiseaseId(int dc_id) {
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+
+		Session session = factory;
+
+		// creating transaction object
+		// Transaction trans = (Transaction) session.beginTransaction();
+
+		Query query = session.createNativeQuery("select c.countryname, a.article_id, a.type, a.disease_condition_id FROM allcures_schema.article a\r\n"
+				+ " inner join countries c on a.country_id = c.countrycodeid\r\n"
+				+ " group by country_id \r\n"
+				+ " having a.disease_condition_id = "+dc_id+"\r\n"
+				+ " and FIND_IN_SET (2, a.type) > 0 ;");
+
+		List<Object[]> results = (List<Object[]>) query.getResultList();
+		List hmFinal = new ArrayList();
+		for (Object[] objects : results) {
+			HashMap hm = new HashMap();
+			String countryname = (String) objects[0];
+			Integer article_id = (Integer) objects[1];
+			String type = (String) objects[2];
+			Integer disease_condition_id = (Integer) objects[3];
+			hm.put("countryname", countryname);
+			hm.put("article_id", article_id);
+			hm.put("type", type);
+			hm.put("disease_condition_id", disease_condition_id);
+			hmFinal.add(hm);
+		}
+		session.close();
+		return hmFinal;
+
 	}
 }
