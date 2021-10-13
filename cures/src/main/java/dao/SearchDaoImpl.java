@@ -445,10 +445,9 @@ public class SearchDaoImpl {
 		// Transaction trans = (Transaction) session.beginTransaction();
 
 		Query query = session.createNativeQuery(
-				"select c.countryname,a.country_id, a.type, a.disease_condition_id FROM allcures_schema.article a\r\n"
-						+ " inner join countries c on a.country_id = c.countrycodeid\r\n"
-						+ " group by a.country_id, a.disease_condition_id, a.type \r\n"
-						+ " having a.disease_condition_id = " + dc_id + "\r\n" + " and FIND_IN_SET (2, a.type) > 0 ;");
+				"select c.countryname, a.country_id, a.type, a.disease_condition_id, a.article_id, a.title FROM allcures_schema.article a\r\n"
+						+ " inner join countries c on a.country_id = c.countrycodeid \r\n"
+						+ " where a.disease_condition_id = " + dc_id + "\r\n" + " and FIND_IN_SET (2, a.type) > 0 ;");
 
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();
@@ -458,10 +457,14 @@ public class SearchDaoImpl {
 			Integer country_id = (Integer) objects[1];
 			String type = (String) objects[2];
 			Integer disease_condition_id = (Integer) objects[3];
+			Integer article_id = (Integer) objects[4];
+			String title = (String) objects[5];
 			hm.put("countryname", countryname);
 			hm.put("country_id", country_id);
 			hm.put("type", type);
 			hm.put("disease_condition_id", disease_condition_id);
+			hm.put("article_id", article_id);
+			hm.put("title", title);
 			hmFinal.add(hm);
 		}
 		session.close();
