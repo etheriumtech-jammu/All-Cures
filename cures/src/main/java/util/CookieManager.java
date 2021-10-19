@@ -195,7 +195,7 @@ public class CookieManager {
 	public Cookie constructCookie(String domain, String name, String val, String path, int duration){
 		if(domain == null) domain = Constant.DefaultCookieDomain;
 		if(name == null) name = Constant.DefaultSessionCookieName; //make this the name of the session cookie
-		if(path == null) path = Constant.DefaultCookiePath;
+		path = Constant.DefaultCookiePath;
 		Cookie myCookie = new Cookie(name, val);
 		myCookie.setDomain(domain);
 		if(duration > 0)
