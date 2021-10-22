@@ -195,9 +195,10 @@ public class CookieManager {
 	public Cookie constructCookie(String domain, String name, String val, String path, int duration){
 		if(domain == null) domain = Constant.DefaultCookieDomain;
 		if(name == null) name = Constant.DefaultSessionCookieName; //make this the name of the session cookie
-		path = Constant.DefaultCookiePath;
+		if(path == null) path = Constant.DefaultCookiePath;
 		Cookie myCookie = new Cookie(name, val);
 		myCookie.setDomain(domain);
+		myCookie.setPath(path);
 		if(duration > 0)
 			myCookie.setMaxAge(duration);
 		return myCookie;
@@ -225,9 +226,11 @@ public class CookieManager {
 			pCookie = cookies[i];
 			if(destroyAllCookies){
 				pCookie.setMaxAge(0);
+				pCookie.setPath(Constant.DefaultCookiePath);
 				response.addCookie(pCookie);
 			}else if(pCookie.getName().equalsIgnoreCase(lookingFor)){
 				pCookie.setMaxAge(0);
+				pCookie.setPath(Constant.DefaultCookiePath);
 				response.addCookie(pCookie);
 				break;
 			}
@@ -244,9 +247,11 @@ public class CookieManager {
 			sCookie = cookies[i];
 			if(destroyAllCookies){
 				sCookie.setMaxAge(0);
+				sCookie.setPath(Constant.DefaultCookiePath);
 				response.addCookie(sCookie);
 			}else if(sCookie.getName().equalsIgnoreCase(lookingFor)){
 				sCookie.setMaxAge(0);
+				sCookie.setPath(Constant.DefaultCookiePath);
 				response.addCookie(sCookie);
 				break;
 			}

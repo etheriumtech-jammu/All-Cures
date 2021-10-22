@@ -100,7 +100,7 @@ public class Constant{
 	public static final String STATES="states";
 	public static final String AUTH="Incorrect password";
 	public static final String LATITUDELONGITUDE ="latlon";
-	public static final String DefaultCookieDomain = "localhost";
+	public static final String DefaultCookieDomain = "all-cures.com";
 	public static final String DefaultSessionCookieName = "acSession";
 	public static final String DefaultPermCookieName = "acPerm";
 	public static final String DefaultCookiePath = "/";
