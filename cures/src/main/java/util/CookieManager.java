@@ -197,8 +197,10 @@ public class CookieManager {
 		if(name == null) name = Constant.DefaultSessionCookieName; //make this the name of the session cookie
 		if(path == null) path = Constant.DefaultCookiePath;
 		Cookie myCookie = new Cookie(name, val);
+		System.out.println("constructCookie>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+name+"<domain>");
 		myCookie.setDomain(domain);
 		myCookie.setPath(path);
+		//myCookie.setSecure(true);
 		if(duration > 0)
 			myCookie.setMaxAge(duration);
 		return myCookie;
