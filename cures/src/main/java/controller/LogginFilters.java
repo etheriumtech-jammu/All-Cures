@@ -65,6 +65,7 @@ public class LogginFilters implements Filter {
 		}else{
 			//We will first check for if the user has asked to be signed on using Remember Me, which means that the Permanent Cookie is present
 			//on their machine and travelling with the request object
+			Constant.log("#########USER IS NOTTTTTTTTTTTT IN SESSION########", 0);
 			CookieManager cookieMgr = new CookieManager();
 			Cookie cookies[] = req.getCookies();
 			if(cookies != null){  
