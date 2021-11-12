@@ -197,7 +197,7 @@ public class CookieManager {
 		if(name == null) name = Constant.DefaultSessionCookieName; //make this the name of the session cookie
 		if(path == null) path = Constant.DefaultCookiePath;
 		Cookie myCookie = new Cookie(name, val);
-		System.out.println("constructCookie>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+name+"<domain>");
+		System.out.println("constructCookie>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+name+"domain"+domain);
 		myCookie.setDomain(domain);
 		myCookie.setPath(path);
 		//myCookie.setSecure(true);
@@ -227,10 +227,12 @@ public class CookieManager {
 		for(int i=0; i<cookies.length; i++){		
 			pCookie = cookies[i];
 			if(destroyAllCookies){
+				pCookie.setDomain(Constant.DefaultCookieDomain);
 				pCookie.setMaxAge(0);
 				pCookie.setPath(Constant.DefaultCookiePath);
 				response.addCookie(pCookie);
 			}else if(pCookie.getName().equalsIgnoreCase(lookingFor)){
+				pCookie.setDomain(Constant.DefaultCookieDomain);
 				pCookie.setMaxAge(0);
 				pCookie.setPath(Constant.DefaultCookiePath);
 				response.addCookie(pCookie);
@@ -248,10 +250,12 @@ public class CookieManager {
 		for(int i=0; i<cookies.length; i++){		
 			sCookie = cookies[i];
 			if(destroyAllCookies){
+				sCookie.setDomain(Constant.DefaultCookieDomain);
 				sCookie.setMaxAge(0);
 				sCookie.setPath(Constant.DefaultCookiePath);
 				response.addCookie(sCookie);
 			}else if(sCookie.getName().equalsIgnoreCase(lookingFor)){
+				sCookie.setDomain(Constant.DefaultCookieDomain);
 				sCookie.setMaxAge(0);
 				sCookie.setPath(Constant.DefaultCookiePath);
 				response.addCookie(sCookie);
