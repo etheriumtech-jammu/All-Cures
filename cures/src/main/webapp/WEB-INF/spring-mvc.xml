@@ -63,7 +63,10 @@
 		<!-- <mvc:argument-resolvers> <bean class="org.springframework.data.web.PageableHandlerMethodArgumentResolver" 
 			/> </mvc:argument-resolvers> -->
 	</mvc:annotation-driven>
-	<!-- mvc:resources mapping="/**" location="/ui/" /-->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+	<mvc:resources mapping="/**" location="/"/>
+	<mvc:resources mapping="/**.png" location="/" />
+	
 	<!-- mvc:resources mapping="/ui/**" location="/ui/"  cache-period="0"/-->
 	
 	<!-- mvc:resources mapping="/ui/static/**" location="/ui/static/" />
