@@ -68,7 +68,7 @@ public class DiseaseANDConditionDaoImpl {
 			int language_id = (int) objects[16];
 			int disease_condition_id = (int) objects[17];
 			int country_id = objects[18] != null ? (int) objects[18] : 0;
-			int type = objects[19] != null ? (int) objects[19] : 0;
+			String type = (String) objects[19];
 			String dc_name = (String) objects[20];
 			int parent_dc_id = objects[21] != null ? (int) objects[21] : 0;
 
