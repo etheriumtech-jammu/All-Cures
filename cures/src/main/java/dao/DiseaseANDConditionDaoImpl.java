@@ -68,8 +68,9 @@ public class DiseaseANDConditionDaoImpl {
 			int language_id = (int) objects[16];
 			int disease_condition_id = (int) objects[17];
 			int country_id = objects[18] != null ? (int) objects[18] : 0;
-			String dc_name = (String) objects[19];
-			int parent_dc_id = objects[20] != null ? (int) objects[20] : 0;
+			int type = objects[19] != null ? (int) objects[19] : 0;
+			String dc_name = (String) objects[20];
+			int parent_dc_id = objects[21] != null ? (int) objects[21] : 0;
 
 			hm.put("article_id", article_id);
 			hm.put("title", title);
@@ -90,6 +91,7 @@ public class DiseaseANDConditionDaoImpl {
 			hm.put("language_id", language_id);
 			hm.put("disease_condition_id", disease_condition_id);
 			hm.put("country_id", country_id);
+			hm.put("type", type);
 			hm.put("dc_name", dc_name);
 			hm.put("parent_dc_id", parent_dc_id);
 			hmFinal.add(hm);
