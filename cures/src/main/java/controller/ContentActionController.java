@@ -115,7 +115,7 @@ public class ContentActionController extends HttpServlet {
 		Constant.log("Creating Article with Author:"+authIdS, 0);
 		String keyword=request.getParameter("keywords");
 		String window_title=request.getParameter("winTitle");;
-		String articlecontent= request.getParameter("articleContent");
+		String articlecontent= (String) request.getParameter("articleContent");
 		System.out.println("##############RAINA###"+articlecontent);
 		String countryId = request.getParameter("countryId");;
 		int iCountryId = -1; //Negative indicates error
