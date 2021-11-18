@@ -40,7 +40,7 @@ public class DiseaseANDConditionDaoImpl {
 						+ " where (dc.dc_name like '%" + search_str + "%' \r\n" + "or dc.dc_desc like '%" + search_str
 						+ "%'\r\n" + "or title  like '%" + search_str + "%'\r\n" + "or friendly_name  like '%"
 						+ search_str + "%'\r\n" + " or window_title  like '%" + search_str + "%'\r\n"
-						+ " or countryname like '%" + search_str + "%'\r\n" + " or lang_name like '%" + search_str
+						+ " or countryname like '%" + search_str + "%'\r\n" + " or keywords like '%"+ search_str +"%' or lang_name like '%" + search_str
 						+ "%'\r\n" + ")\r\n" + " and pubstatus_id = 3 \r\n" + "\r\n" + "");
 		// needs other condition too but unable to find correct column
 		// ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
@@ -169,7 +169,7 @@ public class DiseaseANDConditionDaoImpl {
 
 		Query query = session.createNativeQuery(
 				"(SELECT a.title, a.window_title FROM article a where a.pubstatus_id = 3 and a.title like '%"
-						+ search_str + "%')\r\n"
+						+ search_str + "%' or a.keywords like '%"+ search_str +"%')\r\n"
 						+ "union (select dc.dc_name, dc.dc_desc from disease_condition dc where dc.dc_status=1 and dc.dc_name like '%"
 						+ search_str + "%')");
 		System.out.println("result list searched article and dis_condi table query>@@@@@@@@@@@@@" + query);
