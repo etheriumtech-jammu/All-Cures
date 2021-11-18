@@ -413,7 +413,7 @@ public class ArticleDaoImpl {
 			hm.put("dc_name", dc_name);
 			hm.put("comments", comments);
 			hm.put("type", type);
-			hm.put("country_id ", country_id );
+			hm.put("country_id", country_id );
 
 			hmFinal.add(hm);
 			System.out.println(hm);
