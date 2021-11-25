@@ -338,10 +338,10 @@ public class DoctorsDaoImpl {
 
 	}
 
-	public static Doctors getAllDoctorsInfo(int docid) {
+	public static Doctors getAllDoctorsInfo(int rowno) {
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
-		Constant.log("In DoctorsDAO, Getting Doctors Info For:" + docid, 1);
+		Constant.log("In DoctorsDAO, Getting Doctors Info For:" + rowno, 1);
 
 		// creating session object
 		Session session = factory;
@@ -357,11 +357,11 @@ public class DoctorsDaoImpl {
 						+ "doctors.availibity_for_appointment, doctors.doctor_location, doctors.telephone_nos, "
 						+ "specialties.spl_name, doctors.other_spls, doctors.address1, doctors.address2, city.cityname, "
 						+ "doctors.over_allrating, doctors.email, doctors.waiting_time,  states.statename , countries.countryname ,"
-						+ "doctors.primary_spl, doctors.sub_spls, doctors.about, doctors.city, doctors.state, doctors.country_code,doctors.hospital_affliated as hospital_affliated_code "
+						+ "doctors.primary_spl, doctors.sub_spls, doctors.about, doctors.city, doctors.state, doctors.country_code,doctors.hospital_affliated as hospital_affliated_code, doctors.rowno "
 						+ "FROM doctors , hospital , specialties, city, states, countries "
 						+ "WHERE  doctors.hospital_affliated = hospital.hospitalid  and "
 						+ "doctors.primary_spl = specialties.splid and doctors.city = city.citycode and doctors.state = states.codeid and "
-						+ "doctors.country_code = countries.countrycodeid and " + "docid=" + docid + ";");
+						+ "doctors.country_code = countries.countrycodeid and " + "rowno=" + rowno + ";");
 
 		// This should return in only 1 doctor so why the List?
 		// We should be using query.getSingleResult()
@@ -374,7 +374,8 @@ public class DoctorsDaoImpl {
 			Object[] obj = (Object[]) itr.next();
 			{
 				doc = new Doctors();
-				doc.setDocid((Integer) obj[0]);
+				//doc.setDocid((Integer) obj[0]);
+				doc.setDocid(obj[0] != null ? (Integer) obj[0] : 0);
 				Constant.log("--Iterating DocId:" + doc.getDocid(), 1);
 				doc.setPrefix((String) obj[1] != null ? (String) obj[1] : "");
 				doc.setDocname_first((String) obj[2] != null ? (String) obj[2] : "");

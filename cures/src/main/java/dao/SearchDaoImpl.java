@@ -133,6 +133,8 @@ public class SearchDaoImpl {
 			doc.setWaiting_time(waiting_time);
 			String pincode = (String) document.getFieldValue(Constant.PIN);
 			doc.setPincode(pincode);
+			Long rowno = (Long) document.getFieldValue(Constant.ROWNO);
+			doc.setRowno(rowno);
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
 			 * doc.setLatitude(latitude); String longitude = (String)
@@ -152,7 +154,7 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getAddress2(), doc.getCity(), doc.getState(), doc.getCountry_code(),
 					doc.getOver_allrating(), doc.getCreate_date(), doc.getDocactive(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
-					doc.getEmail(), doc.getWaiting_time(), doc.getPincode(), doc.getLatlon()));
+					doc.getEmail(), doc.getWaiting_time(), doc.getPincode(), doc.getLatlon(), doc.getRowno()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}
@@ -277,6 +279,8 @@ public class SearchDaoImpl {
 			doc.setWaiting_time(waiting_time);
 			String pincode = (String) document.getFieldValue(Constant.PIN);
 			doc.setPincode(pincode);
+			Long rowno = (Long) document.getFieldValue(Constant.ROWNO);
+			doc.setRowno(rowno);
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
 			 * doc.setLatitude(latitude); String longitude = (String)
@@ -297,7 +301,7 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getAddress2(), doc.getCity(), doc.getState(), doc.getCountry_code(),
 					doc.getOver_allrating(), doc.getCreate_date(), doc.getDocactive(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
-					doc.getEmail(), doc.getWaiting_time(), doc.getPincode(), doc.getLatlon()));
+					doc.getEmail(), doc.getWaiting_time(), doc.getPincode(), doc.getLatlon(), doc.getRowno()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}
@@ -406,6 +410,8 @@ public class SearchDaoImpl {
 			doc.setWaiting_time(waiting_time);
 			String pincode = (String) document.getFieldValue(Constant.PIN);
 			doc.setPincode(pincode);
+			Long rowno = (Long) document.getFieldValue(Constant.ROWNO);
+			doc.setRowno(rowno);
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
 			 * doc.setLatitude(latitude); String longitude = (String)
@@ -426,7 +432,7 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getAddress2(), doc.getCity(), doc.getState(), doc.getCountry_code(),
 					doc.getOver_allrating(), doc.getCreate_date(), doc.getDocactive(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
-					doc.getEmail(), doc.getWaiting_time(), doc.getPincode(), doc.getLatlon()));
+					doc.getEmail(), doc.getWaiting_time(), doc.getPincode(), doc.getLatlon(), doc.getRowno()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}

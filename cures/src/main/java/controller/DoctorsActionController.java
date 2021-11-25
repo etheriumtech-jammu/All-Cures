@@ -36,21 +36,21 @@ public class DoctorsActionController extends HttpServlet {
 	}
 	
 	public void getProfile(HttpServletRequest request, HttpServletResponse response, boolean jsonResponse) throws ServletException, IOException {
-		String id=request.getParameter("docid");
+		String id=request.getParameter("rowno");
 		String cacheString = null;
 		Constant.log("Got Req for Profile For DocID: "+id, 1);
-		int docid = -1;
+		int rowno = -1;
 		DoctorsDaoImpl doctorDao = null;
 		Doctors doctorObj = null;
 		if(id != null){
-			docid = Integer.parseInt(id);
-			cacheString = findDocInCache(docid);	
+			rowno = Integer.parseInt(id);
+			cacheString = findDocInCache(rowno);	
 			String jsondata = null;
 			if(cacheString == null || "".equals(cacheString) || "null".equalsIgnoreCase(cacheString)){
 				//Doctor Not Found in MemCache
 				Constant.log("Got Null From MemCache on the Doc:"+id, 1);
 				doctorDao = new DoctorsDaoImpl();
-				doctorObj = doctorDao.getAllDoctorsInfo(docid);
+				doctorObj = doctorDao.getAllDoctorsInfo(rowno);
 				//SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
 				//Date date = new Date(System.currentTimeMillis());
 				//Constant.log("Date:"+formatter.format(date), 0);
