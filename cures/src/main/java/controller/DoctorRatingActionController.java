@@ -57,6 +57,7 @@ public class DoctorRatingActionController extends HttpServlet {
 	}
 
 	public void rateAsset(String comments, int ratedBy, int target, int targetType, int ratedByType, float rating) {
+		System.out.println("rating"+rating);
 		RatingDaoImpl ratingDao = new RatingDaoImpl();
 		if (null != comments && comments.trim().length() > 0) {
 			System.out.println("rating created for comments");
@@ -77,12 +78,12 @@ public class DoctorRatingActionController extends HttpServlet {
 	}
 
 	public void rateAssetReq(HttpServletRequest request) {
-		String comments = request.getParameter("comments");
-		String ratedbyid = request.getParameter("ratedbyid");
-		String ratedbytype = request.getParameter("ratedbytype");
-		String targetid = request.getParameter("targetid");
-		String targetType = request.getParameter("targetTypeid");
-		String ratingval = request.getParameter("ratingVal");
+		String comments = (String)  request.getParameter("comments");
+		String ratedbyid = (String) request.getParameter("ratedbyid");
+		String ratedbytype = (String) request.getParameter("ratedbytype");
+		String targetid = (String) request.getParameter("targetid");
+		String targetType = (String)  request.getParameter("targetTypeid");
+		String ratingval = (String) request.getParameter("ratingVal");
 		System.out.println("ratingVal" + ratingval);
 		int targetTypeid = 0;
 		int ratebyTypeid = 0;
@@ -102,6 +103,7 @@ public class DoctorRatingActionController extends HttpServlet {
 		Float rv = 0.0f;
 		if (ratingval !=null)
 			rv = Float.parseFloat(ratingval);
+		System.out.println("ratingval 1"+ratingval);
 		rateAsset(comments, Integer.parseInt(ratedbyid), Integer.parseInt(targetid), targetTypeid, ratebyTypeid,rv);
 	}
 
