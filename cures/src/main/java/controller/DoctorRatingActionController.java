@@ -58,7 +58,7 @@ public class DoctorRatingActionController extends HttpServlet {
 
 	public void rateAsset(String comments, int ratedBy, int target, int targetType, int ratedByType, float rating) {
 		RatingDaoImpl ratingDao = new RatingDaoImpl();
-		if (null != comments || comments.trim().length() > 0) {
+		if (null != comments && comments.trim().length() > 0) {
 			System.out.println("rating created for comments");
 			DoctorsratingDaoImpl docrating = new DoctorsratingDaoImpl();
 			String value = docrating.saveRating(comments, ratedBy, ratedByType, target, targetType, rating);
