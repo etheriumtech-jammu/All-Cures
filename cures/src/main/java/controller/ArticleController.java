@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -32,6 +33,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import dao.ArticleDaoImpl;
 import model.Article;
 import model.Article_dc_name;
+import util.ArticleUtils;
 
 @RestController
 @RequestMapping(path = "/article")
@@ -84,7 +86,19 @@ public class ArticleController {
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody HashMap uploadFile(@RequestParam CommonsMultipartFile image, HttpServletRequest request,
 			HttpSession session) {
-		String path = session.getServletContext().getRealPath("/uitest");
+		//String path = session.getServletContext().getRealPath("/uitest");
+		String curesProperties = "cures.properties";
+		Properties prop = null;
+		try {
+			prop = new ArticleUtils().readPropertiesFile(curesProperties);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("ARTICLES_UPLOAD_DIR : " + prop.getProperty("ARTICLES_UPLOAD_DIR"));
+		String cures_articleimages = prop.getProperty("cures_articleimages");
+		String path = System.getProperty( "catalina.base" ) + "/webapps/"+cures_articleimages;
+
 		System.out.println(path);
 		// path = path+"/uitest";
 		String filename = image.getOriginalFilename();
@@ -107,7 +121,7 @@ public class ArticleController {
 		String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).build().toUriString();
 
 		System.out.println(baseUrl);
-		hm2.put("url", baseUrl + "/cures/uitest/" + filename);
+		hm2.put("url", baseUrl + "/"+cures_articleimages+"/" + filename);
 		hm.put("file", hm2);
 		return hm;
 	}
@@ -118,10 +132,22 @@ public class ArticleController {
 		String url = (String) dataMap.get("url");
 		URL urlExt = new URL(url);
 
-		String path = session.getServletContext().getRealPath("/uitest");
+//		String path = session.getServletContext().getRealPath("/uitest");
+		String curesProperties = "cures.properties";
+		Properties prop = null;
+		try {
+			prop = new ArticleUtils().readPropertiesFile(curesProperties);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("cures_articleimages : " + prop.getProperty("cures_articleimages"));
+		String cures_articleimages = prop.getProperty("cures_articleimages");
+		String path = System.getProperty( "catalina.base" ) + "/webapps/"+cures_articleimages;
+
 		String filename = urlExt.toString().substring(urlExt.toString().lastIndexOf('/') + 1,
 				urlExt.toString().length());
-		System.out.println(path + " " + filename);
+		System.out.println(path + File.separator + filename);
 		try {
 			try (InputStream in = urlExt.openStream()) {
 				Files.copy(in, Paths.get(path + File.separator + filename));
@@ -136,7 +162,7 @@ public class ArticleController {
 		String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).build().toUriString();
 
 		System.out.println(baseUrl);
-		hm2.put("url", baseUrl + "/cures/uitest/" + filename);
+		hm2.put("url", baseUrl + "/cures/"+cures_articleimages+"/" + filename);
 		hm.put("file", hm2);
 		return hm;
 	}
