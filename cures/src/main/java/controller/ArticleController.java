@@ -162,7 +162,7 @@ public class ArticleController {
 		String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).build().toUriString();
 
 		System.out.println(baseUrl);
-		hm2.put("url", baseUrl + "/cures/"+cures_articleimages+"/" + filename);
+		hm2.put("url", baseUrl + "/"+cures_articleimages+"/" + filename);
 		hm.put("file", hm2);
 		return hm;
 	}
