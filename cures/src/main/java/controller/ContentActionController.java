@@ -68,7 +68,7 @@ public class ContentActionController extends HttpServlet {
     	Constant.log("Creating Article with Title:"+title, 1);
     	String artFrndlyNm= (String) requestJsonMap.get("friendlyName");
     	Constant.log("Creating Article with Friendly Name:"+artFrndlyNm, 0);
-		int iLang= (int) requestJsonMap.get("language");
+		int iLang= requestJsonMap.get("language") !=null ? (int) requestJsonMap.get("language") : 1;//English By Default
 		Constant.log("strLanguage:"+iLang, 0);
 //		int iLang = 1; //English By Default
 //		if(lang != null && !"".equals(lang.trim())){
@@ -91,7 +91,7 @@ public class ContentActionController extends HttpServlet {
 		String type=(String) ""+requestJsonMap.get("type");
 		Constant.log("Creating Article with Type:"+type, 0);
 
-		String status= (String) requestJsonMap.get("articleStatus");
+		String status= (String) ""+ requestJsonMap.get("articleStatus");
 		System.out.println("Test articleStatus Val"+status);
 		int iStatus = 1; //WIP By Default
 		if(status  != null && !"".equals(status.trim())){
