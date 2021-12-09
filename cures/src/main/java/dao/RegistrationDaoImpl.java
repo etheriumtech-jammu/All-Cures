@@ -1,5 +1,6 @@
 package dao;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +22,8 @@ import model.Registration;
 import service.SendEmailService;
 import util.Constant;
 import util.HibernateUtil;
+import util.WhatsAPITrackUsersSync;
+import util.WhatsAPITrackUsers;
 
 @Component
 public class RegistrationDaoImpl {
@@ -137,11 +140,11 @@ public class RegistrationDaoImpl {
 			templateData.put("first_name", f_name);
 			String link = "http://localhost:3000";
 			templateData.put("linkverfiy", link);
-			
+
 			// object -> Map
-	        ObjectMapper oMapper = new ObjectMapper();
-	        Map<String, Object> mapUser = oMapper.convertValue(user, Map.class);
-	        templateData.putAll(mapUser);
+			ObjectMapper oMapper = new ObjectMapper();
+			Map<String, Object> mapUser = oMapper.convertValue(user, Map.class);
+			templateData.putAll(mapUser);
 			emaildto.setEmailTemplateData(templateData);
 			System.out.println(emaildto);
 
@@ -356,8 +359,8 @@ public class RegistrationDaoImpl {
 //				emaildto.setEmailtext("Dear User \n Password reset link here...\n" + link);
 //
 //				String returnEmail = emailUtil.shootEmail(emaildto);
-				
-				//second email also using template
+
+				// second email also using template
 				EmailDTO emaildto2 = new EmailDTO();
 
 				emaildto2.setTo(email);
@@ -480,7 +483,19 @@ public class RegistrationDaoImpl {
 			ret = query.executeUpdate();
 			trans.commit();
 			System.out.println("inserted new entry to newsletter table for mobile =  " + mobile);
-
+			try {
+				String[] params = new String[5];
+				params[0] = "+91";
+				params[1] = mobile + "";
+				params[2] = nl_sub_type + "";
+				params[3] = nl_subscription_disease_id + "";
+				params[4] = nl_subscription_cures_id + "";
+				WhatsAPITrackUsers.POSTRequestTrackUsers(params);
+				System.out.println("Subscription WhatsApp Message sent.");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {

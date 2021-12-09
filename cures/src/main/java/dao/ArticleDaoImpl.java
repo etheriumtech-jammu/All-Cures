@@ -23,6 +23,8 @@ import model.Registration;
 import service.SendEmailService;
 import util.ArticleUtils;
 import util.HibernateUtil;
+import util.WhatsAPITrackEvents;
+import util.WhatsAPITrackUsers;
 
 //1	active
 //7	WorkInProgress
@@ -447,6 +449,8 @@ public class ArticleDaoImpl {
 
 		// SendEmailUtil.shootEmail(null, "Article updated top ", "Hi
 		// aritcleid="+article_id);
+		
+		String[] params = new String[6];
 
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -559,11 +563,19 @@ public class ArticleDaoImpl {
 				// aritcleid="+article_id);
 				// String returnEmail = emailUtil.shootEmail("anilraina@etheriumtech.com", "test
 				// sub 3", message);
+				
+				if ((int) articleMap.get("pubstatus_id") == 3) {
+					WhatsAPITrackEvents.POSTRequestTrackEventsByArticleId(article_id);
+					System.out.println("Subscription WhatsApp Message sent.");
+				}
 				EmailDTO emaildto = new EmailDTO();
 				emaildto.setSubject("Article updated ");
 				emaildto.setEmailtext("Hi aritcleid=" + article_id);
 
-				String returnEmail = emailUtil.shootEmail(emaildto);
+				//String returnEmail = emailUtil.shootEmail(emaildto);
+				//uncomment later
+
+
 
 			} catch (Exception e) {
 				e.printStackTrace();
