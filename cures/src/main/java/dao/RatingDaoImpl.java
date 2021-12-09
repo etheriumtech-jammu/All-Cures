@@ -1,5 +1,6 @@
 package dao;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -43,6 +44,7 @@ public class RatingDaoImpl {
 			Integer target_id = (Integer) objects[4];
 			Integer target_type_id = (Integer) objects[5];
 			Float ratingVal = (Float) objects[6];
+			Timestamp updated_at = (Timestamp) objects[7];
 			hm.put("rate_id", rate_id);
 			hm.put("comments", comments);
 			hm.put("ratedBy_id", ratedBy_id);
@@ -50,6 +52,7 @@ public class RatingDaoImpl {
 			hm.put("target_id", target_id);
 			hm.put("target_type_id", target_type_id);
 			hm.put("ratingVal", ratingVal);
+			hm.put("updated_at", updated_at);
 			hmFinal.add(hm);
 		}
 		session.close();
@@ -71,7 +74,7 @@ public class RatingDaoImpl {
 				+ "    `doctorsrating`.`ratedBy_type_id`,\r\n" + "    `doctorsrating`.`target_id`,\r\n"
 				+ "    `doctorsrating`.`target_type_id`,\r\n" + "    `doctorsrating`.`ratingVal`,\r\n"
 				+ "    `doctorsrating`.`reviewed`,\r\n" + "    `doctorsrating`.`reviewedBy`,\r\n"
-				+ " first_name, last_name "
+				+ " first_name, last_name, `doctorsrating`.`updated_at` "
 				+ " FROM doctorsrating inner join registration on registration_id = ratedBy_id where target_id=" + targetid + " and target_type_id=" + targettypeid + ";");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();
@@ -88,6 +91,7 @@ public class RatingDaoImpl {
 			Integer reviewedBy = (Integer) objects[8];
 			String first_name = (String) objects[9];
 			String last_name = (String) objects[10];
+			Timestamp updated_at = (Timestamp) objects[11];
 			hm.put("rate_id", rate_id);
 			hm.put("comments", comments);
 			hm.put("ratedBy_id", ratedBy_id);
@@ -99,6 +103,8 @@ public class RatingDaoImpl {
 			hm.put("reviewedBy", reviewedBy);
 			hm.put("first_name", first_name);
 			hm.put("last_name", last_name);
+			hm.put("updated_at", updated_at);
+
 			hmFinal.add(hm);
 		}
 		session.close();
@@ -263,7 +269,7 @@ public class RatingDaoImpl {
 						+ "    `doctorsrating`.`ratedBy_id`,\r\n" + "    `doctorsrating`.`ratedBy_type_id`,\r\n"
 						+ "    `doctorsrating`.`target_id`,\r\n" + "    `doctorsrating`.`target_type_id`,\r\n"
 						+ "    `doctorsrating`.`ratingVal`,\r\n" + "    `doctorsrating`.`reviewed`,\r\n"
-						+ "    `doctorsrating`.`reviewedBy`, first_name, last_name \r\n" + " FROM doctorsrating inner join registration on registration_id = ratedBy_id " + where + ";");
+						+ "    `doctorsrating`.`reviewedBy`, first_name, last_name,`doctorsrating`.`updated_at` \r\n" + " FROM doctorsrating inner join registration on registration_id = ratedBy_id " + where + ";");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
@@ -279,6 +285,7 @@ public class RatingDaoImpl {
 			Integer reviewedBy = (Integer) objects[8];
 			String first_name = (String) objects[9];
 			String last_name = (String) objects[10];
+			Timestamp updated_at = (Timestamp) objects[11];
 			hm.put("rate_id", rate_id);
 			hm.put("comments", comments);
 			hm.put("ratedBy_id", ratedBy_id);
@@ -290,6 +297,7 @@ public class RatingDaoImpl {
 			hm.put("reviewedBy", reviewedBy);
 			hm.put("first_name", first_name);
 			hm.put("last_name", last_name);
+			hm.put("updated_at", updated_at);
 			hmFinal.add(hm);
 		}
 		session.close();
