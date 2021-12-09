@@ -59,13 +59,13 @@ public class ArticleController {
 	}
 
 	@RequestMapping(value = "/all", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody ArrayList<Article> listArticlesAll() {
-		return articleDaoImpl.getArticlesListAll();
+	public @ResponseBody ArrayList<Article> listArticlesAll(@RequestParam(required = false) Integer limit) {
+		return articleDaoImpl.getArticlesListAll(limit);
 	}
 
 	@RequestMapping(value = "/allkv", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody List listArticlesAllKeys() {
-		return articleDaoImpl.getArticlesListAllKeys();
+	public @ResponseBody List listArticlesAllKeys(@RequestParam(required = false) Integer limit) {
+		return articleDaoImpl.getArticlesListAllKeys(limit);
 	}
 
 	@RequestMapping(value = "/all/table/{table_name}", produces = "application/json", method = RequestMethod.GET)

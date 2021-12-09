@@ -310,7 +310,7 @@ public class ArticleDaoImpl {
 		return article;
 	}
 
-	public static ArrayList<Article> getArticlesListAll() {
+	public static ArrayList<Article> getArticlesListAll(Integer limit) {
 
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -320,6 +320,10 @@ public class ArticleDaoImpl {
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
+		
+		String limit_str = "";
+		if (null !=limit )
+			limit_str = " limit "+limit; 
 
 		Query query = session.createNativeQuery("SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
 				+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
@@ -331,7 +335,7 @@ public class ArticleDaoImpl {
 				+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
 				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n" + "    `article`.`type`,\r\n"
 				+ "    `article`.`comments`\r\n" + "FROM `allcures_schema`.`article`"
-				+ " order by `article`.`published_date` desc;\r\n" + ";");
+				+ " order by `article`.`published_date` desc " + limit_str + ";\r\n" + ";");
 		// needs other condition too but unable to find correct column
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
@@ -340,7 +344,7 @@ public class ArticleDaoImpl {
 		return list;
 	}
 
-	public static List getArticlesListAllKeys() {
+	public static List getArticlesListAllKeys(Integer limit) {
 
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -350,6 +354,9 @@ public class ArticleDaoImpl {
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
+		String limit_str = "";
+		if (null != limit)
+			limit_str = " limit "+limit; 
 
 		Query query = session.createNativeQuery("SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
 				+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
@@ -364,7 +371,7 @@ public class ArticleDaoImpl {
 
 				+ "FROM `allcures_schema`.`article`\r\n"
 				+ "inner join disease_condition dc on dc.dc_id = `article`.`disease_condition_id`"
-				+ " order by `article`.`published_date` desc \r\n" + ";");
+				+ " order by `article`.`published_date` desc \r\n" + limit_str + ";");
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + results);
