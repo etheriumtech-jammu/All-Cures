@@ -80,7 +80,7 @@ public class DoctorsratingDaoImpl {
 
 	}
 
-	public static String saveRating(String comments, Integer ratedbyid, Integer ratedbytype,Integer targetid, 
+	public static int saveRating(String comments, Integer ratedbyid, Integer ratedbytype,Integer targetid, 
 			Integer targetTypeid, Float ratingval){
 		
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -89,7 +89,7 @@ public class DoctorsratingDaoImpl {
 		Session session = factory;
 		session.getTransaction().begin();
 		Doctorsrating docrate= new Doctorsrating();
-		String value= null;
+		int value= 0;
 		try{
 			docrate.setComments(comments);
 			docrate.setRatedBy_id(ratedbyid);
@@ -101,11 +101,11 @@ public class DoctorsratingDaoImpl {
 			session.getTransaction().commit();
 
 			session.close();
-			value ="Success";
+			value = 1;//"Success";
 		}catch (Exception e) {
 			// TODO: handle exception
 			session.getTransaction().rollback();
-			value = "error";
+			value = 0;//"error";
 		}finally {
 			session.close();
 		}

@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -38,7 +39,16 @@ public class DoctorRatingActionController extends HttpServlet {
 		Constant.log("In Rating Action Controller", 0);
 		String cmd = request.getParameter("cmd");
 		if (cmd != null && cmd.equals("rateAsset")) {
-			rateAssetReq(request);
+			int ret = rateAssetReq(request);
+			response.setStatus(200);
+			response.setContentType("text/html");
+			response.setCharacterEncoding("UTF-8");
+			Constant.log("1/0 Response Requested got >"+ret, 1);
+			PrintWriter out = response.getWriter();
+			if (ret !=1) ret = 0;
+			out.write(""+ret);
+			out.flush();
+			Constant.log("Responding with response =" + ret, 1);
 		} else if (cmd != null && cmd.equals("getTopRatedAssets")) {
 			// get the AssetType (Doctors or Articles or Medicine or Whatever
 			// get How Many e.g. Top 5 or Top 10
@@ -56,33 +66,35 @@ public class DoctorRatingActionController extends HttpServlet {
 		doGet(request, response);
 	}
 
-	public void rateAsset(String comments, int ratedBy, int target, int targetType, int ratedByType, float rating) {
-		System.out.println("rating"+rating);
+	public int rateAsset(String comments, int ratedBy, int target, int targetType, int ratedByType, float rating) {
+		System.out.println("rating" + rating);
+		int value = 0;
 		RatingDaoImpl ratingDao = new RatingDaoImpl();
 		if (null != comments && comments.trim().length() > 0) {
 			System.out.println("rating created for comments");
 			DoctorsratingDaoImpl docrating = new DoctorsratingDaoImpl();
-			String value = docrating.saveRating(comments, ratedBy, ratedByType, target, targetType, rating);
-			return;
+			value = docrating.saveRating(comments, ratedBy, ratedByType, target, targetType, rating);
+			return value;
 		}
 		List listOfRatings = ratingDao.findRatingByIdandTypeandRatedByandRatedByType(target, targetType, ratedBy,
 				ratedByType);
 		if (null != listOfRatings && listOfRatings.size() > 0) {
 			System.out.println("rating updated");
-			int value = ratingDao.updateRatingCommentsCombined(target, targetType, ratedBy, ratedByType, rating, comments);
+			value = ratingDao.updateRatingCommentsCombined(target, targetType, ratedBy, ratedByType, rating, comments);
 		} else {
 			System.out.println("rating created");
 			DoctorsratingDaoImpl docrating = new DoctorsratingDaoImpl();
-			String value = docrating.saveRating(comments, ratedBy, ratedByType, target, targetType, rating);
+			value = docrating.saveRating(comments, ratedBy, ratedByType, target, targetType, rating);
 		}
+		return value;
 	}
 
-	public void rateAssetReq(HttpServletRequest request) {
-		String comments = (String)  request.getParameter("comments");
+	public int rateAssetReq(HttpServletRequest request) {
+		String comments = (String) request.getParameter("comments");
 		String ratedbyid = (String) request.getParameter("ratedbyid");
 		String ratedbytype = (String) request.getParameter("ratedbytype");
 		String targetid = (String) request.getParameter("targetid");
-		String targetType = (String)  request.getParameter("targetTypeid");
+		String targetType = (String) request.getParameter("targetTypeid");
 		String ratingval = (String) request.getParameter("ratingVal");
 		System.out.println("ratingVal" + ratingval);
 		int targetTypeid = 0;
@@ -101,10 +113,11 @@ public class DoctorRatingActionController extends HttpServlet {
 			ratebyTypeid = 2;
 		}
 		Float rv = 0.0f;
-		if (ratingval !=null)
+		if (ratingval != null)
 			rv = Float.parseFloat(ratingval);
-		System.out.println("ratingval 1"+ratingval);
-		rateAsset(comments, Integer.parseInt(ratedbyid), Integer.parseInt(targetid), targetTypeid, ratebyTypeid,rv);
+		System.out.println("ratingval 1" + ratingval);
+		return rateAsset(comments, Integer.parseInt(ratedbyid), Integer.parseInt(targetid), targetTypeid, ratebyTypeid,
+				rv);
 	}
 
 }
