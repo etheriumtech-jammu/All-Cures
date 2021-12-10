@@ -22,6 +22,7 @@ import model.EmailDTO;
 import model.Registration;
 import service.SendEmailService;
 import util.ArticleUtils;
+import util.Constant;
 import util.HibernateUtil;
 import util.WhatsAPITrackEvents;
 import util.WhatsAPITrackUsers;
@@ -36,6 +37,8 @@ public class ArticleDaoImpl {
 	private SendEmailService emailUtil;
 
 	private static ArrayList list = new ArrayList();
+	
+	ContentDaoImpl contentDao = new ContentDaoImpl();
 
 	public static ArrayList<Article> findPublishedArticle(Registration user) {
 
@@ -544,6 +547,28 @@ public class ArticleDaoImpl {
 
 		// java.sql.Timestamp date = new java.sql.Timestamp(new
 		// java.util.Date().getTime());
+		//check if DEFAULT type for disease_condition_id is already present or not
+		Article artExisting = contentDao.findByArticleId(article_id);
+		String type = artExisting.getType();
+		Integer iDiseaseConditionId = artExisting.getDisease_condition_id();
+		String diseaseConditionIdStr ="";
+		if (articleMap.containsKey("disease_condition_id") || articleMap.containsKey("type")) {
+			
+			if (articleMap.containsKey("type")) 
+				type = (String) articleMap.get("type").toString();
+			if (articleMap.containsKey("disease_condition_id")) {
+				diseaseConditionIdStr = (String) articleMap.get("disease_condition_id");
+				iDiseaseConditionId = Integer.parseInt(diseaseConditionIdStr);
+			}
+			
+			if (type.contains("1")) {
+				List<Article> countMatchArticles = contentDao.findByArticleTypeAndDC(iDiseaseConditionId);
+				if(countMatchArticles.size()>0) {
+					Constant.log("Default Article for Disease_condition_id already present", 0); 
+					return -2;
+				}
+			}
+		}
 
 		updatestr = updatestr.replaceAll(",$", "");
 		Query query = session.createNativeQuery(
@@ -581,9 +606,7 @@ public class ArticleDaoImpl {
 				emaildto.setSubject("Article updated ");
 				emaildto.setEmailtext("Hi aritcleid=" + article_id);
 
-				//String returnEmail = emailUtil.shootEmail(emaildto);
-				//uncomment later
-
+				String returnEmail = emailUtil.shootEmail(emaildto);
 
 
 			} catch (Exception e) {

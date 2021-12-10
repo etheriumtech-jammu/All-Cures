@@ -155,6 +155,14 @@ public class ContentActionController extends HttpServlet {
 			Constant.log("Missing user object in session; User is not logged In; Send to login", 0); 
 			result = -5;
 		}else{
+			//check DEFAULT i.e type =1 and disease_condition id is unique
+			if (type.contains("1")) {
+				List<Article> countMatchArticles = contentDao.findByArticleTypeAndDC(iDiseaseConditionId);
+				if(countMatchArticles.size()>0) {
+					Constant.log("Default Article for Disease_condition_id already present", 0); 
+					return -2;
+				}
+			}
 			//TODO: Remove this hardcoding	
 			Constant.log("User object is in session; User is logged In; Adding Article Now", 0);
 			boolean bResult = contentDao.createArticle(iStatus, iLang, iDiscId, iCopyId, authIdS, title, artFrndlyNm, subHead, 

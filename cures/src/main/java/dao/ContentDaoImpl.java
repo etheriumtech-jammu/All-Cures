@@ -156,7 +156,7 @@ public class ContentDaoImpl {
 		Transaction trans =(Transaction )session.beginTransaction();
 		//String HQL= "from doctors  INNER JOIN FETCH hospital.hospital_affliated where.";
 		Query query = session.createNativeQuery("SELECT  article.article_id, article.title, article.friendly_name, article.subheading, "+
-"article.content_type, article.keywords, article.window_title, article.content_location, "+
+"article.content_type, article.keywords, article.window_title, article.content_location "+
  "FROM article where "+ "article_id= "+articleid +";"
 );
 		List<Article> list= ( List<Article>) query.getResultList();
@@ -190,6 +190,30 @@ public class ContentDaoImpl {
 		session.close();
 		return articleList;
 		}	
+	
+	public static List<Article> findByArticleTypeAndDC(Integer DC_ID){
+			Article article = new Article();
+			Session factory = HibernateUtil.buildSessionFactory();
+
+			// creating session object
+			Session session = factory;
+
+			// creating transaction object
+			Transaction trans =(Transaction )session.beginTransaction();
+			//String HQL= "from doctors  INNER JOIN FETCH hospital.hospital_affliated where.";
+			Query query = session.createNativeQuery("SELECT  article.article_id, article.title, article.friendly_name, article.subheading, "+
+	"article.content_type, article.keywords, article.window_title, article.content_location "+
+	 "FROM article where  article.disease_condition_id = " + DC_ID + " and FIND_IN_SET(1, REPLACE(\r\n"
+	 		+ "                        REPLACE(\r\n"
+	 		+ "                          REPLACE(article.type, '\"', ''), \r\n"
+	 		+ "                        '[', ''), \r\n"
+	 		+ "                      ']','')) > 0 ;" );
+			
+			List<Article> list= ( List<Article>) query.getResultList();
+			
+			session.close();
+			return list;
+			}	
 	
 	public static boolean updateArticleMeta(String title, String f_name, String subhead, String content_type, String keyword, 
 			String window_title, int articleId, int regId){
