@@ -38,13 +38,13 @@ public class DoctorsDaoImpl {
 	}
 
 	public static int updateProfile(HashMap profileMap) {
-		int docid = 0;
+		int rowno = 0;
 		String updatestr = "";
-		if (profileMap.containsKey("docid")) {
-			docid = (int) profileMap.get("docid");
+		if (profileMap.containsKey("rowno")) {
+			rowno = (int) profileMap.get("rowno");
 		}
-		if (docid == 0) {
-			Constant.log("docid not provided in request", 3);
+		if (rowno == 0) {
+			Constant.log("rowno not provided in request", 3);
 			return 0;
 		} // return error
 		if (profileMap.containsKey("gender")) {
@@ -157,19 +157,19 @@ public class DoctorsDaoImpl {
 		Transaction trans = (Transaction) session.beginTransaction();
 
 		Query query = session
-				.createNativeQuery("UPDATE doctors " + "SET " + updatestr + " WHERE docid = " + docid + ";");
+				.createNativeQuery("UPDATE doctors " + "SET " + updatestr + " WHERE rowno = " + rowno + ";");
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
-			System.out.println("updated doctors table for docid =  " + docid);
-			Constant.log(">>>>>>>>>>>>>>>>>>updated doctors table for docid =  " + docid, 1);
+			System.out.println("updated doctors table for rowno =  " + rowno);
+			Constant.log(">>>>>>>>>>>>>>>>>>updated doctors table for rowno =  " + rowno, 1);
 //			int check = new DoctorsDaoImpl().memcacheUpdateDoctor(docid);
 			if (mcc == null)
 				new DoctorsDaoImpl().initializeCacheClient();
 			// Remove the Doctor Found to the Cache since the same ID will be updated in
 			// next fetch
 			// mcc.replace(Constant.DOCID + "_" + docid, 360000, jsondata).getStatus();
-			mcc.delete(Constant.DOCID + "_" + docid);
+			mcc.delete(Constant.ROWNO + "_" + rowno);
 			trans.commit();
 
 		} catch (Exception ex) {
@@ -214,7 +214,7 @@ public class DoctorsDaoImpl {
 		return mcc;
 	}
 
-	public String findDocInCache(int docId) {
+	public String findDocInCache(int rowno) {
 		String cacheString = null;
 
 		// This is the ADDRESS OF MEMCACHE
@@ -223,8 +223,8 @@ public class DoctorsDaoImpl {
 			initializeCacheClient();
 		}
 		Constant.log("Getting docid from MemCache", 0);
-		if (mcc.get(Constant.DOCID + "_" + docId) != null)
-			cacheString = mcc.get(Constant.DOCID + "_" + docId).toString();
+		if (mcc.get(Constant.ROWNO + "_" + rowno) != null)
+			cacheString = mcc.get(Constant.ROWNO + "_" + rowno).toString();
 		Constant.log("Found In MemCache:" + cacheString, 0);
 		return cacheString;
 	}
@@ -412,7 +412,7 @@ public class DoctorsDaoImpl {
 				doc.setHospital_affliated_code(obj[30] != null ? (Integer) obj[30] : 0);
 				doc.setRowno((long) (obj[31] != null ? (Integer) obj[31] : 0));
 			}
-			Constant.log("--Returning from DoctorsDao, Doc Object for ID:" + doc.getDocid(), 1);
+			Constant.log("--Returning from DoctorsDao, Doc Object for ID:" + doc.getDocid() +" rowno:" + doc.getRowno(), 1);
 		}
 		session.close();
 		return doc;
@@ -492,7 +492,7 @@ public class DoctorsDaoImpl {
 		int docid = 0;
 
 		Doctors doctors = null;
-		Query query = session.createNativeQuery("select docid,email from doctors where email='" + email.trim() + "'");
+		Query query = session.createNativeQuery("select docid,email,rowno from doctors where email='" + email.trim() + "'");
 		ArrayList<Doctors> list = (ArrayList<Doctors>) query.getResultList();
 		Iterator itr = list.iterator();
 		if (itr.hasNext()) {
@@ -502,6 +502,8 @@ public class DoctorsDaoImpl {
 			{
 				doctors.setDocid(obj[0] != null ? (Integer) obj[0] : -1);
 				doctors.setEmail((String) obj[1]);
+				doctors.setRowno(obj[2] != null ? (Long) obj[2] : -1);
+
 			}
 		}
 		session.close();

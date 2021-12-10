@@ -59,13 +59,13 @@ public class DoctorsActionController extends HttpServlet {
 				//Add the Doctor Found to the Cache since the ID was not there
 				Gson gson = new GsonBuilder().serializeNulls().create();	
 				jsondata = gson.toJson(doctorObj);
-				mcc.add(Constant.DOCID+"_"+id,360000 ,jsondata).getStatus();
+				mcc.add(Constant.ROWNO+"_"+id,360000 ,jsondata).getStatus();
 				//System.out.println("Adding up in docobj cache:"+ mcc.add("docObj",360000 ,doctorObj.toString()).getStatus());						
 			}else{
 				//Doctor Found in Memcache
 				//Date waitTime= (Date) mcc.get("waiting_time");
 				Constant.log("Found Doctor in Memcache and serving from there", 1);
-				jsondata = (String)mcc.get(Constant.DOCID+"_"+id);
+				jsondata = (String)mcc.get(Constant.ROWNO+"_"+id);
 				//doctorObj = new Doctors(jsondata);
 				Constant.log("Done Constructing Doctor JSON From Memcache", 1);
 			}
@@ -115,8 +115,8 @@ public class DoctorsActionController extends HttpServlet {
 			initializeCacheClient();
 		}
 		Constant.log("Getting docid from MemCache",0);
-		if(mcc.get(Constant.DOCID+"_"+docId) != null)
-			cacheString = mcc.get(Constant.DOCID+"_"+docId).toString();
+		if(mcc.get(Constant.ROWNO+"_"+docId) != null)
+			cacheString = mcc.get(Constant.ROWNO+"_"+docId).toString();
 		Constant.log("Found In MemCache:"+cacheString,0);
 		return cacheString;
 	}
