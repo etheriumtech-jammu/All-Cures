@@ -557,8 +557,8 @@ public class ArticleDaoImpl {
 			if (articleMap.containsKey("type")) 
 				type = (String) articleMap.get("type").toString();
 			if (articleMap.containsKey("disease_condition_id")) {
-				diseaseConditionIdStr = (String) articleMap.get("disease_condition_id");
-				iDiseaseConditionId = Integer.parseInt(diseaseConditionIdStr);
+				iDiseaseConditionId = (Integer) articleMap.get("disease_condition_id");
+//				iDiseaseConditionId = Integer.parseInt(diseaseConditionIdStr);
 			}
 			
 			if (type.contains("1")) {
