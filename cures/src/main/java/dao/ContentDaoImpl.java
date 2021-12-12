@@ -2,6 +2,9 @@ package dao;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -89,6 +92,16 @@ public class ContentDaoImpl {
 			Constant.log("Saving Content in Filesystem with Article Id:"+article.getArticle_id(), 1);			
 			artCrtStatus = ArticleUtils.updateArticleContent(contentLocation, articleContent, article.getArticle_id(), reg_id);
 			article.setContent_location(ArticleUtils.getContentLocation(article.getArticle_id(), reg_id, true));
+			int n = 500;
+			String upToNCharacters = articleContent.substring(0, Math.min(articleContent.length(), n));
+			String upToNCharacters_decoded = URLDecoder.decode(upToNCharacters.substring(0,upToNCharacters.lastIndexOf("%")), StandardCharsets.UTF_8);
+			String content500 = upToNCharacters_decoded;
+			int lastInd = upToNCharacters_decoded.lastIndexOf("},");
+			if (lastInd !=-1) {
+				content500 = upToNCharacters_decoded.substring(0,lastInd)+"}]}";
+			}
+
+			article.setContent(URLDecoder.decode(content500, StandardCharsets.UTF_8));
 			
 			java.util.Date date=new java.util.Date();
 			java.sql.Date sqlDate=new java.sql.Date(date.getTime());

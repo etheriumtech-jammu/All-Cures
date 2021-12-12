@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -528,8 +530,19 @@ public class ArticleDaoImpl {
 		if (articleMap.containsKey("language_id")) {
 			updatestr += "`language_id` = " + articleMap.get("language_id") + ",\r\n";
 		}
-		if (articleMap.containsKey("content")) {
-			updatestr += "`content` = '" + articleMap.get("content") + "',\r\n";
+		String content = articleMap.get("articleContent") == null ? ""
+				: (String) articleMap.get("articleContent");
+		if (articleMap.containsKey("articleContent")) {
+			int n = 500;
+			String upToNCharacters = content.substring(0, Math.min(content.length(), n));
+			String upToNCharacters_decoded = URLDecoder.decode(upToNCharacters.substring(0,upToNCharacters.lastIndexOf("%")), StandardCharsets.UTF_8);
+			String content500 = upToNCharacters_decoded;
+			int lastInd = upToNCharacters_decoded.lastIndexOf("},");
+			if (lastInd !=-1) {
+				content500 = upToNCharacters_decoded.substring(0,lastInd)+"}]}";
+			}
+			//article.setContent(URLDecoder.decode(upToNCharacters, StandardCharsets.UTF_8));
+			updatestr += "`content` = '" + URLDecoder.decode(content500, StandardCharsets.UTF_8) + "',\r\n";
 		}
 		if (articleMap.containsKey("comments")) {
 			updatestr += "`comments` = '" + articleMap.get("comments") + "',\r\n";
@@ -557,8 +570,8 @@ public class ArticleDaoImpl {
 			if (articleMap.containsKey("type")) 
 				type = (String) articleMap.get("type").toString();
 			if (articleMap.containsKey("disease_condition_id")) {
-				iDiseaseConditionId = (Integer) articleMap.get("disease_condition_id");
-//				iDiseaseConditionId = Integer.parseInt(diseaseConditionIdStr);
+				diseaseConditionIdStr = (String) (""+articleMap.get("disease_condition_id"));
+				iDiseaseConditionId = Integer.parseInt(diseaseConditionIdStr);
 			}
 			
 			if (type.contains("1")) {
@@ -570,9 +583,11 @@ public class ArticleDaoImpl {
 			}
 		}
 
+
 		updatestr = updatestr.replaceAll(",$", "");
 		Query query = session.createNativeQuery(
 				"UPDATE `article`\r\n" + "SET\r\n" + updatestr + "WHERE `article_id` = " + article_id + ";");
+		
 		// needs other condition too but unable to find correct column
 		int ret = 0;
 		try {
@@ -584,8 +599,7 @@ public class ArticleDaoImpl {
 				// Update the Content First
 				Article_dc_name art = new ArticleDaoImpl().getArticleDetails(article_id);
 				String art_location = art.getContent_location();
-				String content = articleMap.get("articleContent") == null ? ""
-						: (String) articleMap.get("articleContent");
+				
 				// String content =
 				// "{\"time\":1625577023180,\"blocks\":[{\"id\":\"w6K2r9k_v4\",\"type\":\"paragraph\",\"data\":{\"text\":\"hellow
 				// anil article
