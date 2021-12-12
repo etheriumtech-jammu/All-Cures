@@ -99,6 +99,7 @@ public class WAPICommon {
 			whereStr += " or FIND_IN_SET ("+dc_id+", nl_subscription_disease_id) > 0 ";
 		if (type.contains("2"))
 			whereStr += " or FIND_IN_SET ("+dc_id+", nl_subscription_cures_id) > 0 ";
+		whereStr += " and active=1 ";
 
 		Connection con = null;
 		ResultSet rs = null;
@@ -113,9 +114,14 @@ public class WAPICommon {
 					prop.getProperty("DB_USER"), prop.getProperty("DB_PASS"));
 			// here allcures_schema is database name, next is username and password
 			stmt = con.createStatement();
-			rs = stmt.executeQuery(
-					"select user_id, nl_subscription_disease_id, nl_start_date, nl_sub_type, mobile, nl_subscription_cures_id, active, nl_end_date from newsletter "
-					+ " where " + whereStr );
+			String query = 
+					"select user_id, nl_subscription_disease_id, nl_start_date, nl_sub_type, mobile, nl_subscription_cures_id, active, nl_end_date,count(*) from newsletter "
+					+ " where " + whereStr 
+					+ " group by mobile,nl_sub_type ,nl_subscription_disease_id, nl_subscription_cures_id "
+					+ " order by mobile,nl_sub_type ,nl_subscription_disease_id, nl_subscription_cures_id";
+			
+			System.out.println("For article#"+article_id+", SQL for fetchDatabaseResultsForNewsletterByArticle "+query);
+			rs = stmt.executeQuery(query);
 			while (rs.next()) {
 				HashMap<String, Object> hmRow = new HashMap<String, Object>();
 				hmRow.put("user_id", rs.getInt(1));

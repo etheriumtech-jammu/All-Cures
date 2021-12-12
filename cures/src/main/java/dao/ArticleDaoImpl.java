@@ -26,6 +26,7 @@ import service.SendEmailService;
 import util.ArticleUtils;
 import util.Constant;
 import util.HibernateUtil;
+import util.WhatsAPITemplateMessage;
 import util.WhatsAPITrackEvents;
 import util.WhatsAPITrackUsers;
 
@@ -613,7 +614,8 @@ public class ArticleDaoImpl {
 				// sub 3", message);
 				
 				if ((int) articleMap.get("pubstatus_id") == 3) {
-					WhatsAPITrackEvents.POSTRequestTrackEventsByArticleId(article_id);
+//					WhatsAPITrackEvents.POSTRequestTrackEventsByArticleId(article_id);
+					WhatsAPITemplateMessage.POSTRequestTrackEventsByArticleId(article_id, type);
 					System.out.println("Subscription WhatsApp Message sent.");
 				}
 				EmailDTO emaildto = new EmailDTO();

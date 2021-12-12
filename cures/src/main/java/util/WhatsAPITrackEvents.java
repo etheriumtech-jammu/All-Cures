@@ -107,12 +107,12 @@ public class WhatsAPITrackEvents {
 		for (int i = 0; i < NSData.size(); i++) {
 			String[] params = new String[7];
 			params[0] = "DAILY_NL_DISEASE_IDS";//"NEW_ARTICLE_PUBLISHED";
-//			if ( (int) ((HashMap) NSData.get(i)).get("nl_sub_type") == 1 )
-//			{
-//				params[1] = "";//all diseased cures subscribed
-//			}else {
+			if ( (int) ((HashMap) NSData.get(i)).get("nl_sub_type") == 1 )
+			{
+				params[1] = "All Diseases, Cures and Symptoms";//all diseased cures subscribed
+			}else {
 				params[1] =  (String) ((HashMap) NSData.get(i)).get("nl_subscription_disease_id") ;//DC_ID;
-//			}
+			}
 			params[2] = "+91"; //countryCode
 			params[3] = (String) ((HashMap) NSData.get(i)).get("mobile"); // mobile
 			params[4] = article_id+""; //DC_NAMES
