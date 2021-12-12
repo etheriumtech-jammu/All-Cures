@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,6 +28,8 @@ import util.ArticleUtils;
 import util.Constant;
 import util.HibernateUtil;
 import util.WhatsAPITemplateMessage;
+import util.WhatsAPITrackEvents;
+import util.WhatsAPITrackUsers;
 
 //1	active
 //7	WorkInProgress
@@ -38,7 +41,7 @@ public class ArticleDaoImpl {
 	private SendEmailService emailUtil;
 
 	private static ArrayList list = new ArrayList();
-	
+
 	ContentDaoImpl contentDao = new ContentDaoImpl();
 
 	public static ArrayList<Article> findPublishedArticle(Registration user) {
@@ -62,21 +65,22 @@ public class ArticleDaoImpl {
 			conditionMatch = "  ";
 		// Reviewer
 		if (user.getRegistration_type() == 7)
-			conditionMatch = " and  published_by = " + user.getRegistration_id() ;
+			conditionMatch = " and  published_by = " + user.getRegistration_id();
 		// Editorial
 		if (user.getRegistration_type() == 4)
-			conditionMatch = " and 1=-1 " ;
+			conditionMatch = " and 1=-1 ";
 		// Author
 		if (user.getRegistration_type() == 3)
-			conditionMatch = " and 1=-1 " ;
+			conditionMatch = " and 1=-1 ";
 		// patient or doctor
 		if (user.getRegistration_type() == 2 || user.getRegistration_type() == 1)
-			conditionMatch = " and 1=-1 " ;
+			conditionMatch = " and 1=-1 ";
 
-			//conditionMatch = " and ( authored_by =" + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
+		// conditionMatch = " and ( authored_by =" + user.getRegistration_id() + " or
+		// edited_by = " + user.getRegistration_id() +" ) ";
 
-		Query query = session.createNativeQuery(
-				"select  article_id  from article  where pubstatus_id = 3 " + conditionMatch + " ;");
+		Query query = session
+				.createNativeQuery("select  article_id  from article  where pubstatus_id = 3 " + conditionMatch + " ;");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
 
@@ -94,23 +98,26 @@ public class ArticleDaoImpl {
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
-		
+
 		String conditionMatch = "";
 		// Admin user
 		if (user.getRegistration_type() == 9)
 			conditionMatch = "  ";
 		// Reviewer
 		if (user.getRegistration_type() == 7)
-			conditionMatch = " and ( authored_by =" + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
+			conditionMatch = " and ( authored_by =" + user.getRegistration_id() + " or  edited_by = "
+					+ user.getRegistration_id() + " ) ";
 		// Editorial
 		if (user.getRegistration_type() == 4)
-			conditionMatch = " and edited_by = " + user.getRegistration_id() +"  ";
+			conditionMatch = " and edited_by = " + user.getRegistration_id() + "  ";
 		// Author
 		if (user.getRegistration_type() == 3)
-			conditionMatch = " and ( authored_by =" + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
+			conditionMatch = " and ( authored_by =" + user.getRegistration_id() + " or  edited_by = "
+					+ user.getRegistration_id() + " ) ";
 		// paitent or doctor
 		if (user.getRegistration_type() == 2 || user.getRegistration_type() == 1)
-			conditionMatch = " and ( authored_by =" + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
+			conditionMatch = " and ( authored_by =" + user.getRegistration_id() + " or  edited_by = "
+					+ user.getRegistration_id() + " ) ";
 
 		Query query = session
 				.createNativeQuery("select  article_id  from article where pubstatus_id = 1 " + conditionMatch + " ;");
@@ -131,14 +138,14 @@ public class ArticleDaoImpl {
 		Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
-		
+
 		String conditionMatch = "";
 		// Admin user
 		if (user.getRegistration_type() == 9)
 			conditionMatch = "  ";
 		// Reviewer
 		if (user.getRegistration_type() == 7)
-			conditionMatch = " and  published_by = " + user.getRegistration_id() +" ";
+			conditionMatch = " and  published_by = " + user.getRegistration_id() + " ";
 		// Editorial
 		if (user.getRegistration_type() == 4)
 			conditionMatch = " and 1=-1  ";
@@ -167,7 +174,7 @@ public class ArticleDaoImpl {
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
-		
+
 		String conditionMatch = "";
 		// Admin user
 		if (user.getRegistration_type() == 9)
@@ -177,15 +184,18 @@ public class ArticleDaoImpl {
 			conditionMatch = " and 1=-1 ";
 		// Editorial
 		if (user.getRegistration_type() == 4)
-			conditionMatch = " and  edited_by = " + user.getRegistration_id() +" ";
+			conditionMatch = " and  edited_by = " + user.getRegistration_id() + " ";
 		// Author
 		if (user.getRegistration_type() == 3)
-			conditionMatch = " and ( authored_by =" + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
+			conditionMatch = " and ( authored_by =" + user.getRegistration_id() + " or  edited_by = "
+					+ user.getRegistration_id() + " ) ";
 		// patient or doctor
 		if (user.getRegistration_type() == 2 || user.getRegistration_type() == 1)
-			conditionMatch = " and ( authored_by =" + user.getRegistration_id() + " or  edited_by = " + user.getRegistration_id() +" ) ";
+			conditionMatch = " and ( authored_by =" + user.getRegistration_id() + " or  edited_by = "
+					+ user.getRegistration_id() + " ) ";
 
-		Query query = session.createNativeQuery("select  article_id  from article  where pubstatus_id = 2 " + conditionMatch + " ;");
+		Query query = session
+				.createNativeQuery("select  article_id  from article  where pubstatus_id = 2 " + conditionMatch + " ;");
 		// needs other condition too but unable to find correct column
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
@@ -324,10 +334,10 @@ public class ArticleDaoImpl {
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
-		
+
 		String limit_str = "";
-		if (null !=limit )
-			limit_str = " limit "+limit; 
+		if (null != limit)
+			limit_str = " limit " + limit;
 
 		Query query = session.createNativeQuery("SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
 				+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
@@ -360,7 +370,7 @@ public class ArticleDaoImpl {
 		Transaction trans = (Transaction) session.beginTransaction();
 		String limit_str = "";
 		if (null != limit)
-			limit_str = " limit "+limit; 
+			limit_str = " limit " + limit;
 
 		Query query = session.createNativeQuery("SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
 				+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
@@ -428,7 +438,7 @@ public class ArticleDaoImpl {
 			hm.put("dc_name", dc_name);
 			hm.put("comments", comments);
 			hm.put("type", type);
-			hm.put("country_id", country_id );
+			hm.put("country_id", country_id);
 
 			hmFinal.add(hm);
 			System.out.println(hm);
@@ -458,11 +468,11 @@ public class ArticleDaoImpl {
 		return list;
 	}
 
-	public int updateArticleId(int article_id, HashMap articleMap) throws UnsupportedEncodingException {
+	public int updateArticleId(int article_id, HashMap articleMap) {
 
 		// SendEmailUtil.shootEmail(null, "Article updated top ", "Hi
 		// aritcleid="+article_id);
-		
+
 		String[] params = new String[6];
 
 		// creating seession factory object
@@ -529,19 +539,27 @@ public class ArticleDaoImpl {
 		if (articleMap.containsKey("language_id")) {
 			updatestr += "`language_id` = " + articleMap.get("language_id") + ",\r\n";
 		}
-		String content = articleMap.get("articleContent") == null ? ""
-				: (String) articleMap.get("articleContent");
+		String content = articleMap.get("articleContent") == null ? "" : (String) articleMap.get("articleContent");
 		if (articleMap.containsKey("articleContent")) {
 			int n = 500;
 			String upToNCharacters = content.substring(0, Math.min(content.length(), n));
-			String upToNCharacters_decoded = URLDecoder.decode(upToNCharacters.substring(0,upToNCharacters.lastIndexOf("%")), "UTF_8");
-			String content500 = upToNCharacters_decoded;
-			int lastInd = upToNCharacters_decoded.lastIndexOf("},");
-			if (lastInd !=-1) {
-				content500 = upToNCharacters_decoded.substring(0,lastInd)+"}]}";
+			String upToNCharacters_decoded;
+			try {
+				upToNCharacters_decoded = URLDecoder
+						.decode(upToNCharacters.substring(0, upToNCharacters.lastIndexOf("%")), "UTF_8");
+
+				String content500 = upToNCharacters_decoded;
+				int lastInd = upToNCharacters_decoded.lastIndexOf("},");
+				if (lastInd != -1) {
+					content500 = upToNCharacters_decoded.substring(0, lastInd) + "}]}";
+				}
+				// article.setContent(URLDecoder.decode(upToNCharacters,
+				// StandardCha"rsets.UTF_8));
+				updatestr += "`content` = '" + URLDecoder.decode(content500, "UTF_8") + "',\r\n";
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			//article.setContent(URLDecoder.decode(upToNCharacters, StandardCharsets.UTF_8));
-			updatestr += "`content` = '" + URLDecoder.decode(content500, "UTF_8") + "',\r\n";
 		}
 		if (articleMap.containsKey("comments")) {
 			updatestr += "`comments` = '" + articleMap.get("comments") + "',\r\n";
@@ -559,34 +577,33 @@ public class ArticleDaoImpl {
 
 		// java.sql.Timestamp date = new java.sql.Timestamp(new
 		// java.util.Date().getTime());
-		//check if DEFAULT type for disease_condition_id is already present or not
+		// check if DEFAULT type for disease_condition_id is already present or not
 		Article artExisting = contentDao.findByArticleId(article_id);
 		String type = artExisting.getType();
 		Integer iDiseaseConditionId = artExisting.getDisease_condition_id();
-		String diseaseConditionIdStr ="";
+		String diseaseConditionIdStr = "";
 		if (articleMap.containsKey("disease_condition_id") || articleMap.containsKey("type")) {
-			
-			if (articleMap.containsKey("type")) 
+
+			if (articleMap.containsKey("type"))
 				type = (String) articleMap.get("type").toString();
 			if (articleMap.containsKey("disease_condition_id")) {
-				diseaseConditionIdStr = (String) (""+articleMap.get("disease_condition_id"));
+				diseaseConditionIdStr = (String) ("" + articleMap.get("disease_condition_id"));
 				iDiseaseConditionId = Integer.parseInt(diseaseConditionIdStr);
 			}
-			
+
 			if (type.contains("1")) {
 				List<Article> countMatchArticles = contentDao.findByArticleTypeAndDC(iDiseaseConditionId);
-				if(countMatchArticles.size()>0) {
-					Constant.log("Default Article for Disease_condition_id already present", 0); 
+				if (countMatchArticles.size() > 0) {
+					Constant.log("Default Article for Disease_condition_id already present", 0);
 					return -2;
 				}
 			}
 		}
 
-
 		updatestr = updatestr.replaceAll(",$", "");
 		Query query = session.createNativeQuery(
 				"UPDATE `article`\r\n" + "SET\r\n" + updatestr + "WHERE `article_id` = " + article_id + ";");
-		
+
 		// needs other condition too but unable to find correct column
 		int ret = 0;
 		try {
@@ -598,7 +615,7 @@ public class ArticleDaoImpl {
 				// Update the Content First
 				Article_dc_name art = new ArticleDaoImpl().getArticleDetails(article_id);
 				String art_location = art.getContent_location();
-				
+
 				// String content =
 				// "{\"time\":1625577023180,\"blocks\":[{\"id\":\"w6K2r9k_v4\",\"type\":\"paragraph\",\"data\":{\"text\":\"hellow
 				// anil article
@@ -610,7 +627,7 @@ public class ArticleDaoImpl {
 				// aritcleid="+article_id);
 				// String returnEmail = emailUtil.shootEmail("anilraina@etheriumtech.com", "test
 				// sub 3", message);
-				
+
 				if ((int) articleMap.get("pubstatus_id") == 3) {
 //					WhatsAPITrackEvents.POSTRequestTrackEventsByArticleId(article_id);
 					WhatsAPITemplateMessage.POSTRequestTrackEventsByArticleId(article_id, type);
@@ -621,7 +638,6 @@ public class ArticleDaoImpl {
 				emaildto.setEmailtext("Hi aritcleid=" + article_id);
 
 				String returnEmail = emailUtil.shootEmail(emaildto);
-
 
 			} catch (Exception e) {
 				e.printStackTrace();
