@@ -1,37 +1,18 @@
 package dao;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import model.Article;
-import model.ArticlePubStatus;
-import model.Author;
-import model.Copyright;
-import model.Disclaimer;
-import model.Doctor;
-import model.Doctors;
-import model.Languages;
-import model.Registration;
-import net.bytebuddy.asm.Advice.Return;
-import net.bytebuddy.asm.Advice.This;
 import util.ArticleUtils;
 import util.Constant;
 import util.HibernateUtil;
-import util.SolrUtil;
 
 public class ContentDaoImpl {
 	
@@ -94,14 +75,14 @@ public class ContentDaoImpl {
 			article.setContent_location(ArticleUtils.getContentLocation(article.getArticle_id(), reg_id, true));
 			int n = 500;
 			String upToNCharacters = articleContent.substring(0, Math.min(articleContent.length(), n));
-			String upToNCharacters_decoded = URLDecoder.decode(upToNCharacters.substring(0,upToNCharacters.lastIndexOf("%")), StandardCharsets.UTF_8);
+			String upToNCharacters_decoded = URLDecoder.decode(upToNCharacters.substring(0,upToNCharacters.lastIndexOf("%")), "UTF_8");
 			String content500 = upToNCharacters_decoded;
 			int lastInd = upToNCharacters_decoded.lastIndexOf("},");
 			if (lastInd !=-1) {
 				content500 = upToNCharacters_decoded.substring(0,lastInd)+"}]}";
 			}
 
-			article.setContent(URLDecoder.decode(content500, StandardCharsets.UTF_8));
+			article.setContent(URLDecoder.decode(content500, "UTF_8"));
 			
 			java.util.Date date=new java.util.Date();
 			java.sql.Date sqlDate=new java.sql.Date(date.getTime());

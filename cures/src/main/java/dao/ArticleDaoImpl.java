@@ -4,8 +4,8 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,8 +27,6 @@ import util.ArticleUtils;
 import util.Constant;
 import util.HibernateUtil;
 import util.WhatsAPITemplateMessage;
-import util.WhatsAPITrackEvents;
-import util.WhatsAPITrackUsers;
 
 //1	active
 //7	WorkInProgress
@@ -460,7 +458,7 @@ public class ArticleDaoImpl {
 		return list;
 	}
 
-	public int updateArticleId(int article_id, HashMap articleMap) {
+	public int updateArticleId(int article_id, HashMap articleMap) throws UnsupportedEncodingException {
 
 		// SendEmailUtil.shootEmail(null, "Article updated top ", "Hi
 		// aritcleid="+article_id);
@@ -536,14 +534,14 @@ public class ArticleDaoImpl {
 		if (articleMap.containsKey("articleContent")) {
 			int n = 500;
 			String upToNCharacters = content.substring(0, Math.min(content.length(), n));
-			String upToNCharacters_decoded = URLDecoder.decode(upToNCharacters.substring(0,upToNCharacters.lastIndexOf("%")), StandardCharsets.UTF_8);
+			String upToNCharacters_decoded = URLDecoder.decode(upToNCharacters.substring(0,upToNCharacters.lastIndexOf("%")), "UTF_8");
 			String content500 = upToNCharacters_decoded;
 			int lastInd = upToNCharacters_decoded.lastIndexOf("},");
 			if (lastInd !=-1) {
 				content500 = upToNCharacters_decoded.substring(0,lastInd)+"}]}";
 			}
 			//article.setContent(URLDecoder.decode(upToNCharacters, StandardCharsets.UTF_8));
-			updatestr += "`content` = '" + URLDecoder.decode(content500, StandardCharsets.UTF_8) + "',\r\n";
+			updatestr += "`content` = '" + URLDecoder.decode(content500, "UTF_8") + "',\r\n";
 		}
 		if (articleMap.containsKey("comments")) {
 			updatestr += "`comments` = '" + articleMap.get("comments") + "',\r\n";
