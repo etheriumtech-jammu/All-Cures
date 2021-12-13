@@ -546,7 +546,7 @@ public class ArticleDaoImpl {
 			String upToNCharacters_decoded;
 			try {
 				upToNCharacters_decoded = URLDecoder
-						.decode(upToNCharacters.substring(0, upToNCharacters.lastIndexOf("%")), "UTF_8");
+						.decode(upToNCharacters.substring(0, upToNCharacters.lastIndexOf("%")), "UTF-8");
 
 				String content500 = upToNCharacters_decoded;
 				int lastInd = upToNCharacters_decoded.lastIndexOf("},");
@@ -555,7 +555,7 @@ public class ArticleDaoImpl {
 				}
 				// article.setContent(URLDecoder.decode(upToNCharacters,
 				// StandardCha"rsets.UTF_8));
-				updatestr += "`content` = '" + URLDecoder.decode(content500, "UTF_8") + "',\r\n";
+				updatestr += "`content` = '" + URLDecoder.decode(content500, "UTF-8") + "',\r\n";
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

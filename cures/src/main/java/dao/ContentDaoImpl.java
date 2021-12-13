@@ -75,14 +75,14 @@ public class ContentDaoImpl {
 			article.setContent_location(ArticleUtils.getContentLocation(article.getArticle_id(), reg_id, true));
 			int n = 500;
 			String upToNCharacters = articleContent.substring(0, Math.min(articleContent.length(), n));
-			String upToNCharacters_decoded = URLDecoder.decode(upToNCharacters.substring(0,upToNCharacters.lastIndexOf("%")), "UTF_8");
+			String upToNCharacters_decoded = URLDecoder.decode(upToNCharacters.substring(0,upToNCharacters.lastIndexOf("%")), "UTF-8");
 			String content500 = upToNCharacters_decoded;
 			int lastInd = upToNCharacters_decoded.lastIndexOf("},");
 			if (lastInd !=-1) {
 				content500 = upToNCharacters_decoded.substring(0,lastInd)+"}]}";
 			}
 
-			article.setContent(URLDecoder.decode(content500, "UTF_8"));
+			article.setContent(URLDecoder.decode(content500, "UTF-8"));
 			
 			java.util.Date date=new java.util.Date();
 			java.sql.Date sqlDate=new java.sql.Date(date.getTime());
