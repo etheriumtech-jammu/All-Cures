@@ -23,7 +23,7 @@ public class WhatsAPITrackUsersSync {
 		ArrayList NSData = new WAPICommon().fetchDatabaseResultsForNewsletter();
 		for (int i = 0; i < NSData.size(); i++) {
 			String[] params = new String[5];
-			params[0] = "+91";// (String) ((HashMap) NSData.get(i)).get("mobile");//countryCode
+			params[0] = "+"+ (Integer) ((HashMap) NSData.get(i)).get("country_code");//countryCode
 			params[1] = (String) ((HashMap) NSData.get(i)).get("mobile"); // mobile
 			params[2] = (null != (String) (((HashMap) NSData.get(i)).get("nl_sub_type") + ""))
 					? (String) (((HashMap) NSData.get(i)).get("nl_sub_type") + "")

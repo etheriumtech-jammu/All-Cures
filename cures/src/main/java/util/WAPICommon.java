@@ -115,10 +115,10 @@ public class WAPICommon {
 			// here allcures_schema is database name, next is username and password
 			stmt = con.createStatement();
 			String query = 
-					"select user_id, nl_subscription_disease_id, nl_start_date, nl_sub_type, mobile, nl_subscription_cures_id, active, nl_end_date,count(*) from newsletter "
+					"select user_id, nl_subscription_disease_id, nl_start_date, nl_sub_type, mobile, nl_subscription_cures_id, active, nl_end_date, country_code, count(*) as count from newsletter "
 					+ " where " + whereStr 
-					+ " group by mobile,nl_sub_type ,nl_subscription_disease_id, nl_subscription_cures_id "
-					+ " order by mobile,nl_sub_type ,nl_subscription_disease_id, nl_subscription_cures_id";
+					+ " group by country_code, mobile,nl_sub_type ,nl_subscription_disease_id, nl_subscription_cures_id "
+					+ " order by country_code, mobile,nl_sub_type ,nl_subscription_disease_id, nl_subscription_cures_id";
 			
 			System.out.println("For article#"+article_id+", SQL for fetchDatabaseResultsForNewsletterByArticle "+query);
 			rs = stmt.executeQuery(query);
@@ -132,6 +132,8 @@ public class WAPICommon {
 				hmRow.put("nl_subscription_cures_id", rs.getString(6));
 				hmRow.put("active", rs.getInt(7));
 				hmRow.put("nl_end_date", rs.getDate(8));
+				hmRow.put("country_code", rs.getInt(9));
+				hmRow.put("count", rs.getInt(10));
 				hmFinal.add(hmRow);
 			}
 			con.close();

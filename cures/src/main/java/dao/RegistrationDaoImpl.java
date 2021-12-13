@@ -469,6 +469,7 @@ public class RegistrationDaoImpl {
 		int nl_subscription_disease_id = (int) ns_map.get("nl_subscription_disease_id");
 		int nl_sub_type = (int) ns_map.get("nl_sub_type");
 		int nl_subscription_cures_id = (int) ns_map.get("nl_subscription_cures_id");
+		int country_code = (int) ns_map.get("country_code");
 		System.out.println("Subscribe create_date>>>>>" + nl_start_date);
 		// set active =1 for new subscription
 		Query query = session.createNativeQuery("INSERT INTO `allcures_schema`.`newsletter` (\r\n" + "\r\n"
@@ -485,7 +486,7 @@ public class RegistrationDaoImpl {
 			System.out.println("inserted new entry to newsletter table for mobile =  " + mobile);
 			try {
 				String[] params = new String[5];
-				params[0] = "+91";
+				params[0] = "+"+country_code;
 				params[1] = mobile + "";
 				params[2] = nl_sub_type + "";
 				params[3] = nl_subscription_disease_id + "";
@@ -529,6 +530,7 @@ public class RegistrationDaoImpl {
 		int nl_subscription_disease_id = (int) ns_map.get("nl_subscription_disease_id");
 		int nl_sub_type = (int) ns_map.get("nl_sub_type");
 		int nl_subscription_cures_id = (int) ns_map.get("nl_subscription_cures_id");
+		int country_code = (int) ns_map.get("country_code");
 
 		String updateStr = "";
 //		if ((mobile + "").equals("")) {
@@ -543,17 +545,20 @@ public class RegistrationDaoImpl {
 		if (!(nl_subscription_cures_id + "").equals("")) {
 			updateStr += " nl_subscription_cures_id=" + nl_subscription_cures_id + ",";
 		}
+		if (!(country_code + "").equals("")) {
+			updateStr += " country_code=" + nl_subscription_cures_id + ",";
+		}
 
 		updateStr = updateStr.replaceAll(",$", "");
 
 		Query queryArticlePromoPaid = session
-				.createNativeQuery("UPDATE newsletter SET " + updateStr + "  WHERE mobile = " + mobile + ";");
+				.createNativeQuery("UPDATE newsletter SET " + updateStr + "  WHERE mobile = " + mobile +" and country_code = " + country_code+ ";");
 
 		int ret = 0;
 		try {
 			ret = queryArticlePromoPaid.executeUpdate();
 			trans.commit();
-			System.out.println("updated newsletter table for mobile  =  " + mobile);
+			System.out.println("updated newsletter table for mobile  =  " + mobile +" and country_code = " + country_code);
 //			SendEmailUtil.shootEmail(null, "updated subscription ",
 //					"Hi, \n\r updated newsletter table for mobile  =  " + mobile);
 

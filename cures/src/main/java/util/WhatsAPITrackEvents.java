@@ -105,7 +105,7 @@ public class WhatsAPITrackEvents {
 	public static void POSTRequestTrackEventsByArticleId(int article_id) throws SQLException {
 		ArrayList NSData = new WAPICommon().fetchDatabaseResultsForNewsletterByArticle(article_id);
 		for (int i = 0; i < NSData.size(); i++) {
-			String[] params = new String[7];
+			String[] params = new String[8];
 			params[0] = "DAILY_NL_DISEASE_IDS";//"NEW_ARTICLE_PUBLISHED";
 			if ( (int) ((HashMap) NSData.get(i)).get("nl_sub_type") == 1 )
 			{
@@ -113,7 +113,7 @@ public class WhatsAPITrackEvents {
 			}else {
 				params[1] =  (String) ((HashMap) NSData.get(i)).get("nl_subscription_disease_id") ;//DC_ID;
 			}
-			params[2] = "+91"; //countryCode
+			params[2] = "+"+(Integer) ((HashMap) NSData.get(i)).get("country_code"); //countryCode
 			params[3] = (String) ((HashMap) NSData.get(i)).get("mobile"); // mobile
 			params[4] = article_id+""; //DC_NAMES
 			params[5] = ""; //treatement_type

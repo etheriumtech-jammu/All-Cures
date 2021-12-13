@@ -50,13 +50,13 @@ public class WhatsAPITemplateMessage {
 		// String event = "DISEASESANDCONDITIONS";
 		// String event = "DISEASESANDCONDITIONS";
 		String template_name = params[0];// dynamic_disease_template_kb
-		String countryCode = params[2];
+		//String countryCode = params[2];
 		String mobile = params[3];
 		String header1_imgpath = params[4];
 		String BV1_art_id = params[5];
 		String BV2_dc_name = params[1];
 		String BV3_desc = params[6];
-		// String countryCode = "+91";
+		String countryCode = params[7];
 		// String mobile = "9167378338";
 //		final String POST_PARAMS = "{\"phoneNumber\": \"" + mobile + "\",\"countryCode\":\"" + countryCode
 //				+ "\",\"event\": \"" + event + "\",\"traits\": " + traits + "}";
@@ -127,7 +127,7 @@ public class WhatsAPITemplateMessage {
 		// @TODO remove duplicates and run for all CSV disease and cures id's & all for
 		// sub_type =1
 		for (int i = 0; i < NSData.size(); i++) {
-			String[] params = new String[7];
+			String[] params = new String[8];
 			params[0] = "dynamic_disease_template_kb";// "DAILY_NL_DISEASE_IDS";//"NEW_ARTICLE_PUBLISHED";
 			if ((int) ((HashMap) NSData.get(i)).get("nl_sub_type") == 1) {
 				params[1] = "All Disease Symptoms and Cures";// all diseased cures subscribed
@@ -136,11 +136,12 @@ public class WhatsAPITemplateMessage {
 			} else if (type.contains("2")) {
 				params[1] = (String) ((HashMap) NSData.get(i)).get("nl_subscription_cures_id");// C_ID;
 			}
-			params[2] = "+91"; // countryCode
 			params[3] = (String) ((HashMap) NSData.get(i)).get("mobile"); // mobile
 			params[4] = "https://etheriumtech.com/images/illustrations/service-3.jpg"; // DC_NAMES
 			params[5] = "" + article_id; // dc name
 			params[6] = "Here goes the decription of the disease #" + params[1];// detailing
+			params[7] = "+"+(Integer) ((HashMap) NSData.get(i)).get("country_code"); // +countryCode
+
 			// }
 //			params[0] = "+91";// (String) ((HashMap) NSData.get(i)).get("mobile");//countryCode
 //			params[1] = (String) ((HashMap) NSData.get(i)).get("mobile"); // mobile
