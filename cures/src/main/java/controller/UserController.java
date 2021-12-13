@@ -115,20 +115,20 @@ public class UserController {
 		return registrationDaoImpl.updatesubscribe(mobile, ns_map);
 	}
 
-	@RequestMapping(value = "/unsubscribe/{mobile}", produces = "application/json", method = RequestMethod.DELETE)
-	public @ResponseBody int unsubscribe(@PathVariable long mobile) {
+	@RequestMapping(value = "/unsubscribe/{mobile}/cc/{country_code}", produces = "application/json", method = RequestMethod.DELETE)
+	public @ResponseBody int unsubscribe(@PathVariable long mobile,@PathVariable int country_code) {
 
-		Constant.log(" unsubscribe????????????????????????::::::::::::::" + mobile, 0);
+		Constant.log(" unsubscribe????????????????????????::::::::::::::" + mobile + " and county_code=" + country_code, 0);
 
-		return registrationDaoImpl.unsubscribe(mobile);
+		return registrationDaoImpl.unsubscribe(mobile,country_code);
 	}
 
-	@RequestMapping(value = "/subscriptiondetails/{mobile}", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody ArrayList getSubscriptionDetails(@PathVariable long mobile) {
+	@RequestMapping(value = "/subscriptiondetails/{mobile}/cc/{country_code}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody ArrayList getSubscriptionDetails(@PathVariable long mobile,@PathVariable int country_code) {
 
 		Constant.log("????????????????????????::::::::::::::" + mobile, 0);
 
-		return registrationDaoImpl.getSubscriptionDetail(mobile);
+		return registrationDaoImpl.getSubscriptionDetail(mobile,country_code);
 	}
 
 	@RequestMapping(value = "/testemail", method = RequestMethod.POST)

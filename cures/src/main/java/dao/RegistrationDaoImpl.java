@@ -138,7 +138,7 @@ public class RegistrationDaoImpl {
 			Map<String, Object> templateData = new HashMap<>();
 			templateData.put("templatefile", "email/registration.ftlh");
 			templateData.put("first_name", f_name);
-			//String link = "http://localhost:3000";
+			// String link = "http://localhost:3000";
 			String link = "https://all-cures.com#";
 			templateData.put("linkverfiy", link);
 
@@ -350,7 +350,7 @@ public class RegistrationDaoImpl {
 				return 0;
 			} else {
 				String encEmail = new UserController().getEmailEncrypted(email);
-				//String link = "http://localhost:3000/loginForm/ResetPass/?em=" + encEmail;
+				// String link = "http://localhost:3000/loginForm/ResetPass/?em=" + encEmail;
 				String link = "https://all-cures.com#/loginForm/ResetPass/?em=" + encEmail;
 				// new SendEmailUtil().shootEmail(email, "Test subject", "Password reset link
 				// here...\n" + link);
@@ -468,17 +468,17 @@ public class RegistrationDaoImpl {
 		java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 		String nl_start_date = sqlDate.toString();
 
-		int nl_subscription_disease_id = (int) ns_map.get("nl_subscription_disease_id");
+		String nl_subscription_disease_id = (String) ns_map.get("nl_subscription_disease_id");
 		int nl_sub_type = (int) ns_map.get("nl_sub_type");
-		int nl_subscription_cures_id = (int) ns_map.get("nl_subscription_cures_id");
-		int country_code = (int) ns_map.get("country_code");
+		String nl_subscription_cures_id = (String) ns_map.get("nl_subscription_cures_id");
+		String country_code = (String) ns_map.get("country_code");
 		System.out.println("Subscribe create_date>>>>>" + nl_start_date);
 		// set active =1 for new subscription
 		Query query = session.createNativeQuery("INSERT INTO `allcures_schema`.`newsletter` (\r\n" + "\r\n"
 				+ "`nl_subscription_disease_id`,\r\n" + "`nl_start_date`,\r\n" + "`nl_sub_type`,\r\n" + "`mobile`,\r\n"
-				+ "`nl_subscription_cures_id`, `active`)\r\n" + " VALUES \r\n" + "(" + "\r\n"
-				+ nl_subscription_disease_id + ",\r\n '" + nl_start_date + "' ,\r\n" + nl_sub_type + ",\r\n" + mobile
-				+ ",\r\n" + nl_subscription_cures_id + ",1);\r\n");
+				+ "`nl_subscription_cures_id`, `active`)\r\n" + " VALUES \r\n" + "('" + "\r\n"
+				+ nl_subscription_disease_id + "',\r\n '" + nl_start_date + "' ,\r\n" + nl_sub_type + ",\r\n" + mobile
+				+ ",\r\n'" + nl_subscription_cures_id + "',1);\r\n");
 		// needs other condition too but unable to find correct column
 		System.out.println(query);
 		int ret = 0;
@@ -488,7 +488,7 @@ public class RegistrationDaoImpl {
 			System.out.println("inserted new entry to newsletter table for mobile =  " + mobile);
 			try {
 				String[] params = new String[5];
-				params[0] = "+"+country_code;
+				params[0] = "+" + country_code;
 				params[1] = mobile + "";
 				params[2] = nl_sub_type + "";
 				params[3] = nl_subscription_disease_id + "";
@@ -529,38 +529,39 @@ public class RegistrationDaoImpl {
 		 * user.getEmail_address(); } System.out.println(reg_id);
 		 */
 
-		int nl_subscription_disease_id = (int) ns_map.get("nl_subscription_disease_id");
+		String nl_subscription_disease_id = (String) ns_map.get("nl_subscription_disease_id");
 		int nl_sub_type = (int) ns_map.get("nl_sub_type");
-		int nl_subscription_cures_id = (int) ns_map.get("nl_subscription_cures_id");
-		int country_code = (int) ns_map.get("country_code");
+		String nl_subscription_cures_id = (String) ns_map.get("nl_subscription_cures_id");
+		String country_code = (String) ns_map.get("country_code");
 
 		String updateStr = "";
 //		if ((mobile + "").equals("")) {
 //			updateStr += " mobile=" + mobile + ",";
 //		}
 		if (!(nl_subscription_disease_id + "").equals("")) {
-			updateStr += " nl_subscription_disease_id=" + nl_subscription_disease_id + ",";
+			updateStr += " nl_subscription_disease_id='" + nl_subscription_disease_id + "',";
 		}
 		if (!(nl_sub_type + "").equals("")) {
 			updateStr += " nl_sub_type=" + nl_sub_type + ",";
 		}
 		if (!(nl_subscription_cures_id + "").equals("")) {
-			updateStr += " nl_subscription_cures_id=" + nl_subscription_cures_id + ",";
+			updateStr += " nl_subscription_cures_id='" + nl_subscription_cures_id + "',";
 		}
 		if (!(country_code + "").equals("")) {
-			updateStr += " country_code=" + nl_subscription_cures_id + ",";
+			updateStr += " country_code=" + country_code + ",";
 		}
 
 		updateStr = updateStr.replaceAll(",$", "");
 
-		Query queryArticlePromoPaid = session
-				.createNativeQuery("UPDATE newsletter SET " + updateStr + "  WHERE mobile = " + mobile +" and country_code = " + country_code+ ";");
+		Query queryArticlePromoPaid = session.createNativeQuery("UPDATE newsletter SET " + updateStr
+				+ "  WHERE mobile = " + mobile + " and country_code = " + country_code + ";");
 
 		int ret = 0;
 		try {
 			ret = queryArticlePromoPaid.executeUpdate();
 			trans.commit();
-			System.out.println("updated newsletter table for mobile  =  " + mobile +" and country_code = " + country_code);
+			System.out.println(
+					"updated newsletter table for mobile  =  " + mobile + " and country_code = " + country_code);
 //			SendEmailUtil.shootEmail(null, "updated subscription ",
 //					"Hi, \n\r updated newsletter table for mobile  =  " + mobile);
 
@@ -573,7 +574,7 @@ public class RegistrationDaoImpl {
 		return ret;
 	}
 
-	public int unsubscribe(long mobile) {
+	public int unsubscribe(long mobile, int country_code) {
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
 		// creating session object
@@ -599,13 +600,13 @@ public class RegistrationDaoImpl {
 		String nl_end_date = sqlDate.toString();
 
 		Query queryArticlePromoPaid = session.createNativeQuery("UPDATE newsletter SET active=0  and nl_end_date = '"
-				+ nl_end_date + "' WHERE mobile=" + mobile + ");");
+				+ nl_end_date + "' WHERE mobile=" + mobile + " and country_code=" + country_code + ");");
 
 		int ret = 0;
 		try {
 			ret = queryArticlePromoPaid.executeUpdate();
 			trans.commit();
-			System.out.println("unscribe newsletter table for mobile = " + mobile);
+			System.out.println("unscribe newsletter table for mobile = " + mobile + " country_code=" + country_code);
 //			SendEmailUtil.shootEmail(null, "Unscribed allcures ",
 //					"Hi, \n\r updated newsletter table for reg_id  =  " + reg_id);
 
@@ -618,7 +619,7 @@ public class RegistrationDaoImpl {
 		return ret;
 	}
 
-	public static ArrayList getSubscriptionDetail(long mobile) {
+	public static ArrayList getSubscriptionDetail(long mobile, int country_code) {
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
 		// creating session object
@@ -633,8 +634,9 @@ public class RegistrationDaoImpl {
 				"SELECT `newsletter`.`user_id`,\r\n" + "    `newsletter`.`nl_subscription_disease_id`,\r\n"
 						+ "    `newsletter`.`nl_start_date`,\r\n" + "    `newsletter`.`nl_sub_type`,\r\n"
 						+ "    `newsletter`.`mobile`,\r\n" + "    `newsletter`.`nl_subscription_cures_id`,\r\n"
-						+ "    `newsletter`.`active`,\r\n" + "    `newsletter`.`nl_end_date`\r\n"
-						+ " FROM `allcures_schema`.`newsletter`\r\n" + " where mobile=" + mobile + ";");
+						+ "    `newsletter`.`active`,\r\n" + "    `newsletter`.`nl_end_date`,\r\n"
+						+ "    `newsletter`.`country_code` " + " FROM `allcures_schema`.`newsletter`\r\n"
+						+ " where mobile=" + mobile + " and country_code=" + country_code + ";");
 
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println("result list Promo@@@@@@@@@@@@@ size=" + results.size());
@@ -649,6 +651,7 @@ public class RegistrationDaoImpl {
 			String nl_subscription_cures_id = (String) objects[5];
 			Integer active = objects[6] != null ? (int) objects[6] : 0;
 			java.sql.Date nl_end_date = (java.sql.Date) objects[7];
+			int country_code1 = (int) objects[8];
 
 			hm.put("user_id", user_id);
 			hm.put("nl_subscription_disease_id", nl_subscription_disease_id);
@@ -658,6 +661,7 @@ public class RegistrationDaoImpl {
 			hm.put("nl_subscription_cures_id", nl_subscription_cures_id);
 			hm.put("active", active);
 			hm.put("nl_end_date", nl_end_date);
+			hm.put("country_code", country_code1);
 			hmFinal.add(hm);
 		}
 		session.close();
