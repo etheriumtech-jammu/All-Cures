@@ -349,7 +349,7 @@ public class ArticleDaoImpl {
 				+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
 				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n" + "    `article`.`type`,\r\n"
 				+ "    `article`.`comments`\r\n" + "FROM `allcures_schema`.`article`"
-				+ " order by `article`.`published_date` desc " + limit_str + ";\r\n" + ";");
+				+ " order by `article`.`article_id` desc " + limit_str + ";\r\n" + ";");
 		// needs other condition too but unable to find correct column
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
@@ -384,8 +384,8 @@ public class ArticleDaoImpl {
 				+ " `article`.comments\r\n," + " `article`.`type`\r\n, `article`.`country_id`  "
 
 				+ "FROM `allcures_schema`.`article`\r\n"
-				+ "inner join disease_condition dc on dc.dc_id = `article`.`disease_condition_id`"
-				+ " order by `article`.`published_date` desc \r\n" + limit_str + ";");
+				+ "inner join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` or `article`.`disease_condition_id` is null "
+				+ " order by `article`.`article_id` desc \r\n" + limit_str + ";");
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + results);
