@@ -138,7 +138,8 @@ public class RegistrationDaoImpl {
 			Map<String, Object> templateData = new HashMap<>();
 			templateData.put("templatefile", "email/registration.ftlh");
 			templateData.put("first_name", f_name);
-			String link = "http://localhost:3000";
+			//String link = "http://localhost:3000";
+			String link = "https://all-cures.com#";
 			templateData.put("linkverfiy", link);
 
 			// object -> Map
@@ -349,7 +350,8 @@ public class RegistrationDaoImpl {
 				return 0;
 			} else {
 				String encEmail = new UserController().getEmailEncrypted(email);
-				String link = "http://localhost:3000/loginForm/ResetPass/?em=" + encEmail;
+				//String link = "http://localhost:3000/loginForm/ResetPass/?em=" + encEmail;
+				String link = "https://all-cures.com#/loginForm/ResetPass/?em=" + encEmail;
 				// new SendEmailUtil().shootEmail(email, "Test subject", "Password reset link
 				// here...\n" + link);
 //				EmailDTO emaildto = new EmailDTO();
