@@ -384,7 +384,7 @@ public class ArticleDaoImpl {
 				+ " `article`.comments\r\n," + " `article`.`type`\r\n, `article`.`country_id`  "
 
 				+ "FROM `allcures_schema`.`article`\r\n"
-				+ "inner join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` or `article`.`disease_condition_id` is null "
+				+ "left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
 				+ " order by `article`.`article_id` desc \r\n" + limit_str + ";");
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
