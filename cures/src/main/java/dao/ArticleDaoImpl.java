@@ -541,7 +541,7 @@ public class ArticleDaoImpl {
 		}
 		String content = articleMap.get("articleContent") == null ? "" : (String) articleMap.get("articleContent");
 		if (articleMap.containsKey("articleContent")) {
-			int n = 500;
+			int n = 2000;
 			String upToNCharacters = content.substring(0, Math.min(content.length(), n));
 			String upToNCharacters_decoded;
 			try {

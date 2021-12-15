@@ -18,6 +18,8 @@ public class WebHookWhatsAPIController {
 
 	@PostMapping("/apisuccess")
 	public ResponseEntity<String> paymentSuccess(HttpServletRequest request) throws Exception {
+		System.out.println("<<<<<<<<<<<<<<<<<<IN apisuccess 1st line>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
 		String key_secret_verify = interaktwebookKey;
 		// ZWHYR/5vDZI/xyBKDQe6ew==
 		if (!key_secret_verify.equals((String)request.getParameter("secretKEYinterakt"))) {
@@ -25,7 +27,6 @@ public class WebHookWhatsAPIController {
 		}
 
 		// do whatever you want to do with the valid paddle request
-		System.out.println("IN apisuccess");
 		System.out.println(request.getParameterMap());
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}

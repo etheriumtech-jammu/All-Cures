@@ -27,10 +27,10 @@ public class RatingDaoImpl {
 		// Transaction trans = (Transaction) session.beginTransaction();
 
 		Query query = session.createNativeQuery("SELECT `doctorsrating`.`rate_id`,\r\n"
-				+ "    `doctorsrating`.`comments`,\r\n" + "    `doctorsrating`.`ratedBy_id`,\r\n"
-				+ "    `doctorsrating`.`ratedBy_type_id`,\r\n" + "    `doctorsrating`.`target_id`,\r\n"
-				+ "    `doctorsrating`.`target_type_id`,\r\n" + "    `doctorsrating`.`ratingVal`\r\n"
-				+ " FROM doctorsrating where target_id=" + targetid + " and target_type_id=" + targettypeid
+				+ "	`doctorsrating`.`comments`,\r\n" + "    `doctorsrating`.`ratedBy_id`,\r\n"
+				+ "	`doctorsrating`.`ratedBy_type_id`,\r\n" + "    `doctorsrating`.`target_id`,\r\n"
+				+ "	`doctorsrating`.`target_type_id`,\r\n" + "    `doctorsrating`.`ratingVal`,\r\n"
+				+ "	`doctorsrating`.`updated_at` FROM doctorsrating where target_id=" + targetid + " and target_type_id=" + targettypeid
 				+ " and ratedBy_id =" + ratedById + " and ratedBy_type_id = " + ratedByTypeId + ";");
 
 		List<Object[]> results = (List<Object[]>) query.getResultList();
