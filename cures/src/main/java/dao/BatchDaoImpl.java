@@ -42,7 +42,7 @@ public class BatchDaoImpl {
 			EmailDTO emaildto = new EmailDTO();
 			emaildto.setSubject("Batch AVG Rating Article");
 			emaildto.setEmailtext("Hi, \r\n" + "Batch Process for  AVG Rating sync for Articles completed.");
-
+			ret = 1;
 			String returnEmail = emailUtil.shootEmail(emaildto);
 
 		} catch (Exception ex) {
@@ -80,7 +80,7 @@ public class BatchDaoImpl {
 			EmailDTO emaildto = new EmailDTO();
 			emaildto.setSubject("Batch AVG Rating Doctors");
 			emaildto.setEmailtext("Hi,\r\n" + "Batch Process for AVG Rating sync for Doctors completed.");
-
+			ret = 1;
 			String returnEmail = emailUtil.shootEmail(emaildto);
 
 		} catch (Exception ex) {

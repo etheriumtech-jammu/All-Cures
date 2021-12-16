@@ -71,7 +71,9 @@ public class SearchDaoImpl {
 		System.out.println("Found " + documents.getNumFound() + " documents");
 		for (SolrDocument document : documents) {
 			Integer doctorid = (Integer) document.getFirstValue(Constant.DOCID);
-			doc.setDoctorid(doctorid.toString());
+			if (null!=doctorid) {
+				doc.setDoctorid(doctorid.toString());
+			}
 
 			// String firstname = (String)
 			// document.getFirstValue("docname_first");
@@ -217,7 +219,9 @@ public class SearchDaoImpl {
 		System.out.println("Found " + documents.getNumFound() + " documents");
 		for (SolrDocument document : documents) {
 			Integer doctorid = (Integer) document.getFirstValue(Constant.DOCID);
-			doc.setDoctorid(doctorid.toString());
+			if (null!=doctorid) {
+				doc.setDoctorid(doctorid.toString());
+			}
 
 			// String firstname = (String)
 			// document.getFirstValue("docname_first");
@@ -348,7 +352,9 @@ public class SearchDaoImpl {
 		System.out.println("Found " + documents.getNumFound() + " documents");
 		for (SolrDocument document : documents) {
 			Integer doctorid = (Integer) document.getFirstValue(Constant.DOCID);
-			doc.setDoctorid(doctorid.toString());
+			if (null!=doctorid) {
+				doc.setDoctorid(doctorid.toString());
+			}
 
 			// String firstname = (String)
 			// document.getFirstValue("docname_first");

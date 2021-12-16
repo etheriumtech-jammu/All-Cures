@@ -19,9 +19,27 @@ public class BatchProcessRatingUpdate {
 	@RequestMapping(value = "/articledoctor", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody int syncArticleDoctor() {
 		int ret = 0;
+		// get Doctors & Articles rating
+		int ret1 = batchDaoImpl.updateAverageRatingArticles();
+		int ret2 = batchDaoImpl.updateAverageRatingDoctors();
+		if(ret1==1 && ret2==1) {//if both process return success or 1
+			ret = 1;
+		}
+		return ret;
+	}
+	
+	@RequestMapping(value = "/article", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody int syncArticle() {
+		int ret = 0;
+		// get Article rating
+		ret = batchDaoImpl.updateAverageRatingArticles();
+		return ret;
+	}
+	@RequestMapping(value = "/doctor", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody int syncDoctor() {
+		int ret = 0;
 		// get Doctors rating
-		batchDaoImpl.updateAverageRatingArticles();
-		batchDaoImpl.updateAverageRatingDoctors();
+		ret = batchDaoImpl.updateAverageRatingDoctors();
 		return ret;
 	}
 
