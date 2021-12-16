@@ -139,7 +139,7 @@ public class WhatsAPITemplateMessage {
 			params[3] = (String) ((HashMap) NSData.get(i)).get("mobile"); // mobile
 			params[4] = "https://etheriumtech.com/images/illustrations/service-3.jpg"; // DC_NAMES
 			params[5] = "" + article_id; // dc name
-			params[6] = "Here goes the decription of the disease #" + params[1];// detailing
+			params[6] = "Also New link pased here dynamically https://www.all-cures.com/cure/"+article_id+" \r\n Here goes the decription of the disease #" + params[1];// detailing
 			params[7] = "+"+(Integer) ((HashMap) NSData.get(i)).get("country_code"); // +countryCode
 
 			// }

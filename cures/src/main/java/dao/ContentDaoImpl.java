@@ -1,11 +1,14 @@
 package dao;
 
+import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.http.client.utils.URIUtils;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -13,6 +16,7 @@ import org.hibernate.query.Query;
 import model.Article;
 import util.ArticleUtils;
 import util.Constant;
+import util.EncodingDecodingUtil;
 import util.HibernateUtil;
 
 public class ContentDaoImpl {
@@ -74,7 +78,7 @@ public class ContentDaoImpl {
 			Constant.log("Saving Content in Filesystem with Article Id:"+article.getArticle_id(), 1);			
 			artCrtStatus = ArticleUtils.updateArticleContent(contentLocation, articleContent, article.getArticle_id(), reg_id);
 			article.setContent_location(ArticleUtils.getContentLocation(article.getArticle_id(), reg_id, true));
-			int n = 2000;
+			int n = 750;
 			String upToNCharacters = articleContent.substring(0, Math.min(articleContent.length(), n));
 			String upToNCharacters_decoded = URLDecoder.decode(upToNCharacters.substring(0,upToNCharacters.lastIndexOf("%")), "UTF-8");
 			String content500 = upToNCharacters_decoded;
@@ -83,7 +87,7 @@ public class ContentDaoImpl {
 				content500 = upToNCharacters_decoded.substring(0,lastInd)+"}]}";
 			}
 
-			article.setContent(URLEncoder.encode(content500, "UTF-8"));
+			article.setContent(EncodingDecodingUtil.encodeURIComponent(content500));
 			
 			java.util.Date date=new java.util.Date();
 			java.sql.Date sqlDate=new java.sql.Date(date.getTime());

@@ -27,6 +27,7 @@ import model.Registration;
 import service.SendEmailService;
 import util.ArticleUtils;
 import util.Constant;
+import util.EncodingDecodingUtil;
 import util.HibernateUtil;
 import util.WhatsAPITemplateMessage;
 import util.WhatsAPITrackEvents;
@@ -542,7 +543,7 @@ public class ArticleDaoImpl {
 		}
 		String content = articleMap.get("articleContent") == null ? "" : (String) articleMap.get("articleContent");
 		if (articleMap.containsKey("articleContent")) {
-			int n = 2000;
+			int n = 750;
 			String upToNCharacters = content.substring(0, Math.min(content.length(), n));
 			String upToNCharacters_decoded;
 			try {
@@ -556,7 +557,7 @@ public class ArticleDaoImpl {
 				}
 				// article.setContent(URLDecoder.decode(upToNCharacters,
 				// StandardCha"rsets.UTF_8));
-				updatestr += "`content` = '" + URLEncoder.encode(content500, "UTF-8") + "',\r\n";
+				updatestr += "`content` = '" + EncodingDecodingUtil.encodeURIComponent(content500) + "',\r\n";
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
