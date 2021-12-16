@@ -1,6 +1,7 @@
 package dao;
 
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -82,7 +83,7 @@ public class ContentDaoImpl {
 				content500 = upToNCharacters_decoded.substring(0,lastInd)+"}]}";
 			}
 
-			article.setContent(URLDecoder.decode(content500, "UTF-8"));
+			article.setContent(URLEncoder.encode(content500, "UTF-8"));
 			
 			java.util.Date date=new java.util.Date();
 			java.sql.Date sqlDate=new java.sql.Date(date.getTime());

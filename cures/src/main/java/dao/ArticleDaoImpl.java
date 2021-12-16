@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
@@ -555,7 +556,7 @@ public class ArticleDaoImpl {
 				}
 				// article.setContent(URLDecoder.decode(upToNCharacters,
 				// StandardCha"rsets.UTF_8));
-				updatestr += "`content` = '" + URLDecoder.decode(content500, "UTF-8") + "',\r\n";
+				updatestr += "`content` = '" + URLEncoder.encode(content500, "UTF-8") + "',\r\n";
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
