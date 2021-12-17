@@ -1,6 +1,7 @@
 package dao;
 
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,12 +14,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import model.Article;
 import model.Article_dc_name;
@@ -227,7 +230,8 @@ public class ArticleDaoImpl {
 				+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
 				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n"
 				+ "    `article`.`country_id`,\r\n" + "    `article`.`disease_condition_id`,\r\n"
-				+ "    `article`.`type`,\r\n" + "    `dc`.`dc_name`,\r\n" + "    `article`.`comments`\r\n"
+				+ "    `article`.`type`,\r\n" + "    `dc`.`dc_name`,\r\n" + "    `article`.`comments`,\r\n"
+				+ "    `article`.`over_allrating`\r\n"
 				+ "FROM `allcures_schema`.`article`\r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
 				+ " where article_id =  " + reg_id + ";");
@@ -320,6 +324,7 @@ public class ArticleDaoImpl {
 			article.setContent(contents);
 			article.setDc_name((String) obj[21]);
 			article.setComments((String) obj[22]);
+			article.setOver_allrating((Float) obj[23]);
 		}
 		session.close();
 
@@ -383,7 +388,8 @@ public class ArticleDaoImpl {
 				+ "    `article`.`disclaimer_id`,\r\n" + "    `article`.`create_date`,\r\n"
 				+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
 				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n" + "    `dc`.`dc_name`\r\n,"
-				+ " `article`.comments\r\n," + " `article`.`type`\r\n, `article`.`country_id`  "
+				+ " `article`.comments\r\n," + " `article`.`type`\r\n, `article`.`country_id`\r\n,  "
+				+ " `article`.over_allrating\r\n "
 
 				+ "FROM `allcures_schema`.`article`\r\n"
 				+ "left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
@@ -418,6 +424,7 @@ public class ArticleDaoImpl {
 			String comments = (String) objects[19];
 			String type = (String) objects[20];
 			int country_id = objects[21] != null ? (int) objects[21] : 0;
+			float over_allrating = (float) (objects[22] != null ? (Float) objects[22] : 0.0);
 
 			hm.put("article_id", article_id);
 			hm.put("title", title);
@@ -441,6 +448,7 @@ public class ArticleDaoImpl {
 			hm.put("comments", comments);
 			hm.put("type", type);
 			hm.put("country_id", country_id);
+			hm.put("over_allrating", over_allrating);
 
 			hmFinal.add(hm);
 			System.out.println(hm);
@@ -470,7 +478,7 @@ public class ArticleDaoImpl {
 		return list;
 	}
 
-	public int updateArticleId(int article_id, HashMap articleMap) {
+	public int updateArticleId(int article_id, HashMap articleMap, String baseUrl) {
 
 		// SendEmailUtil.shootEmail(null, "Article updated top ", "Hi
 		// aritcleid="+article_id);
@@ -631,8 +639,31 @@ public class ArticleDaoImpl {
 				// sub 3", message);
 
 				if ((int) articleMap.get("pubstatus_id") == 3) {
+					String curesProperties = "cures.properties";
+					Properties prop = null;
+					try {
+						prop = new ArticleUtils().readPropertiesFile(curesProperties);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					//System.out.println("ARTICLES_UPLOAD_DIR 123: " + prop.getProperty("ARTICLES_UPLOAD_DIR"));
+					//String articleUploadDir = prop.getProperty("ARTICLES_UPLOAD_DIR");
+
+//					String splitON = articleUploadDir.substring(articleUploadDir.lastIndexOf(File.separator) , articleUploadDir.length());
+//					String article_location_relative_ending = art_location.split(splitON)[1];
+					String cures_articleimages = prop.getProperty("cures_articleimages");
+					String article_location_relative_ending = art_location.split(cures_articleimages)[1];
+//					String path = System.getProperty( "catalina.base" ) + "/webapps/"+cures_articleimages;
+
+					//String path = System.getProperty( "catalina.base" ) + "/webapps/"+cures_articleimages;
+					//String article_location_relative_full = path+"/"+article_location_relative_ending;
+
+					System.out.println(baseUrl);
+					String article_location_relative_full =  baseUrl + "/"+cures_articleimages+"/" + article_location_relative_ending;
+					System.out.println(article_location_relative_full);
 //					WhatsAPITrackEvents.POSTRequestTrackEventsByArticleId(article_id);
-					WhatsAPITemplateMessage.POSTRequestTrackEventsByArticleId(article_id, type);
+					WhatsAPITemplateMessage.POSTRequestTrackEventsByArticleId(article_id, type, art.getDisease_condition_id(), article_location_relative_full);
 					System.out.println("Subscription WhatsApp Message sent.");
 				}
 				EmailDTO emaildto = new EmailDTO();

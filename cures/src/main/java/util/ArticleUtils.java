@@ -33,8 +33,12 @@ public class ArticleUtils {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("ARTICLES_UPLOAD_DIR : " + prop.getProperty("ARTICLES_UPLOAD_DIR"));
-		String art_upload_dir = prop.getProperty("ARTICLES_UPLOAD_DIR");
+		//System.out.println("ARTICLES_UPLOAD_DIR : " + prop.getProperty("ARTICLES_UPLOAD_DIR"));
+		String cures_articleimages = prop.getProperty("cures_articleimages");
+		String path = System.getProperty( "catalina.base" ) + "/webapps/"+cures_articleimages;
+
+		System.out.println(path);
+		String art_upload_dir = path;
 
 		String contentDir = art_upload_dir + "/" + userId + "/" + dtf.format(now);
 		if (isWindows()) {

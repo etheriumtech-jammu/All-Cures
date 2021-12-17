@@ -74,8 +74,9 @@ public class ArticleController {
 	}
 
 	@RequestMapping(value = "/{article_id}", produces = "application/json", method = RequestMethod.POST)
-	public @ResponseBody int updateArticle(@PathVariable int article_id, @RequestBody HashMap articleMap) {
-		return articleDaoImpl.updateArticleId(article_id, articleMap);
+	public @ResponseBody int updateArticle(@PathVariable int article_id, @RequestBody HashMap articleMap, HttpServletRequest request) {
+		String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).build().toUriString();
+		return articleDaoImpl.updateArticleId(article_id, articleMap, baseUrl);
 	}
 
 	@RequestMapping(value = "/{article_id}", produces = "application/json", method = RequestMethod.DELETE)
@@ -95,7 +96,7 @@ public class ArticleController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("ARTICLES_UPLOAD_DIR : " + prop.getProperty("ARTICLES_UPLOAD_DIR"));
+		//System.out.println("ARTICLES_UPLOAD_DIR : " + prop.getProperty("ARTICLES_UPLOAD_DIR"));
 		String cures_articleimages = prop.getProperty("cures_articleimages");
 		String path = System.getProperty( "catalina.base" ) + "/webapps/"+cures_articleimages;
 

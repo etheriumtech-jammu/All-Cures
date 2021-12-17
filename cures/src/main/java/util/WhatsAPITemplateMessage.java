@@ -78,10 +78,12 @@ public class WhatsAPITemplateMessage {
 	}
 
 	public static void runInteraktAPI(String template_name, String BV2_dc_name, String countryCode, String mobile,
-			String header1_imgpath, String BV1_art_id, String BV3_desc) throws IOException {
+		String header1_imgpath, String BV1_art_id, String BV3_desc) throws IOException {
+		
 		String fileProperties = "whatsapi.properties";
 		Properties prop = new WAPICommon().readPropertiesFile(fileProperties);
 		System.out.println("URL_API_TEMPLATES: " + prop.getProperty("URL_API_TEMPLATES"));
+
 		final String POST_PARAMS = "{\"countryCode\": \"" + countryCode + "\", \"phoneNumber\": \"" + mobile + "\","
 				+ " \"type\": \"Template\"," + " \"template\": {\"name\": \"" + template_name
 				+ "\",\"languageCode\": \"en\"," + " \"headerValues\": [\"" + header1_imgpath + "\"],"
@@ -122,8 +124,10 @@ public class WhatsAPITemplateMessage {
 		}
 	}
 
-	public static void POSTRequestTrackEventsByArticleId(int article_id, String type) throws SQLException {
-		ArrayList NSData = new WAPICommon().fetchDatabaseResultsForNewsletterByArticle(article_id);
+	public static void POSTRequestTrackEventsByArticleId(int article_id, String type, int dc_id, String article_location_relative) throws SQLException {
+		ArrayList NSData = new WAPICommon().fetchDatabaseResultsForNewsletterByArticle(article_id, type, dc_id);
+		String article_location_relative_image = article_location_relative.replace(".json", ".png");
+
 		// @TODO remove duplicates and run for all CSV disease and cures id's & all for
 		// sub_type =1
 		for (int i = 0; i < NSData.size(); i++) {
@@ -137,9 +141,10 @@ public class WhatsAPITemplateMessage {
 				params[1] = (String) ((HashMap) NSData.get(i)).get("nl_subscription_cures_id");// C_ID;
 			}
 			params[3] = (String) ((HashMap) NSData.get(i)).get("mobile"); // mobile
-			params[4] = "https://etheriumtech.com/images/illustrations/service-3.jpg"; // DC_NAMES
+			params[4] = article_location_relative_image; // article_image
+//			params[4] = "https://etheriumtech.com/images/illustrations/service-3.jpg"; // DC_NAMES
 			params[5] = "" + article_id; // dc name
-			params[6] = "Also New link pased here dynamically https://www.all-cures.com/cure/"+article_id+" ... Here goes the decription of the disease #" + params[1];// detailing
+			params[6] = "Also New link pased here dynamically https://all-cures.com/cure/"+article_id+" ... Here goes the decription of the disease #" + params[1];// detailing
 			params[7] = "+"+(Integer) ((HashMap) NSData.get(i)).get("country_code"); // +countryCode
 
 			// }
