@@ -33,7 +33,7 @@ public class DiseaseANDConditionDaoImpl {
 				"SELECT distinct  a.article_id,  a.title , a.friendly_name,  a.subheading, a.content_type, a.keywords,  a.window_title,  a.content_location \r\n"
 						+ " ,a.authored_by, a.published_by, a.edited_by, a.copyright_id, a.disclaimer_id, a.create_date, a.published_date, a.pubstatus_id,"
 						+ " a.language_id, a.disease_condition_id, a.country_id, a.type \r\n"
-						+ " ,dc.dc_name , dc.parent_dc_id, a.content \r\n" + " FROM allcures_schema.article a \r\n"
+						+ " ,dc.dc_name , dc.parent_dc_id, a.content, a.over_allrating \r\n" + " FROM allcures_schema.article a \r\n"
 						+ " inner join disease_condition dc on a.disease_condition_id = dc.dc_id\r\n"
 						+ " inner join languages l on a.language_id = l.language_id\r\n"
 						+ "inner join countries c on c.countrycodeid = a.country_id or a.country_id is null \r\n"
@@ -72,6 +72,7 @@ public class DiseaseANDConditionDaoImpl {
 			String dc_name = (String) objects[20];
 			int parent_dc_id = objects[21] != null ? (int) objects[21] : 0;
 			String content = (String) objects[22] ;
+			float over_allrating = objects[23] != null ? (float) objects[23] : 0;
 
 			hm.put("article_id", article_id);
 			hm.put("title", title);
@@ -96,6 +97,7 @@ public class DiseaseANDConditionDaoImpl {
 			hm.put("dc_name", dc_name);
 			hm.put("parent_dc_id", parent_dc_id);
 			hm.put("content", content);
+			hm.put("over_allrating", over_allrating);
 			hmFinal.add(hm);
 			System.out.println(hm);
 		}
