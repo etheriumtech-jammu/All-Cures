@@ -124,10 +124,8 @@ public class WhatsAPITemplateMessage {
 		}
 	}
 
-	public static void POSTRequestTrackEventsByArticleId(int article_id, String type, int dc_id, String article_location_relative) throws SQLException {
+	public static void POSTRequestTrackEventsByArticleId(int article_id, String type, int dc_id, String article_location_relative_image) throws SQLException {
 		ArrayList NSData = new WAPICommon().fetchDatabaseResultsForNewsletterByArticle(article_id, type, dc_id);
-		String article_location_relative_image = article_location_relative.replace(".json", ".png");
-
 		// @TODO remove duplicates and run for all CSV disease and cures id's & all for
 		// sub_type =1
 		for (int i = 0; i < NSData.size(); i++) {

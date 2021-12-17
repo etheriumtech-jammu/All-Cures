@@ -658,10 +658,19 @@ public class ArticleDaoImpl {
 
 					//String path = System.getProperty( "catalina.base" ) + "/webapps/"+cures_articleimages;
 					//String article_location_relative_full = path+"/"+article_location_relative_ending;
+					String article_location_relative_full =  "https://etheriumtech.com/images/illustrations/favicon.png";
 
-					System.out.println(baseUrl);
-					String article_location_relative_full =  baseUrl + "/"+cures_articleimages+"/" + article_location_relative_ending;
-					System.out.println(article_location_relative_full);
+					String article_location_relative_image = article_location_relative_ending.replace(".json", ".png");
+
+					File f = new File(art_location.replace(".json", ".png"));
+			        // Checking if the specified file exists or not
+			        if (f.exists()) {
+			            // Show if the file exists
+			            System.out.println("Image File Exists");
+						System.out.println(baseUrl);
+						article_location_relative_full =  baseUrl + "/"+cures_articleimages+"/" + article_location_relative_image;
+						System.out.println(article_location_relative_full);
+			        }
 //					WhatsAPITrackEvents.POSTRequestTrackEventsByArticleId(article_id);
 					WhatsAPITemplateMessage.POSTRequestTrackEventsByArticleId(article_id, type, art.getDisease_condition_id(), article_location_relative_full);
 					System.out.println("Subscription WhatsApp Message sent.");
