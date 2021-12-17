@@ -560,8 +560,13 @@ public class ArticleDaoImpl {
 
 				String content500 = upToNCharacters_decoded;
 				int lastInd = upToNCharacters_decoded.lastIndexOf("},");
+				
 				if (lastInd != -1) {
 					content500 = upToNCharacters_decoded.substring(0, lastInd) + "}]}";
+				}else {
+					if (upToNCharacters_decoded.startsWith("{") && !upToNCharacters_decoded.endsWith("}")) {
+						content500 = upToNCharacters_decoded + "}";
+					}
 				}
 				// article.setContent(URLDecoder.decode(upToNCharacters,
 				// StandardCha"rsets.UTF_8));
