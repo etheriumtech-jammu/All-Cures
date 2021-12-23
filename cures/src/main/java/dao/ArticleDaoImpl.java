@@ -388,11 +388,15 @@ public class ArticleDaoImpl {
 				+ "    `article`.`disclaimer_id`,\r\n" + "    `article`.`create_date`,\r\n"
 				+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
 				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n" + "    `dc`.`dc_name`\r\n,"
-				+ " `article`.comments\r\n," + " `article`.`type`\r\n, `article`.`country_id`\r\n,  "
-				+ " `article`.over_allrating\r\n "
+				+ "	`article`.`comments`\r\n," + " `article`.`type`\r\n, `article`.`country_id`\r\n,  "
+				+ " `article`.`over_allrating`, \r\n "
+				
+				+ " (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a \r\n"
+				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
+				+ " ) as authors_name"
 
-				+ "FROM `allcures_schema`.`article`\r\n"
-				+ "left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
+				+ " FROM `allcures_schema`.`article` \r\n"
+				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
 				+ " order by `article`.`article_id` desc \r\n" + limit_str + ";");
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
@@ -425,6 +429,8 @@ public class ArticleDaoImpl {
 			String type = (String) objects[20];
 			int country_id = objects[21] != null ? (int) objects[21] : 0;
 			float over_allrating = (float) (objects[22] != null ? (Float) objects[22] : 0.0);
+			String authors_name = (String) objects[23];
+
 
 			hm.put("article_id", article_id);
 			hm.put("title", title);
@@ -449,6 +455,7 @@ public class ArticleDaoImpl {
 			hm.put("type", type);
 			hm.put("country_id", country_id);
 			hm.put("over_allrating", over_allrating);
+			hm.put("authors_name", authors_name);
 
 			hmFinal.add(hm);
 			System.out.println(hm);
