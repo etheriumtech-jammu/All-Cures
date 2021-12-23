@@ -200,9 +200,10 @@ public class SearchDaoImpl {
 			// or sub_spls:"+ docdetails);
 		}
 		query.add("sort", "geodist() asc");
+//		query.add("fq", "{!geofilt sfield=location}");
 		query.add("pt", docloc);
 		query.add("sfield", "docloc1");
-		query.add("d", "20");
+		query.add("d", "50");
 		QueryResponse response = null;
 		try {
 			response = client.query(query);
@@ -458,7 +459,7 @@ public class SearchDaoImpl {
 
 		Query query = session.createNativeQuery(
 				"select c.countryname, a.country_id, a.type, a.disease_condition_id, a.article_id, a.title FROM allcures_schema.article a\r\n"
-						+ " inner join countries c on a.country_id = c.countrycodeid or a.country_id is null \r\n"
+						+ " left join countries c on a.country_id = c.countrycodeid " //or a.country_id is null \r\n"
 						+ " where a.disease_condition_id = " + dc_id + "\r\n;");// + " and FIND_IN_SET (2, a.type) > 0 ;");
 
 		List<Object[]> results = (List<Object[]>) query.getResultList();
