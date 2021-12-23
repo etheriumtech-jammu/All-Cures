@@ -66,7 +66,7 @@ public class DoctorsDaoImpl {
 			updatestr += " membership = '" + profileMap.get("membership") + "',\r\n";
 		}
 		if (profileMap.containsKey("awards")) {
-			updatestr += " awards = " + profileMap.get("awards") + ",\r\n";
+			updatestr += " awards = '" + profileMap.get("awards") + "',\r\n";
 		}
 		if (profileMap.containsKey("availibity_for_appointment")) {
 			updatestr += " availibity_for_appointment = " + profileMap.get("availibity_for_appointment") + ",\r\n";
