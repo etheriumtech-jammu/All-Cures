@@ -614,10 +614,20 @@ public class ArticleDaoImpl {
 			}
 
 			if (type.contains("1")) {
+				boolean foundDefaultInTable = false;
 				List<Article> countMatchArticles = contentDao.findByArticleTypeAndDC(iDiseaseConditionId);
 				if (countMatchArticles.size() > 0) {
-					Constant.log("Default Article for Disease_condition_id already present", 0);
-					return -2;
+					for (Iterator iterator = countMatchArticles.iterator(); iterator.hasNext();) {
+						Article article = (Article) iterator.next();
+						if (article.getArticle_id().equals(artExisting.getArticle_id()) ) {
+							foundDefaultInTable = true;
+						}
+					}
+					//if article in table is default and we want to update it as default then only allow else return -2
+					if (!foundDefaultInTable) {
+						Constant.log("Default Article for Disease_condition_id already present", 0);
+						return -2;
+					}
 				}
 			}
 		}
