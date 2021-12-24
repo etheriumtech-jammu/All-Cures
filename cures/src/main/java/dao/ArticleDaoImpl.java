@@ -617,8 +617,7 @@ public class ArticleDaoImpl {
 				boolean foundDefaultInTable = false;
 				List<Article> countMatchArticles = contentDao.findByArticleTypeAndDC(iDiseaseConditionId);
 				if (countMatchArticles.size() > 0) {
-					for (Iterator iterator = countMatchArticles.iterator(); iterator.hasNext();) {
-						Article article = (Article) iterator.next();
+					for (Article article : countMatchArticles) {
 						if (article.getArticle_id().equals(artExisting.getArticle_id()) ) {
 							foundDefaultInTable = true;
 						}
