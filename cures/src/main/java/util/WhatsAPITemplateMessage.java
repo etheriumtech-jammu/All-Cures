@@ -84,10 +84,15 @@ public class WhatsAPITemplateMessage {
 		Properties prop = new WAPICommon().readPropertiesFile(fileProperties);
 		System.out.println("URL_API_TEMPLATES: " + prop.getProperty("URL_API_TEMPLATES"));
 
+//		final String POST_PARAMS = "{\"countryCode\": \"" + countryCode + "\", \"phoneNumber\": \"" + mobile + "\","
+//				+ " \"type\": \"Template\"," + " \"template\": {\"name\": \"" + template_name
+//				+ "\",\"languageCode\": \"en\"," + " \"headerValues\": [\"" + header1_imgpath + "\"],"
+//				+ " \"bodyValues\": [\"" + BV1_art_id + "\",\"" + BV2_dc_name + "\",\"" + BV3_desc + "\"]" + "}}";
+		
 		final String POST_PARAMS = "{\"countryCode\": \"" + countryCode + "\", \"phoneNumber\": \"" + mobile + "\","
 				+ " \"type\": \"Template\"," + " \"template\": {\"name\": \"" + template_name
 				+ "\",\"languageCode\": \"en\"," + " \"headerValues\": [\"" + header1_imgpath + "\"],"
-				+ " \"bodyValues\": [\"" + BV1_art_id + "\",\"" + BV2_dc_name + "\",\"" + BV3_desc + "\"]" + "}}";
+				+ " \"bodyValues\": [\"" +  BV3_desc + "\"]" + "}}";
 
 		System.out.println(POST_PARAMS);
 //		URL obj = new URL("https://api.interakt.ai/v1/public/track/events/");
@@ -130,7 +135,8 @@ public class WhatsAPITemplateMessage {
 		// sub_type =1
 		for (int i = 0; i < NSData.size(); i++) {
 			String[] params = new String[8];
-			params[0] = "dynamic_disease_template_kb";// "DAILY_NL_DISEASE_IDS";//"NEW_ARTICLE_PUBLISHED";
+			//params[0] = "dynamic_disease_template_kb";// "DAILY_NL_DISEASE_IDS";//"NEW_ARTICLE_PUBLISHED";
+			params[0] = "prod24decimageandlink";// "DAILY_NL_DISEASE_IDS";//"NEW_ARTICLE_PUBLISHED";
 			if ((int) ((HashMap) NSData.get(i)).get("nl_sub_type") == 1) {
 				params[1] = "All Disease Symptoms and Cures";// all diseased cures subscribed
 			} else if (type.contains("1") || type.contains("3")) {
@@ -142,7 +148,8 @@ public class WhatsAPITemplateMessage {
 			params[4] = article_location_relative_image; // article_image
 //			params[4] = "https://etheriumtech.com/images/illustrations/service-3.jpg"; // DC_NAMES
 			params[5] = "" + article_id; // dc name
-			params[6] = "Also New link pased here dynamically https://all-cures.com/cure/"+article_id+" ... Here goes the decription of the disease #" + params[1];// detailing
+			//params[6] = "Also New link pased here dynamically https://all-cures.com/cure/"+article_id+" ... Here goes the decription of the disease #" + params[1];// detailing
+			params[6] = "https://all-cures.com/cure/"+article_id;
 			params[7] = "+"+(Integer) ((HashMap) NSData.get(i)).get("country_code"); // +countryCode
 
 			// }

@@ -133,13 +133,14 @@ public class RegistrationDaoImpl {
 //			EmailDTO emaildto2 = new EmailDTO();
 
 			emaildto.setTo(email);
-			emaildto.setSubject("Registration User ");
+			emaildto.setFrom("All-Cures INFO");
+			emaildto.setSubject("Registration User: All-Cures ");
 			// Populate the template data
 			Map<String, Object> templateData = new HashMap<>();
 			templateData.put("templatefile", "email/registration.ftlh");
 			templateData.put("first_name", f_name);
 			// String link = "http://localhost:3000";
-			String link = "https://all-cures.com#";
+			String link = "https://all-cures.com";
 			templateData.put("linkverfiy", link);
 
 			// object -> Map
@@ -351,7 +352,7 @@ public class RegistrationDaoImpl {
 			} else {
 				String encEmail = new UserController().getEmailEncrypted(email);
 				// String link = "http://localhost:3000/loginForm/ResetPass/?em=" + encEmail;
-				String link = "https://all-cures.com#/loginForm/ResetPass/?em=" + encEmail;
+				String link = "https://all-cures.com/loginForm/ResetPass/?em=" + encEmail;
 				// new SendEmailUtil().shootEmail(email, "Test subject", "Password reset link
 				// here...\n" + link);
 //				EmailDTO emaildto = new EmailDTO();
@@ -366,7 +367,8 @@ public class RegistrationDaoImpl {
 				EmailDTO emaildto2 = new EmailDTO();
 
 				emaildto2.setTo(email);
-				emaildto2.setSubject("Forgot password..");
+				emaildto2.setFrom("All-Cures INFO");
+				emaildto2.setSubject("Forgot password: All-Cures");
 				// Populate the template data
 				Map<String, Object> templateData = new HashMap<>();
 				templateData.put("templatefile", "email/forgotpassword.ftlh");

@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.Session;
@@ -22,6 +23,8 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import model.Article;
 import model.Article_dc_name;
@@ -642,6 +645,8 @@ public class ArticleDaoImpl {
 			trans.commit();
 			System.out.println("updated article table for article_id =  " + article_id);
 			Boolean value = true;
+			String article_location_relative_full =  "https://etheriumtech.com/images/illustrations/favicon.png";
+
 			try {
 				// Update the Content First
 				Article_dc_name art = new ArticleDaoImpl().getArticleDetails(article_id);
@@ -679,7 +684,6 @@ public class ArticleDaoImpl {
 
 					//String path = System.getProperty( "catalina.base" ) + "/webapps/"+cures_articleimages;
 					//String article_location_relative_full = path+"/"+article_location_relative_ending;
-					String article_location_relative_full =  "https://etheriumtech.com/images/illustrations/favicon.png";
 
 					String article_location_relative_image = article_location_relative_ending.replace(".json", ".png");
 
@@ -696,9 +700,39 @@ public class ArticleDaoImpl {
 					WhatsAPITemplateMessage.POSTRequestTrackEventsByArticleId(article_id, type, art.getDisease_condition_id(), article_location_relative_full);
 					System.out.println("Subscription WhatsApp Message sent.");
 				}
+//				EmailDTO emaildto = new EmailDTO();
+//				emaildto.setSubject("Article updated ");
+//				emaildto.setEmailtext("Hi aritcleid=" + article_id);
+//
+//				String returnEmail = emailUtil.shootEmail(emaildto);
 				EmailDTO emaildto = new EmailDTO();
-				emaildto.setSubject("Article updated ");
-				emaildto.setEmailtext("Hi aritcleid=" + article_id);
+
+//				emaildto.setTo(email);
+//				emaildto.setSubject("Registration user email..");
+//				emaildto.setEmailtext("Hi " + f_name + "," + " Thanks for the registration with allcures.");
+//				EmailDTO emaildto2 = new EmailDTO();
+
+//				emaildto.setTo(email);
+				emaildto.setFrom("All-Cures INFO");
+				emaildto.setSubject("Cures Update #"+article_id+": All-Cures ");
+				// Populate the template data
+				Map<String, Object> templateData = new HashMap<>();
+				templateData.put("templatefile", "email/articleupdate.ftlh");
+				//templateData.put("first_name", f_name);
+				// String link = "http://localhost:3000";
+				String link = "https://all-cures.com/cure/"+article_id;
+				templateData.put("linkverfiy", link);
+				templateData.put("title", art.getTitle());
+				templateData.put("type", type);
+				templateData.put("dc_id", art.getDisease_condition_id());
+				templateData.put("article_image_path", article_location_relative_full);
+
+				// object -> Map
+//				ObjectMapper oMapper = new ObjectMapper();
+//				Map<String, Object> mapUser = oMapper.convertValue(user, Map.class);
+//				templateData.putAll(mapUser);
+				emaildto.setEmailTemplateData(templateData);
+				System.out.println(emaildto);
 
 				String returnEmail = emailUtil.shootEmail(emaildto);
 
