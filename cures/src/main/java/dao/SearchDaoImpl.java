@@ -199,10 +199,10 @@ public class SearchDaoImpl {
 			// query.set("q", "name:"+docdetails +" or primary_spl:"+ docdetails +"
 			// or sub_spls:"+ docdetails);
 		}
-		query.add("sort", "geodist() asc");
-//		query.add("fq", "{!geofilt sfield=location}");
+//		query.add("sort", "geodist() asc");
+		query.add("fq", "{!geofilt sfield=location}");
 		query.add("pt", docloc);
-		query.add("sfield", "docloc1");
+//		query.add("sfield", "docloc1");
 		query.add("d", "50");
 		QueryResponse response = null;
 		try {
