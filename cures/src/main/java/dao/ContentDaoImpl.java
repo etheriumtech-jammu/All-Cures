@@ -194,7 +194,6 @@ public class ContentDaoImpl {
 		}	
 	
 	public static List<Article> findByArticleTypeAndDC(Integer DC_ID){
-			Article article = new Article();
 			Session factory = HibernateUtil.buildSessionFactory();
 
 			// creating session object
@@ -204,17 +203,32 @@ public class ContentDaoImpl {
 			Transaction trans =(Transaction )session.beginTransaction();
 			//String HQL= "from doctors  INNER JOIN FETCH hospital.hospital_affliated where.";
 			Query query = session.createNativeQuery("SELECT  article.article_id, article.title, article.friendly_name, article.subheading, "+
-	"article.content_type, article.keywords, article.window_title, article.content_location "+
-	 "FROM article where  article.disease_condition_id = " + DC_ID + " and FIND_IN_SET(1, REPLACE(\r\n"
+	" article.content_type, article.keywords, article.window_title, article.content_location, article.type "+
+	 " FROM article where  article.disease_condition_id = " + DC_ID + " and FIND_IN_SET(1, REPLACE(\r\n"
 	 		+ "                        REPLACE(\r\n"
 	 		+ "                          REPLACE(article.type, '\"', ''), \r\n"
 	 		+ "                        '[', ''), \r\n"
 	 		+ "                      ']','')) > 0 ;" );
 			
-			List<Article> list= ( List<Article>) query.getResultList();
-			
+			List<Article> articleArr = new ArrayList<Article>();
+			List<Article> articleList= ( List<Article>) query.getResultList();
+			Article  article = new Article();
+			Iterator itr = articleList.iterator();
+			while(itr.hasNext()){
+				Object[] obj = (Object[]) itr.next();
+				article.setArticle_id((Integer) obj[0]);
+				article.setTitle((String) obj[1]);
+				article.setFriendly_name((String) obj[2]);
+				article.setSubheading((String) obj[3]);
+				article.setContent_type((String) obj[4]);
+				article.setKeywords((String)obj[5]);			
+				article.setWindow_title((String)obj[6]);			
+				article.setContent_location((String)obj[7]);			
+				article.setType((String)obj[8]);			
+				articleArr.add(article);
+			}	
 			session.close();
-			return list;
+			return articleArr;
 			}	
 	
 	public static boolean updateArticleMeta(String title, String f_name, String subhead, String content_type, String keyword, 
