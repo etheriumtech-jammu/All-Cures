@@ -713,7 +713,7 @@ public class ArticleDaoImpl {
 //				EmailDTO emaildto2 = new EmailDTO();
 
 //				emaildto.setTo(email);
-				emaildto.setFrom("All-Cures INFO");
+//				emaildto.setFrom("All-Cures INFO");
 				emaildto.setSubject("Cures Update #"+article_id+": All-Cures ");
 				// Populate the template data
 				Map<String, Object> templateData = new HashMap<>();

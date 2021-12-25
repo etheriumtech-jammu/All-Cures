@@ -133,7 +133,7 @@ public class RegistrationDaoImpl {
 //			EmailDTO emaildto2 = new EmailDTO();
 
 			emaildto.setTo(email);
-			emaildto.setFrom("All-Cures INFO");
+//			emaildto.setFrom("All-Cures INFO");
 			emaildto.setSubject("Registration User: All-Cures ");
 			// Populate the template data
 			Map<String, Object> templateData = new HashMap<>();
@@ -367,7 +367,7 @@ public class RegistrationDaoImpl {
 				EmailDTO emaildto2 = new EmailDTO();
 
 				emaildto2.setTo(email);
-				emaildto2.setFrom("All-Cures INFO");
+//				emaildto2.setFrom("All-Cures INFO");
 				emaildto2.setSubject("Forgot password: All-Cures");
 				// Populate the template data
 				Map<String, Object> templateData = new HashMap<>();
@@ -478,9 +478,9 @@ public class RegistrationDaoImpl {
 		// set active =1 for new subscription
 		Query query = session.createNativeQuery("INSERT INTO `allcures_schema`.`newsletter` (\r\n" + "\r\n"
 				+ "`nl_subscription_disease_id`,\r\n" + "`nl_start_date`,\r\n" + "`nl_sub_type`,\r\n" + "`mobile`,\r\n"
-				+ "`nl_subscription_cures_id`, `active`)\r\n" + " VALUES \r\n" + "('" + "\r\n"
+				+ "`nl_subscription_cures_id`, `active`, `country_code`)\r\n" + " VALUES \r\n" + "('" + "\r\n"
 				+ nl_subscription_disease_id + "',\r\n '" + nl_start_date + "' ,\r\n" + nl_sub_type + ",\r\n" + mobile
-				+ ",\r\n'" + nl_subscription_cures_id + "',1);\r\n");
+				+ ",\r\n'" + nl_subscription_cures_id + "',1, "+country_code+");\r\n");
 		// needs other condition too but unable to find correct column
 		System.out.println(query);
 		int ret = 0;

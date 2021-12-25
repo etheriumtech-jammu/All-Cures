@@ -92,7 +92,7 @@ public class WhatsAPITemplateMessage {
 		final String POST_PARAMS = "{\"countryCode\": \"" + countryCode + "\", \"phoneNumber\": \"" + mobile + "\","
 				+ " \"type\": \"Template\"," + " \"template\": {\"name\": \"" + template_name
 				+ "\",\"languageCode\": \"en\"," + " \"headerValues\": [\"" + header1_imgpath + "\"],"
-				+ " \"bodyValues\": [\"" +  BV3_desc + "\"]" + "}}";
+				+ " \"bodyValues\": [\"Subscriber\",\"" +  BV3_desc + "\"]" + "}}";
 
 		System.out.println(POST_PARAMS);
 //		URL obj = new URL("https://api.interakt.ai/v1/public/track/events/");
