@@ -56,6 +56,51 @@ public class LogginFilters implements Filter {
 		
 		HttpServletRequest req =(HttpServletRequest ) request;
 		HttpServletResponse res = (HttpServletResponse) response;
+		
+		
+		res.setHeader("Access-Control-Allow-Credentials", "true");
+
+        // No Origin header present means this is not a cross-domain request
+        String origin = req.getHeader("Origin");
+         if (origin == null) {
+//            // Return standard response if OPTIONS request w/o Origin header
+           if ("OPTIONS".equalsIgnoreCase(req.getMethod())) {
+        	   res.setHeader("Allow", "DELETE, HEAD, GET, OPTIONS, POST, PUT");
+        	   res.setStatus(200);
+                return;
+            }
+        } else {
+            // This is a cross-domain request, add headers allowing access
+        	res.setHeader("Access-Control-Allow-Origin", origin);
+        	res.setHeader("Access-Control-Allow-Methods", "DELETE, HEAD, GET, OPTIONS, POST, PUT");
+
+            String headers = req.getHeader("Access-Control-Request-Headers");
+            if (headers != null)
+            	res.setHeader("Access-Control-Allow-Headers", headers);
+
+            // Allow caching cross-domain permission
+            res.setHeader("Access-Control-Max-Age", "3600");
+        }
+        
+        
+//		res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+//		res.setHeader("Access-Control-Allow-Headers", "access-control-allow-credentials");	
+
+
+         // For HTTP OPTIONS verb/method reply with ACCEPTED status code -- per CORS handshake
+         if (req.getMethod().equals("OPTIONS")) {
+//        	 res.setHeader("Access-Control-Allow-Origin", "http://192.168.29.160");
+        	 res.setHeader("Access-Control-Allow-Origin", origin);
+             res.setStatus(HttpServletResponse.SC_ACCEPTED);
+             return;
+         }
+//    	 res.setHeader("Access-Control-Allow-Origin", origin);
+
+		res.setHeader("Access-Control-Max-Age", "3600");
+//		res.setHeader("Access-Control-Allow-Headers", "x-requested-with");	
+     	
+		
+		
 		HttpSession session= req.getSession(true);
 		Registration user = null;
 		
