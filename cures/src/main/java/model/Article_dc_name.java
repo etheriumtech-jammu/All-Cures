@@ -82,6 +82,10 @@ public class Article_dc_name implements Serializable {
 	@Column(name = "over_allrating")
 	private Float over_allrating;
 	
+	
+	private String authors_name;
+
+	
 
 	/*
 	 * @OneToOne(targetEntity = Author.class) private String author_firstname;
@@ -147,7 +151,7 @@ public class Article_dc_name implements Serializable {
 
 	public Article_dc_name(Integer article_id, String title, String friendly_name, String subheading,
 			String content_type, String keywords, String window_title, String content_location, Integer lang_id,
-			Integer copyright_file_id, Integer disclaimer_file_id, Integer pubStatus, String type, Float over_allrating) {
+			Integer copyright_file_id, Integer disclaimer_file_id, Integer pubStatus, String type, Float over_allrating, String authors_name) {
 		super();
 		this.article_id = article_id;
 		this.title = title;
@@ -159,6 +163,7 @@ public class Article_dc_name implements Serializable {
 		this.content_location = content_location;
 		this.type = type;
 		this.over_allrating = over_allrating;
+		this.authors_name = authors_name;
 		/*
 		 * this.author_firstname = author_firstname; this.author_middlename =
 		 * author_middlename; this.author_lastname = author_lastname; this.author_email
@@ -173,7 +178,7 @@ public class Article_dc_name implements Serializable {
 			String contentTypeId, String keywords, String window_title, String content_location, String authored_by,
 			Integer published_by, Integer edited_by, Integer copyright_id, Integer disclaimer_id, Date create_date,
 			Date published_date, Integer pubstatus_id, Integer language_id, Integer copyright_file_loc_id,
-			Integer disclaimer_file_loc_id, Integer country_id, Integer disease_condition_id, String type, Float over_allrating) {
+			Integer disclaimer_file_loc_id, Integer country_id, Integer disease_condition_id, String type, Float over_allrating, String authors_name) {
 		super();
 		this.article_id = article_id;
 		this.title = title;
@@ -196,6 +201,7 @@ public class Article_dc_name implements Serializable {
 		this.country_id = country_id;
 		this.type = type;
 		this.over_allrating = over_allrating;
+		this.authors_name = authors_name;
 		/*
 		 * this.copyright_file_loc = copyright_file_loc_id; this.disclaimer_file_loc =
 		 * disclaimer_file_loc_id; this.status_discription = status_discription_id;
@@ -390,6 +396,14 @@ public class Article_dc_name implements Serializable {
 
 	public void setOver_allrating(Float over_allrating) {
 		this.over_allrating = over_allrating;
+	}
+
+	public String getAuthors_name() {
+		return authors_name;
+	}
+
+	public void setAuthors_name(String authors_name) {
+		this.authors_name = authors_name;
 	}
 
 	/*

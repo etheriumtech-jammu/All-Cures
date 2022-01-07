@@ -234,8 +234,13 @@ public class ArticleDaoImpl {
 				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n"
 				+ "    `article`.`country_id`,\r\n" + "    `article`.`disease_condition_id`,\r\n"
 				+ "    `article`.`type`,\r\n" + "    `dc`.`dc_name`,\r\n" + "    `article`.`comments`,\r\n"
-				+ "    `article`.`over_allrating`\r\n"
-				+ "FROM `allcures_schema`.`article`\r\n"
+				+ "    `article`.`over_allrating`,\r\n"
+				
+				+ " (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a \r\n"
+				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
+				+ " ) as authors_name "
+				
+				+ " FROM `allcures_schema`.`article`\r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
 				+ " where article_id =  " + reg_id + ";");
 		ArrayList<Article> articleList = (ArrayList<Article>) query.getResultList();
@@ -328,6 +333,7 @@ public class ArticleDaoImpl {
 			article.setDc_name((String) obj[21]);
 			article.setComments((String) obj[22]);
 			article.setOver_allrating((Float) obj[23]);
+			article.setAuthors_name((String) obj[24]);
 		}
 		session.close();
 
