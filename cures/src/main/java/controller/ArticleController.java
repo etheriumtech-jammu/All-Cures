@@ -67,6 +67,11 @@ public class ArticleController {
 	public @ResponseBody List listArticlesAllKeys(@RequestParam(required = false) Integer limit) {
 		return articleDaoImpl.getArticlesListAllKeys(limit);
 	}
+	
+	@RequestMapping(value = "/authallkv/reg_type/{reg_type}/reg_doc_pat_id/{reg_doc_pat_id}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List listArticlesAllKeysByRegTypeAndID(@RequestParam(required = false) Integer limit, @PathVariable int reg_type, @PathVariable int reg_doc_pat_id) {
+		return articleDaoImpl.getArticlesListAllKeysbyAuthIdandregType(reg_type, reg_doc_pat_id, limit);
+	}
 
 	@RequestMapping(value = "/all/table/{table_name}", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody ArrayList listTablesAllData(@PathVariable String table_name) {

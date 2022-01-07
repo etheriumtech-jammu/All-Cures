@@ -368,7 +368,7 @@ public class ArticleDaoImpl {
 		return list;
 	}
 
-	public static List getArticlesListAllKeys(Integer limit) {
+	public static List getArticlesListAllKeysbyAuthIdandregType(Integer reg_type, Integer reg_doc_pat_id, Integer limit) {
 
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -382,25 +382,26 @@ public class ArticleDaoImpl {
 		if (null != limit)
 			limit_str = " limit " + limit;
 
-		Query query = session.createNativeQuery("SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
-				+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
-				+ "    `article`.`content_type`,\r\n" + "    `article`.`keywords`,\r\n"
-				+ "    `article`.`window_title`,\r\n" + "    `article`.`content_location`,\r\n"
-				+ "    `article`.`authored_by`,\r\n" + "    `article`.`published_by`,\r\n"
-				+ "    `article`.`edited_by`,\r\n" + "    `article`.`copyright_id`,\r\n"
-				+ "    `article`.`disclaimer_id`,\r\n" + "    `article`.`create_date`,\r\n"
-				+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
-				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n" + "    `dc`.`dc_name`\r\n,"
-				+ "	`article`.`comments`\r\n," + " `article`.`type`\r\n, `article`.`country_id`\r\n,  "
-				+ " `article`.`over_allrating`, \r\n "
-				
-				+ " (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a \r\n"
-				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
-				+ " ) as authors_name"
-
-				+ " FROM `allcures_schema`.`article` \r\n"
-				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
-				+ " order by `article`.`article_id` desc \r\n" + limit_str + ";");
+		Query query = session.createNativeQuery("\r\n"
+				+ "select \r\n"
+				+ "ar.article_id,     ar.title,\r\n"
+				+ "				   ar.friendly_name,     ar.subheading,\r\n"
+				+ "				   ar.content_type,     ar.keywords,\r\n"
+				+ "				   ar.window_title,     ar.content_location,\r\n"
+				+ "				   ar.authored_by,     ar.published_by,\r\n"
+				+ "				   ar.edited_by,     ar.copyright_id,\r\n"
+				+ "				   ar.disclaimer_id,     ar.create_date,\r\n"
+				+ "				   ar.published_date,     ar.pubstatus_id,\r\n"
+				+ "				   ar.language_id,     ar.content,     dc.dc_name,\r\n"
+				+ "				ar.comments,  ar.type, ar.country_id,\r\n"
+				+ "				ar.over_allrating, \r\n"
+				+ "\r\n"
+				+ "au.reg_doc_pat_id, au.reg_type from article ar\r\n"
+				+ " left join disease_condition dc on dc.dc_id = ar.disease_condition_id "
+				+ " inner join author au\r\n"
+				+ " on au.author_id in (trim(trailing ']' from trim(leading '[' from ar.authored_by))) \r\n"
+				+ "and  au.reg_type="+reg_type+"\r\n"
+				+ "where ar.pubstatus_id = 3 and au.reg_doc_pat_id = "+reg_doc_pat_id+" order by ar.article_id desc \r\n" + limit_str + ";");
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + results);
@@ -432,7 +433,8 @@ public class ArticleDaoImpl {
 			String type = (String) objects[20];
 			int country_id = objects[21] != null ? (int) objects[21] : 0;
 			float over_allrating = (float) (objects[22] != null ? (Float) objects[22] : 0.0);
-			String authors_name = (String) objects[23];
+			int reg_doc_pat_id_ = (int) objects[23];
+			int reg_type_ = (int) objects[24];
 
 
 			hm.put("article_id", article_id);
@@ -458,13 +460,113 @@ public class ArticleDaoImpl {
 			hm.put("type", type);
 			hm.put("country_id", country_id);
 			hm.put("over_allrating", over_allrating);
-			hm.put("authors_name", authors_name);
+			hm.put("reg_doc_pat_id", reg_doc_pat_id_);
+			hm.put("reg_type", reg_type_);
 
 			hmFinal.add(hm);
 			System.out.println(hm);
 		}
 		session.close();
 
+		return hmFinal;
+	}
+	public static List getArticlesListAllKeys(Integer limit) {
+		
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+		
+		// creating session object
+		Session session = factory;
+		
+		// creating transaction object
+		Transaction trans = (Transaction) session.beginTransaction();
+		String limit_str = "";
+		if (null != limit)
+			limit_str = " limit " + limit;
+		
+		Query query = session.createNativeQuery("SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
+				+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
+				+ "    `article`.`content_type`,\r\n" + "    `article`.`keywords`,\r\n"
+				+ "    `article`.`window_title`,\r\n" + "    `article`.`content_location`,\r\n"
+				+ "    `article`.`authored_by`,\r\n" + "    `article`.`published_by`,\r\n"
+				+ "    `article`.`edited_by`,\r\n" + "    `article`.`copyright_id`,\r\n"
+				+ "    `article`.`disclaimer_id`,\r\n" + "    `article`.`create_date`,\r\n"
+				+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
+				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n" + "    `dc`.`dc_name`\r\n,"
+				+ "	`article`.`comments`\r\n," + " `article`.`type`\r\n, `article`.`country_id`\r\n,  "
+				+ " `article`.`over_allrating`, \r\n "
+				
+				+ " (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a \r\n"
+				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
+				+ " ) as authors_name"
+				
+				+ " FROM `allcures_schema`.`article` \r\n"
+				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
+				+ " order by `article`.`article_id` desc \r\n" + limit_str + ";");
+		// needs other condition too but unable to find correct column
+		List<Object[]> results = (List<Object[]>) query.getResultList();
+		System.out.println("result list article@@@@@@@@@@@@@" + results);
+		session.close();
+		
+		List hmFinal = new ArrayList();
+		for (Object[] objects : results) {
+			HashMap hm = new HashMap();
+			int article_id = (int) objects[0];
+			String title = (String) objects[1];
+			String friendly_name = (String) objects[2];
+			String subheading = (String) objects[3];
+			String content_type = (String) objects[4];
+			String keywords = (String) objects[5];
+			String window_title = (String) objects[6];
+			String content_location = (String) objects[7];
+			String authored_by = (String) objects[8];
+			int published_by = objects[9] != null ? (int) objects[9] : 0;
+			int edited_by = (int) objects[10];
+			int copyright_id = (int) objects[11];
+			int disclaimer_id = (int) objects[12];
+			java.sql.Date create_date = (java.sql.Date) objects[13];
+			java.sql.Date published_date = (java.sql.Date) objects[14];
+			int pubstatus_id = (int) objects[15];
+			int language_id = (int) objects[16];
+			String content = (String) objects[17];
+			String dc_name = (String) objects[18];
+			String comments = (String) objects[19];
+			String type = (String) objects[20];
+			int country_id = objects[21] != null ? (int) objects[21] : 0;
+			float over_allrating = (float) (objects[22] != null ? (Float) objects[22] : 0.0);
+			String authors_name = (String) objects[23];
+			
+			
+			hm.put("article_id", article_id);
+			hm.put("title", title);
+			hm.put("friendly_name", friendly_name);
+			hm.put("subheading", subheading);
+			hm.put("content_type", content_type);
+			hm.put("keywords", keywords);
+			hm.put("window_title", window_title);
+			hm.put("content_location", content_location);
+			hm.put("authored_by", authored_by);
+			hm.put("published_by", published_by);
+			hm.put("edited_by", edited_by);
+			hm.put("copyright_id", copyright_id);
+			hm.put("disclaimer_id", disclaimer_id);
+			hm.put("create_date", create_date);
+			hm.put("published_date", published_date);
+			hm.put("pubstatus_id", pubstatus_id);
+			hm.put("language_id", language_id);
+			hm.put("content", content);
+			hm.put("dc_name", dc_name);
+			hm.put("comments", comments);
+			hm.put("type", type);
+			hm.put("country_id", country_id);
+			hm.put("over_allrating", over_allrating);
+			hm.put("authors_name", authors_name);
+			
+			hmFinal.add(hm);
+			System.out.println(hm);
+		}
+		session.close();
+		
 		return hmFinal;
 	}
 
