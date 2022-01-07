@@ -79,7 +79,7 @@ public class LogginFilters implements Filter {
             	res.setHeader("Access-Control-Allow-Headers", headers);
 
             // Allow caching cross-domain permission
-            res.setHeader("Access-Control-Max-Age", "3600");
+            res.setHeader("Access-Control-Max-Age", "\""+Constant.DefaultPermCookieDuration+"\"");
         }
         
         
@@ -96,7 +96,7 @@ public class LogginFilters implements Filter {
          }
 //    	 res.setHeader("Access-Control-Allow-Origin", origin);
 
-		res.setHeader("Access-Control-Max-Age", "3600");
+		res.setHeader("Access-Control-Max-Age", "\""+Constant.DefaultPermCookieDuration+"\"");
 //		res.setHeader("Access-Control-Allow-Headers", "x-requested-with");	
      	
 		
