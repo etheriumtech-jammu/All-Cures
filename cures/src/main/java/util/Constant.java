@@ -49,6 +49,7 @@ public class Constant{
 	public static final String COOKIE = "cookie";
 	public static final String PSW = "psw";
 	public static final String REMPWD ="rempwd";
+	public static final String MOBILE_NUMBER ="number";
 //	public static final String IDCOOK= "idcook";
 	public static final String SESSCOOK = "sesscook";
 	public static final String ON= "on";

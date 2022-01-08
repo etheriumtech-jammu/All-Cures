@@ -32,7 +32,7 @@ public class RegistrationDaoImpl {
 	private SendEmailService emailUtil;
 
 	public Registration saveRegistration(String f_name, String l_name, String pwd, String email, Boolean accept,
-			Integer type, Boolean policy, Integer state, Integer rem) {
+			Integer type, Boolean policy, Integer state, Integer rem, Long mobile) {
 		// creating seession factory object
 
 		Registration user = null;
@@ -87,6 +87,7 @@ public class RegistrationDaoImpl {
 			reg.setprivacy_policy(policy);
 			reg.setAccount_state(state);
 			reg.setRemember_me(rem);
+			reg.setMobile_number(mobile);
 			session.save(reg);
 			session.getTransaction().commit();
 			// session.close();
