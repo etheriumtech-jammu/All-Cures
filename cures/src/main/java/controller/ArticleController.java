@@ -5,9 +5,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -69,7 +72,13 @@ public class ArticleController {
 		 * (Registration) session.getAttribute(Constant.USER); reg_id =
 		 * user.getRegistration_id(); System.out.println(reg_id); }
 		 */
-		return articleDaoImpl.getArticleDetails(article_title);
+		try {
+			return articleDaoImpl.getArticleDetails(URLDecoder.decode(article_title,"UTF-8").toString());
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 
 	}
 
