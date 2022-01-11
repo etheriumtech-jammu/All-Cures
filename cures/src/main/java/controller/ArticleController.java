@@ -57,20 +57,35 @@ public class ArticleController {
 		return articleDaoImpl.getArticleDetails(article_id);
 
 	}
+	
+	
+	@RequestMapping(value = "/title/{article_title}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody Article_dc_name getArticleDetailsByTitle(@PathVariable String article_title, HttpServletRequest request) {
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpSession session = req.getSession(true);
+		/*
+		 * int reg_id = 0; if (session.getAttribute(Constant.USER) != null) {
+		 * Constant.log("#########USER IS IN SESSION########", 0); Registration user =
+		 * (Registration) session.getAttribute(Constant.USER); reg_id =
+		 * user.getRegistration_id(); System.out.println(reg_id); }
+		 */
+		return articleDaoImpl.getArticleDetails(article_title);
+
+	}
 
 	@RequestMapping(value = "/all", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody ArrayList<Article> listArticlesAll(@RequestParam(required = false) Integer limit) {
-		return articleDaoImpl.getArticlesListAll(limit);
+	public @ResponseBody ArrayList<Article> listArticlesAll(@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset) {
+		return articleDaoImpl.getArticlesListAll(limit, offset);
 	}
 
 	@RequestMapping(value = "/allkv", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody List listArticlesAllKeys(@RequestParam(required = false) Integer limit) {
-		return articleDaoImpl.getArticlesListAllKeys(limit);
+	public @ResponseBody List listArticlesAllKeys(@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset) {
+		return articleDaoImpl.getArticlesListAllKeys(limit,offset);
 	}
 	
 	@RequestMapping(value = "/authallkv/reg_type/{reg_type}/reg_doc_pat_id/{reg_doc_pat_id}", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody List listArticlesAllKeysByRegTypeAndID(@RequestParam(required = false) Integer limit, @PathVariable int reg_type, @PathVariable int reg_doc_pat_id) {
-		return articleDaoImpl.getArticlesListAllKeysbyAuthIdandregType(reg_type, reg_doc_pat_id, limit);
+	public @ResponseBody List listArticlesAllKeysByRegTypeAndID(@RequestParam(required = false) Integer limit, @PathVariable int reg_type, @PathVariable int reg_doc_pat_id, @RequestParam(required = false) Integer offset) {
+		return articleDaoImpl.getArticlesListAllKeysbyAuthIdandregType(reg_type, reg_doc_pat_id, limit, offset);
 	}
 
 	@RequestMapping(value = "/all/table/{table_name}", produces = "application/json", method = RequestMethod.GET)

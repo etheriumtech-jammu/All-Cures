@@ -84,6 +84,10 @@ public class Article_dc_name implements Serializable {
 	
 	
 	private String authors_name;
+	private String reg_type;
+	private String reg_doc_pat_id;
+	
+	private String content_small;
 
 	
 
@@ -404,6 +408,30 @@ public class Article_dc_name implements Serializable {
 
 	public void setAuthors_name(String authors_name) {
 		this.authors_name = authors_name;
+	}
+
+	public String getReg_type() {
+		return reg_type;
+	}
+
+	public void setReg_type(String reg_type) {
+		this.reg_type = reg_type;
+	}
+
+	public String getReg_doc_pat_id() {
+		return reg_doc_pat_id;
+	}
+
+	public void setReg_doc_pat_id(String reg_doc_pat_id) {
+		this.reg_doc_pat_id = reg_doc_pat_id;
+	}
+
+	public String getContent_small() {
+		return content_small;
+	}
+
+	public void setContent_small(String content_small) {
+		this.content_small = content_small;
 	}
 
 	/*

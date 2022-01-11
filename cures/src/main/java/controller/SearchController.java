@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,8 +43,8 @@ public class SearchController {
 //	}
 
 	@RequestMapping(value = "/{search_string}", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody List listDataFromMatchingString(@PathVariable String search_string) {
-		return diseaseANDconditionDaoImpl.getAllMatchingDCList(search_string);
+	public @ResponseBody List listDataFromMatchingString(@PathVariable String search_string,@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset) {
+		return diseaseANDconditionDaoImpl.getAllMatchingDCList(search_string, limit,  offset);
 	}
 
 	@RequestMapping(value = "/hierarchy/{parent_id}", produces = "application/json", method = RequestMethod.GET)

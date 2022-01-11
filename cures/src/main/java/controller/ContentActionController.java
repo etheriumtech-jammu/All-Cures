@@ -24,8 +24,10 @@ import org.json.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
+import dao.ArticleDaoImpl;
 import dao.ContentDaoImpl;
 import model.Article;
+import model.Article_dc_name;
 import model.Doctor;
 import model.Registration;
 import util.Constant;
@@ -66,6 +68,14 @@ public class ContentActionController extends HttpServlet {
     	
     	String title= (String) requestJsonMap.get("title");
     	Constant.log("Creating Article with Title:"+title, 1);
+    	
+		Article_dc_name artExistingTitle = new ArticleDaoImpl().getArticleDetails(title);
+		
+		if (artExistingTitle.getTitle().equalsIgnoreCase(title)) {
+			Constant.log("Article Title already exist for article_id "+artExistingTitle.getArticle_id(), 0); 
+			return -3;
+		}
+    	
     	String artFrndlyNm= (String) requestJsonMap.get("friendlyName");
     	Constant.log("Creating Article with Friendly Name:"+artFrndlyNm, 0);
 		int iLang= requestJsonMap.get("language") !=null ? (int) requestJsonMap.get("language") : 1;//English By Default

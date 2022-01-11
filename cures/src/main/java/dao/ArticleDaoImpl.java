@@ -212,7 +212,7 @@ public class ArticleDaoImpl {
 		return list;
 	}
 
-	public Article_dc_name getArticleDetails(int reg_id) {
+	public Article_dc_name getArticleDetails(int article_id) {
 
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -238,11 +238,16 @@ public class ArticleDaoImpl {
 				
 				+ " (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a \r\n"
 				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
-				+ " ) as authors_name "
+				+ " ) as authors_name ,"
 				
+				+ " (select reg_type from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  "
+				+ "		 ) as reg_type, "
+		        + "         (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  "
+		        + "		 ) as reg_doc_pat_id "
+		        
 				+ " FROM `allcures_schema`.`article`\r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
-				+ " where article_id =  " + reg_id + ";");
+				+ " where article_id =  " + article_id + ";");
 		ArrayList<Article> articleList = (ArrayList<Article>) query.getResultList();
 		Article_dc_name article = new Article_dc_name();
 		Iterator itr = articleList.iterator();
@@ -326,6 +331,7 @@ public class ArticleDaoImpl {
 			article.setPublished_date((Date) obj[14]);
 			article.setPubstatus_id((Integer) obj[15]);
 			article.setLanguage_id((Integer) obj[16]);
+			article.setContent_small((String) obj[17]);
 			article.setCountry_id((Integer) obj[18]);
 			article.setDisease_condition_id((Integer) obj[19]);
 			article.setType((String) obj[20]);
@@ -334,13 +340,151 @@ public class ArticleDaoImpl {
 			article.setComments((String) obj[22]);
 			article.setOver_allrating((Float) obj[23]);
 			article.setAuthors_name((String) obj[24]);
+			article.setReg_type(""+(Integer) obj[25]);
+			article.setReg_doc_pat_id(""+(Integer) obj[26]);
+		}
+		session.close();
+
+		return article;
+	}
+	
+	public Article_dc_name getArticleDetails(String article_title) {
+
+		// creating seession factory object
+		Session factory = HibernateUtil.buildSessionFactory();
+
+		// creating session object
+		Session session = factory;
+
+		// creating transaction object
+		Transaction trans = (Transaction) session.beginTransaction();
+
+		Query query = session.createNativeQuery(" SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
+				+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
+				+ "    `article`.`content_type`,\r\n" + "    `article`.`keywords`,\r\n"
+				+ "    `article`.`window_title`,\r\n" + "    `article`.`content_location`,\r\n"
+				+ "    `article`.`authored_by`,\r\n" + "    `article`.`published_by`,\r\n"
+				+ "    `article`.`edited_by`,\r\n" + "    `article`.`copyright_id`,\r\n"
+				+ "    `article`.`disclaimer_id`,\r\n" + "    `article`.`create_date`,\r\n"
+				+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
+				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n"
+				+ "    `article`.`country_id`,\r\n" + "    `article`.`disease_condition_id`,\r\n"
+				+ "    `article`.`type`,\r\n" + "    `dc`.`dc_name`,\r\n" + "    `article`.`comments`,\r\n"
+				+ "    `article`.`over_allrating`,\r\n"
+				
+				+ " (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a \r\n"
+				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
+				+ " ) as authors_name ,"
+				
+				+ " (select reg_type from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  "
+				+ "		 ) as reg_type, "
+		        + "         (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  "
+		        + "		 ) as reg_doc_pat_id "
+				
+				+ " FROM `allcures_schema`.`article`\r\n"
+				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
+				+ " where title =  '" + article_title + "' ;");
+		ArrayList<Article> articleList = (ArrayList<Article>) query.getResultList();
+		Article_dc_name article = new Article_dc_name();
+		Iterator itr = articleList.iterator();
+		while (itr.hasNext()) {
+			Object[] obj = (Object[]) itr.next();
+			System.out.println((Integer) obj[0]);
+			System.out.println((String) obj[1]);
+			article.setArticle_id((Integer) obj[0]);
+			article.setTitle((String) obj[1]);
+			article.setFriendly_name((String) obj[2]);
+			article.setSubheading((String) obj[3]);
+			article.setContent_type((String) obj[4]);
+			article.setKeywords((String) obj[5]);
+			article.setWindow_title((String) obj[6]);
+			article.setContent_location((String) obj[7]);
+			System.out.println((String) obj[7]);
+			String file = (String) obj[7];
+			// file = "/home/administrator/uat/"+
+			// file = file.replace("\\", "/");//.replace("/", "/");
+			System.out.println("FILENAME===>>>>>>>>>>" + file);
+			// String file = "C:\\" + (String) obj[7];
+//			file = "C:\\test\\14\\2021\\05\\26\\article_"+(Integer) obj[0]+".json";
+			String contents = "";
+			InputStream is = null;
+			DataInputStream dis = null;
+			try {
+				// create file input stream
+				is = new FileInputStream(file);
+
+				// create new data input stream
+				dis = new DataInputStream(is);
+
+				// available stream to be read
+				int length = dis.available();
+
+				// create buffer
+				byte[] buf = new byte[length];
+
+				// read the full data into the buffer
+				dis.readFully(buf);
+
+				// for each byte in the buffer
+				for (byte b : buf) {
+
+					// convert byte to char
+					char c = (char) b;
+
+					// prints character
+					System.out.print(c);
+					contents = contents + c;
+				}
+
+			} catch (Exception e) {
+				// if any error occurs
+				e.printStackTrace();
+			} finally {
+				// releases all system resources from the streams
+				if (is != null)
+					try {
+						is.close();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				if (dis != null)
+					try {
+						dis.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			}
+			System.out.println(contents);
+
+			article.setAuthored_by((String) obj[8]);
+			article.setPublished_by((Integer) obj[9]);
+			article.setEdited_by((Integer) obj[10]);
+			article.setCopyright_id((Integer) obj[11]);
+			article.setDisclaimer_id((Integer) obj[12]);
+			article.setCreate_date((Date) obj[13]);
+			article.setPublished_date((Date) obj[14]);
+			article.setPubstatus_id((Integer) obj[15]);
+			article.setLanguage_id((Integer) obj[16]);
+			article.setContent_small((String) obj[17]);
+			article.setCountry_id((Integer) obj[18]);
+			article.setDisease_condition_id((Integer) obj[19]);
+			article.setType((String) obj[20]);
+			article.setContent(contents);
+			article.setDc_name((String) obj[21]);
+			article.setComments((String) obj[22]);
+			article.setOver_allrating((Float) obj[23]);
+			article.setAuthors_name((String) obj[24]);
+			article.setReg_type(""+(Integer) obj[25]);
+			article.setReg_doc_pat_id(""+(Integer) obj[26]);
 		}
 		session.close();
 
 		return article;
 	}
 
-	public static ArrayList<Article> getArticlesListAll(Integer limit) {
+	public static ArrayList<Article> getArticlesListAll(Integer limit, Integer offset) {
 
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -354,6 +498,9 @@ public class ArticleDaoImpl {
 		String limit_str = "";
 		if (null != limit)
 			limit_str = " limit " + limit;
+		String offset_str = "";
+		if (null != offset)
+			offset_str = " offset " + offset;
 
 		Query query = session.createNativeQuery("SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
 				+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
@@ -365,7 +512,7 @@ public class ArticleDaoImpl {
 				+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
 				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n" + "    `article`.`type`,\r\n"
 				+ "    `article`.`comments`\r\n" + "FROM `allcures_schema`.`article`"
-				+ " order by `article`.`article_id` desc " + limit_str + ";\r\n" + ";");
+				+ " order by `article`.`article_id` desc " + limit_str + offset_str + " ;\r\n" + ";");
 		// needs other condition too but unable to find correct column
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
@@ -374,7 +521,7 @@ public class ArticleDaoImpl {
 		return list;
 	}
 
-	public static List getArticlesListAllKeysbyAuthIdandregType(Integer reg_type, Integer reg_doc_pat_id, Integer limit) {
+	public static List getArticlesListAllKeysbyAuthIdandregType(Integer reg_type, Integer reg_doc_pat_id, Integer limit, Integer offset) {
 
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -387,6 +534,9 @@ public class ArticleDaoImpl {
 		String limit_str = "";
 		if (null != limit)
 			limit_str = " limit " + limit;
+		String offset_str = "";
+		if (null != offset)
+			offset_str = " offset " + offset;
 
 		Query query = session.createNativeQuery("\r\n"
 				+ "select \r\n"
@@ -407,7 +557,7 @@ public class ArticleDaoImpl {
 				+ " inner join author au\r\n"
 				+ " on au.author_id in (trim(trailing ']' from trim(leading '[' from ar.authored_by))) \r\n"
 				+ "and  au.reg_type="+reg_type+"\r\n"
-				+ "where ar.pubstatus_id = 3 and au.reg_doc_pat_id = "+reg_doc_pat_id+" order by ar.article_id desc \r\n" + limit_str + ";");
+				+ "where ar.pubstatus_id = 3 and au.reg_doc_pat_id = "+reg_doc_pat_id+" order by ar.article_id desc \r\n" + limit_str + offset_str + ";");
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + results);
@@ -476,7 +626,7 @@ public class ArticleDaoImpl {
 
 		return hmFinal;
 	}
-	public static List getArticlesListAllKeys(Integer limit) {
+	public static List getArticlesListAllKeys(Integer limit, Integer offset) {
 		
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -489,6 +639,9 @@ public class ArticleDaoImpl {
 		String limit_str = "";
 		if (null != limit)
 			limit_str = " limit " + limit;
+		String offset_str = "";
+		if (null != offset)
+			offset_str = " offset " + offset;
 		
 		Query query = session.createNativeQuery("SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
 				+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
@@ -508,7 +661,7 @@ public class ArticleDaoImpl {
 				
 				+ " FROM `allcures_schema`.`article` \r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
-				+ " order by `article`.`article_id` desc \r\n" + limit_str + ";");
+				+ " order by `article`.`article_id` desc \r\n" + limit_str + offset_str + " ;");
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + results);
@@ -613,6 +766,14 @@ public class ArticleDaoImpl {
 
 		String updatestr = "";
 		if (articleMap.containsKey("title")) {
+//			String titleParam = (String) articleMap.get("title");
+//			Article_dc_name artExistingTitle = this.getArticleDetails(titleParam);
+//			
+//			if (artExistingTitle.getTitle().equalsIgnoreCase(titleParam)) {
+//				Constant.log("Article Title already exist for article_id "+artExistingTitle.getArticle_id(), 0); 
+//				return -3;
+//			}
+
 			updatestr += "`title` = '" + articleMap.get("title") + "',\r\n";
 		}
 		if (articleMap.containsKey("friendly_name")) {
@@ -667,33 +828,39 @@ public class ArticleDaoImpl {
 		if (articleMap.containsKey("language_id")) {
 			updatestr += "`language_id` = " + articleMap.get("language_id") + ",\r\n";
 		}
+		
+		if (articleMap.containsKey("content_small")) {
+			String content_small = (String ) articleMap.get("content_small");
+			updatestr += "`content` = '" + content_small + "',\r\n";
+		}	
+		
 		String content = articleMap.get("articleContent") == null ? "" : (String) articleMap.get("articleContent");
-		if (articleMap.containsKey("articleContent")) {
-			int n = 750;
-			String upToNCharacters = content.substring(0, Math.min(content.length(), n));
-			String upToNCharacters_decoded;
-			try {
-				upToNCharacters_decoded = URLDecoder
-						.decode(upToNCharacters.substring(0, upToNCharacters.lastIndexOf("%")), "UTF-8");
-
-				String content500 = upToNCharacters_decoded;
-				int lastInd = upToNCharacters_decoded.lastIndexOf("},");
-				
-				if (lastInd != -1) {
-					content500 = upToNCharacters_decoded.substring(0, lastInd) + "}]}";
-				}else {
-					if (upToNCharacters_decoded.startsWith("{") && !upToNCharacters_decoded.endsWith("}")) {
-						content500 = upToNCharacters_decoded + "}";
-					}
-				}
-				// article.setContent(URLDecoder.decode(upToNCharacters,
-				// StandardCha"rsets.UTF_8));
-				updatestr += "`content` = '" + EncodingDecodingUtil.encodeURIComponent(content500) + "',\r\n";
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+//		if (articleMap.containsKey("articleContent")) {
+//			int n = 750;
+//			String upToNCharacters = content.substring(0, Math.min(content.length(), n));
+//			String upToNCharacters_decoded;
+//			try {
+//				upToNCharacters_decoded = URLDecoder
+//						.decode(upToNCharacters.substring(0, upToNCharacters.lastIndexOf("%")), "UTF-8");
+//
+//				String content500 = upToNCharacters_decoded;
+//				int lastInd = upToNCharacters_decoded.lastIndexOf("},");
+//				
+//				if (lastInd != -1) {
+//					content500 = upToNCharacters_decoded.substring(0, lastInd) + "}]}";
+//				}else {
+//					if (upToNCharacters_decoded.startsWith("{") && !upToNCharacters_decoded.endsWith("}")) {
+//						content500 = upToNCharacters_decoded + "}";
+//					}
+//				}
+//				// article.setContent(URLDecoder.decode(upToNCharacters,
+//				// StandardCha"rsets.UTF_8));
+//				updatestr += "`content` = '" + EncodingDecodingUtil.encodeURIComponent(content500) + "',\r\n";
+//			} catch (UnsupportedEncodingException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 		if (articleMap.containsKey("comments")) {
 			updatestr += "`comments` = '" + articleMap.get("comments") + "',\r\n";
 		}
@@ -805,7 +972,7 @@ public class ArticleDaoImpl {
 						System.out.println(article_location_relative_full);
 			        }
 //					WhatsAPITrackEvents.POSTRequestTrackEventsByArticleId(article_id);
-					WhatsAPITemplateMessage.POSTRequestTrackEventsByArticleId(article_id, type, art.getDisease_condition_id(), article_location_relative_full);
+					WhatsAPITemplateMessage.POSTRequestTrackEventsByArticleId(art.getTitle(), article_id, type, art.getDisease_condition_id(), article_location_relative_full);
 					System.out.println("Subscription WhatsApp Message sent.");
 				}
 //				EmailDTO emaildto = new EmailDTO();
@@ -822,13 +989,14 @@ public class ArticleDaoImpl {
 
 //				emaildto.setTo(email);
 //				emaildto.setFrom("All-Cures INFO");
-				emaildto.setSubject("Cures Update #"+article_id+": All-Cures ");
+//				emaildto.setSubject("Cures Update #"+article_id+": All-Cures ");
+				emaildto.setSubject("Cures Update #"+art.getTitle()+": All-Cures ");
 				// Populate the template data
 				Map<String, Object> templateData = new HashMap<>();
 				templateData.put("templatefile", "email/articleupdate.ftlh");
 				//templateData.put("first_name", f_name);
 				// String link = "http://localhost:3000";
-				String link = "https://all-cures.com/cure/"+article_id;
+				String link = "https://all-cures.com/cure/"+URLEncoder.encode(art.getTitle(),"UTF-8");
 				templateData.put("linkverfiy", link);
 				templateData.put("title", art.getTitle());
 				templateData.put("type", type);

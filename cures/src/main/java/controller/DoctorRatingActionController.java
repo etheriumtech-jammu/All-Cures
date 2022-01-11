@@ -67,24 +67,34 @@ public class DoctorRatingActionController extends HttpServlet {
 	}
 
 	public int rateAsset(String comments, int ratedBy, int target, int targetType, int ratedByType, float rating) {
-		System.out.println("rating" + rating);
+		System.out.println("In rateAsset");
 		int value = 0;
 		RatingDaoImpl ratingDao = new RatingDaoImpl();
+		// this case is for comments which will always be new entry in case of logged in user.
 		if (null != comments && comments.trim().length() > 0) {
-			System.out.println("rating created for comments");
+			System.out.println("rating created for comments by "+ ratedBy + " for "+ target);
 			DoctorsratingDaoImpl docrating = new DoctorsratingDaoImpl();
-			value = docrating.saveRating(comments, ratedBy, ratedByType, target, targetType, rating);
+			value = docrating.saveNewComment(comments, ratedBy, ratedByType, target, targetType);
+			return value;
+		}
+		
+		// this case is for rating created by anonymous user
+		if (ratedBy==0) {
+			System.out.println("rating created by anonymous");
+			DoctorsratingDaoImpl docrating = new DoctorsratingDaoImpl();
+			value = docrating.saveNewRating(ratedBy, ratedByType, target, targetType, rating);
 			return value;
 		}
 		List listOfRatings = ratingDao.findRatingByIdandTypeandRatedByandRatedByType(target, targetType, ratedBy,
 				ratedByType);
+		// this case is for rating updated by existing user has already have an entry for rateVal
 		if (null != listOfRatings && listOfRatings.size() > 0) {
-			System.out.println("rating updated");
-			value = ratingDao.updateRatingCommentsCombined(target, targetType, ratedBy, ratedByType, rating, comments);
-		} else {
-			System.out.println("rating created");
+			System.out.println("rating updated by "+ ratedBy + " for "+ target);
+			value = ratingDao.updateRating(target, targetType, ratedBy, ratedByType, rating);
+		} else {// this case is for rating updated by existing user who has no existing entry for rateVal
+			System.out.println("rating created by "+ ratedBy + " for "+ target);
 			DoctorsratingDaoImpl docrating = new DoctorsratingDaoImpl();
-			value = docrating.saveRating(comments, ratedBy, ratedByType, target, targetType, rating);
+			value = docrating.saveNewRating(ratedBy, ratedByType, target, targetType, rating);
 		}
 		return value;
 	}
@@ -96,9 +106,14 @@ public class DoctorRatingActionController extends HttpServlet {
 		String targetid = (String) request.getParameter("targetid");
 		String targetType = (String) request.getParameter("targetTypeid");
 		String ratingval = (String) request.getParameter("ratingVal");
+		
 		System.out.println("ratingVal" + ratingval);
+		
 		int targetTypeid = 0;
+		if (null != targetType) targetTypeid = Integer.parseInt(targetType);
 		int ratebyTypeid = 0;
+		if (null != ratedbytype) ratebyTypeid = Integer.parseInt(ratedbytype);
+		
 		if (targetType != null && (targetType.equals("doctor") || "1".equalsIgnoreCase(targetType))) {
 			targetTypeid = 1;
 		} else if (targetType != null && (targetType.equals("article") || "2".equalsIgnoreCase(targetType))) {
@@ -109,7 +124,7 @@ public class DoctorRatingActionController extends HttpServlet {
 
 		if (ratedbytype != null && (ratedbytype.equals("doctor") || "1".equalsIgnoreCase(ratedbytype))) {
 			ratebyTypeid = 1;
-		} else if (ratedbytype != null && (ratedbytype.equals("patient") || "2".equalsIgnoreCase(targetType))) {
+		} else if (ratedbytype != null && (ratedbytype.equals("patient") || "2".equalsIgnoreCase(ratedbytype))) {
 			ratebyTypeid = 2;
 		}
 		Float rv = 0.0f;

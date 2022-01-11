@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,8 +23,8 @@ public class RatingController {
 	private RatingDaoImpl ratingDaoImpl;
 
 	@RequestMapping(value = "/target/{target_id}/targettype/{target_type_id}", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody List getRatingDetails(@PathVariable int target_id, @PathVariable int target_type_id) {
-		return ratingDaoImpl.findRatingByIdandType(target_id, target_type_id);
+	public @ResponseBody List getRatingDetails(@PathVariable int target_id, @PathVariable int target_type_id, @RequestParam(required = false) Integer userid) {
+		return ratingDaoImpl.findRatingByIdandType(target_id, target_type_id, userid);
 
 	}
 

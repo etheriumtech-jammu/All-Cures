@@ -18,7 +18,7 @@ import util.HibernateUtil;
 public class DiseaseANDConditionDaoImpl {
 	private static ArrayList list = new ArrayList();
 
-	public static List getAllMatchingDCList(String search_str) {
+	public static List getAllMatchingDCList(String search_str, Integer limit, Integer offset) {
 
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -29,6 +29,13 @@ public class DiseaseANDConditionDaoImpl {
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
+		String limit_str = "";
+		if (null != limit)
+			limit_str = " limit " + limit;
+		String offset_str = "";
+		if (null != offset)
+			offset_str = " offset " + offset;
+		
 		Query query = session.createNativeQuery(
 				"SELECT distinct  a.article_id,  a.title , a.friendly_name,  a.subheading, a.content_type, a.keywords,  a.window_title,  a.content_location \r\n"
 						+ " ,a.authored_by, a.published_by, a.edited_by, a.copyright_id, a.disclaimer_id, a.create_date, a.published_date, a.pubstatus_id,"
@@ -41,7 +48,7 @@ public class DiseaseANDConditionDaoImpl {
 						+ "%'\r\n" + "or title  like '%" + search_str + "%'\r\n" + "or friendly_name  like '%"
 						+ search_str + "%'\r\n" + " or window_title  like '%" + search_str + "%'\r\n"
 						+ " or countryname like '%" + search_str + "%'\r\n" + " or keywords like '%"+ search_str +"%' or lang_name like '%" + search_str
-						+ "%'\r\n" + ")\r\n" + " and pubstatus_id = 3 \r\n" + "\r\n" + "");
+						+ "%'\r\n" + ")\r\n" + " and pubstatus_id = 3 \r\n" + limit_str + offset_str + "\r\n" + "");
 		// needs other condition too but unable to find correct column
 		// ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list searched article count@@@@@@@@@@@@@" + query);

@@ -31,7 +31,8 @@ public class RatingDaoImpl {
 				+ "	`doctorsrating`.`ratedBy_type_id`,\r\n" + "    `doctorsrating`.`target_id`,\r\n"
 				+ "	`doctorsrating`.`target_type_id`,\r\n" + "    `doctorsrating`.`ratingVal`,\r\n"
 				+ "	`doctorsrating`.`updated_at` FROM doctorsrating where target_id=" + targetid + " and target_type_id=" + targettypeid
-				+ " and ratedBy_id =" + ratedById + " and ratedBy_type_id = " + ratedByTypeId + ";");
+				+ " and ratedBy_id =" + ratedById + ";");
+//		+ " and ratedBy_id =" + ratedById + " and ratedBy_type_id = " + ratedByTypeId + ";");
 
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();
@@ -60,7 +61,7 @@ public class RatingDaoImpl {
 
 	}
 
-	public static List findRatingByIdandType(int targetid, int targettypeid) {
+	public static List findRatingByIdandType(int targetid, int targettypeid, Integer userid) {
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
 
@@ -68,14 +69,19 @@ public class RatingDaoImpl {
 
 		// creating transaction object
 		// Transaction trans = (Transaction) session.beginTransaction();
+		
+		String userid_str = "";
+		if (null != userid)
+			userid_str = " and ratedBy_id = "+userid+" and comments is null ";
 
 		Query query = session.createNativeQuery("SELECT `doctorsrating`.`rate_id`,\r\n"
 				+ "    `doctorsrating`.`comments`,\r\n" + "    `doctorsrating`.`ratedBy_id`,\r\n"
 				+ "    `doctorsrating`.`ratedBy_type_id`,\r\n" + "    `doctorsrating`.`target_id`,\r\n"
 				+ "    `doctorsrating`.`target_type_id`,\r\n" + "    `doctorsrating`.`ratingVal`,\r\n"
 				+ "    `doctorsrating`.`reviewed`,\r\n" + "    `doctorsrating`.`reviewedBy`,\r\n"
-				+ " first_name, last_name, `doctorsrating`.`updated_at` "
-				+ " FROM doctorsrating inner join registration on registration_id = ratedBy_id where target_id=" + targetid + " and target_type_id=" + targettypeid + ";");
+				+ "    ( select first_name from registration where registration_id = ratedBy_id ) as first_name, \r\n"
+				+ "    ( select last_name from registration where registration_id = ratedBy_id ) as last_name, `doctorsrating`.`updated_at` "
+				+ " FROM doctorsrating  where target_id=" + targetid + " and target_type_id=" + targettypeid + userid_str + ";");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
@@ -150,8 +156,8 @@ public class RatingDaoImpl {
 
 	}
 
-	public static int updateRatingCommentsCombined(int targetId, int targetTypeId, int ratedById, int ratedByTypeId,
-			float ratingVal, String comments) {
+	public static int updateRating(int targetId, int targetTypeId, int ratedById, int ratedByTypeId,
+			float ratingVal) {
 
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -161,18 +167,19 @@ public class RatingDaoImpl {
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 		String updatestr = "";
-		if ("null" != "" + ratingVal && 0.0f != ratingVal ) {
+//		if (null != ratingVal && 0.0f != ratingVal ) {
 			updatestr += "`ratingVal` = " + ratingVal + ",\r\n";
-		}
+//		}
 		// if comments are updated set it for review each time its updated
-		if ("null" != "" + comments) {
-			updatestr += "`comments` = '" + comments + "',\r\n";
-			updatestr += " reviewed = 0 ";
-		}
+//		if (null != comments) {
+//			updatestr += "`comments` = '" + comments + "',\r\n";
+//			updatestr += " reviewed = 0 ";
+//		}
 		updatestr = updatestr.replaceAll(",$", "");
 		Query query = session.createNativeQuery("UPDATE `doctorsrating`\r\n" + " SET " + updatestr
-				+ " WHERE `target_id` = " + targetId + " and `target_type_id` = " + targetTypeId
-				+ " and `ratedBy_id` = " + ratedById + " and `ratedBy_type_id` = " + ratedByTypeId + ";");
+				+ " WHERE comments is null and `target_id` = " + targetId + " and `target_type_id` = " + targetTypeId
+				+ " and `ratedBy_id` = " + ratedById + ";");
+//		+ " and `ratedBy_id` = " + ratedById + " and `ratedBy_type_id` = " + ratedByTypeId + ";");
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();

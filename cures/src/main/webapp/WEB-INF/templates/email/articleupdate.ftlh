@@ -491,7 +491,7 @@ ul.social li{
                                                                                     <td class="esd-block-text es-p10t es-p10b" align="center">
                                                                                         <p style="line-height: 150%;"><span style="font-size: 16px; line-height: 150%;"> Welcome To All-Cures</span></p>
 																						 <p style="line-height: 150%;"><span style="font-size: 16px; line-height: 150%;"> Getting You Closer To Cures From Around The World</span></p>
-                                                                                        <p style="line-height: 150%;"><span style="font-size: 16px; line-height: 150%;">New Cures got updated, Check out at <a href= ${linkverfiy}>Visit Cures</a></span></p>
+                                                                                        <p style="line-height: 150%;"><span style="font-size: 16px; line-height: 150%;">New Cures got updated, Check out at <a href= ${linkverfiy}>Visit All-Cures</a></span></p>
                                                                                         <p style="line-height: 150%;"><span style="font-size: 16px; line-height: 150%;"><a href= ${linkverfiy}>${title}</a></p>
                                                                                     </td>
                                                                                 </tr>

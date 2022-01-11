@@ -4,9 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -129,7 +131,7 @@ public class WhatsAPITemplateMessage {
 		}
 	}
 
-	public static void POSTRequestTrackEventsByArticleId(int article_id, String type, int dc_id, String article_location_relative_image) throws SQLException {
+	public static void POSTRequestTrackEventsByArticleId(String art_title, int article_id, String type, int dc_id, String article_location_relative_image) throws SQLException {
 		ArrayList NSData = new WAPICommon().fetchDatabaseResultsForNewsletterByArticle(article_id, type, dc_id);
 		// @TODO remove duplicates and run for all CSV disease and cures id's & all for
 		// sub_type =1
@@ -149,7 +151,12 @@ public class WhatsAPITemplateMessage {
 //			params[4] = "https://etheriumtech.com/images/illustrations/service-3.jpg"; // DC_NAMES
 			params[5] = "" + article_id; // dc name
 			//params[6] = "Also New link pased here dynamically https://all-cures.com/cure/"+article_id+" ... Here goes the decription of the disease #" + params[1];// detailing
-			params[6] = "https://all-cures.com/cure/"+article_id;
+			try {
+				params[6] = "https://all-cures.com/cure/"+URLEncoder.encode(art_title,"UTF-8");
+			} catch (UnsupportedEncodingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			params[7] = "+"+(Integer) ((HashMap) NSData.get(i)).get("country_code"); // +countryCode
 
 			// }

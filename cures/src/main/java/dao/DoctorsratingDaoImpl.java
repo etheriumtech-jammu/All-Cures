@@ -80,8 +80,40 @@ public class DoctorsratingDaoImpl {
 
 	}
 
-	public static int saveRating(String comments, Integer ratedbyid, Integer ratedbytype,Integer targetid, 
+	public static int saveNewRating(Integer ratedbyid, Integer ratedbytype,Integer targetid, 
 			Integer targetTypeid, Float ratingval){
+		
+		Session factory = HibernateUtil.buildSessionFactory();
+
+		// creating session object
+		Session session = factory;
+		session.getTransaction().begin();
+		Doctorsrating docrate= new Doctorsrating();
+		int value= 0;
+		try{
+			docrate.setRatedBy_id(ratedbyid);
+//			docrate.setRatedBy_type_id(ratedbytype);
+			docrate.setTarget_id(targetid);
+			docrate.setTarget_type_id(targetTypeid); 
+			docrate.setRatingVal(ratingval);// case when rating done non registered user ie. not logged-in user
+			session.save(docrate);
+			session.getTransaction().commit();
+
+			session.close();
+			value = 1;//"Success";
+		}catch (Exception e) {
+			// TODO: handle exception
+			session.getTransaction().rollback();
+			value = 0;//"error";
+		}finally {
+			session.close();
+		}
+		return value;
+		
+		
+		
+	}	public static int saveNewComment(String comments, Integer ratedbyid, Integer ratedbytype,Integer targetid, 
+			Integer targetTypeid){
 		
 		Session factory = HibernateUtil.buildSessionFactory();
 
@@ -93,10 +125,9 @@ public class DoctorsratingDaoImpl {
 		try{
 			docrate.setComments(comments);
 			docrate.setRatedBy_id(ratedbyid);
-			docrate.setRatedBy_type_id(ratedbytype);
+//			docrate.setRatedBy_type_id(ratedbytype);
 			docrate.setTarget_id(targetid);
 			docrate.setTarget_type_id(targetTypeid);
-			if (ratingval == 0.0f) docrate.setRatingVal(ratingval);
 			session.save(docrate);
 			session.getTransaction().commit();
 
