@@ -71,7 +71,7 @@ public class ContentActionController extends HttpServlet {
     	
 		Article_dc_name artExistingTitle = new ArticleDaoImpl().getArticleDetails(title);
 		
-		if (artExistingTitle.getTitle().equalsIgnoreCase(title)) {
+		if (null != artExistingTitle.getTitle() && artExistingTitle.getTitle().equalsIgnoreCase(title)) {
 			Constant.log("Article Title already exist for article_id "+artExistingTitle.getArticle_id(), 0); 
 			return -3;
 		}
