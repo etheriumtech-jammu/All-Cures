@@ -135,10 +135,20 @@ public class WhatsAPITemplateMessage {
 		ArrayList NSData = new WAPICommon().fetchDatabaseResultsForNewsletterByArticle(article_id, type, dc_id);
 		// @TODO remove duplicates and run for all CSV disease and cures id's & all for
 		// sub_type =1
+		String fileProperties = "whatsapi.properties";
+		//set defalut template name
+		String templateName = "prod24decimageandlink";
+		try {
+			Properties prop = new WAPICommon().readPropertiesFile(fileProperties);
+			templateName = prop.getProperty("subscriber_template_name"); 
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		for (int i = 0; i < NSData.size(); i++) {
 			String[] params = new String[8];
 			//params[0] = "dynamic_disease_template_kb";// "DAILY_NL_DISEASE_IDS";//"NEW_ARTICLE_PUBLISHED";
-			params[0] = "prod24decimageandlink";// "DAILY_NL_DISEASE_IDS";//"NEW_ARTICLE_PUBLISHED";
+			params[0] = templateName;//"prod17janimageandlink";//"prod24decimageandlink";// "DAILY_NL_DISEASE_IDS";//"NEW_ARTICLE_PUBLISHED";
 			if ((int) ((HashMap) NSData.get(i)).get("nl_sub_type") == 1) {
 				params[1] = "All Disease Symptoms and Cures";// all diseased cures subscribed
 			} else if (type.contains("1") || type.contains("3")) {
@@ -147,8 +157,8 @@ public class WhatsAPITemplateMessage {
 				params[1] = (String) ((HashMap) NSData.get(i)).get("nl_subscription_cures_id");// C_ID;
 			}
 			params[3] = (String) ((HashMap) NSData.get(i)).get("mobile"); // mobile
-			params[4] = article_location_relative_image; // article_image
-//			params[4] = "https://etheriumtech.com/images/illustrations/service-3.jpg"; // DC_NAMES
+//			params[4] = article_location_relative_image; // article_image
+			params[4] = "https://etheriumtech.com/images/illustrations/service-3.jpg"; // DC_NAMES
 			params[5] = "" + article_id; // dc name
 			//params[6] = "Also New link pased here dynamically https://all-cures.com/cure/"+article_id+" ... Here goes the decription of the disease #" + params[1];// detailing
 			try {

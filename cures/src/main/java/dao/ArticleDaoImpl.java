@@ -971,9 +971,11 @@ public class ArticleDaoImpl {
 						article_location_relative_full =  baseUrl + "/"+cures_articleimages+"/" + article_location_relative_image;
 						System.out.println(article_location_relative_full);
 			        }
-//					WhatsAPITrackEvents.POSTRequestTrackEventsByArticleId(article_id);
-					WhatsAPITemplateMessage.POSTRequestTrackEventsByArticleId(art.getTitle(), article_id, type, art.getDisease_condition_id(), article_location_relative_full);
-					System.out.println("Subscription WhatsApp Message sent.");
+					if (articleMap.containsKey("update_subscribers") && (Boolean) articleMap.get("update_subscribers")) {
+	//					WhatsAPITrackEvents.POSTRequestTrackEventsByArticleId(article_id);
+						WhatsAPITemplateMessage.POSTRequestTrackEventsByArticleId(art.getTitle(), article_id, type, art.getDisease_condition_id(), article_location_relative_full);
+						System.out.println("Subscription WhatsApp Message sent.");
+					}
 				}
 //				EmailDTO emaildto = new EmailDTO();
 //				emaildto.setSubject("Article updated ");
