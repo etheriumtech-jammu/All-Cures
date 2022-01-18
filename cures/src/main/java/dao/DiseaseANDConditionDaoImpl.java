@@ -84,6 +84,7 @@ public class DiseaseANDConditionDaoImpl {
 			int parent_dc_id = objects[21] != null ? (int) objects[21] : 0;
 			String content = (String) objects[22] ;
 			float over_allrating = objects[23] != null ? (float) objects[23] : 0;
+			String authors_name = (String) objects[24];
 
 			hm.put("article_id", article_id);
 			hm.put("title", title);
@@ -109,6 +110,7 @@ public class DiseaseANDConditionDaoImpl {
 			hm.put("parent_dc_id", parent_dc_id);
 			hm.put("content", content);
 			hm.put("over_allrating", over_allrating);
+			hm.put("authors_name", authors_name);
 			hmFinal.add(hm);
 			System.out.println(hm);
 		}
