@@ -52,7 +52,8 @@ public class DiseaseANDConditionDaoImpl {
 						+ "%'\r\n" + "or title  like '%" + search_str + "%'\r\n" + "or friendly_name  like '%"
 						+ search_str + "%'\r\n" + " or window_title  like '%" + search_str + "%'\r\n"
 						+ " or countryname like '%" + search_str + "%'\r\n" + " or keywords like '%"+ search_str +"%' or lang_name like '%" + search_str
-						+ "%'\r\n" + ")\r\n" + " and pubstatus_id = 3 \r\n" + limit_str + offset_str + "\r\n" + "");
+						+ "%'\r\n" + ")\r\n" + " and pubstatus_id = 3 \r\n" + limit_str + offset_str + "  order by published_date desc \r\n"
+								+ " \r\n" + "");
 		// needs other condition too but unable to find correct column
 		// ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list searched article count@@@@@@@@@@@@@" + query);
