@@ -157,16 +157,12 @@ public class WhatsAPITemplateMessage {
 				params[1] = (String) ((HashMap) NSData.get(i)).get("nl_subscription_cures_id");// C_ID;
 			}
 			params[3] = (String) ((HashMap) NSData.get(i)).get("mobile"); // mobile
-//			params[4] = article_location_relative_image; // article_image
-			params[4] = "https://etheriumtech.com/images/illustrations/service-3.jpg"; // DC_NAMES
+			params[4] = article_location_relative_image; // article_image
+//			params[4] = "https://etheriumtech.com/images/illustrations/service-3.jpg"; // DC_NAMES
 			params[5] = "" + article_id; // dc name
 			//params[6] = "Also New link pased here dynamically https://all-cures.com/cure/"+article_id+" ... Here goes the decription of the disease #" + params[1];// detailing
-			try {
-				params[6] = "https://all-cures.com/cure/"+URLEncoder.encode(art_title,"UTF-8");
-			} catch (UnsupportedEncodingException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+//			params[6] = "https://all-cures.com/cure/"+URLEncoder.encode(art_title,"UTF-8");
+			params[6] = "https://all-cures.com/cure/"+article_id+"-"+art_title.replaceAll(" ", "-");
 			params[7] = "+"+(Integer) ((HashMap) NSData.get(i)).get("country_code"); // +countryCode
 
 			// }

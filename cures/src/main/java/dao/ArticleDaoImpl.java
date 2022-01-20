@@ -661,7 +661,7 @@ public class ArticleDaoImpl {
 				
 				+ " FROM `allcures_schema`.`article` \r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
-				+ " order by `article`.`article_id` desc \r\n" + limit_str + offset_str + " ;");
+				+ " order by `article`.`published_date` desc \r\n" + limit_str + offset_str + " ;");
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + results);
@@ -998,7 +998,8 @@ public class ArticleDaoImpl {
 				templateData.put("templatefile", "email/articleupdate.ftlh");
 				//templateData.put("first_name", f_name);
 				// String link = "http://localhost:3000";
-				String link = "https://all-cures.com/cure/"+URLEncoder.encode(art.getTitle(),"UTF-8");
+//				String link = "https://all-cures.com/cure/"+URLEncoder.encode(art.getTitle(),"UTF-8");
+				String link = "https://all-cures.com/cure/"+art.getArticle_id()+"-"+art.getTitle().replaceAll(" ", "-");
 				templateData.put("linkverfiy", link);
 				templateData.put("title", art.getTitle());
 				templateData.put("type", type);

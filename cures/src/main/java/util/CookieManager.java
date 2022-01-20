@@ -156,7 +156,7 @@ public class CookieManager {
 	public boolean dropSessionCookies(ServletResponse response, Registration user){
 		try{
 			Constant.log("Dropping Session Cookies", 1);
-			Cookie defSessCookie = constructCookie(null, Constant.DefaultSessionCookieName, user.getEmail_address()+"|"+user.getRegistration_id()+"|"+"|"+user.getRegistration_type(),null, 0);
+			Cookie defSessCookie = constructCookie(null, Constant.DefaultSessionCookieName, user.getEmail_address()+"|"+user.getRegistration_id()+"|"+user.getRegistration_type(),null, 0);
 			((HttpServletResponse)response).addCookie(defSessCookie);
 		}catch (Exception e) {
             Constant.log("Error while dropping session cookies: " + e.toString(), 3);
