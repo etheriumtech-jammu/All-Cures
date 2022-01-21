@@ -105,7 +105,7 @@ public class IntegratedActionController extends HttpServlet {
 			response.getWriter().write(jsondata);
 
 
-			Constant.log(("JSON data database---->"+jsondata), 1);
+			//Constant.log(("JSON data database---->"+jsondata), 1);
 			//RequestDispatcher view = request.getRequestDispatcher("/test.html");
 			//response.sendRedirect("test.html");
 			//view.forward(request, response);
@@ -142,7 +142,7 @@ public class IntegratedActionController extends HttpServlet {
 			response.getWriter().write(jsondata);
 
 
-			Constant.log(("JSON data cache---->"+jsondata), 1);
+			//Constant.log(("JSON data cache---->"+jsondata), 1);
 			out.flush();
 
 		}
