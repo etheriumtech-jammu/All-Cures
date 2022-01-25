@@ -245,7 +245,7 @@ public class ArticleDaoImpl {
 		        + "         (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  "
 		        + "		 ) as reg_doc_pat_id "
 		        
-				+ " FROM `allcures_schema`.`article`\r\n"
+				+ " FROM `article`\r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
 				+ " where article_id =  " + article_id + ";");
 		ArrayList<Article> articleList = (ArrayList<Article>) query.getResultList();
@@ -381,7 +381,7 @@ public class ArticleDaoImpl {
 		        + "         (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  "
 		        + "		 ) as reg_doc_pat_id "
 				
-				+ " FROM `allcures_schema`.`article`\r\n"
+				+ " FROM `article`\r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
 				+ " where title =  '" + article_title + "' ;");
 		ArrayList<Article> articleList = (ArrayList<Article>) query.getResultList();
@@ -511,7 +511,7 @@ public class ArticleDaoImpl {
 				+ "    `article`.`disclaimer_id`,\r\n" + "    `article`.`create_date`,\r\n"
 				+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
 				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n" + "    `article`.`type`,\r\n"
-				+ "    `article`.`comments`\r\n" + "FROM `allcures_schema`.`article`"
+				+ "    `article`.`comments`\r\n" + "FROM `article`"
 				+ " order by `article`.`article_id` desc " + limit_str + offset_str + " ;\r\n" + ";");
 		// needs other condition too but unable to find correct column
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
@@ -659,7 +659,7 @@ public class ArticleDaoImpl {
 				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
 				+ " ) as authors_name"
 				
-				+ " FROM `allcures_schema`.`article` \r\n"
+				+ " FROM `article` \r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
 				+ " order by `article`.`published_date` desc \r\n" + limit_str + offset_str + " ;");
 		// needs other condition too but unable to find correct column
@@ -740,7 +740,7 @@ public class ArticleDaoImpl {
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
-		Query query = session.createNativeQuery("SELECT * FROM `allcures_schema`.`" + table_name + "`;\r\n" + ";");
+		Query query = session.createNativeQuery("SELECT * FROM `" + table_name + "`;\r\n" + ";");
 		// needs other condition too but unable to find correct column
 		ArrayList list = (ArrayList) query.getResultList();
 		System.out.println("result list " + table_name + " all@@@@@@@@@" + list);

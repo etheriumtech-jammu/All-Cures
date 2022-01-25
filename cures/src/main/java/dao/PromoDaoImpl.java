@@ -29,7 +29,7 @@ public class PromoDaoImpl {
 				+ "    `promo_master`.`promo_code`,\r\n" + "    `promo_master`.`promo_start_datetime`,\r\n"
 				+ "    `promo_master`.`promo_end_datetime`,\r\n" + "    `promo_master`.`promo_max_limit`,\r\n"
 				+ "    `promo_master`.`promo_updated_by`,\r\n" + "    `promo_master`.`promo_updated_date`,\r\n"
-				+ "    `promo_master`.`promo_active`\r\n" + "FROM `allcures_schema`.`promo_master`;");
+				+ "    `promo_master`.`promo_active`\r\n" + "FROM `promo_master`;");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println("result list Promo@@@@@@@@@@@@@ size=" + results.size());
 		List hmFinal = new ArrayList();
@@ -72,7 +72,7 @@ public class PromoDaoImpl {
 				+ "    `promo_master`.`promo_code`,\r\n" + "    `promo_master`.`promo_start_datetime`,\r\n"
 				+ "    `promo_master`.`promo_end_datetime`,\r\n" + "    `promo_master`.`promo_max_limit`,\r\n"
 				+ "    `promo_master`.`promo_updated_by`,\r\n" + "    `promo_master`.`promo_updated_date`,\r\n"
-				+ "    `promo_master`.`promo_active`\r\n" + "FROM `allcures_schema`.`promo_master` where promo_id="+promo_id+";");
+				+ "    `promo_master`.`promo_active`\r\n" + "FROM `promo_master` where promo_id="+promo_id+";");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println("result list Promo@@@@@@@@@@@@@ size=" + results.size());
 		List hmFinal = new ArrayList();
@@ -142,7 +142,7 @@ public class PromoDaoImpl {
 			promo_active = Integer.parseInt( (String)promoMap.get("promo_active") );
 		}
 		Query query = session
-				.createNativeQuery("INSERT INTO `allcures_schema`.`promo_master`\r\n" + " (`promo_code`,\r\n"
+				.createNativeQuery("INSERT INTO `promo_master`\r\n" + " (`promo_code`,\r\n"
 						+ " `promo_start_datetime`,\r\n" + " `promo_end_datetime`,\r\n" + " `promo_max_limit`,\r\n"
 						+ " `promo_updated_by`,\r\n" + " `promo_updated_date`,\r\n" + " `promo_active`)\r\n"
 						+ " VALUES\r\n" + " ('" + promo_code + "',\r\n" + " '" + promo_start_datetime + "',\r\n" + " '"

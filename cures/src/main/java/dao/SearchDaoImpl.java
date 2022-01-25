@@ -465,7 +465,7 @@ public class SearchDaoImpl {
 		// Transaction trans = (Transaction) session.beginTransaction();
 
 		Query query = session.createNativeQuery(
-				"select c.countryname, a.country_id, a.type, a.disease_condition_id, a.article_id, a.title FROM allcures_schema.article a\r\n"
+				"select c.countryname, a.country_id, a.type, a.disease_condition_id, a.article_id, a.title FROM article a\r\n"
 						+ " left join countries c on a.country_id = c.countrycodeid " //or a.country_id is null \r\n"
 						+ " where a.disease_condition_id = " + dc_id + "\r\n;");// + " and FIND_IN_SET (2, a.type) > 0 ;");
 

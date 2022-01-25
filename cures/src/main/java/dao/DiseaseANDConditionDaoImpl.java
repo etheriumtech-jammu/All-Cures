@@ -44,7 +44,7 @@ public class DiseaseANDConditionDaoImpl {
 						+" (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a "
 						+" where a.author_id in (trim(trailing ']' from trim(leading '[' from a.authored_by))) " 
 						+" ) as authors_name "
-						+ " FROM allcures_schema.article a \r\n"
+						+ " FROM article a \r\n"
 						+ " inner join disease_condition dc on a.disease_condition_id = dc.dc_id\r\n"
 						+ " inner join languages l on a.language_id = l.language_id\r\n"
 						+ "inner join countries c on c.countrycodeid = a.country_id or a.country_id is null \r\n"

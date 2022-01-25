@@ -28,8 +28,8 @@ public class BatchDaoImpl {
 		String SQL = "UPDATE article dest, ( SELECT \r\n" + "    `article`.`article_id`,\r\n"
 				+ "    `article`.`title`,\r\n" + "    group_concat(`doctorsrating`.`ratingVal`),\r\n"
 				+ "    AVG(IFNULL(`doctorsrating`.`ratingVal`, 0)) AS ratingValAVG,\r\n" + "    COUNT(*)\r\n"
-				+ "FROM\r\n" + "    `allcures_schema`.`article`\r\n" + "        right JOIN\r\n"
-				+ "    `allcures_schema`.`doctorsrating` ON `doctorsrating`.`target_id` = `article`.`article_id`\r\n"
+				+ "FROM\r\n" + "    `article`\r\n" + "        right JOIN\r\n"
+				+ "    `doctorsrating` ON `doctorsrating`.`target_id` = `article`.`article_id`\r\n"
 				+ "        AND `doctorsrating`.`target_type_id` = 2\r\n" + "GROUP BY article_id\r\n" + ") src\r\n"
 				+ "SET dest.over_allrating = src.ratingValAVG\r\n" + "where dest.article_id = src.article_id ; ";
 
@@ -66,8 +66,8 @@ public class BatchDaoImpl {
 		String SQL = "UPDATE doctors dest, ( SELECT \r\n" + "    `doctors`.`rowno`,\r\n" + "    `doctors`.`docid`,\r\n"
 				+ "    group_concat(`doctorsrating`.`ratingVal`),\r\n"
 				+ "    AVG(IFNULL(`doctorsrating`.`ratingVal`, 0)) AS ratingValAVG,\r\n" + "    COUNT(*)\r\n"
-				+ "FROM\r\n" + "    `allcures_schema`.`doctors`\r\n" + "        right JOIN\r\n"
-				+ "    `allcures_schema`.`doctorsrating` ON `doctorsrating`.`target_id` = `doctors`.`rowno`\r\n"
+				+ "FROM\r\n" + "    `doctors`\r\n" + "        right JOIN\r\n"
+				+ "    `doctorsrating` ON `doctorsrating`.`target_id` = `doctors`.`rowno`\r\n"
 				+ "        AND `doctorsrating`.`target_type_id` = 1\r\n" + "GROUP BY rowno\r\n" + ") src\r\n"
 				+ "SET dest.over_allrating = src.ratingValAVG\r\n" + "where dest.rowno = src.rowno ; ";
 

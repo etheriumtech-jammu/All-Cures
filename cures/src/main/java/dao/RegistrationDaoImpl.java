@@ -477,7 +477,7 @@ public class RegistrationDaoImpl {
 		String country_code = (String) ns_map.get("country_code");
 		System.out.println("Subscribe create_date>>>>>" + nl_start_date);
 		// set active =1 for new subscription
-		Query query = session.createNativeQuery("INSERT INTO `allcures_schema`.`newsletter` (\r\n" + "\r\n"
+		Query query = session.createNativeQuery("INSERT INTO `newsletter` (\r\n" + "\r\n"
 				+ "`nl_subscription_disease_id`,\r\n" + "`nl_start_date`,\r\n" + "`nl_sub_type`,\r\n" + "`mobile`,\r\n"
 				+ "`nl_subscription_cures_id`, `active`, `country_code`)\r\n" + " VALUES \r\n" + "('" + "\r\n"
 				+ nl_subscription_disease_id + "',\r\n '" + nl_start_date + "' ,\r\n" + nl_sub_type + ",\r\n" + mobile
@@ -638,7 +638,7 @@ public class RegistrationDaoImpl {
 						+ "    `newsletter`.`nl_start_date`,\r\n" + "    `newsletter`.`nl_sub_type`,\r\n"
 						+ "    `newsletter`.`mobile`,\r\n" + "    `newsletter`.`nl_subscription_cures_id`,\r\n"
 						+ "    `newsletter`.`active`,\r\n" + "    `newsletter`.`nl_end_date`,\r\n"
-						+ "    `newsletter`.`country_code` " + " FROM `allcures_schema`.`newsletter`\r\n"
+						+ "    `newsletter`.`country_code` " + " FROM `newsletter`\r\n"
 						+ " where mobile=" + mobile + " and country_code=" + country_code + ";");
 
 		List<Object[]> results = (List<Object[]>) query.getResultList();
