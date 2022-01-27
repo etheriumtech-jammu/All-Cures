@@ -62,25 +62,26 @@ public class ArticleController {
 	}
 	
 	
-	@RequestMapping(value = "/title/{article_title}", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody Article_dc_name getArticleDetailsByTitle(@PathVariable String article_title, HttpServletRequest request) {
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpSession session = req.getSession(true);
-		/*
-		 * int reg_id = 0; if (session.getAttribute(Constant.USER) != null) {
-		 * Constant.log("#########USER IS IN SESSION########", 0); Registration user =
-		 * (Registration) session.getAttribute(Constant.USER); reg_id =
-		 * user.getRegistration_id(); System.out.println(reg_id); }
-		 */
-		try {
-			return articleDaoImpl.getArticleDetails(URLDecoder.decode(article_title,"UTF-8").toString());
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-
-	}
+//	@RequestMapping(value = "/title/{article_title}", produces = "application/json", method = RequestMethod.GET)
+//	public @ResponseBody Article_dc_name getArticleDetailsByTitle(@PathVariable String article_title, HttpServletRequest request) {
+//		HttpServletRequest req = (HttpServletRequest) request;
+//		HttpSession session = req.getSession(true);
+//		/*
+//		 * int reg_id = 0; if (session.getAttribute(Constant.USER) != null) {
+//		 * Constant.log("#########USER IS IN SESSION########", 0); Registration user =
+//		 * (Registration) session.getAttribute(Constant.USER); reg_id =
+//		 * user.getRegistration_id(); System.out.println(reg_id); }
+//		 */
+////		try {
+////			return articleDaoImpl.getArticleDetails(URLDecoder.decode(article_title,"UTF-8").toString());
+////		} catch (UnsupportedEncodingException e) {
+////			// TODO Auto-generated catch block
+////			e.printStackTrace();
+////		}
+//		articleDaoImpl.getArticleDetails(article_title.replaceAll("-", " "));
+//		return null;
+//
+//	}
 
 	@RequestMapping(value = "/all", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody ArrayList<Article> listArticlesAll(@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset) {
@@ -88,8 +89,8 @@ public class ArticleController {
 	}
 
 	@RequestMapping(value = "/allkv", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody List listArticlesAllKeys(@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset) {
-		return articleDaoImpl.getArticlesListAllKeys(limit,offset);
+	public @ResponseBody List listArticlesAllKeys(@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset,@RequestParam(required = false) String search) {
+		return articleDaoImpl.getArticlesListAllKeys(limit,offset,search);
 	}
 	
 	@RequestMapping(value = "/authallkv/reg_type/{reg_type}/reg_doc_pat_id/{reg_doc_pat_id}", produces = "application/json", method = RequestMethod.GET)
