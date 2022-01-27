@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -626,7 +627,7 @@ public class ArticleDaoImpl {
 
 		return hmFinal;
 	}
-	public static List getArticlesListAllKeys(Integer limit, Integer offset) {
+	public static List getArticlesListAllKeys(Integer limit, Integer offset, String searchStr) {
 		
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -642,6 +643,9 @@ public class ArticleDaoImpl {
 		String offset_str = "";
 		if (null != offset)
 			offset_str = " offset " + offset;
+		String search_str = "";
+		if (null != searchStr)
+			search_str = " where title like '%" + searchStr + "%'";
 		
 		Query query = session.createNativeQuery("SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
 				+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
@@ -657,10 +661,11 @@ public class ArticleDaoImpl {
 				
 				+ " (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a \r\n"
 				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
-				+ " ) as authors_name"
-				
+				+ " ) as authors_name, "
+				+ " (select count(*) from article) as count "
 				+ " FROM `article` \r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
+				+  search_str 
 				+ " order by `article`.`published_date` desc \r\n" + limit_str + offset_str + " ;");
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
@@ -694,6 +699,7 @@ public class ArticleDaoImpl {
 			int country_id = objects[21] != null ? (int) objects[21] : 0;
 			float over_allrating = (float) (objects[22] != null ? (Float) objects[22] : 0.0);
 			String authors_name = (String) objects[23];
+			BigInteger count = (BigInteger) objects[24];
 			
 			
 			hm.put("article_id", article_id);
@@ -720,6 +726,7 @@ public class ArticleDaoImpl {
 			hm.put("country_id", country_id);
 			hm.put("over_allrating", over_allrating);
 			hm.put("authors_name", authors_name);
+			hm.put("count", count);
 			
 			hmFinal.add(hm);
 			System.out.println(hm);
