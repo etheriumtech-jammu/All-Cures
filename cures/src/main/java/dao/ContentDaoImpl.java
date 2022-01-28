@@ -36,10 +36,13 @@ public class ContentDaoImpl {
 
 		// creating session object
 		Session session = factory;
+		Transaction trans = (Transaction) session.beginTransaction();
+
 		Article article = new Article();
 		
 		try {
 			session.getTransaction().begin();
+			
 			//articalstatus.setStatus_id();			
 //			article.setArticle_id(articleId);
 			//article.setLanguages(lang);
@@ -99,16 +102,17 @@ public class ContentDaoImpl {
 			if(null != comments) article.setComments(comments);
 			if(null != type) article.setType(type);
 			session.save(article);
-			session.getTransaction().commit();
-			//session.close();			
+//			session.getTransaction().commit();
+			trans.commit();   ///session.close();;			
 			artCrtStatus = true;
 		}catch (Exception e) {
 			e.printStackTrace();
 			artCrtStatus = false;
-			session.getTransaction().rollback();
+			//trans.commit(); //session.getTransaction().rollback();
+			trans.rollback();
 		}		
 		finally {
-			session.close();
+			trans.commit();   ///session.close();;
 		}
 		return artCrtStatus;
 	}
@@ -143,7 +147,7 @@ public class ContentDaoImpl {
 			article.setPubstatus_id((Integer)obj[3]);			
 			articleArr.add(article);
 		}	
-		session.close();
+		trans.commit();   ///session.close();;
 		return articleArr;
 	}
 	
@@ -189,7 +193,7 @@ public class ContentDaoImpl {
 				articleList.setStatus_discription((String)obj[17]);
 */
 			}
-		session.close();
+		trans.commit();   ///session.close();;
 		return articleList;
 		}	
 	
@@ -227,7 +231,7 @@ public class ContentDaoImpl {
 				article.setType((String)obj[8]);			
 				articleArr.add(article);
 			}	
-			session.close();
+			trans.commit();   ///session.close();;
 			return articleArr;
 			}	
 	
@@ -248,7 +252,7 @@ public class ContentDaoImpl {
 			updateStatus = true;
 		}
 		trans.commit();
-		session.close();
+//		trans.commit();   ///session.close();;
 		return updateStatus;
 	}
 	

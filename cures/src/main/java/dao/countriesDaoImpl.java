@@ -29,7 +29,7 @@ public class countriesDaoImpl {
 		Query query = session.createNativeQuery("SELECT countryname FROM countries;");
 		ArrayList<countries> list= (ArrayList<countries>) query.getResultList();
 		System.out.println("result list countries@@@@@@@@@@@@@"+list);
-		session.close();
+		trans.commit();   ///session.close();;
 		return list;
 	}
 

@@ -18,6 +18,7 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.MapSolrParams;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
 
@@ -462,7 +463,7 @@ public class SearchDaoImpl {
 		Session session = factory;
 
 		// creating transaction object
-		// Transaction trans = (Transaction) session.beginTransaction();
+		 Transaction trans = (Transaction) session.beginTransaction();
 
 		Query query = session.createNativeQuery(
 				"select c.countryname, a.country_id, a.type, a.disease_condition_id, a.article_id, a.title FROM article a\r\n"
@@ -487,7 +488,7 @@ public class SearchDaoImpl {
 			hm.put("title", title);
 			hmFinal.add(hm);
 		}
-		session.close();
+		trans.commit();   ///session.close();;
 		return hmFinal;
 
 	}

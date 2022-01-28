@@ -75,7 +75,7 @@ public class DoctorsratingDaoImpl {
 				docrating.setRatingVal((Float)obj[6]);
 			}
 		}
-		session.close();
+		trans.commit();   ///session.close();;
 		return docrating;  
 
 	}
@@ -87,7 +87,9 @@ public class DoctorsratingDaoImpl {
 
 		// creating session object
 		Session session = factory;
-		session.getTransaction().begin();
+//		session.getTransaction().begin();
+		Transaction trans = (Transaction) session.beginTransaction();
+
 		Doctorsrating docrate= new Doctorsrating();
 		int value= 0;
 		try{
@@ -97,16 +99,16 @@ public class DoctorsratingDaoImpl {
 			docrate.setTarget_type_id(targetTypeid); 
 			docrate.setRatingVal(ratingval);// case when rating done non registered user ie. not logged-in user
 			session.save(docrate);
-			session.getTransaction().commit();
+//			session.getTransaction().commit();
 
-			session.close();
+			trans.commit();   ///session.close();;
 			value = 1;//"Success";
 		}catch (Exception e) {
 			// TODO: handle exception
-			session.getTransaction().rollback();
+			trans.commit(); //session.getTransaction().rollback();
 			value = 0;//"error";
 		}finally {
-			session.close();
+			trans.commit();   ///session.close();;
 		}
 		return value;
 		
@@ -119,7 +121,9 @@ public class DoctorsratingDaoImpl {
 
 		// creating session object
 		Session session = factory;
-		session.getTransaction().begin();
+		Transaction trans = (Transaction) session.beginTransaction();
+
+//		session.getTransaction().begin();
 		Doctorsrating docrate= new Doctorsrating();
 		int value= 0;
 		try{
@@ -129,16 +133,17 @@ public class DoctorsratingDaoImpl {
 			docrate.setTarget_id(targetid);
 			docrate.setTarget_type_id(targetTypeid);
 			session.save(docrate);
-			session.getTransaction().commit();
+//			session.getTransaction().commit();
 
-			session.close();
+			trans.commit();   ///session.close();;
 			value = 1;//"Success";
 		}catch (Exception e) {
 			// TODO: handle exception
-			session.getTransaction().rollback();
+//			trans.commit(); //session.getTransaction().rollback();
+			trans.rollback();
 			value = 0;//"error";
 		}finally {
-			session.close();
+			trans.commit();   ///session.close();;
 		}
 		return value;
 		

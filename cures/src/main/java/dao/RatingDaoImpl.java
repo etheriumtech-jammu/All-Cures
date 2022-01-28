@@ -24,7 +24,7 @@ public class RatingDaoImpl {
 		Session session = factory;
 
 		// creating transaction object
-		// Transaction trans = (Transaction) session.beginTransaction();
+		Transaction trans = (Transaction) session.beginTransaction();
 
 		Query query = session.createNativeQuery("SELECT `doctorsrating`.`rate_id`,\r\n"
 				+ "	`doctorsrating`.`comments`,\r\n" + "    `doctorsrating`.`ratedBy_id`,\r\n"
@@ -56,7 +56,7 @@ public class RatingDaoImpl {
 			hm.put("updated_at", updated_at);
 			hmFinal.add(hm);
 		}
-		session.close();
+		trans.commit();   ///session.close();;
 		return hmFinal;
 
 	}
@@ -68,7 +68,7 @@ public class RatingDaoImpl {
 		Session session = factory;
 
 		// creating transaction object
-		// Transaction trans = (Transaction) session.beginTransaction();
+		Transaction trans = (Transaction) session.beginTransaction();
 		
 		String userid_str = "";
 		if (null != userid)
@@ -113,7 +113,7 @@ public class RatingDaoImpl {
 
 			hmFinal.add(hm);
 		}
-		session.close();
+		trans.commit();   ///session.close();;
 		return hmFinal;
 
 	}
@@ -125,7 +125,7 @@ public class RatingDaoImpl {
 		Session session = factory;
 
 		// creating transaction object
-		// Transaction trans = (Transaction) session.beginTransaction();
+		 Transaction trans = (Transaction) session.beginTransaction();
 
 		Query query = session.createNativeQuery("SELECT \r\n" + "    AVG(ratingVal) as ratingValAVG\r\n"
 				+ " FROM doctorsrating where target_id=" + targetid + " and target_type_id=" + targettypeid + ";");
@@ -150,7 +150,7 @@ public class RatingDaoImpl {
 //			hmFinal.add(hm);
 //		}
 			// hm.put("ratingValAVG", docFrating);
-			session.close();
+			trans.commit();   ///session.close();;
 		}
 		return docFrating;
 
@@ -189,10 +189,10 @@ public class RatingDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			// session.close();
-			session.close();
+			// trans.commit();   ///session.close();;
+			trans.commit();   ///session.close();;
 		}
-		// session.close();
+		// trans.commit();   ///session.close();;
 
 		return ret;
 	}
@@ -218,7 +218,7 @@ public class RatingDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			session.close();
+			trans.commit();   ///session.close();;
 		}
 
 		return ret;
@@ -250,7 +250,7 @@ public class RatingDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			session.close();
+			trans.commit();   ///session.close();;
 		}
 		
 		return ret;
@@ -262,7 +262,7 @@ public class RatingDaoImpl {
 		Session session = factory;
 
 		// creating transaction object
-		// Transaction trans = (Transaction) session.beginTransaction();
+		 Transaction trans = (Transaction) session.beginTransaction();
 		String where = "";
 		if (reviewed != -1) {//to get all
 			where = " where reviewed=" + reviewed;
@@ -307,7 +307,7 @@ public class RatingDaoImpl {
 			hm.put("updated_at", updated_at);
 			hmFinal.add(hm);
 		}
-		session.close();
+		trans.commit();   ///session.close();;
 		return hmFinal;
 	}
 }

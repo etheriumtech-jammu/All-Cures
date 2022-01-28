@@ -54,7 +54,7 @@ public class PromoDaoImpl {
 			hm.put("promo_active", promo_active);
 			hmFinal.add(hm);
 		}
-		session.close();
+		trans.commit();   ///session.close();;
 		return (ArrayList) hmFinal;
 	}
 	public static ArrayList getPromoDetailsById(int promo_id) {
@@ -97,7 +97,7 @@ public class PromoDaoImpl {
 			hm.put("promo_active", promo_active);
 			hmFinal.add(hm);
 		}
-		session.close();
+		trans.commit();   ///session.close();;
 		return (ArrayList) hmFinal;
 	}
 
@@ -158,10 +158,10 @@ public class PromoDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			// session.close();
-			session.close();
+			// trans.commit();   ///session.close();;
+			trans.commit();   ///session.close();;
 		}
-		// session.close();
+		// trans.commit();   ///session.close();;
 
 		return ret;
 	}
@@ -219,10 +219,10 @@ public class PromoDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			// session.close();
-			session.close();
+			// trans.commit();   ///session.close();;
+			trans.commit();   ///session.close();;
 		}
-		// session.close();
+		// trans.commit();   ///session.close();;
 
 		return ret;
 	}
@@ -252,8 +252,8 @@ public class PromoDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			// session.close();
-			session.close();
+			// trans.commit();   ///session.close();;
+			trans.commit();   ///session.close();;
 		}
 
 		return ret;
@@ -285,7 +285,7 @@ public class PromoDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			session.close();
+			trans.commit();   ///session.close();;
 		}
 
 		return ret;
@@ -313,7 +313,7 @@ public class PromoDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			session.close();
+			trans.commit();   ///session.close();;
 		}
 
 		return ret;
@@ -325,7 +325,7 @@ public class PromoDaoImpl {
 		Session session = factory;
 
 		// creating transaction object
-		// Transaction trans = (Transaction) session.beginTransaction();
+		Transaction trans = (Transaction) session.beginTransaction();
 		String where = "";
 		if (stage != -1) {// to get all
 			where = " where promo_stage =" + stage;
@@ -358,7 +358,7 @@ public class PromoDaoImpl {
 			hm.put("promo_stage", promo_stage);
 			hmFinal.add(hm);
 		}
-		session.close();
+		trans.commit();   ///session.close();;
 		return hmFinal;
 	}
 

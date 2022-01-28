@@ -175,7 +175,7 @@ public class DoctorsDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			session.close();
+			trans.commit();   ///session.close();;
 		}
 		return ret;
 	}
@@ -286,7 +286,7 @@ public class DoctorsDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			session.close();
+			trans.commit();   ///session.close();;
 		}
 
 		return docid;
@@ -333,7 +333,7 @@ public class DoctorsDaoImpl {
 			}
 		}
 		Constant.log("Total Doctors Found in the Doctors List:" + docList.size(), 1);
-		session.close();
+		trans.commit();   ///session.close();;
 		return docList;
 
 	}
@@ -415,7 +415,7 @@ public class DoctorsDaoImpl {
 			}
 			Constant.log("--Returning from DoctorsDao, Doc Object for ID:" + doc.getDocid() +" rowno:" + doc.getRowno(), 1);
 		}
-		session.close();
+		trans.commit();   ///session.close();;
 		return doc;
 	}
 
@@ -426,6 +426,8 @@ public class DoctorsDaoImpl {
 
 		// creating session object
 		Session session = factory;
+		Transaction trans = (Transaction) session.beginTransaction();
+
 		Doctors doc = new Doctors();
 		// Transaction trans = (Transaction) session.beginTransaction();
 
@@ -440,14 +442,14 @@ public class DoctorsDaoImpl {
 				ret = query.executeUpdate();
 				// trans.commit();
 				System.out.println("updated doctors table for email =  " + email + " set docid=" + docid);
-				session.getTransaction().commit();
-				session.close();
+//				session.getTransaction().commit();
+				trans.commit();   ///session.close();;
 
 			} catch (Exception e) {
 				Constant.log(e.getStackTrace().toString(), 3);
-				session.getTransaction().rollback();
+				trans.commit(); //session.getTransaction().rollback();
 			} finally {
-				session.close();
+				trans.commit();   ///session.close();;
 			}
 		} else {
 			try {
@@ -458,8 +460,8 @@ public class DoctorsDaoImpl {
 				ret = query.executeUpdate();
 				// trans.commit();
 				System.out.println("insert new doctor with email =  " + email + " and docid=" + docid);
-				session.getTransaction().commit();
-				session.close();
+//				session.getTransaction().commit();
+				trans.commit();   ///session.close();;
 				// TODO: This implementation is wrong; Setting the RegistrationID as the Doctors
 				// DocId;
 //				doc.setDocid(docid);
@@ -469,14 +471,14 @@ public class DoctorsDaoImpl {
 //				doc.setDocname_last(l_name);
 //				session.update(doc);
 //				session.getTransaction().commit();
-//				session.close();
+//				trans.commit();   ///session.close();;
 				// sessionFactory.close();
 
 			} catch (Exception e) {
 				Constant.log(e.getStackTrace().toString(), 3);
-				session.getTransaction().rollback();
+				trans.commit(); //session.getTransaction().rollback();
 			} finally {
-				session.close();
+				trans.commit();   ///session.close();;
 			}
 		}
 	}
@@ -507,7 +509,7 @@ public class DoctorsDaoImpl {
 
 			}
 		}
-		session.close();
+		trans.commit();   ///session.close();;
 		return doctors;
 	}
 }

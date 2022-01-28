@@ -54,7 +54,7 @@ public class AuthorDaoImpl {
 			Constant.log("Error while Getting Authors ", 3);
 		}
 		finally {
-			session.close();
+			trans.commit();   ///session.close();;
 		}
 		return authList;
 	}
@@ -87,7 +87,7 @@ public class AuthorDaoImpl {
 			e.printStackTrace();
 			Constant.log("Error while Getting Top Authors ", 3);
 		}finally {
-			session.close();
+			trans.commit();   ///session.close();;
 		}
 		return authList;		
 	}
@@ -98,8 +98,10 @@ public class AuthorDaoImpl {
 		Session factory = HibernateUtil.buildSessionFactory();
 		// creating session object
 		Session session = factory;		
+
+		Transaction trans = (Transaction) session.beginTransaction();
+
 		try {
-			session.getTransaction().begin();
 			createdAuthor.setAuthor_firstname(fName);
 			createdAuthor.setAuthor_address(aAddress);
 			createdAuthor.setAuthor_email(aEmail);
@@ -109,15 +111,16 @@ public class AuthorDaoImpl {
 			createdAuthor.setAuthor_status(aStatus);
 			Constant.log("Saving Author Meta Data", 1);
 			session.save(createdAuthor);
-			session.getTransaction().commit();
+//			session.getTransaction().commit();
 			Constant.log("New Author CREATED in DB", 1);
-			//session.close();			
+			trans.commit();   ///session.close();;			
 		}catch (Exception e) {
 			e.printStackTrace();
 			createdAuthor = null;
-			session.getTransaction().rollback();
+//			trans.commit(); //session.getTransaction().rollback();
+			trans.rollback();
 		}finally {
-			session.close();
+			trans.commit();   ///session.close();;
 		}
 		
 		return createdAuthor;		

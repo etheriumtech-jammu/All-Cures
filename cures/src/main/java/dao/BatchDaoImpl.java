@@ -48,7 +48,7 @@ public class BatchDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			session.close();
+			trans.commit();   ///session.close();;
 		}
 
 		return ret;
@@ -86,7 +86,7 @@ public class BatchDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			session.close();
+			trans.commit();   ///session.close();;
 		}
 
 		return ret;

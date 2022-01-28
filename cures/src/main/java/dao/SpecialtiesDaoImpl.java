@@ -32,7 +32,7 @@ public class SpecialtiesDaoImpl {
 		Query query = session.createNativeQuery("select spl_name from specialties;");
 		ArrayList<Specialties> list= (ArrayList<Specialties>) query.getResultList();
 		System.out.println("result list Spl@@@@@@@@@@@@@"+list);
-		session.close();
+		trans.commit();   ///session.close();;
 		return list;
 	}
 	
@@ -67,7 +67,7 @@ public class SpecialtiesDaoImpl {
 //			hm.put("Pincode", pincode);
 //			hmFinal.add(hm);
 //		}
-//		session.close();
+//		trans.commit();   ///session.close();;
 		return hmFinal;
 	}
 

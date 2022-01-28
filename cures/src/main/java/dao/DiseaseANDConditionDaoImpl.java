@@ -18,7 +18,7 @@ import util.HibernateUtil;
 public class DiseaseANDConditionDaoImpl {
 	private static ArrayList list = new ArrayList();
 
-	public static List getAllMatchingDCList(String search_str, Integer limit, Integer offset) {
+	public static List getAllMatchingDCList(String search_str, Integer limit, Integer offset, String orderByStr) {
 
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -35,7 +35,24 @@ public class DiseaseANDConditionDaoImpl {
 		String offset_str = "";
 		if (null != offset)
 			offset_str = " offset " + offset;
-		
+		String orderby_str = " order by `article`.`published_date` desc ";
+		if (null != orderByStr) {
+			String[] orderArr = orderByStr.split(":");
+			orderby_str = " order by  `article`.`" + orderArr[0] +"` "+orderArr[1];
+		}
+//		String search_str_ = "";
+//		if (null != searchStr) {
+//			search_str = " where ";
+////			search_str = " where title like '%" + searchStr + "%'  or  article_id like '%"+searchStr+"%'";
+//			String[] searchArrColums = searchStr.split("~");
+//			for (String columsDetail : searchArrColums) {
+//				String[] columsDetailArr = columsDetail.split(":");
+//				search_str += columsDetailArr[0] +" like '%"+ columsDetailArr[1] + "%' AND ";
+//			}
+//			//replace last AND with blank
+//			search_str = search_str.substring(0,search_str.lastIndexOf("AND"));
+//		}
+//		
 		Query query = session.createNativeQuery(
 				"SELECT distinct  a.article_id,  a.title , a.friendly_name,  a.subheading, a.content_type, a.keywords,  a.window_title,  a.content_location \r\n"
 						+ " ,a.authored_by, a.published_by, a.edited_by, a.copyright_id, a.disclaimer_id, a.create_date, a.published_date, a.pubstatus_id,"
@@ -115,7 +132,7 @@ public class DiseaseANDConditionDaoImpl {
 			hmFinal.add(hm);
 			System.out.println(hm);
 		}
-		session.close();
+		trans.commit();   ///session.close();;
 
 		return hmFinal;
 	}
@@ -170,7 +187,7 @@ public class DiseaseANDConditionDaoImpl {
 			hmFinal.add(hm);
 			System.out.println(hm);
 		}
-		session.close();
+		trans.commit();   ///session.close();;
 
 		return hmFinal;
 	}
@@ -201,7 +218,7 @@ public class DiseaseANDConditionDaoImpl {
 //			System.out.println(hm);
 			hmFinal.add(searchresult);
 		}
-		session.close();
+		trans.commit();   ///session.close();;
 
 		return hmFinal;
 	}

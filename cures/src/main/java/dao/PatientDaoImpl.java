@@ -22,6 +22,8 @@ public class PatientDaoImpl {
 
 		// creating session object
 		Session session = factory;
+		Transaction trans = (Transaction) session.beginTransaction();
+
 		Patient pat = new Patient();
 		Constant.log("Saving New Patient with Firstname to DB:" + f_name, 0);
 
@@ -33,14 +35,14 @@ public class PatientDaoImpl {
 			pat.setLast_name(l_name);
 			pat.setEmail(email);
 			session.save(pat);
-			session.getTransaction().commit();
-			session.close();
+//			session.getTransaction().commit();
+			trans.commit();   ///session.close();;
 			// sessionFactory.close();
 		} catch (Exception e) {
 			Constant.log(e.getStackTrace().toString(), 3);
-			session.getTransaction().rollback();
+			trans.commit(); //session.getTransaction().rollback();
 		} finally {
-			session.close();
+			trans.commit();   ///session.close();;
 		}
 
 	}
@@ -75,7 +77,7 @@ public class PatientDaoImpl {
 
 		}
 		int pi = patList.getPatient_id();
-		session.close();
+		trans.commit();   ///session.close();;
 		return pi;
 
 	}
@@ -108,7 +110,7 @@ public class PatientDaoImpl {
 			}
 
 		}
-		session.close();
+		trans.commit();   ///session.close();;
 		return patList;
 
 	}
