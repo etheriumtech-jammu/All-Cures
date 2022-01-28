@@ -89,8 +89,8 @@ public class ArticleController {
 	}
 
 	@RequestMapping(value = "/allkv", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody List listArticlesAllKeys(@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset,@RequestParam(required = false) String search) {
-		return articleDaoImpl.getArticlesListAllKeys(limit,offset,search);
+	public @ResponseBody List listArticlesAllKeys(@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset,@RequestParam(required = false) String search,@RequestParam(required = false) String order) {
+		return articleDaoImpl.getArticlesListAllKeys(limit,offset,search,order);
 	}
 	
 	@RequestMapping(value = "/authallkv/reg_type/{reg_type}/reg_doc_pat_id/{reg_doc_pat_id}", produces = "application/json", method = RequestMethod.GET)

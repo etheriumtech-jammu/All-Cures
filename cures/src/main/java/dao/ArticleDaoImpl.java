@@ -627,7 +627,7 @@ public class ArticleDaoImpl {
 
 		return hmFinal;
 	}
-	public static List getArticlesListAllKeys(Integer limit, Integer offset, String searchStr) {
+	public static List getArticlesListAllKeys(Integer limit, Integer offset, String searchStr, String orderByStr) {
 		
 		// creating seession factory object
 		Session factory = HibernateUtil.buildSessionFactory();
@@ -643,9 +643,23 @@ public class ArticleDaoImpl {
 		String offset_str = "";
 		if (null != offset)
 			offset_str = " offset " + offset;
+		String orderby_str = " order by `article`.`published_date` desc ";
+		if (null != orderByStr) {
+			String[] orderArr = orderByStr.split(":");
+			orderby_str = " order by  `article`.`" + orderArr[0] +"` "+orderArr[1];
+		}
 		String search_str = "";
-		if (null != searchStr)
-			search_str = " where title like '%" + searchStr + "%'";
+		if (null != searchStr) {
+			search_str = " where ";
+//			search_str = " where title like '%" + searchStr + "%'  or  article_id like '%"+searchStr+"%'";
+			String[] searchArrColums = searchStr.split("~");
+			for (String columsDetail : searchArrColums) {
+				String[] columsDetailArr = columsDetail.split(":");
+				search_str += columsDetailArr[0] +" like '%"+ columsDetailArr[1] + "%' AND ";
+			}
+			//replace last AND with blank
+			search_str = search_str.substring(0,search_str.lastIndexOf("AND"));
+		}
 		
 		Query query = session.createNativeQuery("SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
 				+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
@@ -665,8 +679,8 @@ public class ArticleDaoImpl {
 				+ " (select count(*) from article) as count "
 				+ " FROM `article` \r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
-				+  search_str 
-				+ " order by `article`.`published_date` desc \r\n" + limit_str + offset_str + " ;");
+				+  search_str + orderby_str
+				+ limit_str + offset_str + " ;");
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + results);
