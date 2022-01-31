@@ -25,8 +25,10 @@ public class HibernateUtil {
 		return factory.openSession();
 	}
 
-//	  public void doWork() { Session session = buildSessionFactory(); // do work.
-//	  session.close(); }
+	public void doWork() {
+		Session session = buildSessionFactory(); // do work.
+		session.close();
+	}
 
 	// Call this during shutdown
 	public static void shutdown() {
