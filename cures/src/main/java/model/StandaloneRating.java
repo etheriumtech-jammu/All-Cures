@@ -52,7 +52,7 @@ public class StandaloneRating {
 			}
 		}
 	}	
-		session.close();
+		trans.commit();   ///session.close();;
 		return avg_rating;
 
 	}

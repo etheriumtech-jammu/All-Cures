@@ -43,8 +43,8 @@ public class SearchController {
 //	}
 
 	@RequestMapping(value = "/{search_string}", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody List listDataFromMatchingString(@PathVariable String search_string,@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset) {
-		return diseaseANDconditionDaoImpl.getAllMatchingDCList(search_string, limit,  offset);
+	public @ResponseBody List listDataFromMatchingString(@PathVariable String search_string,@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset,@RequestParam(required = false) String search,@RequestParam(required = false) String order) {
+		return diseaseANDconditionDaoImpl.getAllMatchingDCList(search_string, limit,  offset, order);
 	}
 
 	@RequestMapping(value = "/hierarchy/{parent_id}", produces = "application/json", method = RequestMethod.GET)
