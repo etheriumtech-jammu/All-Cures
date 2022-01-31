@@ -420,7 +420,7 @@ public class RegistrationDaoImpl {
 			trans.rollback();
 		} finally {
 			// trans.commit();   ///session.close();;
-			trans.commit();   ///session.close();;
+//			trans.commit();   ///session.close();;
 		}
 		// trans.commit();   ///session.close();;
 
@@ -452,7 +452,7 @@ public class RegistrationDaoImpl {
 			trans.rollback();
 		} finally {
 			// trans.commit();   ///session.close();;
-			trans.commit();   ///session.close();;
+//			trans.commit();   ///session.close();;
 		}
 		// trans.commit();   ///session.close();;
 
