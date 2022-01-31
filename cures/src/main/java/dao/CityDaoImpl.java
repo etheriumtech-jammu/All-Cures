@@ -38,7 +38,7 @@ public class CityDaoImpl {
 		Query query = session.createNativeQuery("select distinct(cityname) from city;");
 		ArrayList<City> list = (ArrayList<City>) query.getResultList();
 		System.out.println("result list City@@@@@@@@@@@@@" + list);
-		trans.commit();   ///session.close();;
+		trans.commit();   session.close();
 		return list;
 	}
 
@@ -56,7 +56,7 @@ public class CityDaoImpl {
 		Query query = session.createNativeQuery("select pincode from city;");
 		ArrayList<City> list = (ArrayList<City>) query.getResultList();
 		System.out.println("result list City@@@@@@@@@@@@@" + list);
-		trans.commit();   ///session.close();;
+		trans.commit();   session.close();
 		return list;
 	}
 
@@ -82,7 +82,7 @@ public class CityDaoImpl {
 			hm.put("Pincode", pincode);
 			hmFinal.add(hm);
 		}
-		trans.commit();   ///session.close();;
+		trans.commit();   session.close();
 		return hmFinal;
 	}
 

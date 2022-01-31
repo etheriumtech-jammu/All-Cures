@@ -93,7 +93,7 @@ public class CookieManager {
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
 		}
-		trans.commit();   ///session.close();;
+		trans.commit();   session.close();
 		return register;
 	}
 	
@@ -149,7 +149,7 @@ public class CookieManager {
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
 		}
-		trans.commit();   ///session.close();;
+		trans.commit();   session.close();
 		return register;
 	}
 	

@@ -91,7 +91,7 @@ public class RegistrationDaoImpl {
 			reg.setMobile_number(mobile);
 			session.save(reg);
 //			session.getTransaction().commit();
-			trans.commit();   ///session.close();;
+			trans.commit();   session.close();
 			// LOGIC Q: Right now we are setting the registration id as the docid for the
 			// doctors table or patientid for the patient table
 			// What will happen when we do mass doctor updates; There is a possibility that
@@ -206,7 +206,7 @@ public class RegistrationDaoImpl {
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
 		}
-		trans.commit();   ///session.close();;
+		trans.commit();   session.close();
 		return register;
 	}
 
@@ -249,7 +249,7 @@ public class RegistrationDaoImpl {
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
 		}
-		trans.commit();   ///session.close();;
+		trans.commit();   session.close();
 		return register;
 	}
 
@@ -289,7 +289,7 @@ public class RegistrationDaoImpl {
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
 		}
-		trans.commit();   ///session.close();;
+		trans.commit();   session.close();
 		return register;
 	}
 
@@ -326,7 +326,7 @@ public class RegistrationDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			trans.commit();   ///session.close();;
+			trans.commit();   session.close();
 		}
 
 		return ret + "";
@@ -386,7 +386,7 @@ public class RegistrationDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			trans.commit();   ///session.close();;
+			trans.commit();   session.close();
 		}
 
 		return ret;
@@ -419,10 +419,10 @@ public class RegistrationDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			// trans.commit();   ///session.close();;
-//			trans.commit();   ///session.close();;
+			// trans.commit();   session.close();
+//			trans.commit();   session.close();
 		}
-		// trans.commit();   ///session.close();;
+		// trans.commit();   session.close();
 
 		return ret;
 	}
@@ -451,10 +451,10 @@ public class RegistrationDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			// trans.commit();   ///session.close();;
-//			trans.commit();   ///session.close();;
+			// trans.commit();   session.close();
+//			trans.commit();   session.close();
 		}
-		// trans.commit();   ///session.close();;
+		// trans.commit();   session.close();
 
 		return ret;
 	}
@@ -506,10 +506,10 @@ public class RegistrationDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			// trans.commit();   ///session.close();;
-			trans.commit();   ///session.close();;
+			// trans.commit();   session.close();
+			trans.commit();   session.close();
 		}
-		// trans.commit();   ///session.close();;
+		// trans.commit();   session.close();
 
 		return ret;
 	}
@@ -572,7 +572,7 @@ public class RegistrationDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			trans.commit();   ///session.close();;
+			trans.commit();   session.close();
 		}
 
 		return ret;
@@ -617,7 +617,7 @@ public class RegistrationDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			trans.commit();   ///session.close();;
+			trans.commit();   session.close();
 		}
 
 		return ret;
@@ -668,7 +668,7 @@ public class RegistrationDaoImpl {
 			hm.put("country_code", country_code1);
 			hmFinal.add(hm);
 		}
-		trans.commit();   ///session.close();;
+		trans.commit();   session.close();
 		return (ArrayList) hmFinal;
 	}
 

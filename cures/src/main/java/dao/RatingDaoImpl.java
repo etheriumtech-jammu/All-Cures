@@ -56,7 +56,7 @@ public class RatingDaoImpl {
 			hm.put("updated_at", updated_at);
 			hmFinal.add(hm);
 		}
-		trans.commit();   ///session.close();;
+		trans.commit();   session.close();
 		return hmFinal;
 
 	}
@@ -113,7 +113,7 @@ public class RatingDaoImpl {
 
 			hmFinal.add(hm);
 		}
-		trans.commit();   ///session.close();;
+		trans.commit();   session.close();
 		return hmFinal;
 
 	}
@@ -150,7 +150,7 @@ public class RatingDaoImpl {
 //			hmFinal.add(hm);
 //		}
 			// hm.put("ratingValAVG", docFrating);
-			trans.commit();   ///session.close();;
+			trans.commit();   session.close();
 		}
 		return docFrating;
 
@@ -189,10 +189,10 @@ public class RatingDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			// trans.commit();   ///session.close();;
-			trans.commit();   ///session.close();;
+			// trans.commit();   session.close();
+			trans.commit();   session.close();
 		}
-		// trans.commit();   ///session.close();;
+		// trans.commit();   session.close();
 
 		return ret;
 	}
@@ -218,7 +218,7 @@ public class RatingDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			trans.commit();   ///session.close();;
+			trans.commit();   session.close();
 		}
 
 		return ret;
@@ -250,7 +250,7 @@ public class RatingDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			trans.commit();   ///session.close();;
+			trans.commit();   session.close();
 		}
 		
 		return ret;
@@ -307,7 +307,7 @@ public class RatingDaoImpl {
 			hm.put("updated_at", updated_at);
 			hmFinal.add(hm);
 		}
-		trans.commit();   ///session.close();;
+		trans.commit();   session.close();
 		return hmFinal;
 	}
 }

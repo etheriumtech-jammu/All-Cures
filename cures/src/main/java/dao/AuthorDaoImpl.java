@@ -54,7 +54,7 @@ public class AuthorDaoImpl {
 			Constant.log("Error while Getting Authors ", 3);
 		}
 		finally {
-			trans.commit();   ///session.close();;
+			trans.commit();   session.close();
 		}
 		return authList;
 	}
@@ -87,7 +87,7 @@ public class AuthorDaoImpl {
 			e.printStackTrace();
 			Constant.log("Error while Getting Top Authors ", 3);
 		}finally {
-			trans.commit();   ///session.close();;
+			trans.commit();   session.close();
 		}
 		return authList;		
 	}
@@ -113,14 +113,14 @@ public class AuthorDaoImpl {
 			session.save(createdAuthor);
 //			session.getTransaction().commit();
 			Constant.log("New Author CREATED in DB", 1);
-			trans.commit();   ///session.close();;			
+			trans.commit();   session.close();			
 		}catch (Exception e) {
 			e.printStackTrace();
 			createdAuthor = null;
 //			trans.commit(); //session.getTransaction().rollback();
 			trans.rollback();
 		}finally {
-			trans.commit();   ///session.close();;
+			trans.commit();   session.close();
 		}
 		
 		return createdAuthor;		

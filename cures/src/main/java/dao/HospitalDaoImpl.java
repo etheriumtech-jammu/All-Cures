@@ -27,7 +27,7 @@ public class HospitalDaoImpl {
 		Query query = session.createNativeQuery("select  hospital_affliated  from hospital;");
 		ArrayList<Hospital> list = (ArrayList<Hospital>) query.getResultList();
 		System.out.println("result list hospitalList@@@@@@@@@@@@@" + list);
-		trans.commit();   ///session.close();;
+		trans.commit();   session.close();
 		return list;
 	}
 

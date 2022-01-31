@@ -132,7 +132,7 @@ public class DiseaseANDConditionDaoImpl {
 			hmFinal.add(hm);
 			System.out.println(hm);
 		}
-		trans.commit();   ///session.close();;
+		trans.commit();   session.close();
 
 		return hmFinal;
 	}
@@ -187,7 +187,7 @@ public class DiseaseANDConditionDaoImpl {
 			hmFinal.add(hm);
 			System.out.println(hm);
 		}
-		trans.commit();   ///session.close();;
+		trans.commit();   session.close();
 
 		return hmFinal;
 	}
@@ -218,7 +218,7 @@ public class DiseaseANDConditionDaoImpl {
 //			System.out.println(hm);
 			hmFinal.add(searchresult);
 		}
-		trans.commit();   ///session.close();;
+		trans.commit();   session.close();
 
 		return hmFinal;
 	}

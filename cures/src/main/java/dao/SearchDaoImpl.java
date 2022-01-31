@@ -488,7 +488,7 @@ public class SearchDaoImpl {
 			hm.put("title", title);
 			hmFinal.add(hm);
 		}
-		trans.commit();   ///session.close();;
+		trans.commit();   session.close();
 		return hmFinal;
 
 	}

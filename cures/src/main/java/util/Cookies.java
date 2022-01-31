@@ -53,7 +53,7 @@ public class Cookies {
 			}
 			cookie=""+docid+"|"+type+"";
 		}
-		session.close();
+		trans.commit();   session.close();
 		return cookie;
 	}
 	
@@ -109,7 +109,7 @@ public class Cookies {
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
 		}
-		session.close();
+		trans.commit();   session.close();
 		return register;
 	}
 	

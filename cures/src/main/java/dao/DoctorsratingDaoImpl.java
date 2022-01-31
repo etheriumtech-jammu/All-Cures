@@ -75,7 +75,7 @@ public class DoctorsratingDaoImpl {
 				docrating.setRatingVal((Float)obj[6]);
 			}
 		}
-		trans.commit();   ///session.close();;
+		trans.commit();   session.close();
 		return docrating;  
 
 	}
@@ -101,14 +101,14 @@ public class DoctorsratingDaoImpl {
 			session.save(docrate);
 //			session.getTransaction().commit();
 
-			trans.commit();   ///session.close();;
+			trans.commit();   session.close();
 			value = 1;//"Success";
 		}catch (Exception e) {
 			// TODO: handle exception
 			trans.commit(); //session.getTransaction().rollback();
 			value = 0;//"error";
 		}finally {
-			trans.commit();   ///session.close();;
+			trans.commit();   session.close();
 		}
 		return value;
 		
@@ -135,7 +135,7 @@ public class DoctorsratingDaoImpl {
 			session.save(docrate);
 //			session.getTransaction().commit();
 
-			trans.commit();   ///session.close();;
+			trans.commit();   session.close();
 			value = 1;//"Success";
 		}catch (Exception e) {
 			// TODO: handle exception
@@ -143,7 +143,7 @@ public class DoctorsratingDaoImpl {
 			trans.rollback();
 			value = 0;//"error";
 		}finally {
-			trans.commit();   ///session.close();;
+			trans.commit();   session.close();
 		}
 		return value;
 		

@@ -36,13 +36,13 @@ public class PatientDaoImpl {
 			pat.setEmail(email);
 			session.save(pat);
 //			session.getTransaction().commit();
-			trans.commit();   ///session.close();;
+			trans.commit();   session.close();
 			// sessionFactory.close();
 		} catch (Exception e) {
 			Constant.log(e.getStackTrace().toString(), 3);
 			trans.commit(); //session.getTransaction().rollback();
 		} finally {
-			trans.commit();   ///session.close();;
+			trans.commit();   session.close();
 		}
 
 	}
@@ -77,7 +77,7 @@ public class PatientDaoImpl {
 
 		}
 		int pi = patList.getPatient_id();
-		trans.commit();   ///session.close();;
+		trans.commit();   session.close();
 		return pi;
 
 	}
@@ -110,7 +110,7 @@ public class PatientDaoImpl {
 			}
 
 		}
-		trans.commit();   ///session.close();;
+		trans.commit();   session.close();
 		return patList;
 
 	}
