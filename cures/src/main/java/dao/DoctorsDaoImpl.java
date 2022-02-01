@@ -431,7 +431,7 @@ public class DoctorsDaoImpl {
 		Doctors doc = new Doctors();
 		// Transaction trans = (Transaction) session.beginTransaction();
 
-		session.getTransaction().begin();
+		//session.getTransaction().begin();
 		Doctors doctorFound = findDoctorsByEmail(email);
 		if (null != doctorFound && null != doctorFound.getEmail()) {
 

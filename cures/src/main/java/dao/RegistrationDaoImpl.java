@@ -67,7 +67,7 @@ public class RegistrationDaoImpl {
 		 * 
 		 */
 		try {
-			session.getTransaction().begin();
+			//session.getTransaction().begin();
 
 			Registration reg = new Registration();
 

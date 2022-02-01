@@ -87,7 +87,7 @@ public class DoctorsratingDaoImpl {
 
 		// creating session object
 		Session session = factory;
-//		session.getTransaction().begin();
+//		//session.getTransaction().begin();
 		Transaction trans = (Transaction) session.beginTransaction();
 
 		Doctorsrating docrate= new Doctorsrating();
@@ -123,7 +123,7 @@ public class DoctorsratingDaoImpl {
 		Session session = factory;
 		Transaction trans = (Transaction) session.beginTransaction();
 
-//		session.getTransaction().begin();
+//		//session.getTransaction().begin();
 		Doctorsrating docrate= new Doctorsrating();
 		int value= 0;
 		try{

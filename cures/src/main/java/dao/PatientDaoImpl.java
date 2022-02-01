@@ -28,7 +28,7 @@ public class PatientDaoImpl {
 		Constant.log("Saving New Patient with Firstname to DB:" + f_name, 0);
 
 		try {
-			session.getTransaction().begin();
+			//session.getTransaction().begin();
 			// doc.setPrefix("Dr.");
 			pat.setPatient_id(patient_id);
 			pat.setFirst_name(f_name);

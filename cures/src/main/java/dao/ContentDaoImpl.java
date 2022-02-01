@@ -41,7 +41,7 @@ public class ContentDaoImpl {
 		Article article = new Article();
 		
 		try {
-			session.getTransaction().begin();
+			//session.getTransaction().begin();
 			
 			//articalstatus.setStatus_id();			
 //			article.setArticle_id(articleId);
