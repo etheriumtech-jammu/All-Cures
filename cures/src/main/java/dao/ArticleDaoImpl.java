@@ -779,8 +779,8 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 		}
 		String search_str = "";
 		if (null != searchStr) {
-			search_str = " where ";
-		search_str = " where article_id in ("+search_str+")";
+//			search_str = " where ";
+		search_str = " where article_id in ("+searchStr.split(":")[1]+")";
 		}
 		
 		Query query = session.createNativeQuery("SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
