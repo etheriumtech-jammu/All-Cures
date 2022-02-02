@@ -18,10 +18,10 @@ public class PatientDaoImpl {
 
 	public static void savePatient(Integer patient_id, String f_name, String l_name, String email) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		Transaction trans = (Transaction) session.beginTransaction();
 
 		Patient pat = new Patient();
@@ -36,22 +36,22 @@ public class PatientDaoImpl {
 			pat.setEmail(email);
 			session.save(pat);
 //			session.getTransaction().commit();
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 			// sessionFactory.close();
 		} catch (Exception e) {
 			Constant.log(e.getStackTrace().toString(), 3);
-			trans.commit(); //session.getTransaction().rollback();
+			session.getTransaction().commit(); //session.getTransaction().rollback();
 		} finally {
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 		}
 
 	}
 
 	public static Integer findAllPatientByPatientid(String email, String docfname, String doclname) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -77,16 +77,16 @@ public class PatientDaoImpl {
 
 		}
 		int pi = patList.getPatient_id();
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return pi;
 
 	}
 
 	public static Patient findAllPatientByPatientid(Integer id) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -110,7 +110,7 @@ public class PatientDaoImpl {
 			}
 
 		}
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return patList;
 
 	}

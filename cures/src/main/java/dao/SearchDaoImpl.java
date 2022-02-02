@@ -592,9 +592,9 @@ public class SearchDaoImpl {
 
 	public static List findRegionsNameForDiseaseId(int dc_id) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		 Transaction trans = (Transaction) session.beginTransaction();
@@ -622,7 +622,7 @@ public class SearchDaoImpl {
 			hm.put("title", title);
 			hmFinal.add(hm);
 		}
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return hmFinal;
 
 	}

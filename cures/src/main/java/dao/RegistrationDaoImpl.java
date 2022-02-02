@@ -36,10 +36,10 @@ public class RegistrationDaoImpl {
 		// creating seession factory object
 
 		Registration user = null;
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		Transaction trans = (Transaction) session.beginTransaction();
 
 		Constant.log("Registering User with Firstname to DB:" + f_name, 0);
@@ -91,7 +91,7 @@ public class RegistrationDaoImpl {
 			reg.setMobile_number(mobile);
 			session.save(reg);
 //			session.getTransaction().commit();
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 			// LOGIC Q: Right now we are setting the registration id as the docid for the
 			// doctors table or patientid for the patient table
 			// What will happen when we do mass doctor updates; There is a possibility that
@@ -158,7 +158,7 @@ public class RegistrationDaoImpl {
 			// "Hi " + f_name + "," + " Thanks for the registration with allcures.");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			trans.commit(); //session.getTransaction().rollback();
+			session.getTransaction().commit(); //session.getTransaction().rollback();
 		}
 		return user;
 	}
@@ -166,9 +166,9 @@ public class RegistrationDaoImpl {
 //Used for Login Lookup
 	public static Registration findAllUsers(String email, String pwd) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// Only Logging Password in Logs in Debug Mode
 		Constant.log("Finding users with email:" + email + " and pass: " + pwd, 0);
 
@@ -206,15 +206,15 @@ public class RegistrationDaoImpl {
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
 		}
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return register;
 	}
 
 	public static Registration findUserByEmail(String email) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -249,15 +249,15 @@ public class RegistrationDaoImpl {
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
 		}
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return register;
 	}
 
 	public static Registration findUserByRegId(int regid) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -289,15 +289,15 @@ public class RegistrationDaoImpl {
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
 		}
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return register;
 	}
 
 	public String updatePassword(String password, String email) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 		// Query queryApproved = session.createNativeQuery("UPDATE registration SET
@@ -320,13 +320,13 @@ public class RegistrationDaoImpl {
 					"UPDATE registration SET pass_word= '" + password + "' where email_address = '" + email + "' ;");
 
 			ret = queryApproved.executeUpdate();
-			trans.commit();
+			session.getTransaction().commit();
 			System.out.println("updated registration table password for email =  " + email);
 
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 		}
 
 		return ret + "";
@@ -334,9 +334,9 @@ public class RegistrationDaoImpl {
 
 	public int checkEmail(String email) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 		// Query queryApproved = session.createNativeQuery("UPDATE registration SET
@@ -386,7 +386,7 @@ public class RegistrationDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 		}
 
 		return ret;
@@ -395,10 +395,10 @@ public class RegistrationDaoImpl {
 	public static int updateLoginDetails(String email) {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
@@ -413,16 +413,16 @@ public class RegistrationDaoImpl {
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
-			trans.commit();
+			session.getTransaction().commit();
 			System.out.println("updated registration table for email_address =  " + email);
 
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			// trans.commit();   session.close();
-//			trans.commit();   session.close();
+			// session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
-		// trans.commit();   session.close();
+		// session.getTransaction().commit();   //session.close();
 
 		return ret;
 	}
@@ -430,10 +430,10 @@ public class RegistrationDaoImpl {
 	public static int resetLoginDetails(int regId) {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
@@ -445,26 +445,26 @@ public class RegistrationDaoImpl {
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
-			trans.commit();
+			session.getTransaction().commit();
 			System.out.println("reset registration table for reg_id =  " + regId);
 
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			// trans.commit();   session.close();
-//			trans.commit();   session.close();
+			// session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
-		// trans.commit();   session.close();
+		// session.getTransaction().commit();   //session.close();
 
 		return ret;
 	}
 
 	public static int subscribe(long mobile, HashMap ns_map) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
@@ -488,7 +488,7 @@ public class RegistrationDaoImpl {
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
-			trans.commit();
+			session.getTransaction().commit();
 			System.out.println("inserted new entry to newsletter table for mobile =  " + mobile);
 			try {
 				String[] params = new String[5];
@@ -506,19 +506,19 @@ public class RegistrationDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			// trans.commit();   session.close();
-			trans.commit();   session.close();
+			// session.getTransaction().commit();   //session.close();
+			session.getTransaction().commit();   //session.close();
 		}
-		// trans.commit();   session.close();
+		// session.getTransaction().commit();   //session.close();
 
 		return ret;
 	}
 
 	public static int updatesubscribe(long mobile, HashMap ns_map) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 		/*
@@ -563,7 +563,7 @@ public class RegistrationDaoImpl {
 		int ret = 0;
 		try {
 			ret = queryArticlePromoPaid.executeUpdate();
-			trans.commit();
+			session.getTransaction().commit();
 			System.out.println(
 					"updated newsletter table for mobile  =  " + mobile + " and country_code = " + country_code);
 //			SendEmailUtil.shootEmail(null, "updated subscription ",
@@ -572,7 +572,7 @@ public class RegistrationDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 		}
 
 		return ret;
@@ -580,9 +580,9 @@ public class RegistrationDaoImpl {
 
 	public int unsubscribe(long mobile, int country_code) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 //		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
@@ -609,7 +609,7 @@ public class RegistrationDaoImpl {
 		int ret = 0;
 		try {
 			ret = queryArticlePromoPaid.executeUpdate();
-			trans.commit();
+			session.getTransaction().commit();
 			System.out.println("unscribe newsletter table for mobile = " + mobile + " country_code=" + country_code);
 //			SendEmailUtil.shootEmail(null, "Unscribed allcures ",
 //					"Hi, \n\r updated newsletter table for reg_id  =  " + reg_id);
@@ -617,7 +617,7 @@ public class RegistrationDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 		}
 
 		return ret;
@@ -625,9 +625,9 @@ public class RegistrationDaoImpl {
 
 	public static ArrayList getSubscriptionDetail(long mobile, int country_code) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// Only Logging Password in Logs in Debug Mode
 		Constant.log("Finding users with mobile:" + mobile, 0);
 
@@ -668,7 +668,7 @@ public class RegistrationDaoImpl {
 			hm.put("country_code", country_code1);
 			hmFinal.add(hm);
 		}
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return (ArrayList) hmFinal;
 	}
 

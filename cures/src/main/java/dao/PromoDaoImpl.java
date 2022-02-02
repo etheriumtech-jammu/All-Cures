@@ -17,10 +17,10 @@ public class PromoDaoImpl {
 	public static ArrayList getAllPromoDetails() {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -54,16 +54,16 @@ public class PromoDaoImpl {
 			hm.put("promo_active", promo_active);
 			hmFinal.add(hm);
 		}
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return (ArrayList) hmFinal;
 	}
 	public static ArrayList getPromoDetailsById(int promo_id) {
 		
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -97,17 +97,17 @@ public class PromoDaoImpl {
 			hm.put("promo_active", promo_active);
 			hmFinal.add(hm);
 		}
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return (ArrayList) hmFinal;
 	}
 
 	public static int addPromoDetails(HashMap promoMap) {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
@@ -152,16 +152,16 @@ public class PromoDaoImpl {
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
-			trans.commit();
+			session.getTransaction().commit();
 			System.out.println("inserted new entry to promo_master table for promo_code =  " + promo_code);
 
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			// trans.commit();   session.close();
-			trans.commit();   session.close();
+			// session.getTransaction().commit();   //session.close();
+			session.getTransaction().commit();   //session.close();
 		}
-		// trans.commit();   session.close();
+		// session.getTransaction().commit();   //session.close();
 
 		return ret;
 	}
@@ -169,10 +169,10 @@ public class PromoDaoImpl {
 	public static int updatePromoDetails(int promo_id, HashMap articleMap) {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
@@ -213,16 +213,16 @@ public class PromoDaoImpl {
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
-			trans.commit();
+			session.getTransaction().commit();
 			System.out.println("updated promo_master table for promo_id =  " + promo_id);
 
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			// trans.commit();   session.close();
-			trans.commit();   session.close();
+			// session.getTransaction().commit();   //session.close();
+			session.getTransaction().commit();   //session.close();
 		}
-		// trans.commit();   session.close();
+		// session.getTransaction().commit();   //session.close();
 
 		return ret;
 	}
@@ -230,10 +230,10 @@ public class PromoDaoImpl {
 	public static int deletePromoId(int promo_id) {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -248,12 +248,12 @@ public class PromoDaoImpl {
 		try {
 			ret = query.executeUpdate();
 			System.out.println("soft deleteed from promo_master, where promo_id =  " + promo_id);
-			trans.commit();
+			session.getTransaction().commit();
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			// trans.commit();   session.close();
-			trans.commit();   session.close();
+			// session.getTransaction().commit();   //session.close();
+			session.getTransaction().commit();   //session.close();
 		}
 
 		return ret;
@@ -261,9 +261,9 @@ public class PromoDaoImpl {
 
 	public int setPromoPaidStage(HashMap articlePromoIds, int reviewed_by) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 		String paidArticleIds = (String) articlePromoIds.get("articles_promo_paid");
@@ -278,14 +278,14 @@ public class PromoDaoImpl {
 		try {
 			ret = queryArticlePromoPaid.executeUpdate();
 			ret = queryArticlePromoUnpaid.executeUpdate();
-			trans.commit();
+			session.getTransaction().commit();
 			System.out.println("updated article table for promo_id  =  " + paidArticleIds + " ,promo_stage=0 (unpaid)");
 			System.out.println("updated article table for promo_id  =  " + unpaidArticleIds + " ,promo_stage=1(paid)");
 
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 		}
 
 		return ret;
@@ -293,9 +293,9 @@ public class PromoDaoImpl {
 
 	public int setPromoPaidStage(HashMap articlePromoIds, int reviewed_by, int stage) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 		String articleIds = (String) articlePromoIds.get("articles_ids");
@@ -307,22 +307,22 @@ public class PromoDaoImpl {
 		int ret = 0;
 		try {
 			ret = queryArticlePromoPaid.executeUpdate();
-			trans.commit();
+			session.getTransaction().commit();
 			System.out.println("updated article table for promo_id  =  " + stage + " ,promo_stage=0 (unpaid)");
 
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 		}
 
 		return ret;
 	}
 
 	public List allArticleByPromotStage(int stage) {
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -358,7 +358,7 @@ public class PromoDaoImpl {
 			hm.put("promo_stage", promo_stage);
 			hmFinal.add(hm);
 		}
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return hmFinal;
 	}
 

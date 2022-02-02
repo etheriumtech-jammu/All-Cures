@@ -21,10 +21,10 @@ public class DiseaseANDConditionDaoImpl {
 	public static List getAllMatchingDCList(String search_str, Integer limit, Integer offset, String orderByStr) {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -132,7 +132,7 @@ public class DiseaseANDConditionDaoImpl {
 			hmFinal.add(hm);
 			System.out.println(hm);
 		}
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 
 		return hmFinal;
 	}
@@ -140,10 +140,10 @@ public class DiseaseANDConditionDaoImpl {
 	public static List getParentChildDataDiseaseConditon(Integer parent_id) {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -187,17 +187,17 @@ public class DiseaseANDConditionDaoImpl {
 			hmFinal.add(hm);
 			System.out.println(hm);
 		}
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 
 		return hmFinal;
 	}
 
 	public List listDataMatchingStrDiseaseConditonAndArticleTables(String search_str) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -218,7 +218,7 @@ public class DiseaseANDConditionDaoImpl {
 //			System.out.println(hm);
 			hmFinal.add(searchresult);
 		}
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 
 		return hmFinal;
 	}

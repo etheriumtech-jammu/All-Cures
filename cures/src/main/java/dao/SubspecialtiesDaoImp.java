@@ -18,10 +18,10 @@ public class SubspecialtiesDaoImp {
 
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
@@ -29,7 +29,7 @@ public class SubspecialtiesDaoImp {
 		Query query = session.createNativeQuery("select sspl_name from subspecialties;");
 		ArrayList<Subspecialties> list= (ArrayList<Subspecialties>) query.getResultList();
 		System.out.println("result list SubSpl@@@@@@@@@@@@@"+list);
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return list;
 	}
 

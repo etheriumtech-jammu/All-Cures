@@ -32,10 +32,10 @@ public class ContentDaoImpl {
 			
 		boolean artCrtStatus = false;		
 		Constant.log("Saving Content in DB", 1);
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		Transaction trans = (Transaction) session.beginTransaction();
 
 		Article article = new Article();
@@ -103,25 +103,25 @@ public class ContentDaoImpl {
 			if(null != type) article.setType(type);
 			session.save(article);
 //			session.getTransaction().commit();
-			trans.commit();   session.close();			
+			session.getTransaction().commit();   //session.close();			
 			artCrtStatus = true;
 		}catch (Exception e) {
 			e.printStackTrace();
 			artCrtStatus = false;
-			//trans.commit(); //session.getTransaction().rollback();
+			//session.getTransaction().commit(); //session.getTransaction().rollback();
 			trans.rollback();
 		}		
 		finally {
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 		}
 		return artCrtStatus;
 	}
 	
 	public static List<Article> dashboardDisplay(int reg_id, int authId, int state){
 		List<Article> articleArr = new ArrayList<Article>();
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
 		//String HQL= "from doctors  INNER JOIN FETCH hospital.hospital_affliated where.";
@@ -147,16 +147,16 @@ public class ContentDaoImpl {
 			article.setPubstatus_id((Integer)obj[3]);			
 			articleArr.add(article);
 		}	
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return articleArr;
 	}
 	
 	public static Article findByArticleId(Integer articleid){
 		Article article = new Article();
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
@@ -193,15 +193,15 @@ public class ContentDaoImpl {
 				articleList.setStatus_discription((String)obj[17]);
 */
 			}
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return articleList;
 		}	
 	
 	public static List<Article> findByArticleTypeAndDC(Integer DC_ID){
-			Session factory = HibernateUtil.buildSessionFactory();
+			Session session = HibernateUtil.buildSessionFactory();
 
 			// creating session object
-			Session session = factory;
+			//Session session = factory;
 
 			// creating transaction object
 			Transaction trans =(Transaction )session.beginTransaction();
@@ -231,7 +231,7 @@ public class ContentDaoImpl {
 				article.setType((String)obj[8]);			
 				articleArr.add(article);
 			}	
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 			return articleArr;
 			}	
 	
@@ -239,9 +239,9 @@ public class ContentDaoImpl {
 			String window_title, int articleId, int regId){
 		
 		boolean updateStatus = false;
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
 
@@ -251,8 +251,8 @@ public class ContentDaoImpl {
 			Constant.log("Article Update Success:"+articleUpdate, 1);
 			updateStatus = true;
 		}
-		trans.commit();
-//		trans.commit();   session.close();
+		session.getTransaction().commit();
+//		session.getTransaction().commit();   //session.close();
 		return updateStatus;
 	}
 	

@@ -25,10 +25,10 @@ public class DoctorsratingDaoImpl {
 	public static Float getAllDoctorsOverallratingInfo(int id) {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
@@ -49,10 +49,10 @@ public class DoctorsratingDaoImpl {
 	public static Doctorsrating getAllDoctorsDetailratingInfo(int id) {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
@@ -75,7 +75,7 @@ public class DoctorsratingDaoImpl {
 				docrating.setRatingVal((Float)obj[6]);
 			}
 		}
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return docrating;  
 
 	}
@@ -83,10 +83,10 @@ public class DoctorsratingDaoImpl {
 	public static int saveNewRating(Integer ratedbyid, Integer ratedbytype,Integer targetid, 
 			Integer targetTypeid, Float ratingval){
 		
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 //		//session.getTransaction().begin();
 		Transaction trans = (Transaction) session.beginTransaction();
 
@@ -101,14 +101,14 @@ public class DoctorsratingDaoImpl {
 			session.save(docrate);
 //			session.getTransaction().commit();
 
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 			value = 1;//"Success";
 		}catch (Exception e) {
 			// TODO: handle exception
-			trans.commit(); //session.getTransaction().rollback();
+			session.getTransaction().commit(); //session.getTransaction().rollback();
 			value = 0;//"error";
 		}finally {
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 		}
 		return value;
 		
@@ -117,10 +117,10 @@ public class DoctorsratingDaoImpl {
 	}	public static int saveNewComment(String comments, Integer ratedbyid, Integer ratedbytype,Integer targetid, 
 			Integer targetTypeid){
 		
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		Transaction trans = (Transaction) session.beginTransaction();
 
 //		//session.getTransaction().begin();
@@ -135,15 +135,15 @@ public class DoctorsratingDaoImpl {
 			session.save(docrate);
 //			session.getTransaction().commit();
 
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 			value = 1;//"Success";
 		}catch (Exception e) {
 			// TODO: handle exception
-//			trans.commit(); //session.getTransaction().rollback();
+//			session.getTransaction().commit(); //session.getTransaction().rollback();
 			trans.rollback();
 			value = 0;//"error";
 		}finally {
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 		}
 		return value;
 		

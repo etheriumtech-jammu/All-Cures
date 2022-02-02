@@ -18,10 +18,10 @@ public class BatchDaoImpl {
 
 	public int updateAverageRatingArticles() {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
@@ -48,7 +48,7 @@ public class BatchDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 		}
 
 		return ret;
@@ -56,10 +56,10 @@ public class BatchDaoImpl {
 
 	public int updateAverageRatingDoctors() {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
@@ -86,7 +86,7 @@ public class BatchDaoImpl {
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 		}
 
 		return ret;

@@ -19,9 +19,9 @@ public class RatingDaoImpl {
 	public static List findRatingByIdandTypeandRatedByandRatedByType(int targetid, int targettypeid, int ratedById,
 			int ratedByTypeId) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -56,16 +56,16 @@ public class RatingDaoImpl {
 			hm.put("updated_at", updated_at);
 			hmFinal.add(hm);
 		}
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return hmFinal;
 
 	}
 
 	public static List findRatingByIdandType(int targetid, int targettypeid, Integer userid) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -113,16 +113,16 @@ public class RatingDaoImpl {
 
 			hmFinal.add(hm);
 		}
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return hmFinal;
 
 	}
 
 	public static Float findAverageRatingByIdandType(int targetid, int targettypeid) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		 Transaction trans = (Transaction) session.beginTransaction();
@@ -150,7 +150,7 @@ public class RatingDaoImpl {
 //			hmFinal.add(hm);
 //		}
 			// hm.put("ratingValAVG", docFrating);
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 		}
 		return docFrating;
 
@@ -160,10 +160,10 @@ public class RatingDaoImpl {
 			float ratingVal) {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 		String updatestr = "";
@@ -183,25 +183,25 @@ public class RatingDaoImpl {
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
-			trans.commit();
+			session.getTransaction().commit();
 			System.out.println("updated article table for targetId =  " + targetId);
 
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			// trans.commit();   session.close();
-			trans.commit();   session.close();
+			// session.getTransaction().commit();   //session.close();
+			session.getTransaction().commit();   //session.close();
 		}
-		// trans.commit();   session.close();
+		// session.getTransaction().commit();   //session.close();
 
 		return ret;
 	}
 
 	public int getReviewDone(HashMap rateids, int reviewed_by, int reviewed) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 		String rateidsStr = (String) rateids.get("rateids");
@@ -212,13 +212,13 @@ public class RatingDaoImpl {
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
-			trans.commit();
+			session.getTransaction().commit();
 			System.out.println("updated doctorsrating table for rate_id =  " + rateidsStr + " ,reviewed=" + reviewed);
 
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 		}
 
 		return ret;
@@ -226,9 +226,9 @@ public class RatingDaoImpl {
 	
 	public int getReviewDone(HashMap reviewedRateIdsCombined, int reviewed_by) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 		String rateidsAcceptedStr = (String) reviewedRateIdsCombined.get("rateids_accepted");
@@ -243,23 +243,23 @@ public class RatingDaoImpl {
 		try {
 			ret = queryApproved.executeUpdate();
 			ret = queryRejected.executeUpdate();
-			trans.commit();
+			session.getTransaction().commit();
 			System.out.println("updated doctorsrating table for rate_id =  " + rateidsRejectedStr + " ,reviewed=0" );
 			System.out.println("updated doctorsrating table for rate_id =  " + rateidsAcceptedStr + " ,reviewed=1" );
 			
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 		}
 		
 		return ret;
 	}
 
 	public List allcommentsByReviewedStatus(int reviewed) {
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		 Transaction trans = (Transaction) session.beginTransaction();
@@ -307,7 +307,7 @@ public class RatingDaoImpl {
 			hm.put("updated_at", updated_at);
 			hmFinal.add(hm);
 		}
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return hmFinal;
 	}
 }

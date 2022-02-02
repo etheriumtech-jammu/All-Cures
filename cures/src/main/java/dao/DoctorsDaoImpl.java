@@ -150,9 +150,9 @@ public class DoctorsDaoImpl {
 
 		updatestr = updatestr.replaceAll(",$", "");
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
@@ -170,12 +170,12 @@ public class DoctorsDaoImpl {
 			// next fetch
 			// mcc.replace(Constant.DOCID + "_" + docid, 360000, jsondata).getStatus();
 			mcc.delete(Constant.ROWNO + "_" + rowno);
-			trans.commit();
+			session.getTransaction().commit();
 
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 		}
 		return ret;
 	}
@@ -257,9 +257,9 @@ public class DoctorsDaoImpl {
 			hashedPass = encrypt.encrypt(updatestrPassword, secretKey);
 		}
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
@@ -282,11 +282,11 @@ public class DoctorsDaoImpl {
 			ArrayList list = (ArrayList) queryDocId.getResultList();
 			docid = (list.get(0) != null ? (Integer) list.get(0) : 0);
 			Constant.log(">>>>>>>>>>>>>>>>>>User Found for EMAILID:" + email + " docid=" + docid, 1);
-			trans.commit();
+			session.getTransaction().commit();
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			trans.commit();   session.close();
+			session.getTransaction().commit();   //session.close();
 		}
 
 		return docid;
@@ -297,10 +297,10 @@ public class DoctorsDaoImpl {
 		Constant.log("Finding All Docs", 1);
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -333,18 +333,18 @@ public class DoctorsDaoImpl {
 			}
 		}
 		Constant.log("Total Doctors Found in the Doctors List:" + docList.size(), 1);
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return docList;
 
 	}
 
 	public static Doctors getAllDoctorsInfo(int rowno) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		Constant.log("In DoctorsDAO, Getting Doctors Info For:" + rowno, 1);
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -415,17 +415,17 @@ public class DoctorsDaoImpl {
 			}
 			Constant.log("--Returning from DoctorsDao, Doc Object for ID:" + doc.getDocid() +" rowno:" + doc.getRowno(), 1);
 		}
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return doc;
 	}
 
 	public static void saveDoctors(Integer docid, String f_name, String l_name, String email) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		Constant.log("Saving New Doctor with Firstname to DB:" + f_name, 0);
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		Transaction trans = (Transaction) session.beginTransaction();
 
 		Doctors doc = new Doctors();
@@ -440,16 +440,16 @@ public class DoctorsDaoImpl {
 			int ret = 0;
 			try {
 				ret = query.executeUpdate();
-				// trans.commit();
+				// session.getTransaction().commit();
 				System.out.println("updated doctors table for email =  " + email + " set docid=" + docid);
 //				session.getTransaction().commit();
-				trans.commit();   session.close();
+				session.getTransaction().commit();   //session.close();
 
 			} catch (Exception e) {
 				Constant.log(e.getStackTrace().toString(), 3);
-				trans.commit(); //session.getTransaction().rollback();
+				session.getTransaction().commit(); //session.getTransaction().rollback();
 			} finally {
-				trans.commit();   session.close();
+				session.getTransaction().commit();   //session.close();
 			}
 		} else {
 			try {
@@ -458,10 +458,10 @@ public class DoctorsDaoImpl {
 								+ docid + ",'" + f_name + "','" + l_name + "','" + email + "');");
 				int ret = 0;
 				ret = query.executeUpdate();
-				// trans.commit();
+				// session.getTransaction().commit();
 				System.out.println("insert new doctor with email =  " + email + " and docid=" + docid);
 //				session.getTransaction().commit();
-				trans.commit();   session.close();
+				session.getTransaction().commit();   //session.close();
 				// TODO: This implementation is wrong; Setting the RegistrationID as the Doctors
 				// DocId;
 //				doc.setDocid(docid);
@@ -471,23 +471,23 @@ public class DoctorsDaoImpl {
 //				doc.setDocname_last(l_name);
 //				session.update(doc);
 //				session.getTransaction().commit();
-//				trans.commit();   session.close();
+//				session.getTransaction().commit();   //session.close();
 				// sessionFactory.close();
 
 			} catch (Exception e) {
 				Constant.log(e.getStackTrace().toString(), 3);
-				trans.commit(); //session.getTransaction().rollback();
+				session.getTransaction().commit(); //session.getTransaction().rollback();
 			} finally {
-				trans.commit();   session.close();
+				session.getTransaction().commit();   //session.close();
 			}
 		}
 	}
 
 	public static Doctors findDoctorsByEmail(String email) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -509,7 +509,7 @@ public class DoctorsDaoImpl {
 
 			}
 		}
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return doctors;
 	}
 }

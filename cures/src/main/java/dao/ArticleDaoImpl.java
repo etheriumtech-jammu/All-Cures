@@ -58,10 +58,10 @@ public class ArticleDaoImpl {
 //		HibernateUtil hu = new HibernateUtil();
 //		Session session = hu.getSession();
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		/*
 		 * HibernateUtil hu = new HibernateUtil(); Session session = hu.getSession();
@@ -101,10 +101,10 @@ public class ArticleDaoImpl {
 	public static ArrayList<Article> findDraftAricle(Registration user) {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -141,10 +141,10 @@ public class ArticleDaoImpl {
 	public static ArrayList<Article> findReviwArticle(Registration user) {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
@@ -176,10 +176,10 @@ public class ArticleDaoImpl {
 	public static ArrayList<Article> findApprovalArticle(Registration user) {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -216,10 +216,10 @@ public class ArticleDaoImpl {
 	public Article_dc_name getArticleDetails(int article_id) {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -353,10 +353,10 @@ public class ArticleDaoImpl {
 	public Article_dc_name getArticleDetails(String article_title) {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -490,10 +490,10 @@ public class ArticleDaoImpl {
 	public static ArrayList<Article> getArticlesListAll(Integer limit, Integer offset) {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -528,10 +528,10 @@ public class ArticleDaoImpl {
 	public static List getArticlesListAllKeysbyAuthIdandregType(Integer reg_type, Integer reg_doc_pat_id, Integer limit, Integer offset) {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -634,10 +634,10 @@ public class ArticleDaoImpl {
 	public static List getArticlesListAllKeys(Integer limit, Integer offset, String searchStr, String orderByStr) {
 		
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -759,10 +759,10 @@ public class ArticleDaoImpl {
 public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset, String searchStr, String orderByStr) {
 		
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -876,10 +876,10 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 	public static ArrayList getTablesDataListAll(String table_name) {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
@@ -902,10 +902,10 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 		String[] params = new String[6];
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
 
@@ -1180,10 +1180,10 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 	public static int deleteArticleId(int article_id) {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans = (Transaction) session.beginTransaction();
