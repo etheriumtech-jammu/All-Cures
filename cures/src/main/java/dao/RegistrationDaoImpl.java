@@ -40,7 +40,7 @@ public class RegistrationDaoImpl {
 
 		// creating session object
 		//Session session = factory;
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Constant.log("Registering User with Firstname to DB:" + f_name, 0);
 		/*
@@ -173,7 +173,7 @@ public class RegistrationDaoImpl {
 		Constant.log("Finding users with email:" + email + " and pass: " + pwd, 0);
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		Registration register = null;
 		Query query = session
 				.createNativeQuery("select registration_id, first_name, last_name, email_address, pass_word, "
@@ -217,7 +217,7 @@ public class RegistrationDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		Constant.log((">>>>>>>>>>>>>>>>>>" + email), 0);
 		int docid = 0;
 
@@ -260,7 +260,7 @@ public class RegistrationDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		Constant.log((">>>>>>>>>>>>>>>>>>FINDING USER FOR ID:" + regid), 0);
 		int docid = 0;
 
@@ -299,7 +299,7 @@ public class RegistrationDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		// Query queryApproved = session.createNativeQuery("UPDATE registration SET
 		// pass_word= '"+ password+"' where registration_id = "+reg_id+" );");
 
@@ -324,7 +324,7 @@ public class RegistrationDaoImpl {
 			System.out.println("updated registration table password for email =  " + email);
 
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			session.getTransaction().commit();   //session.close();
 		}
@@ -338,7 +338,7 @@ public class RegistrationDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		// Query queryApproved = session.createNativeQuery("UPDATE registration SET
 		// pass_word= '"+ password+"' where registration_id = "+reg_id+" );");
 
@@ -384,7 +384,7 @@ public class RegistrationDaoImpl {
 //			System.out.println("check email exists in  registration table for email passed from UI =  " + email);
 
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			session.getTransaction().commit();   //session.close();
 		}
@@ -400,7 +400,7 @@ public class RegistrationDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		java.sql.Timestamp last_login_datetime = new java.sql.Timestamp(new java.util.Date().getTime());
 		Query query = session.createNativeQuery(
@@ -417,7 +417,7 @@ public class RegistrationDaoImpl {
 			System.out.println("updated registration table for email_address =  " + email);
 
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			// session.getTransaction().commit();   //session.close();
 //			session.getTransaction().commit();   //session.close();
@@ -435,7 +435,7 @@ public class RegistrationDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		java.sql.Timestamp last_login_datetime = new java.sql.Timestamp(new java.util.Date().getTime());
 		Query query = session
@@ -449,7 +449,7 @@ public class RegistrationDaoImpl {
 			System.out.println("reset registration table for reg_id =  " + regId);
 
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			// session.getTransaction().commit();   //session.close();
 //			session.getTransaction().commit();   //session.close();
@@ -466,7 +466,7 @@ public class RegistrationDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		java.util.Date date = new java.util.Date();
 		java.sql.Date sqlDate = new java.sql.Date(date.getTime());
@@ -504,7 +504,7 @@ public class RegistrationDaoImpl {
 				e.printStackTrace();
 			}
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			// session.getTransaction().commit();   //session.close();
 			session.getTransaction().commit();   //session.close();
@@ -520,7 +520,7 @@ public class RegistrationDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		/*
 		 * HttpServletRequest request = ((ServletRequestAttributes)
 		 * RequestContextHolder.currentRequestAttributes()) .getRequest(); HttpSession
@@ -570,7 +570,7 @@ public class RegistrationDaoImpl {
 //					"Hi, \n\r updated newsletter table for mobile  =  " + mobile);
 
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			session.getTransaction().commit();   //session.close();
 		}
@@ -584,7 +584,7 @@ public class RegistrationDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 //		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
 //				.getRequest();
 //		HttpSession sessionreq = request.getSession(true);
@@ -615,7 +615,7 @@ public class RegistrationDaoImpl {
 //					"Hi, \n\r updated newsletter table for reg_id  =  " + reg_id);
 
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			session.getTransaction().commit();   //session.close();
 		}
@@ -632,7 +632,7 @@ public class RegistrationDaoImpl {
 		Constant.log("Finding users with mobile:" + mobile, 0);
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		Registration register = null;
 		Query query = session.createNativeQuery(
 				"SELECT `newsletter`.`user_id`,\r\n" + "    `newsletter`.`nl_subscription_disease_id`,\r\n"

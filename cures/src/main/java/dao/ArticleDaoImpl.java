@@ -20,6 +20,7 @@ import java.util.Properties;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -67,7 +68,7 @@ public class ArticleDaoImpl {
 		 * HibernateUtil hu = new HibernateUtil(); Session session = hu.getSession();
 		 */
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		String conditionMatch = "";
 		// Admin user
 		if (user.getRegistration_type() == 9)
@@ -107,7 +108,7 @@ public class ArticleDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		String conditionMatch = "";
 		// Admin user
@@ -146,7 +147,7 @@ public class ArticleDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		String conditionMatch = "";
 		// Admin user
@@ -182,7 +183,7 @@ public class ArticleDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		String conditionMatch = "";
 		// Admin user
@@ -222,7 +223,7 @@ public class ArticleDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Query query = session.createNativeQuery(" SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
 				+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
@@ -359,7 +360,7 @@ public class ArticleDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Query query = session.createNativeQuery(" SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
 				+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
@@ -496,7 +497,7 @@ public class ArticleDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		String limit_str = "";
 		if (null != limit)
@@ -534,7 +535,7 @@ public class ArticleDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		String limit_str = "";
 		if (null != limit)
 			limit_str = " limit " + limit;
@@ -632,15 +633,13 @@ public class ArticleDaoImpl {
 		return hmFinal;
 	}
 	public static List getArticlesListAllKeys(Integer limit, Integer offset, String searchStr, String orderByStr) {
-		
 		// creating seession factory object
-		Session session = HibernateUtil.buildSessionFactory();
-		
+		Session session = HibernateUtil.buildSessionFactory();		
 		// creating session object
 		//Session session = factory;
 		
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		String limit_str = "";
 		if (null != limit)
 			limit_str = " limit " + limit;
@@ -765,7 +764,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 		//Session session = factory;
 		
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		String limit_str = "";
 		if (null != limit)
 			limit_str = " limit " + limit;
@@ -883,7 +882,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Query query = session.createNativeQuery("SELECT * FROM `" + table_name + "`;\r\n" + ";");
 		// needs other condition too but unable to find correct column
@@ -908,7 +907,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		String updatestr = "";
 		if (articleMap.containsKey("title")) {
@@ -1167,7 +1166,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 			}
 
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			// session.getTransaction().commit();   //session.close();
 			session.getTransaction().commit();   
@@ -1187,7 +1186,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		// Query query = session.createNativeQuery("DELETE FROM ARTICLE WHERE ARTICLE_ID
 		// = " + article_id + ";");
@@ -1201,7 +1200,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 			System.out.println("soft deleteed article_id =  " + article_id);
 			session.getTransaction().commit();
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			// session.getTransaction().commit();   //session.close();
 			session.getTransaction().commit();   

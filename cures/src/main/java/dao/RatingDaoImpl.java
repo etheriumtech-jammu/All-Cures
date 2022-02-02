@@ -24,7 +24,7 @@ public class RatingDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Query query = session.createNativeQuery("SELECT `doctorsrating`.`rate_id`,\r\n"
 				+ "	`doctorsrating`.`comments`,\r\n" + "    `doctorsrating`.`ratedBy_id`,\r\n"
@@ -68,7 +68,7 @@ public class RatingDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		
 		String userid_str = "";
 		if (null != userid)
@@ -125,7 +125,7 @@ public class RatingDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		 Transaction trans = (Transaction) session.beginTransaction();
+		 session.beginTransaction();
 
 		Query query = session.createNativeQuery("SELECT \r\n" + "    AVG(ratingVal) as ratingValAVG\r\n"
 				+ " FROM doctorsrating where target_id=" + targetid + " and target_type_id=" + targettypeid + ";");
@@ -165,7 +165,7 @@ public class RatingDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		String updatestr = "";
 //		if (null != ratingVal && 0.0f != ratingVal ) {
 			updatestr += "`ratingVal` = " + ratingVal + ",\r\n";
@@ -187,7 +187,7 @@ public class RatingDaoImpl {
 			System.out.println("updated article table for targetId =  " + targetId);
 
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			// session.getTransaction().commit();   //session.close();
 			session.getTransaction().commit();   //session.close();
@@ -203,7 +203,7 @@ public class RatingDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		String rateidsStr = (String) rateids.get("rateids");
 
 		System.out.println(rateidsStr);
@@ -216,7 +216,7 @@ public class RatingDaoImpl {
 			System.out.println("updated doctorsrating table for rate_id =  " + rateidsStr + " ,reviewed=" + reviewed);
 
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			session.getTransaction().commit();   //session.close();
 		}
@@ -230,7 +230,7 @@ public class RatingDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		String rateidsAcceptedStr = (String) reviewedRateIdsCombined.get("rateids_accepted");
 		String rateidsRejectedStr = (String) reviewedRateIdsCombined.get("rateids_rejected");
 		
@@ -248,7 +248,7 @@ public class RatingDaoImpl {
 			System.out.println("updated doctorsrating table for rate_id =  " + rateidsAcceptedStr + " ,reviewed=1" );
 			
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			session.getTransaction().commit();   //session.close();
 		}
@@ -262,7 +262,7 @@ public class RatingDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		 Transaction trans = (Transaction) session.beginTransaction();
+		 session.beginTransaction();
 		String where = "";
 		if (reviewed != -1) {//to get all
 			where = " where reviewed=" + reviewed;

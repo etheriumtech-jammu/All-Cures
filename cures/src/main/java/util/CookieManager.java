@@ -32,9 +32,9 @@ public class CookieManager {
 	 * Just use the user object to construct the cookie Value and then construct the cookie;
 	 * With the new Cookie Manager Implementation, this method is redundant
 	public String storeCookiee(String email , String pass){
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
@@ -60,8 +60,8 @@ public class CookieManager {
 	}*/
 	
 	public Registration getUserFromEmailAddress(String emailAddress){
-		Session factory = HibernateUtil.buildSessionFactory();
-		Session session = factory;
+		Session session = HibernateUtil.buildSessionFactory();
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
@@ -93,14 +93,14 @@ public class CookieManager {
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
 		}
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return register;
 	}
 	
 	public Registration getUserFromPermCookie(String cookieValue){
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
@@ -149,7 +149,7 @@ public class CookieManager {
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
 		}
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return register;
 	}
 	

@@ -23,7 +23,7 @@ public class PromoDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Query query = session.createNativeQuery("SELECT `promo_master`.`promo_id`,\r\n"
 				+ "    `promo_master`.`promo_code`,\r\n" + "    `promo_master`.`promo_start_datetime`,\r\n"
@@ -66,7 +66,7 @@ public class PromoDaoImpl {
 		//Session session = factory;
 		
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		
 		Query query = session.createNativeQuery("SELECT `promo_master`.`promo_id`,\r\n"
 				+ "    `promo_master`.`promo_code`,\r\n" + "    `promo_master`.`promo_start_datetime`,\r\n"
@@ -109,7 +109,7 @@ public class PromoDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		String promo_code = (String) promoMap.get("promo_code");
 		String promo_start_datetime = null;
@@ -156,7 +156,7 @@ public class PromoDaoImpl {
 			System.out.println("inserted new entry to promo_master table for promo_code =  " + promo_code);
 
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			// session.getTransaction().commit();   //session.close();
 			session.getTransaction().commit();   //session.close();
@@ -174,7 +174,7 @@ public class PromoDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		String updatestr = "";
 		if (articleMap.containsKey("promo_code")) {
@@ -217,7 +217,7 @@ public class PromoDaoImpl {
 			System.out.println("updated promo_master table for promo_id =  " + promo_id);
 
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			// session.getTransaction().commit();   //session.close();
 			session.getTransaction().commit();   //session.close();
@@ -236,7 +236,7 @@ public class PromoDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		// Query query = session.createNativeQuery("DELETE FROM ARTICLE WHERE ARTICLE_ID
 		// = " + article_id + ";");
@@ -250,7 +250,7 @@ public class PromoDaoImpl {
 			System.out.println("soft deleteed from promo_master, where promo_id =  " + promo_id);
 			session.getTransaction().commit();
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			// session.getTransaction().commit();   //session.close();
 			session.getTransaction().commit();   //session.close();
@@ -265,7 +265,7 @@ public class PromoDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		String paidArticleIds = (String) articlePromoIds.get("articles_promo_paid");
 		String unpaidArticleIds = (String) articlePromoIds.get("articles_promo_unpaid");
 
@@ -283,7 +283,7 @@ public class PromoDaoImpl {
 			System.out.println("updated article table for promo_id  =  " + unpaidArticleIds + " ,promo_stage=1(paid)");
 
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			session.getTransaction().commit();   //session.close();
 		}
@@ -297,7 +297,7 @@ public class PromoDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		String articleIds = (String) articlePromoIds.get("articles_ids");
 
 		System.out.println(articlePromoIds);
@@ -311,7 +311,7 @@ public class PromoDaoImpl {
 			System.out.println("updated article table for promo_id  =  " + stage + " ,promo_stage=0 (unpaid)");
 
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			session.getTransaction().commit();   //session.close();
 		}
@@ -325,7 +325,7 @@ public class PromoDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		String where = "";
 		if (stage != -1) {// to get all
 			where = " where promo_stage =" + stage;

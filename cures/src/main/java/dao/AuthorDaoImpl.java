@@ -99,7 +99,7 @@ public class AuthorDaoImpl {
 		// creating session object
 		//Session session = factory;		
 
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		try {
 			createdAuthor.setAuthor_firstname(fName);
@@ -118,7 +118,7 @@ public class AuthorDaoImpl {
 			e.printStackTrace();
 			createdAuthor = null;
 //			session.getTransaction().commit(); //session.getTransaction().rollback();
-			trans.rollback();
+			session.getTransaction().rollback();
 		}finally {
 			session.getTransaction().commit();   //session.close();
 		}

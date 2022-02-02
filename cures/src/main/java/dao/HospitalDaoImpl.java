@@ -22,7 +22,7 @@ public class HospitalDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Query query = session.createNativeQuery("select  hospital_affliated  from hospital;");
 		ArrayList<Hospital> list = (ArrayList<Hospital>) query.getResultList();

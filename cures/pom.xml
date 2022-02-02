@@ -87,7 +87,7 @@
 
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.49</version>
+			<version>8.0.11</version>
 		</dependency>
 
 		<dependency>
@@ -106,12 +106,12 @@
 
 		<!-- Hibernate framework -->
 
-		<dependency>
+		<!-- dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>6.0.0.Alpha6</version>
 			<type>pom</type>
-		</dependency>
+		</dependency-->
 		<!-- Thanks for using https://jar-download.com -->
 
 
@@ -145,11 +145,11 @@
 
 
 		<!-- Hibernate library dependecy end -->
-		<dependency>
+		<!-- dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>5.4.22.Final</version>
-		</dependency>
+		</dependency-->
 		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
@@ -229,7 +229,7 @@
 			<version>2.4.0</version>
 
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 		    <groupId>org.hibernate</groupId>
 		    <artifactId>hibernate-c3p0</artifactId>
 		    <version>5.4.22.Final</version>
@@ -238,7 +238,60 @@
 	    	<groupId>com.mchange</groupId>
 		    <artifactId>c3p0</artifactId>
 		    <version>0.9.5.5</version>
-	</dependency>
+	</dependency> -->
+	
+    <!-- MySQL connector dependency -->
+    <!-- dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+     <version>8.0.11</version>
+    </dependency-->
+    
+    <!-- Hibernate 5.2.12 Final dependency-->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>5.2.12.Final</version>
+    </dependency>
+    
+   <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-hikaricp</artifactId>
+      <version>5.2.12.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>com.zaxxer</groupId>
+      <artifactId>HikariCP</artifactId>
+      <version>2.7.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.25</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.7.25</version>
+    </dependency>
+    
+    <!-- API, java.xml.bind module -->
+<dependency>
+    <groupId>jakarta.xml.bind</groupId>
+    <artifactId>jakarta.xml.bind-api</artifactId>
+    <version>2.3.2</version>
+</dependency> 
+
+<dependency>
+    <groupId>com.sun.xml.bind</groupId>
+    <artifactId>jaxb-impl</artifactId>
+    <version>2.3.0</version>
+</dependency>
+<dependency>
+    <groupId>com.sun.xml.bind</groupId>
+    <artifactId>jaxb-core</artifactId>
+    <version>2.3.0</version>
+</dependency>
 		
 	</dependencies>
 

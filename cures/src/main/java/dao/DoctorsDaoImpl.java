@@ -154,7 +154,7 @@ public class DoctorsDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Query query = session
 				.createNativeQuery("UPDATE doctors " + "SET " + updatestr + " WHERE rowno = " + rowno + ";");
@@ -173,7 +173,7 @@ public class DoctorsDaoImpl {
 			session.getTransaction().commit();
 
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			session.getTransaction().commit();   //session.close();
 		}
@@ -261,7 +261,7 @@ public class DoctorsDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Query query = session
 				.createNativeQuery("UPDATE doctors " + "SET " + updatestr + " WHERE email = '" + email + "';");
@@ -284,7 +284,7 @@ public class DoctorsDaoImpl {
 			Constant.log(">>>>>>>>>>>>>>>>>>User Found for EMAILID:" + email + " docid=" + docid, 1);
 			session.getTransaction().commit();
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			session.getTransaction().commit();   //session.close();
 		}
@@ -303,7 +303,7 @@ public class DoctorsDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Query query = session
 				.createNativeQuery("select prefix, docname_first, docname_middle , docname_last from doctors;");
@@ -347,7 +347,7 @@ public class DoctorsDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		// String HQL= "from doctors INNER JOIN FETCH hospital.hospital_affliated
 		// where.";
 		Query query = session
@@ -426,10 +426,10 @@ public class DoctorsDaoImpl {
 
 		// creating session object
 		//Session session = factory;
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Doctors doc = new Doctors();
-		// Transaction trans = (Transaction) session.beginTransaction();
+		// session.beginTransaction();
 
 		//session.getTransaction().begin();
 		Doctors doctorFound = findDoctorsByEmail(email);
@@ -490,7 +490,7 @@ public class DoctorsDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		Constant.log((">>>>>>>>>>>>>>>>>>" + email), 0);
 		int docid = 0;
 

@@ -36,7 +36,7 @@ public class ContentDaoImpl {
 
 		// creating session object
 		//Session session = factory;
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Article article = new Article();
 		
@@ -109,7 +109,7 @@ public class ContentDaoImpl {
 			e.printStackTrace();
 			artCrtStatus = false;
 			//session.getTransaction().commit(); //session.getTransaction().rollback();
-			trans.rollback();
+			session.getTransaction().rollback();
 		}		
 		finally {
 			session.getTransaction().commit();   //session.close();

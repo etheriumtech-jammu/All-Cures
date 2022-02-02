@@ -597,7 +597,7 @@ public class SearchDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		 Transaction trans = (Transaction) session.beginTransaction();
+		 session.beginTransaction();
 
 		Query query = session.createNativeQuery(
 				"select c.countryname, a.country_id, a.type, a.disease_condition_id, a.article_id, a.title FROM article a\r\n"

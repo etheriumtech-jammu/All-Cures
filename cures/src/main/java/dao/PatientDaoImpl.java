@@ -22,7 +22,7 @@ public class PatientDaoImpl {
 
 		// creating session object
 		//Session session = factory;
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Patient pat = new Patient();
 		Constant.log("Saving New Patient with Firstname to DB:" + f_name, 0);
@@ -54,7 +54,7 @@ public class PatientDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Query query = session.createNativeQuery("SELECT * FROM patient where email=" + email + ", first_name="
 				+ docfname + ", last_name=" + doclname + ";");
@@ -89,7 +89,7 @@ public class PatientDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Query query = session.createNativeQuery("SELECT * FROM patient where patient_id=" + id + ";");
 		List<Doctors> list = (List<Doctors>) query.getResultList();

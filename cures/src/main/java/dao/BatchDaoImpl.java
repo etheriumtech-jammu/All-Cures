@@ -23,7 +23,7 @@ public class BatchDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		String SQL = "UPDATE article dest, ( SELECT \r\n" + "    `article`.`article_id`,\r\n"
 				+ "    `article`.`title`,\r\n" + "    group_concat(`doctorsrating`.`ratingVal`),\r\n"
@@ -46,7 +46,7 @@ public class BatchDaoImpl {
 			String returnEmail = emailUtil.shootEmail(emaildto);
 
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			session.getTransaction().commit();   //session.close();
 		}
@@ -61,7 +61,7 @@ public class BatchDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		String SQL = "UPDATE doctors dest, ( SELECT \r\n" + "    `doctors`.`rowno`,\r\n" + "    `doctors`.`docid`,\r\n"
 				+ "    group_concat(`doctorsrating`.`ratingVal`),\r\n"
@@ -84,7 +84,7 @@ public class BatchDaoImpl {
 			String returnEmail = emailUtil.shootEmail(emaildto);
 
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
 			session.getTransaction().commit();   //session.close();
 		}

@@ -88,7 +88,7 @@ public class DoctorsratingDaoImpl {
 		// creating session object
 		//Session session = factory;
 //		//session.getTransaction().begin();
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Doctorsrating docrate= new Doctorsrating();
 		int value= 0;
@@ -121,7 +121,7 @@ public class DoctorsratingDaoImpl {
 
 		// creating session object
 		//Session session = factory;
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 //		//session.getTransaction().begin();
 		Doctorsrating docrate= new Doctorsrating();
@@ -140,7 +140,7 @@ public class DoctorsratingDaoImpl {
 		}catch (Exception e) {
 			// TODO: handle exception
 //			session.getTransaction().commit(); //session.getTransaction().rollback();
-			trans.rollback();
+			session.getTransaction().rollback();
 			value = 0;//"error";
 		}finally {
 			session.getTransaction().commit();   //session.close();

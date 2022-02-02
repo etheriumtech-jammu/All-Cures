@@ -27,7 +27,7 @@ public class DiseaseANDConditionDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		String limit_str = "";
 		if (null != limit)
@@ -146,7 +146,7 @@ public class DiseaseANDConditionDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 		String logic_here = "";
 
 		if (parent_id == null || parent_id == 0) {
@@ -200,7 +200,7 @@ public class DiseaseANDConditionDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Query query = session.createNativeQuery(
 				"(SELECT a.title, a.window_title FROM article a where a.pubstatus_id = 3 and a.title like '%"

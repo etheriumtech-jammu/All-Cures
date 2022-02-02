@@ -47,7 +47,7 @@ public class SpecialtiesDaoImpl {
 //		//Session session = factory;
 //
 //		// creating transaction object
-//		Transaction trans = (Transaction) session.beginTransaction();
+//		session.beginTransaction();
 //		String splid_str = splid != null ? (int) splid: 0;
 //		if (splid != null ) {
 //			String spl_str = " and spl.splid=" +splid;

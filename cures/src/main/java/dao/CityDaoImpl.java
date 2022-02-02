@@ -33,7 +33,7 @@ public class CityDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Query query = session.createNativeQuery("select distinct(cityname) from city;");
 		ArrayList<City> list = (ArrayList<City>) query.getResultList();
@@ -51,7 +51,7 @@ public class CityDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Query query = session.createNativeQuery("select pincode from city;");
 		ArrayList<City> list = (ArrayList<City>) query.getResultList();
@@ -69,7 +69,7 @@ public class CityDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Query query = session.createNativeQuery("select   cityname,  pincode  from city;");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
