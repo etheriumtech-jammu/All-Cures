@@ -565,7 +565,7 @@ public class ArticleDaoImpl {
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + results);
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
