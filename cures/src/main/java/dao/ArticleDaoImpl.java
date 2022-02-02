@@ -93,8 +93,8 @@ public class ArticleDaoImpl {
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
 
-		trans.commit();   
-		session.close();;
+		session.getTransaction().commit();   
+		//session.close();;
 		return list;
 	}
 
@@ -133,8 +133,8 @@ public class ArticleDaoImpl {
 				.createNativeQuery("select  article_id  from article where pubstatus_id = 1 " + conditionMatch + " ;");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
-		trans.commit();   
-		session.close();
+		session.getTransaction().commit();   
+		//session.close();
 		return list;
 	}
 
@@ -169,7 +169,7 @@ public class ArticleDaoImpl {
 				.createNativeQuery("select  article_id  from article  where pubstatus_id = 2 " + conditionMatch + " ;");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 		return list;
 	}
 
@@ -208,7 +208,7 @@ public class ArticleDaoImpl {
 		// needs other condition too but unable to find correct column
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 
 		return list;
 	}
@@ -344,8 +344,8 @@ public class ArticleDaoImpl {
 			article.setReg_type(""+(Integer) obj[25]);
 			article.setReg_doc_pat_id(""+(Integer) obj[26]);
 		}
-		trans.commit();   
-		session.close();
+		session.getTransaction().commit();   
+		//session.close();
 
 		return article;
 	}
@@ -481,8 +481,8 @@ public class ArticleDaoImpl {
 			article.setReg_type(""+(Integer) obj[25]);
 			article.setReg_doc_pat_id(""+(Integer) obj[26]);
 		}
-		trans.commit();   
-		session.close();
+		session.getTransaction().commit();   
+		//session.close();
 
 		return article;
 	}
@@ -519,8 +519,8 @@ public class ArticleDaoImpl {
 		// needs other condition too but unable to find correct column
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
-		trans.commit();   
-		session.close();
+		session.getTransaction().commit();   
+		//session.close();
 
 		return list;
 	}
@@ -565,7 +565,7 @@ public class ArticleDaoImpl {
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + results);
-		trans.commit();   session.close();
+		session.getTransaction().commit();   //session.close();
 
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
@@ -626,8 +626,8 @@ public class ArticleDaoImpl {
 			hmFinal.add(hm);
 			System.out.println(hm);
 		}
-		trans.commit();   
-		session.close();
+		session.getTransaction().commit();   
+		//session.close();
 
 		return hmFinal;
 	}
@@ -688,7 +688,7 @@ public class ArticleDaoImpl {
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + results);
-//		trans.commit();   session.close();
+//		session.getTransaction().commit();   //session.close();
 		
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
@@ -749,8 +749,8 @@ public class ArticleDaoImpl {
 			hmFinal.add(hm);
 			System.out.println(hm);
 		}
-		trans.commit();   
-		session.close();
+		session.getTransaction().commit();   
+		//session.close();
 		
 		return hmFinal;
 	}
@@ -806,7 +806,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + results);
-//		trans.commit();   session.close();
+//		session.getTransaction().commit();   //session.close();
 		
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
@@ -867,8 +867,9 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 			hmFinal.add(hm);
 			System.out.println(hm);
 		}
-		trans.commit();   
-		session.close();
+		session.getTransaction().commit(); 
+		
+		//session.close();
 		
 		return hmFinal;
 	}
@@ -888,8 +889,8 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 		// needs other condition too but unable to find correct column
 		ArrayList list = (ArrayList) query.getResultList();
 		System.out.println("result list " + table_name + " all@@@@@@@@@" + list);
-		trans.commit();   
-		session.close();
+		session.getTransaction().commit();   
+		//session.close();
 
 		return list;
 	}
@@ -1062,7 +1063,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
-			trans.commit();
+			session.getTransaction().commit();
 			System.out.println("updated article table for article_id =  " + article_id);
 			Boolean value = true;
 			String article_location_relative_full =  "https://etheriumtech.com/images/illustrations/favicon.png";
@@ -1168,11 +1169,11 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			// trans.commit();   session.close();
-			trans.commit();   
-			session.close();
+			// session.getTransaction().commit();   //session.close();
+			session.getTransaction().commit();   
+			//session.close();
 		}
-		// trans.commit();   session.close();
+		// session.getTransaction().commit();   //session.close();
 
 		return ret;
 	}
@@ -1198,13 +1199,13 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 		try {
 			ret = query.executeUpdate();
 			System.out.println("soft deleteed article_id =  " + article_id);
-			trans.commit();
+			session.getTransaction().commit();
 		} catch (Exception ex) {
 			trans.rollback();
 		} finally {
-			// trans.commit();   session.close();
-			trans.commit();   
-			session.close();
+			// session.getTransaction().commit();   //session.close();
+			session.getTransaction().commit();   
+			//session.close();
 		}
 
 		return ret;
