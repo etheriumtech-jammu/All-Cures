@@ -207,7 +207,7 @@ public class DiseaseANDConditionDaoImpl {
 						+ search_str + "%' or a.keywords like '%"+ search_str +"%')\r\n"
 						+ "union (select dc.dc_name, dc.dc_desc from disease_condition dc where dc.dc_status=1 and dc.dc_name like '%"
 						+ search_str + "%')");
-		System.out.println("result list searched article and dis_condi table query>@@@@@@@@@@@@@" + query);
+		System.out.println("result list searched article and dis_condi table query>@@@@@@@@@@@@@" + query.toString());
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
