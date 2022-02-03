@@ -170,7 +170,7 @@ public class WAPICommon {
 			// here allcures_schema is database name, next is username and password
 			stmt = con.createStatement();
 			String query = 
-					"select user_id, nl_subscription_disease_id, nl_start_date, nl_sub_type, mobile, nl_subscription_cures_id, active, nl_end_date, country_code, count(*) as count from newsletter "
+					"select user_id, nl_subscription_disease_id, nl_start_date, nl_sub_type, CONCAT(\"\",mobile), nl_subscription_cures_id, active, nl_end_date, country_code, count(*) as count from newsletter "
 					+ " where " + whereStr 
 					+ " group by country_code, mobile,nl_sub_type ,nl_subscription_disease_id, nl_subscription_cures_id "
 					+ " order by country_code, mobile,nl_sub_type ,nl_subscription_disease_id, nl_subscription_cures_id";
@@ -183,7 +183,7 @@ public class WAPICommon {
 				hmRow.put("nl_subscription_disease_id", rs.getString(2));
 				hmRow.put("nl_start_date", rs.getDate(3));
 				hmRow.put("nl_sub_type", rs.getInt(4));
-				hmRow.put("mobile", rs.getString(5));
+				hmRow.put("mobile", ""+rs.getString(5));
 				hmRow.put("nl_subscription_cures_id", rs.getString(6));
 				hmRow.put("active", rs.getInt(7));
 				hmRow.put("nl_end_date", rs.getDate(8));
