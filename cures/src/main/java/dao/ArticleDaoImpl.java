@@ -94,7 +94,7 @@ public class ArticleDaoImpl {
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
 
-//		session.getTransaction().commit();   
+		session.getTransaction().commit();   
 		//session.close();;
 		return list;
 	}
@@ -134,7 +134,7 @@ public class ArticleDaoImpl {
 				.createNativeQuery("select  article_id  from article where pubstatus_id = 1 " + conditionMatch + " ;");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
-		//session.getTransaction().commit();   
+		session.getTransaction().commit();   
 		//session.close();
 		return list;
 	}
@@ -170,7 +170,7 @@ public class ArticleDaoImpl {
 				.createNativeQuery("select  article_id  from article  where pubstatus_id = 2 " + conditionMatch + " ;");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
-		//session.getTransaction().commit();   //session.close();
+		session.getTransaction().commit();   //session.close();
 		return list;
 	}
 
@@ -209,7 +209,7 @@ public class ArticleDaoImpl {
 		// needs other condition too but unable to find correct column
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
-		//session.getTransaction().commit();   //session.close();
+		session.getTransaction().commit();   //session.close();
 
 		return list;
 	}
@@ -345,7 +345,7 @@ public class ArticleDaoImpl {
 			article.setReg_type(""+(Integer) obj[25]);
 			article.setReg_doc_pat_id(""+(Integer) obj[26]);
 		}
-		//session.getTransaction().commit();   
+		session.getTransaction().commit();   
 		//session.close();
 
 		return article;
@@ -482,7 +482,7 @@ public class ArticleDaoImpl {
 			article.setReg_type(""+(Integer) obj[25]);
 			article.setReg_doc_pat_id(""+(Integer) obj[26]);
 		}
-		//session.getTransaction().commit();   
+		session.getTransaction().commit();   
 		//session.close();
 
 		return article;
@@ -520,7 +520,7 @@ public class ArticleDaoImpl {
 		// needs other condition too but unable to find correct column
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + list);
-		//session.getTransaction().commit();   
+		session.getTransaction().commit();   
 		//session.close();
 
 		return list;
@@ -687,7 +687,7 @@ public class ArticleDaoImpl {
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println("result list article@@@@@@@@@@@@@" + results);
-//		se//session.getTransaction().commit(); //session.close();
+//		session.getTransaction().commit();   //session.close();
 		
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
@@ -748,7 +748,7 @@ public class ArticleDaoImpl {
 			hmFinal.add(hm);
 //			System.out.println(hm);
 		}
-//		//session.getTransaction().commit();   
+		session.getTransaction().commit();   
 		//session.close();
 		
 		return hmFinal;
@@ -866,7 +866,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 			hmFinal.add(hm);
 			System.out.println(hm);
 		}
-		//session.getTransaction().commit(); 
+		session.getTransaction().commit(); 
 		
 		//session.close();
 		
@@ -884,11 +884,11 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 		// creating transaction object
 		session.beginTransaction();
 
-		Query query = session.createNativeQuery("SELECT * FROM `" + table_name + "`;");
+		Query query = session.createNativeQuery("SELECT * FROM `" + table_name + "`;\r\n" + ";");
 		// needs other condition too but unable to find correct column
 		ArrayList list = (ArrayList) query.getResultList();
 		System.out.println("result list " + table_name + " all@@@@@@@@@" + list);
-		//session.getTransaction().commit();   
+		session.getTransaction().commit();   
 		//session.close();
 
 		return list;
@@ -1169,7 +1169,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 			session.getTransaction().rollback();
 		} finally {
 			// session.getTransaction().commit();   //session.close();
-			//session.getTransaction().commit();   
+			session.getTransaction().commit();   
 			//session.close();
 		}
 		// session.getTransaction().commit();   //session.close();
@@ -1203,7 +1203,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 			session.getTransaction().rollback();
 		} finally {
 			// session.getTransaction().commit();   //session.close();
-			//session.getTransaction().commit();   
+			session.getTransaction().commit();   
 			//session.close();
 		}
 
