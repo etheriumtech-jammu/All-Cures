@@ -44,11 +44,12 @@ public class BatchDaoImpl {
 			emaildto.setEmailtext("Hi, \r\n" + "Batch Process for  AVG Rating sync for Articles completed.");
 			ret = 1;
 			String returnEmail = emailUtil.shootEmail(emaildto);
+			session.getTransaction().commit();
 
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
 		} finally {
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 
 		return ret;
@@ -82,11 +83,12 @@ public class BatchDaoImpl {
 			emaildto.setEmailtext("Hi,\r\n" + "Batch Process for AVG Rating sync for Doctors completed.");
 			ret = 1;
 			String returnEmail = emailUtil.shootEmail(emaildto);
+			session.getTransaction().commit();
 
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
 		} finally {
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 
 		return ret;

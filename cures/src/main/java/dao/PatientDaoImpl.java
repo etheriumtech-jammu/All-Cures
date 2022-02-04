@@ -42,7 +42,7 @@ public class PatientDaoImpl {
 			Constant.log(e.getStackTrace().toString(), 3);
 			session.getTransaction().commit(); //session.getTransaction().rollback();
 		} finally {
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 
 	}

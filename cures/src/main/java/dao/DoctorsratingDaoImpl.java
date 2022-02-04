@@ -108,7 +108,7 @@ public class DoctorsratingDaoImpl {
 			session.getTransaction().commit(); //session.getTransaction().rollback();
 			value = 0;//"error";
 		}finally {
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 		return value;
 		
@@ -143,7 +143,7 @@ public class DoctorsratingDaoImpl {
 			session.getTransaction().rollback();
 			value = 0;//"error";
 		}finally {
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 		return value;
 		

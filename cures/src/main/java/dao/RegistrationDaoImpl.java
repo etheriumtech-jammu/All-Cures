@@ -158,7 +158,7 @@ public class RegistrationDaoImpl {
 			// "Hi " + f_name + "," + " Thanks for the registration with allcures.");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			session.getTransaction().commit(); //session.getTransaction().rollback();
+			session.getTransaction().rollback(); //session.getTransaction().rollback();
 		}
 		return user;
 	}
@@ -326,7 +326,7 @@ public class RegistrationDaoImpl {
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
 		} finally {
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 
 		return ret + "";
@@ -379,14 +379,14 @@ public class RegistrationDaoImpl {
 				emaildto2.setEmailTemplateData(templateData);
 
 				String returnEmail = emailUtil.shootEmail(emaildto2);
+				session.getTransaction().commit();
 				return 1;
 			}
 //			System.out.println("check email exists in  registration table for email passed from UI =  " + email);
-
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
 		} finally {
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 
 		return ret;
@@ -507,7 +507,7 @@ public class RegistrationDaoImpl {
 			session.getTransaction().rollback();
 		} finally {
 			// session.getTransaction().commit();   //session.close();
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 		// session.getTransaction().commit();   //session.close();
 
@@ -572,7 +572,7 @@ public class RegistrationDaoImpl {
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
 		} finally {
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 
 		return ret;
@@ -617,7 +617,7 @@ public class RegistrationDaoImpl {
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
 		} finally {
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 
 		return ret;

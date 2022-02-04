@@ -1169,7 +1169,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 			session.getTransaction().rollback();
 		} finally {
 			// session.getTransaction().commit();   //session.close();
-			session.getTransaction().commit();   
+//			session.getTransaction().commit();   
 			//session.close();
 		}
 		// session.getTransaction().commit();   //session.close();
@@ -1203,7 +1203,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 			session.getTransaction().rollback();
 		} finally {
 			// session.getTransaction().commit();   //session.close();
-			session.getTransaction().commit();   
+//			session.getTransaction().commit();   
 			//session.close();
 		}
 

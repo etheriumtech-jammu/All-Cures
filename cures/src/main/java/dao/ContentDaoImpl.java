@@ -112,7 +112,7 @@ public class ContentDaoImpl {
 			session.getTransaction().rollback();
 		}		
 		finally {
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 		return artCrtStatus;
 	}

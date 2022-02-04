@@ -190,7 +190,7 @@ public class RatingDaoImpl {
 			session.getTransaction().rollback();
 		} finally {
 			// session.getTransaction().commit();   //session.close();
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 		// session.getTransaction().commit();   //session.close();
 
@@ -218,7 +218,7 @@ public class RatingDaoImpl {
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
 		} finally {
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 
 		return ret;
@@ -250,7 +250,7 @@ public class RatingDaoImpl {
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
 		} finally {
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 		
 		return ret;

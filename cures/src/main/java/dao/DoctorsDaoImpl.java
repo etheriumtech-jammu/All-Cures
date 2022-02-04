@@ -175,7 +175,7 @@ public class DoctorsDaoImpl {
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
 		} finally {
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 		return ret;
 	}
@@ -286,7 +286,7 @@ public class DoctorsDaoImpl {
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
 		} finally {
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 
 		return docid;
@@ -449,7 +449,7 @@ public class DoctorsDaoImpl {
 				Constant.log(e.getStackTrace().toString(), 3);
 				session.getTransaction().commit(); //session.getTransaction().rollback();
 			} finally {
-				session.getTransaction().commit();   //session.close();
+//				session.getTransaction().commit();   //session.close();
 			}
 		} else {
 			try {
@@ -478,7 +478,7 @@ public class DoctorsDaoImpl {
 				Constant.log(e.getStackTrace().toString(), 3);
 				session.getTransaction().commit(); //session.getTransaction().rollback();
 			} finally {
-				session.getTransaction().commit();   //session.close();
+//				session.getTransaction().commit();   //session.close();
 			}
 		}
 	}

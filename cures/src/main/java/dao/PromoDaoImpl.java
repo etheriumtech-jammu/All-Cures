@@ -159,7 +159,7 @@ public class PromoDaoImpl {
 			session.getTransaction().rollback();
 		} finally {
 			// session.getTransaction().commit();   //session.close();
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 		// session.getTransaction().commit();   //session.close();
 
@@ -220,7 +220,7 @@ public class PromoDaoImpl {
 			session.getTransaction().rollback();
 		} finally {
 			// session.getTransaction().commit();   //session.close();
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 		// session.getTransaction().commit();   //session.close();
 
@@ -253,7 +253,7 @@ public class PromoDaoImpl {
 			session.getTransaction().rollback();
 		} finally {
 			// session.getTransaction().commit();   //session.close();
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 
 		return ret;
@@ -285,7 +285,7 @@ public class PromoDaoImpl {
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
 		} finally {
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 
 		return ret;
@@ -313,7 +313,7 @@ public class PromoDaoImpl {
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
 		} finally {
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 
 		return ret;

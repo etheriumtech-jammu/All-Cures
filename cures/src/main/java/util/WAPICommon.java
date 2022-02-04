@@ -83,6 +83,8 @@ public class WAPICommon {
 			stmt.close();
 			rs.close();
 			con.close();
+		}finally {
+			con.close();
 		}
 		return hmFinal;
 	}
@@ -144,6 +146,8 @@ public class WAPICommon {
 			stmt.close();
 			rs.close();
 			con.close();
+		}finally {
+			con.close();
 		}
 		return hmFinal;
 	}
@@ -196,6 +200,8 @@ public class WAPICommon {
 			System.out.println(e);
 			stmt.close();
 			rs.close();
+			con.close();
+		}finally {
 			con.close();
 		}
 		return hmFinal;
