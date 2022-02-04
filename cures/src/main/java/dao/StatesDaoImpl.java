@@ -31,7 +31,7 @@ public class StatesDaoImpl {
 
 		Query query = session.createNativeQuery("select distinct statename  from states;");
 		ArrayList<States> list= (ArrayList<States>) query.getResultList();
-		System.out.println("result list StateList@@@@@@@@@@@@@"+list);
+		System.out.println("result list StateList@@@@@@@@@@@@@"+list.size());
 //		session.getTransaction().commit();   //session.close();
 		return list;
 	}

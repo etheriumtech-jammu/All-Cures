@@ -5,11 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,14 +15,9 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import model.Article;
 import model.Article_dc_name;
@@ -35,11 +26,8 @@ import model.Registration;
 import service.SendEmailService;
 import util.ArticleUtils;
 import util.Constant;
-import util.EncodingDecodingUtil;
 import util.HibernateUtil;
 import util.WhatsAPITemplateMessage;
-import util.WhatsAPITrackEvents;
-import util.WhatsAPITrackUsers;
 
 //1	active
 //7	WorkInProgress
@@ -92,7 +80,7 @@ public class ArticleDaoImpl {
 		Query query = session
 				.createNativeQuery("select  article_id  from article  where pubstatus_id = 3 " + conditionMatch + " ;");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
-		System.out.println("result list article@@@@@@@@@@@@@" + list);
+		System.out.println("result list article@@@@@@@@@@@@@" + list.size());
 
 //		session.getTransaction().commit();   
 		//session.close();;
@@ -133,7 +121,7 @@ public class ArticleDaoImpl {
 		Query query = session
 				.createNativeQuery("select  article_id  from article where pubstatus_id = 1 " + conditionMatch + " ;");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
-		System.out.println("result list article@@@@@@@@@@@@@" + list);
+		System.out.println("result list article@@@@@@@@@@@@@" + list.size());
 //		session.getTransaction().commit();   
 		//session.close();
 		return list;
@@ -169,7 +157,7 @@ public class ArticleDaoImpl {
 		Query query = session
 				.createNativeQuery("select  article_id  from article  where pubstatus_id = 2 " + conditionMatch + " ;");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
-		System.out.println("result list article@@@@@@@@@@@@@" + list);
+		System.out.println("result list article@@@@@@@@@@@@@" + list.size());
 //		session.getTransaction().commit();   //session.close();
 		return list;
 	}
@@ -208,7 +196,7 @@ public class ArticleDaoImpl {
 				.createNativeQuery("select  article_id  from article  where pubstatus_id = 2 " + conditionMatch + " ;");
 		// needs other condition too but unable to find correct column
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
-		System.out.println("result list article@@@@@@@@@@@@@" + list);
+		System.out.println("result list article@@@@@@@@@@@@@" + list.size());
 //		session.getTransaction().commit();   //session.close();
 
 		return list;
@@ -519,7 +507,7 @@ public class ArticleDaoImpl {
 				+ " order by `article`.`article_id` desc " + limit_str + offset_str + " ;\r\n" + ";");
 		// needs other condition too but unable to find correct column
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
-		System.out.println("result list article@@@@@@@@@@@@@" + list);
+		System.out.println("result list article@@@@@@@@@@@@@" + list.size());
 //		session.getTransaction().commit();   
 		//session.close();
 
@@ -565,7 +553,7 @@ public class ArticleDaoImpl {
 				+ "where ar.pubstatus_id = 3 and au.reg_doc_pat_id = "+reg_doc_pat_id+" order by ar.article_id desc \r\n" + limit_str + offset_str + ";");
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println("result list article@@@@@@@@@@@@@" + results);
+		System.out.println("result list article@@@@@@@@@@@@@" + results.size());
 //		session.getTransaction().commit();   //session.close();
 
 		List hmFinal = new ArrayList();
@@ -625,7 +613,7 @@ public class ArticleDaoImpl {
 			hm.put("reg_type", reg_type_);
 
 			hmFinal.add(hm);
-			System.out.println(hm);
+//			System.out.println(hm);
 		}
 //		session.getTransaction().commit();   
 		//session.close();
@@ -679,14 +667,15 @@ public class ArticleDaoImpl {
 				+ " (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a \r\n"
 				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
 				+ " ) as authors_name, "
-				+ " (select count(*) from article) as count "
+				+ " (select count(*) from article) as count ,"
+				+ " (select reg_doc_pat_id from author where author_id=`article`.`authored_by`) as rowno \r\n" 
 				+ " FROM `article` \r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
 				+  search_str + orderby_str
 				+ limit_str + offset_str + " ;");
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println("result list article@@@@@@@@@@@@@" + results);
+		System.out.println("result list article@@@@@@@@@@@@@" + results.size());
 //		session.getTransaction().commit();   //session.close();
 		
 		List hmFinal = new ArrayList();
@@ -717,6 +706,7 @@ public class ArticleDaoImpl {
 			float over_allrating = (float) (objects[22] != null ? (Float) objects[22] : 0.0);
 			String authors_name = (String) objects[23];
 			BigInteger count = (BigInteger) objects[24];
+			int rowno = objects[25] != null ? (int) objects[25] : 0;
 			
 			
 			hm.put("article_id", article_id);
@@ -744,6 +734,7 @@ public class ArticleDaoImpl {
 			hm.put("over_allrating", over_allrating);
 			hm.put("authors_name", authors_name);
 			hm.put("count", count);
+			hm.put("rowno", rowno);
 			
 			hmFinal.add(hm);
 //			System.out.println(hm);
@@ -797,14 +788,16 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 				+ " (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a \r\n"
 				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
 				+ " ) as authors_name, "
-				+ " (select count(*) from article) as count "
+				+ " (select count(*) from article) as count , "
+				+ " (select reg_doc_pat_id from author where author_id=`article`.`authored_by`) as rowno \r\n" 
+
 				+ " FROM `article` \r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
 				+  search_str + orderby_str
 				+ limit_str + offset_str + " ;");
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println("result list article@@@@@@@@@@@@@" + results);
+		System.out.println("result list article@@@@@@@@@@@@@" + results.size());
 //		session.getTransaction().commit();   //session.close();
 		
 		List hmFinal = new ArrayList();
@@ -835,7 +828,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 			float over_allrating = (float) (objects[22] != null ? (Float) objects[22] : 0.0);
 			String authors_name = (String) objects[23];
 			BigInteger count = (BigInteger) objects[24];
-			
+			int rowno = objects[25] != null ? (int) objects[25] : 0;			
 			
 			hm.put("article_id", article_id);
 			hm.put("title", title);
@@ -862,9 +855,10 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 			hm.put("over_allrating", over_allrating);
 			hm.put("authors_name", authors_name);
 			hm.put("count", count);
+			hm.put("rowno", rowno);
 			
 			hmFinal.add(hm);
-			System.out.println(hm);
+//			System.out.println(hm);
 		}
 //		session.getTransaction().commit(); 
 		
@@ -887,7 +881,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 		Query query = session.createNativeQuery("SELECT * FROM `" + table_name + "`;\r\n" + ";");
 		// needs other condition too but unable to find correct column
 		ArrayList list = (ArrayList) query.getResultList();
-		System.out.println("result list " + table_name + " all@@@@@@@@@" + list);
+		System.out.println("result list " + table_name + " all@@@@@@@@@" + list.size());
 //		session.getTransaction().commit();   
 		//session.close();
 
