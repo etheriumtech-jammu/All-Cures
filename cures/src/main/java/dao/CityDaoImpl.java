@@ -33,12 +33,12 @@ public class CityDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		session.beginTransaction();
+//		session.beginTransaction();
 
 		Query query = session.createNativeQuery("select distinct(cityname) from city;");
 		ArrayList<City> list = (ArrayList<City>) query.getResultList();
 		System.out.println("result list City@@@@@@@@@@@@@" + list);
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return list;
 	}
 
@@ -51,12 +51,12 @@ public class CityDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		session.beginTransaction();
+//		session.beginTransaction();
 
 		Query query = session.createNativeQuery("select pincode from city;");
 		ArrayList<City> list = (ArrayList<City>) query.getResultList();
 		System.out.println("result list City@@@@@@@@@@@@@" + list);
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return list;
 	}
 
@@ -69,7 +69,7 @@ public class CityDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		session.beginTransaction();
+//		session.beginTransaction();
 
 		Query query = session.createNativeQuery("select   cityname,  pincode  from city;");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
@@ -82,7 +82,7 @@ public class CityDaoImpl {
 			hm.put("Pincode", pincode);
 			hmFinal.add(hm);
 		}
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return hmFinal;
 	}
 

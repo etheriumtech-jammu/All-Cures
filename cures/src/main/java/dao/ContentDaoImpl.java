@@ -159,7 +159,7 @@ public class ContentDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans =(Transaction )session.beginTransaction();
+//		Transaction trans =(Transaction )session.beginTransaction();
 		//String HQL= "from doctors  INNER JOIN FETCH hospital.hospital_affliated where.";
 		Query query = session.createNativeQuery("SELECT  article.article_id, article.title, article.friendly_name, article.subheading, "+
 "article.content_type, article.keywords, article.window_title, article.content_location "+
@@ -193,7 +193,7 @@ public class ContentDaoImpl {
 				articleList.setStatus_discription((String)obj[17]);
 */
 			}
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return articleList;
 		}	
 	
@@ -204,7 +204,7 @@ public class ContentDaoImpl {
 			//Session session = factory;
 
 			// creating transaction object
-			Transaction trans =(Transaction )session.beginTransaction();
+//			Transaction trans =(Transaction )session.beginTransaction();
 			//String HQL= "from doctors  INNER JOIN FETCH hospital.hospital_affliated where.";
 			Query query = session.createNativeQuery("SELECT  article.article_id, article.title, article.friendly_name, article.subheading, "+
 	" article.content_type, article.keywords, article.window_title, article.content_location, article.type "+
@@ -231,7 +231,7 @@ public class ContentDaoImpl {
 				article.setType((String)obj[8]);			
 				articleArr.add(article);
 			}	
-			session.getTransaction().commit();   //session.close();
+//			session.getTransaction().commit();   //session.close();
 			return articleArr;
 			}	
 	

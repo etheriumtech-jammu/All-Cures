@@ -303,7 +303,7 @@ public class DoctorsDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		session.beginTransaction();
+//		session.beginTransaction();
 
 		Query query = session
 				.createNativeQuery("select prefix, docname_first, docname_middle , docname_last from doctors;");
@@ -333,7 +333,7 @@ public class DoctorsDaoImpl {
 			}
 		}
 		Constant.log("Total Doctors Found in the Doctors List:" + docList.size(), 1);
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return docList;
 
 	}
@@ -347,7 +347,7 @@ public class DoctorsDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		session.beginTransaction();
+//		session.beginTransaction();
 		// String HQL= "from doctors INNER JOIN FETCH hospital.hospital_affliated
 		// where.";
 		Query query = session
@@ -415,7 +415,7 @@ public class DoctorsDaoImpl {
 			}
 			Constant.log("--Returning from DoctorsDao, Doc Object for ID:" + doc.getDocid() +" rowno:" + doc.getRowno(), 1);
 		}
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return doc;
 	}
 
@@ -490,7 +490,7 @@ public class DoctorsDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		session.beginTransaction();
+//		session.beginTransaction();
 		Constant.log((">>>>>>>>>>>>>>>>>>" + email), 0);
 		int docid = 0;
 
@@ -509,7 +509,7 @@ public class DoctorsDaoImpl {
 
 			}
 		}
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return doctors;
 	}
 }

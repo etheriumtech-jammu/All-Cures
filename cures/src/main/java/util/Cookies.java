@@ -34,7 +34,7 @@ public class Cookies {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans =(Transaction )session.beginTransaction();
+//		Transaction trans =(Transaction )session.beginTransaction();
 		System.out.println(">>>>>>>>>>>>>>>>>>"+ email);
 		int docid=0;
 		int type =0;
@@ -53,7 +53,7 @@ public class Cookies {
 			}
 			cookie=""+docid+"|"+type+"";
 		}
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return cookie;
 	}
 	
@@ -63,7 +63,7 @@ public class Cookies {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans =(Transaction )session.beginTransaction();
+//		Transaction trans =(Transaction )session.beginTransaction();
 		Registration register = new Registration();
 		System.out.println(">>>>>>>>>>>>>>>>>>"+ cookieValue);
 		//Encryption encrypt = new Encryption();
@@ -109,7 +109,7 @@ public class Cookies {
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
 		}
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return register;
 	}
 	

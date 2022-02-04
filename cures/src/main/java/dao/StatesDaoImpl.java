@@ -27,12 +27,12 @@ public class StatesDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans =(Transaction )session.beginTransaction();
+//		Transaction trans =(Transaction )session.beginTransaction();
 
 		Query query = session.createNativeQuery("select distinct statename  from states;");
 		ArrayList<States> list= (ArrayList<States>) query.getResultList();
 		System.out.println("result list StateList@@@@@@@@@@@@@"+list);
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return list;
 	}
 

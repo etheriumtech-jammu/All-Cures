@@ -27,12 +27,12 @@ public class SpecialtiesDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans =(Transaction )session.beginTransaction();
+//		Transaction trans =(Transaction )session.beginTransaction();
 
 		Query query = session.createNativeQuery("select spl_name from specialties;");
 		ArrayList<Specialties> list= (ArrayList<Specialties>) query.getResultList();
 		System.out.println("result list Spl@@@@@@@@@@@@@"+list);
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return list;
 	}
 	

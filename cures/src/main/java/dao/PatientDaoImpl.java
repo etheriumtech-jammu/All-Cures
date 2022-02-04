@@ -54,7 +54,7 @@ public class PatientDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		session.beginTransaction();
+//		session.beginTransaction();
 
 		Query query = session.createNativeQuery("SELECT * FROM patient where email=" + email + ", first_name="
 				+ docfname + ", last_name=" + doclname + ";");
@@ -77,7 +77,7 @@ public class PatientDaoImpl {
 
 		}
 		int pi = patList.getPatient_id();
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return pi;
 
 	}
@@ -89,7 +89,7 @@ public class PatientDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		session.beginTransaction();
+//		session.beginTransaction();
 
 		Query query = session.createNativeQuery("SELECT * FROM patient where patient_id=" + id + ";");
 		List<Doctors> list = (List<Doctors>) query.getResultList();
@@ -110,7 +110,7 @@ public class PatientDaoImpl {
 			}
 
 		}
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return patList;
 
 	}

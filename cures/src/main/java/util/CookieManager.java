@@ -64,7 +64,7 @@ public class CookieManager {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans =(Transaction )session.beginTransaction();
+//		Transaction trans =(Transaction )session.beginTransaction();
 		Registration register = null;
 		Constant.log(">>>>>>>>>>>>>>>>>>Looking Up User Based On Email: "+ emailAddress, 1);
 		
@@ -93,7 +93,7 @@ public class CookieManager {
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
 		}
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return register;
 	}
 	
@@ -103,7 +103,7 @@ public class CookieManager {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans =(Transaction )session.beginTransaction();
+//		Transaction trans =(Transaction )session.beginTransaction();
 		Registration register = new Registration();
 		Constant.log("Getting User From Cookie with Cookie Value:"+ cookieValue, 1);
 		//Encryption encrypt = new Encryption();
@@ -149,7 +149,7 @@ public class CookieManager {
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
 		}
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return register;
 	}
 	

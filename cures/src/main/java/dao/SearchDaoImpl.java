@@ -597,7 +597,7 @@ public class SearchDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		 session.beginTransaction();
+//		 session.beginTransaction();
 
 		Query query = session.createNativeQuery(
 				"select c.countryname, a.country_id, a.type, a.disease_condition_id, a.article_id, a.title FROM article a\r\n"
@@ -622,7 +622,7 @@ public class SearchDaoImpl {
 			hm.put("title", title);
 			hmFinal.add(hm);
 		}
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return hmFinal;
 
 	}

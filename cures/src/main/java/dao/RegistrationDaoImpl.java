@@ -173,7 +173,7 @@ public class RegistrationDaoImpl {
 		Constant.log("Finding users with email:" + email + " and pass: " + pwd, 0);
 
 		// creating transaction object
-		session.beginTransaction();
+//		session.beginTransaction();
 		Registration register = null;
 		Query query = session
 				.createNativeQuery("select registration_id, first_name, last_name, email_address, pass_word, "
@@ -206,7 +206,7 @@ public class RegistrationDaoImpl {
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
 		}
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return register;
 	}
 
@@ -217,7 +217,7 @@ public class RegistrationDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		session.beginTransaction();
+//		session.beginTransaction();
 		Constant.log((">>>>>>>>>>>>>>>>>>" + email), 0);
 		int docid = 0;
 
@@ -249,7 +249,7 @@ public class RegistrationDaoImpl {
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
 		}
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return register;
 	}
 
@@ -260,7 +260,7 @@ public class RegistrationDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		session.beginTransaction();
+//		session.beginTransaction();
 		Constant.log((">>>>>>>>>>>>>>>>>>FINDING USER FOR ID:" + regid), 0);
 		int docid = 0;
 
@@ -289,7 +289,7 @@ public class RegistrationDaoImpl {
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
 		}
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return register;
 	}
 
@@ -338,7 +338,7 @@ public class RegistrationDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		session.beginTransaction();
+//		session.beginTransaction();
 		// Query queryApproved = session.createNativeQuery("UPDATE registration SET
 		// pass_word= '"+ password+"' where registration_id = "+reg_id+" );");
 
@@ -379,12 +379,12 @@ public class RegistrationDaoImpl {
 				emaildto2.setEmailTemplateData(templateData);
 
 				String returnEmail = emailUtil.shootEmail(emaildto2);
-				session.getTransaction().commit();
+//				session.getTransaction().commit();
 				return 1;
 			}
 //			System.out.println("check email exists in  registration table for email passed from UI =  " + email);
 		} catch (Exception ex) {
-			session.getTransaction().rollback();
+//			session.getTransaction().rollback();
 		} finally {
 //			session.getTransaction().commit();   //session.close();
 		}
@@ -632,7 +632,7 @@ public class RegistrationDaoImpl {
 		Constant.log("Finding users with mobile:" + mobile, 0);
 
 		// creating transaction object
-		session.beginTransaction();
+//		session.beginTransaction();
 		Registration register = null;
 		Query query = session.createNativeQuery(
 				"SELECT `newsletter`.`user_id`,\r\n" + "    `newsletter`.`nl_subscription_disease_id`,\r\n"
@@ -668,7 +668,7 @@ public class RegistrationDaoImpl {
 			hm.put("country_code", country_code1);
 			hmFinal.add(hm);
 		}
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return (ArrayList) hmFinal;
 	}
 

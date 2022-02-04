@@ -23,7 +23,7 @@ public class PromoDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		session.beginTransaction();
+//		session.beginTransaction();
 
 		Query query = session.createNativeQuery("SELECT `promo_master`.`promo_id`,\r\n"
 				+ "    `promo_master`.`promo_code`,\r\n" + "    `promo_master`.`promo_start_datetime`,\r\n"
@@ -54,7 +54,7 @@ public class PromoDaoImpl {
 			hm.put("promo_active", promo_active);
 			hmFinal.add(hm);
 		}
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return (ArrayList) hmFinal;
 	}
 	public static ArrayList getPromoDetailsById(int promo_id) {
@@ -66,7 +66,7 @@ public class PromoDaoImpl {
 		//Session session = factory;
 		
 		// creating transaction object
-		session.beginTransaction();
+//		session.beginTransaction();
 		
 		Query query = session.createNativeQuery("SELECT `promo_master`.`promo_id`,\r\n"
 				+ "    `promo_master`.`promo_code`,\r\n" + "    `promo_master`.`promo_start_datetime`,\r\n"
@@ -97,7 +97,7 @@ public class PromoDaoImpl {
 			hm.put("promo_active", promo_active);
 			hmFinal.add(hm);
 		}
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return (ArrayList) hmFinal;
 	}
 
@@ -325,7 +325,7 @@ public class PromoDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		session.beginTransaction();
+//		session.beginTransaction();
 		String where = "";
 		if (stage != -1) {// to get all
 			where = " where promo_stage =" + stage;
@@ -358,7 +358,7 @@ public class PromoDaoImpl {
 			hm.put("promo_stage", promo_stage);
 			hmFinal.add(hm);
 		}
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return hmFinal;
 	}
 

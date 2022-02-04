@@ -31,7 +31,7 @@ public class DoctorsratingDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans =(Transaction )session.beginTransaction();
+//		Transaction trans =(Transaction )session.beginTransaction();
 		int index=0;
 		Query query = session.createNativeQuery("select avg(ratingVal) from doctorsrating where target_id ="+id+";");
 		String list=  query.getResultList().toString();
@@ -55,7 +55,7 @@ public class DoctorsratingDaoImpl {
 		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans =(Transaction )session.beginTransaction();
+//		Transaction trans =(Transaction )session.beginTransaction();
 		int index=0;
 		Query query = session.createNativeQuery("SELECT * FROM doctorsrating where target_id="+id+" order by  rate_id desc limit  0,3 ;");
 		List<Doctorsrating> list=  query.getResultList();
@@ -75,7 +75,7 @@ public class DoctorsratingDaoImpl {
 				docrating.setRatingVal((Float)obj[6]);
 			}
 		}
-		session.getTransaction().commit();   //session.close();
+//		session.getTransaction().commit();   //session.close();
 		return docrating;  
 
 	}
