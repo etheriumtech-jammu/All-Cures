@@ -668,7 +668,7 @@ public class ArticleDaoImpl {
 				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
 				+ " ) as authors_name, "
 				+ " (select count(*) from article) as count ,"
-				+ " (select reg_doc_pat_id from author where author_id=(trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))) as rowno \r\n" 
+				+ " (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))) as rowno \r\n" 
 				+ " FROM `article` \r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
 				+  search_str + orderby_str
