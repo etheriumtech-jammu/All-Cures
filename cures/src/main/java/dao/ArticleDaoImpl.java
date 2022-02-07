@@ -664,7 +664,7 @@ public class ArticleDaoImpl {
 				+ "	`article`.`comments`\r\n," + " `article`.`type`\r\n, `article`.`country_id`\r\n,  "
 				+ " `article`.`over_allrating`, \r\n "
 				
-				+ " (select group_concat(a.author_firstname,\" \",a.author_middlename,\" \",a.author_lastname) from author a \r\n"
+				+ " (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a \r\n"
 				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
 				+ " ) as authors_name, "
 				+ " (select count(*) from article) as count ,"
@@ -785,7 +785,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 				+ "	`article`.`comments`\r\n," + " `article`.`type`\r\n, `article`.`country_id`\r\n,  "
 				+ " `article`.`over_allrating`, \r\n "
 				
-				+ " (select group_concat(a.author_firstname,\" \",a.author_middlename,\" \",a.author_lastname) from author a \r\n"
+				+ " (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a \r\n"
 				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
 				+ " ) as authors_name, "
 				+ " (select count(*) from article) as count , "
