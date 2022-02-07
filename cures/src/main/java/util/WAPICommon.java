@@ -169,7 +169,7 @@ public class WAPICommon {
 			Properties prop = new WAPICommon().readPropertiesFile(fileProperties);
 			System.out.println("DB_DBNAME : " + prop.getProperty("DB_DBNAME"));
 			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + prop.getProperty("DB_DBNAME"),
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + prop.getProperty("DB_DBNAME")+"?useSSL=false",
 					prop.getProperty("DB_USER"), prop.getProperty("DB_PASS"));
 			// here allcures_schema is database name, next is username and password
 			stmt = con.createStatement();
@@ -195,14 +195,16 @@ public class WAPICommon {
 				hmRow.put("count", rs.getInt(10));
 				hmFinal.add(hmRow);
 			}
-			con.close();
+//			con.close();
 		} catch (Exception e) {
 			System.out.println(e);
 			stmt.close();
 			rs.close();
 			con.close();
 		}finally {
-			con.close();
+			try{if (null !=stmt) stmt.close();}catch(Exception ex) {System.out.println("exception in stmp close"+ex.getMessage());}
+			try{if (null !=rs) rs.close();}catch(Exception ex) {System.out.println("exception in rs close"+ex.getMessage());}
+			try{if (null !=con) con.close();}catch(Exception ex) {System.out.println("exception in con close"+ex.getMessage());}
 		}
 		return hmFinal;
 	}
