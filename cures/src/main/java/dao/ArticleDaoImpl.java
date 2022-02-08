@@ -708,7 +708,7 @@ public class ArticleDaoImpl {
 			String authors_name = (String) objects[23];
 			BigInteger count = (BigInteger) objects[24];
 			int rowno = objects[25] != null ? (int) objects[25] : 0;
-			String medicine_type = (String) objects[26];
+			int medicine_type = objects[26] != null ? (int) objects[26] : 0;
 			
 			
 			
@@ -833,7 +833,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 			String authors_name = (String) objects[23];
 			BigInteger count = (BigInteger) objects[24];
 			int rowno = objects[25] != null ? (int) objects[25] : 0;	
-			String medicine_type = (String) objects[26];
+			int medicine_type = objects[26] != null ? (int) objects[26] : 0;
 			
 			hm.put("article_id", article_id);
 			hm.put("title", title);
