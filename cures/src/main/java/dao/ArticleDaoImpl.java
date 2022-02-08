@@ -669,6 +669,7 @@ public class ArticleDaoImpl {
 				+ " ) as authors_name, "
 				+ " (select count(*) from article) as count ,"
 				+ " (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))) as rowno \r\n" 
+				+ " , `article`.`medicine_type` \r\n"
 				+ " FROM `article` \r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
 				+  search_str + orderby_str
@@ -707,6 +708,8 @@ public class ArticleDaoImpl {
 			String authors_name = (String) objects[23];
 			BigInteger count = (BigInteger) objects[24];
 			int rowno = objects[25] != null ? (int) objects[25] : 0;
+			String medicine_type = (String) objects[26];
+			
 			
 			
 			hm.put("article_id", article_id);
@@ -735,6 +738,7 @@ public class ArticleDaoImpl {
 			hm.put("authors_name", authors_name);
 			hm.put("count", count);
 			hm.put("rowno", rowno);
+			hm.put("medicine_type", medicine_type);
 			
 			hmFinal.add(hm);
 //			System.out.println(hm);
@@ -790,7 +794,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 				+ " ) as authors_name, "
 				+ " (select count(*) from article) as count , "
 				+ " (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))) as rowno \r\n" 
-
+				+ " , `article`.`medicine_type` \r\n"
 				+ " FROM `article` \r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
 				+  search_str + orderby_str
@@ -828,7 +832,8 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 			float over_allrating = (float) (objects[22] != null ? (Float) objects[22] : 0.0);
 			String authors_name = (String) objects[23];
 			BigInteger count = (BigInteger) objects[24];
-			int rowno = objects[25] != null ? (int) objects[25] : 0;			
+			int rowno = objects[25] != null ? (int) objects[25] : 0;	
+			String medicine_type = (String) objects[26];
 			
 			hm.put("article_id", article_id);
 			hm.put("title", title);
@@ -856,6 +861,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 			hm.put("authors_name", authors_name);
 			hm.put("count", count);
 			hm.put("rowno", rowno);
+			hm.put("medicine_type", medicine_type);
 			
 			hmFinal.add(hm);
 //			System.out.println(hm);

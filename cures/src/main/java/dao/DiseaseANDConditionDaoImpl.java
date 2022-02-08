@@ -61,6 +61,7 @@ public class DiseaseANDConditionDaoImpl {
 						+" (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a "
 						+" where a.author_id in (trim(trailing ']' from trim(leading '[' from a.authored_by))) " 
 						+" ) as authors_name "
+						+ ", medicine_type "
 						+ " FROM article a \r\n"
 						+ " inner join disease_condition dc on a.disease_condition_id = dc.dc_id\r\n"
 						+ " inner join languages l on a.language_id = l.language_id\r\n"
@@ -69,8 +70,8 @@ public class DiseaseANDConditionDaoImpl {
 						+ "%'\r\n" + "or title  like '%" + search_str + "%'\r\n" + "or friendly_name  like '%"
 						+ search_str + "%'\r\n" + " or window_title  like '%" + search_str + "%'\r\n"
 						+ " or countryname like '%" + search_str + "%'\r\n" + " or keywords like '%"+ search_str +"%' or lang_name like '%" + search_str
-						+ "%'\r\n" + ")\r\n" + " and pubstatus_id = 3 \r\n" + limit_str + offset_str + "  order by published_date desc \r\n"
-								+ " \r\n" + "");
+						+ "%' " + " or medicine_type like '%" + search_str + "%'" 
+						+ ") " + " and pubstatus_id = 3 " + limit_str + offset_str + "  order by published_date desc " );
 		// needs other condition too but unable to find correct column
 		// ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list searched article count@@@@@@@@@@@@@" + query.getQueryString());
@@ -103,6 +104,7 @@ public class DiseaseANDConditionDaoImpl {
 			String content = (String) objects[22] ;
 			float over_allrating = objects[23] != null ? (float) objects[23] : 0;
 			String authors_name = (String) objects[24];
+			String medicine_type = (String) objects[25];
 
 			hm.put("article_id", article_id);
 			hm.put("title", title);
@@ -129,8 +131,9 @@ public class DiseaseANDConditionDaoImpl {
 			hm.put("content", content);
 			hm.put("over_allrating", over_allrating);
 			hm.put("authors_name", authors_name);
+			hm.put("medicine_type", medicine_type);
 			hmFinal.add(hm);
-			System.out.println(hm);
+			//System.out.println(hm);
 		}
 //		session.getTransaction().commit();   //session.close();
 
