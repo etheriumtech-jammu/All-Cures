@@ -112,6 +112,8 @@ public class Doctors implements Serializable {
 	private Integer hospital_affliated_code;
 	private Long rowno;
 
+	private String website_url;
+
 	public Doctors() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -247,7 +249,7 @@ public class Doctors implements Serializable {
 			String docname_first, String docname_middle, String docname_last, String email, Hospital hospital,
 			Specialties specialties, City city, States states, model.countries countries, Integer primary_spl_code,
 			Integer other_spls_code, Integer sub_spls_code, String about, Integer city_code, Integer state_code,
-			Integer countries_code, Integer hospital_affliated_code, Long rowno) {
+			Integer countries_code, Integer hospital_affliated_code, Long rowno, String website_url) {
 		super();
 		this.docid = docid;
 		this.gender = gender;
@@ -292,6 +294,7 @@ public class Doctors implements Serializable {
 		this.countries_code = countries_code;
 		this.hospital_affliated_code = hospital_affliated_code;
 		this.rowno = rowno;
+		this.website_url = website_url;
 	}
 
 	public int getDocid() {
@@ -629,6 +632,14 @@ public class Doctors implements Serializable {
 
 	public void setRowno(Long rowno) {
 		this.rowno = rowno;
+	}
+	
+	public String getWebsite_url() {
+		return website_url;
+	}
+
+	public void setWebsite_url(String website_url) {
+		this.website_url = website_url;
 	}
 
 }
