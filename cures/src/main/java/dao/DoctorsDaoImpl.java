@@ -147,6 +147,9 @@ public class DoctorsDaoImpl {
 		if (profileMap.containsKey("about")) {
 			updatestr += " about = '" + profileMap.get("about") + "',\r\n";
 		}
+		if (profileMap.containsKey("website_url")) {
+			updatestr += " website_url = '" + profileMap.get("website_url") + "',\r\n";
+		}
 
 		updatestr = updatestr.replaceAll(",$", "");
 		// creating seession factory object
@@ -358,7 +361,7 @@ public class DoctorsDaoImpl {
 						+ "specialties.spl_name, doctors.other_spls, doctors.address1, doctors.address2, city.cityname, "
 						+ "doctors.over_allrating, doctors.email, doctors.waiting_time,  states.statename , countries.countryname, "
 						+ "doctors.primary_spl, doctors.sub_spls, doctors.about, doctors.city, doctors.state, doctors.country_code,doctors.hospital_affliated as hospital_affliated_code, "
-						+ "doctors.rowno "
+						+ "doctors.rowno, doctors.website_url "
 						+ "FROM doctors , hospital , specialties, city, states, countries "
 						+ "WHERE  doctors.hospital_affliated = hospital.hospitalid  and "
 						+ "doctors.primary_spl = specialties.splid and doctors.city = city.citycode and doctors.state = states.codeid and "
