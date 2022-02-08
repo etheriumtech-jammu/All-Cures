@@ -155,6 +155,15 @@ public class ContentActionController extends HttpServlet {
 			promoStage = 0 ; // promoStage < 0 or null ==> No promo applied, promo promoStage = 0 ==> promo applied no paid, promoStage =1 ==> promo applied and paid
 		}
 		Constant.log("Creating Article with promoId:"+promoId, 0);
+		
+		
+		String medicineTypeId = (String) requestJsonMap.get("medicine_type");;
+		int imedicineTypeId = -1; //Negative indicates error
+		if(medicineTypeId != null && !"".equals(medicineTypeId.trim())){
+			imedicineTypeId = Integer.parseInt(medicineTypeId);
+		}
+		Constant.log("Creating Article with imedicineTypeId:"+imedicineTypeId, 0);
+		
 		Constant.log("Saving Content in Dao", 1);
 		String comments= (String) requestJsonMap.get("comments");
 		Constant.log("comments:"+comments, 0);
@@ -177,7 +186,7 @@ public class ContentActionController extends HttpServlet {
 			Constant.log("User object is in session; User is logged In; Adding Article Now", 0);
 			boolean bResult = contentDao.createArticle(iStatus, iLang, iDiscId, iCopyId, authIdS, title, artFrndlyNm, subHead, 
 					content_type, keyword, window_title, null, user.getRegistration_id().intValue(), articlecontent, iDiseaseConditionId, iCountryId,comments,
-					ipromoId,promoStage,type);
+					ipromoId,promoStage,type,imedicineTypeId);
 			if(bResult == true){
 				result = 1;
 			}
