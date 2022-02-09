@@ -1109,7 +1109,8 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 					//String article_location_relative_full = path+"/"+article_location_relative_ending;
 
 					String article_location_relative_image = article_location_relative_ending.replace(".json", ".png");
-
+					//adding Non_secure port for bug fix in Interakt for header image.
+					baseUrl = "http://all-cures.com:8080";
 					File f = new File(art_location.replace(".json", ".png"));
 			        // Checking if the specified file exists or not
 			        if (f.exists()) {
