@@ -112,9 +112,9 @@ public class DashboardController {
 				Article_dc_name artDet = (Article_dc_name) articleDaoImpl.getArticleDetails(id);
 				filename =  artDet.getContent_location().replace(".json", ".png");
 			}else if(type.equalsIgnoreCase("doctor")) {
-				filename = path+"doctors/"+id+".png";
+				filename = path+"/doctors/"+id+".png";
 			}else if(type.equalsIgnoreCase("patient")) {
-				filename = path+"patients/"+id+".png";
+				filename = path+"/patients/"+id+".png";
 			}
 			else {
 				return 0;
