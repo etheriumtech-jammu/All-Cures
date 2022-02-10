@@ -113,6 +113,8 @@ public class DashboardController {
 				filename =  artDet.getContent_location().replace(".json", ".png");
 			}else if(type.equalsIgnoreCase("doctor")) {
 				filename = path+"doctors/"+id+".png";
+			}else if(type.equalsIgnoreCase("patient")) {
+				filename = path+"patients/"+id+".png";
 			}
 			else {
 				return 0;
