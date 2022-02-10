@@ -156,12 +156,8 @@ public class ContentActionController extends HttpServlet {
 		}
 		Constant.log("Creating Article with promoId:"+promoId, 0);
 		
-		
-		String medicineTypeId = (String) requestJsonMap.get("medicine_type");;
-		int imedicineTypeId = -1; //Negative indicates error
-		if(medicineTypeId != null && !"".equals(medicineTypeId.trim())){
-			imedicineTypeId = Integer.parseInt(medicineTypeId);
-		}
+		int imedicineTypeId= requestJsonMap.get("medicine_type") !=null ? (int) requestJsonMap.get("medicine_type") : -1;//-1 By Default
+
 		Constant.log("Creating Article with imedicineTypeId:"+imedicineTypeId, 0);
 		
 		Constant.log("Saving Content in Dao", 1);
