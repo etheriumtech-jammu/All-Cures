@@ -104,7 +104,7 @@ public class DiseaseANDConditionDaoImpl {
 			String content = (String) objects[22] ;
 			float over_allrating = objects[23] != null ? (float) objects[23] : 0;
 			String authors_name = (String) objects[24];
-			String medicine_type = (String) objects[25];
+			int medicine_type = objects[25] != null ? (int) objects[25] : 0;
 
 			hm.put("article_id", article_id);
 			hm.put("title", title);
