@@ -1124,17 +1124,17 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 						article_location_relative_full =  baseUrl + "/"+cures_articleimages+"/" + article_location_relative_image;
 						System.out.println(article_location_relative_full);
 			        }
-			        String author_medicine_type = " ";
+			        String author_medicine_type = "";
 			        String disease_name = "";
 			        if (null != art.getAuthored_by() && !art.getAuthored_by().equals("[]") && !art.getAuthored_by().equals("") 
 			        		&& art.getAuthored_by() !="7" && !art.getAuthors_name().equals("All Cures Team") ) {
-			        	author_medicine_type +=" *Author*: "+art.getAuthors_name();
+			        	author_medicine_type +="*Author*: "+art.getAuthors_name()+" ";
 			        }
 			        if (null != art.getMedicine_type() && !art.getMedicine_type().equals("[]") && !art.getMedicine_type().equals("")) {
-			        	author_medicine_type +=" *Type*: "+art.getMedicine_type_name();
+			        	author_medicine_type +="*Type*: "+art.getMedicine_type_name();
 			        }
 			        if (null != art.getDc_name() && !art.getDc_name().equals("")) {
-			        	disease_name ="'_"+art.getDc_name()+"_'";
+			        	disease_name ="_'"+art.getDc_name()+"'_";
 			        }
 //			        if (null != art.getContent() && !art.getContent().equals("")) {
 //			        	author_medicine_type += "   "+art.getContent();
