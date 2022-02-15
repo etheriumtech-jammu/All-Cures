@@ -176,8 +176,8 @@ public class WAPICommon {
 			String query = 
 					"select user_id, nl_subscription_disease_id, nl_start_date, nl_sub_type, CONCAT(\"\",mobile), nl_subscription_cures_id, active, nl_end_date, country_code, count(*) as count from newsletter "
 					+ " where " + whereStr 
-					+ " group by country_code, mobile,nl_sub_type ,nl_subscription_disease_id, nl_subscription_cures_id "
-					+ " order by country_code, mobile,nl_sub_type ,nl_subscription_disease_id, nl_subscription_cures_id";
+					+ " group by country_code, mobile " //,nl_sub_type ,nl_subscription_disease_id, nl_subscription_cures_id "
+					+ " order by country_code, mobile " ; //,nl_sub_type ,nl_subscription_disease_id, nl_subscription_cures_id";
 			
 			System.out.println("For article#"+article_id+", SQL for fetchDatabaseResultsForNewsletterByArticle "+query);
 			rs = stmt.executeQuery(query);

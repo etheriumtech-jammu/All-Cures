@@ -4,11 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,13 +49,15 @@ public class WhatsAPITemplateMessage {
 		// String event = "DISEASESANDCONDITIONS";
 		// String event = "DISEASESANDCONDITIONS";
 		String template_name = params[0];// dynamic_disease_template_kb
-		//String countryCode = params[2];
+		// String countryCode = params[2];
 		String mobile = params[3];
 		String header1_imgpath = params[4];
 		String BV1_art_id = params[5];
 		String BV2_dc_name = params[1];
-		String BV3_desc = params[6];
+		String BV3_desc = params[6];//actually link of article
 		String countryCode = params[7];
+		String author_medicine_type = params[8];
+		String disease_name = params[9];
 		// String mobile = "9167378338";
 //		final String POST_PARAMS = "{\"phoneNumber\": \"" + mobile + "\",\"countryCode\":\"" + countryCode
 //				+ "\",\"event\": \"" + event + "\",\"traits\": " + traits + "}";
@@ -70,18 +69,19 @@ public class WhatsAPITemplateMessage {
 				BV2_dc_name = par_1;
 				BV3_desc = BV3_desc.replace("#", BV2_dc_name);
 				WhatsAPITemplateMessage.runInteraktAPI(template_name, BV2_dc_name, countryCode, mobile, header1_imgpath,
-						BV1_art_id, BV3_desc);
+						BV1_art_id, BV3_desc, author_medicine_type, disease_name);
 			}
 
 		} else {
 			WhatsAPITemplateMessage.runInteraktAPI(template_name, BV2_dc_name, countryCode, mobile, header1_imgpath,
-					BV1_art_id, BV3_desc);
+					BV1_art_id, BV3_desc, author_medicine_type, disease_name);
 		}
 	}
 
 	public static void runInteraktAPI(String template_name, String BV2_dc_name, String countryCode, String mobile,
-		String header1_imgpath, String BV1_art_id, String BV3_desc) throws IOException {
-		
+			String header1_imgpath, String BV1_art_id, String BV3_desc, String author_medicine_type,
+			String disease_name) throws IOException {
+
 		String fileProperties = "whatsapi.properties";
 		Properties prop = new WAPICommon().readPropertiesFile(fileProperties);
 		System.out.println("URL_API_TEMPLATES: " + prop.getProperty("URL_API_TEMPLATES"));
@@ -90,11 +90,16 @@ public class WhatsAPITemplateMessage {
 //				+ " \"type\": \"Template\"," + " \"template\": {\"name\": \"" + template_name
 //				+ "\",\"languageCode\": \"en\"," + " \"headerValues\": [\"" + header1_imgpath + "\"],"
 //				+ " \"bodyValues\": [\"" + BV1_art_id + "\",\"" + BV2_dc_name + "\",\"" + BV3_desc + "\"]" + "}}";
-		
+
+//		final String POST_PARAMS = "{\"countryCode\": \"" + countryCode + "\", \"phoneNumber\": \"" + mobile + "\","
+//				+ " \"type\": \"Template\"," + " \"template\": {\"name\": \"" + template_name
+//				+ "\",\"languageCode\": \"en\"," + " \"headerValues\": [\"" + header1_imgpath + "\"],"
+//				+ " \"bodyValues\": [\"Subscriber\",\"" +  BV3_desc + "\"]" + "}}";
 		final String POST_PARAMS = "{\"countryCode\": \"" + countryCode + "\", \"phoneNumber\": \"" + mobile + "\","
 				+ " \"type\": \"Template\"," + " \"template\": {\"name\": \"" + template_name
 				+ "\",\"languageCode\": \"en\"," + " \"headerValues\": [\"" + header1_imgpath + "\"],"
-				+ " \"bodyValues\": [\"Subscriber\",\"" +  BV3_desc + "\"]" + "}}";
+				+ " \"bodyValues\": [ \"" + disease_name + "\", \"" + BV3_desc + "\",\"" + author_medicine_type + "\"]"
+				+ "}}";
 
 		System.out.println(POST_PARAMS);
 //		URL obj = new URL("https://api.interakt.ai/v1/public/track/events/");
@@ -131,24 +136,28 @@ public class WhatsAPITemplateMessage {
 		}
 	}
 
-	public static void POSTRequestTrackEventsByArticleId(String art_title, int article_id, String type, int dc_id, String article_location_relative_image) throws SQLException {
+	public static void POSTRequestTrackEventsByArticleId(String art_title, int article_id, String type, int dc_id,
+			String article_location_relative_image, String author_medicine_type, String disease_name)
+			throws SQLException {
 		ArrayList NSData = new WAPICommon().fetchDatabaseResultsForNewsletterByArticle(article_id, type, dc_id);
 		// @TODO remove duplicates and run for all CSV disease and cures id's & all for
 		// sub_type =1
 		String fileProperties = "whatsapi.properties";
-		//set defalut template name
-		String templateName = "prod24decimageandlink";
+		// set defalut template name
+		String templateName = "15febcuresdetails";
 		try {
 			Properties prop = new WAPICommon().readPropertiesFile(fileProperties);
-			templateName = prop.getProperty("subscriber_template_name"); 
+			templateName = prop.getProperty("subscriber_template_name");
 		} catch (IOException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
 		for (int i = 0; i < NSData.size(); i++) {
-			String[] params = new String[8];
-			//params[0] = "dynamic_disease_template_kb";// "DAILY_NL_DISEASE_IDS";//"NEW_ARTICLE_PUBLISHED";
-			params[0] = templateName;//"prod17janimageandlink";//"prod24decimageandlink";// "DAILY_NL_DISEASE_IDS";//"NEW_ARTICLE_PUBLISHED";
+			String[] params = new String[10];
+			// params[0] = "dynamic_disease_template_kb";//
+			// "DAILY_NL_DISEASE_IDS";//"NEW_ARTICLE_PUBLISHED";
+			params[0] = templateName;// "prod17janimageandlink";//"prod24decimageandlink";//
+										// "DAILY_NL_DISEASE_IDS";//"NEW_ARTICLE_PUBLISHED";
 			if ((int) ((HashMap) NSData.get(i)).get("nl_sub_type") == 1) {
 				params[1] = "All Disease Symptoms and Cures";// all diseased cures subscribed
 			} else if (type.contains("1") || type.contains("3")) {
@@ -160,10 +169,12 @@ public class WhatsAPITemplateMessage {
 			params[4] = article_location_relative_image; // article_image
 //			params[4] = "https://etheriumtech.com/images/illustrations/service-3.jpg"; // DC_NAMES
 			params[5] = "" + article_id; // dc name
-			//params[6] = "Also New link pased here dynamically https://all-cures.com/cure/"+article_id+" ... Here goes the decription of the disease #" + params[1];// detailing
+			// params[6] = "Also New link pased here dynamically
+			// https://all-cures.com/cure/"+article_id+" ... Here goes the decription of the
+			// disease #" + params[1];// detailing
 //			params[6] = "https://all-cures.com/cure/"+URLEncoder.encode(art_title,"UTF-8");
-			params[6] = "https://all-cures.com/cure/"+article_id+"-"+art_title.replaceAll(" ", "-");
-			params[7] = "+"+(Integer) ((HashMap) NSData.get(i)).get("country_code"); // +countryCode
+			params[6] = "https://all-cures.com/cure/" + article_id + "-" + art_title.replaceAll(" ", "-");
+			params[7] = "+" + (Integer) ((HashMap) NSData.get(i)).get("country_code"); // +countryCode
 
 			// }
 //			params[0] = "+91";// (String) ((HashMap) NSData.get(i)).get("mobile");//countryCode
@@ -171,6 +182,9 @@ public class WhatsAPITemplateMessage {
 //			params[2] = (null != (String) (((HashMap) NSData.get(i)).get("nl_sub_type") + ""))
 //					? (String) (((HashMap) NSData.get(i)).get("nl_sub_type") + "")
 //					: "";
+
+			params[8] = author_medicine_type;
+			params[9] = disease_name;
 
 			try {
 				WhatsAPITemplateMessage.POSTRequestTemplateMessage(params);
