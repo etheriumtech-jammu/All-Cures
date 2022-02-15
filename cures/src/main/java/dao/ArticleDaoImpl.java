@@ -1127,7 +1127,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 			        String author_medicine_type = " ";
 			        String disease_name = "";
 			        if (null != art.getAuthored_by() && !art.getAuthored_by().equals("[]") && !art.getAuthored_by().equals("") 
-			        		&& art.getAuthored_by() !="7" && art.getAuthors_name().equals("All Cures Team") ) {
+			        		&& art.getAuthored_by() !="7" && !art.getAuthors_name().equals("All Cures Team") ) {
 			        	author_medicine_type +=" *Author*: "+art.getAuthors_name();
 			        }
 			        if (null != art.getMedicine_type() && !art.getMedicine_type().equals("[]") && !art.getMedicine_type().equals("")) {
