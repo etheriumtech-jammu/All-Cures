@@ -28,7 +28,7 @@ public class ContentDaoImpl {
 	public boolean createArticle(Integer pubStatus, Integer lang, Integer disclaimerId, Integer copyrightId, String authById, String title, String frndlyName, 
 			String subhead, String contentTypeId, String keywords, String windowTitle, 
 			String contentLocation, Integer reg_id, String articleContent, Integer diseaseConditionId, Integer countryId, String comments, Integer promoId, Integer promoStage
-			,String type, Integer imedicineTypeId) {
+			,String type, Integer imedicineTypeId,String featured_article) {
 			
 		boolean artCrtStatus = false;		
 		Constant.log("Saving Content in DB", 1);
@@ -58,6 +58,7 @@ public class ContentDaoImpl {
 			if(null != frndlyName) article.setFriendly_name(frndlyName);
 			if(null != subhead) article.setSubheading(subhead);
 			if(null != contentTypeId) article.setContent_type(contentTypeId);
+			if(null != featured_article) article.setFeatured_article(featured_article);
 			if(null != keywords) article.setKeywords(keywords);
 			if(null != windowTitle) article.setWindow_title(windowTitle);
 			if(null != imedicineTypeId && imedicineTypeId != -1 ) article.setMedicine_type(imedicineTypeId);

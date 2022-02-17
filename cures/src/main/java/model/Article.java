@@ -86,6 +86,9 @@ public class Article implements Serializable{
 	
 	@Column(name = "type")
 	private String type;
+	
+	@Column(name = "featured_article")
+	private String featured_article;
 		
 	/*
 	@OneToOne(targetEntity = Author.class)
@@ -146,7 +149,7 @@ public class Article implements Serializable{
 
 	public Article(Integer article_id, String title, String friendly_name, String subheading, String content_type,
 			String keywords, String window_title, String content_location, Integer lang_id, Integer copyright_file_id, Integer disclaimer_file_id,
-			Integer pubStatus, String type, Integer imedicineTypeId){
+			Integer pubStatus, String type, Integer imedicineTypeId, String featured_article){
 		super();
 		this.article_id = article_id;
 		this.title = title;
@@ -158,6 +161,7 @@ public class Article implements Serializable{
 		this.content_location = content_location;
 		this.type = type;
 		this.medicine_type = imedicineTypeId;
+		this.featured_article = featured_article;
 		/*
 		this.author_firstname = author_firstname;
 		this.author_middlename = author_middlename;
@@ -175,7 +179,7 @@ public class Article implements Serializable{
 			String keywords, String window_title, String content_location, String authored_by, Integer published_by,
 			Integer edited_by, Integer copyright_id, Integer disclaimer_id, Date create_date, Date published_date,
 			Integer pubstatus_id, Integer language_id, Integer copyright_file_loc_id, Integer disclaimer_file_loc_id, Integer country_id, Integer disease_condition_id,
-			Integer promoId, Integer promoStage, String type, Integer imedicineTypeId) {
+			Integer promoId, Integer promoStage, String type, Integer imedicineTypeId,String featured_article) {
 		super();
 		this.article_id = article_id;
 		this.title = title;
@@ -200,6 +204,7 @@ public class Article implements Serializable{
 		this.promo_stage = promoStage;
 		this.type = type;
 		this.medicine_type = imedicineTypeId;
+		this.featured_article = featured_article;
 		/*
 		this.copyright_file_loc = copyright_file_loc_id;
 		this.disclaimer_file_loc = disclaimer_file_loc_id;
@@ -477,6 +482,14 @@ public class Article implements Serializable{
 
 	public void setMedicine_type(Integer medicine_type) {
 		this.medicine_type = medicine_type;
+	}
+
+	public String getFeatured_article() {
+		return featured_article;
+	}
+
+	public void setFeatured_article(String featured_article) {
+		this.featured_article = featured_article;
 	}
 
 /*

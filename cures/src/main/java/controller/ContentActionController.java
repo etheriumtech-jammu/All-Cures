@@ -100,7 +100,10 @@ public class ContentActionController extends HttpServlet {
 		
 		String type=(String) ""+requestJsonMap.get("type");
 		Constant.log("Creating Article with Type:"+type, 0);
-
+		
+		String featured_article=(String) ""+requestJsonMap.get("featured_article");
+		Constant.log("Creating Article with FeaturedArticle:"+featured_article, 0);
+		
 		String status= (String) ""+ requestJsonMap.get("articleStatus");
 		System.out.println("Test articleStatus Val"+status);
 		int iStatus = 1; //WIP By Default
@@ -176,13 +179,13 @@ public class ContentActionController extends HttpServlet {
 				if(countMatchArticles.size()>0) {
 					Constant.log("Default Article for Disease_condition_id already present", 0); 
 					return -2;
-				}
+				} 
 			}
 			//TODO: Remove this hardcoding	
 			Constant.log("User object is in session; User is logged In; Adding Article Now", 0);
 			boolean bResult = contentDao.createArticle(iStatus, iLang, iDiscId, iCopyId, authIdS, title, artFrndlyNm, subHead, 
 					content_type, keyword, window_title, null, user.getRegistration_id().intValue(), articlecontent, iDiseaseConditionId, iCountryId,comments,
-					ipromoId,promoStage,type,imedicineTypeId);
+					ipromoId,promoStage,type,imedicineTypeId,featured_article);
 			if(bResult == true){
 				result = 1;
 			}
@@ -207,6 +210,7 @@ public class ContentActionController extends HttpServlet {
 		String articleContent= request.getParameter("articleContent");
 		String content_loc= request.getParameter("content_loc");
 		String email= request.getParameter("email");
+		String featured_article= request.getParameter("featured_article");
 		//String address= request.getParameter("address");
 		//String no = request.getParameter("t_number");		
 		String subhead="";

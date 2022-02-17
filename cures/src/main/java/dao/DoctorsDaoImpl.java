@@ -421,6 +421,88 @@ public class DoctorsDaoImpl {
 		}
 //		session.getTransaction().commit();   //session.close();
 		return doc;
+	}	
+	
+	public static Doctors getAllDoctorsInfoByDocId(int docid) {
+		// creating seession factory object
+		Session session = HibernateUtil.buildSessionFactory();
+		Constant.log("In DoctorsDAO, Getting Doctors Info For:" + docid, 1);
+
+		// creating session object
+		//Session session = factory;
+
+		// creating transaction object
+//		session.beginTransaction();
+		// String HQL= "from doctors INNER JOIN FETCH hospital.hospital_affliated
+		// where.";
+		Query query = session
+				.createNativeQuery("SELECT doctors.docid,doctors.prefix, doctors.docname_first,doctors.docname_middle, "
+						+ "doctors.docname_last, "
+						+ "doctors.gender, doctors.edu_training, hospital.hospital_affliated, doctors.board_certifcate, doctors.membership, doctors.awards, "
+						+ "doctors.availibity_for_appointment, doctors.doctor_location, doctors.telephone_nos, "
+						+ "specialties.spl_name, doctors.other_spls, doctors.address1, doctors.address2, city.cityname, "
+						+ "doctors.over_allrating, doctors.email, doctors.waiting_time,  states.statename , countries.countryname, "
+						+ "doctors.primary_spl, doctors.sub_spls, doctors.about, doctors.city, doctors.state, doctors.country_code,doctors.hospital_affliated as hospital_affliated_code, "
+						+ "doctors.rowno, doctors.website_url "
+						+ "FROM doctors , hospital , specialties, city, states, countries "
+						+ "WHERE  doctors.hospital_affliated = hospital.hospitalid  and "
+						+ "doctors.primary_spl = specialties.splid and doctors.city = city.citycode and doctors.state = states.codeid and "
+						+ "doctors.country_code = countries.countrycodeid and " + "docid=" + docid + ";");
+
+		// This should return in only 1 doctor so why the List?
+		// We should be using query.getSingleResult()
+		List<Doctors> docsList = (List<Doctors>) query.getResultList();
+		Doctors doc = null;
+		Iterator itr = docsList.iterator();
+		Constant.log("Executed Query and Got:" + docsList.size() + " doctors back", 1);
+
+		while (itr.hasNext()) {
+			Object[] obj = (Object[]) itr.next();
+			{
+				doc = new Doctors();
+				//doc.setDocid((Integer) obj[0]);
+				doc.setDocid(obj[0] != null ? (Integer) obj[0] : 0);
+				Constant.log("--Iterating DocId:" + doc.getDocid(), 1);
+				doc.setPrefix((String) obj[1] != null ? (String) obj[1] : "");
+				doc.setDocname_first((String) obj[2] != null ? (String) obj[2] : "");
+				doc.setDocname_middle(obj[3] != null ? (String) obj[3] : "");
+				doc.setDocname_last(obj[4] != null ? (String) obj[4] : "");
+				doc.setGender(obj[5] != null ? (Integer) obj[5] : 0);
+				doc.setEdu_training(obj[6] != null ? (String) obj[6] : "");
+				doc.setHospital_affliated(obj[7] != null ? (String) obj[7] : "");
+				doc.setBoard_certifcate(obj[8] != null ? (String) obj[8] : "");
+				doc.setMembership(obj[9] != null ? (String) obj[9] : "");
+				doc.setAwards(obj[10] != null ? (String) obj[10] : "");
+				doc.setAvailibity_for_appointment(obj[11] != null ? (Date) obj[11] : null);
+				doc.setDoctor_location(obj[12] != null ? (String) obj[12] : "");
+				doc.setTelephone_nos(obj[13] != null ? (String) obj[13] : "");
+				doc.setPrimary_spl(obj[14] != null ? (String) obj[14] : "");
+				doc.setOther_spls(obj[15] != null ? (String) obj[15] : "");
+				doc.setAddress1(obj[16] != null ? (String) obj[16] : "");
+				doc.setAddress2(obj[17] != null ? (String) obj[17] : "");
+				doc.setCityname(obj[18] != null ? (String) obj[18] : "");
+				float overall = (float) (obj[19] != null ? (Float) obj[19] : 0.0);
+				doc.setOver_allrating(overall);
+				doc.setEmail(obj[20] != null ? (String) obj[20] : "");
+				doc.setWaiting_time(obj[21] != null ? (Integer) obj[21] : 0);
+				doc.setStatename(obj[22] != null ? (String) obj[22] : "");
+				doc.setCountry_code(obj[23] != null ? (String) obj[23] : "");
+
+				doc.setPrimary_spl_code(obj[24] != null ? (Integer) obj[24] : 0);
+				// doc.setOther_spls_code(obj[25] != null ? (Integer) obj[25] : 0);
+				doc.setSub_spls_code(obj[25] != null ? (Integer) obj[25] : 0);
+				doc.setAbout(obj[26] != null ? (String) obj[26] : "");
+				doc.setCity_code(obj[27] != null ? (Integer) obj[27] : 0);
+				doc.setState_code(obj[28] != null ? (Integer) obj[28] : 0);
+				doc.setCountries_code(obj[29] != null ? (Integer) obj[29] : 0);
+				doc.setHospital_affliated_code(obj[30] != null ? (Integer) obj[30] : 0);
+				doc.setRowno((long) (obj[31] != null ? (Integer) obj[31] : 0));
+				doc.setWebsite_url((String) (obj[32]));
+			}
+			Constant.log("--Returning from DoctorsDao, Doc Object for ID:" + doc.getDocid() +" rowno:" + doc.getRowno(), 1);
+		}
+//		session.getTransaction().commit();   //session.close();
+		return doc;
 	}
 
 	public static void saveDoctors(Integer docid, String f_name, String l_name, String email) {

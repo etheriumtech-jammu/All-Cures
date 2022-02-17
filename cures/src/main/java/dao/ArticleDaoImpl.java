@@ -772,11 +772,12 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 			orderby_str = " order by  `article`.`" + orderArr[0] +"` "+orderArr[1];
 		}
 		String search_str = "";
-		if (null != searchStr) {
-//			search_str = " where ";
-		search_str = " where article_id in ("+searchStr.split(":")[1]+")";
-		}
-		
+//		if (null != searchStr) {
+////			search_str = " where ";
+//		search_str = " where article_id in ("+searchStr.split(":")[1]+")";
+//		}
+		search_str = " where featured_article ='[1]'";
+
 		Query query = session.createNativeQuery("SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
 				+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
 				+ "    `article`.`content_type`,\r\n" + "    `article`.`keywords`,\r\n"
@@ -1017,6 +1018,9 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 		}
 		if (articleMap.containsKey("medicine_type")) {
 			updatestr += "`medicine_type` = " + articleMap.get("medicine_type") + ",\r\n";
+		}
+		if (articleMap.containsKey("featured_article")) {
+			updatestr += "`featured_article` = " + articleMap.get("featured_article") + ",\r\n";
 		}
 		/*
 		 * if (articleMap.containsKey("articleContent")) { updatestr += "`content` = '"
