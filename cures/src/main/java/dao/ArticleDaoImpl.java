@@ -233,7 +233,9 @@ public class ArticleDaoImpl {
 				+ " (select reg_type from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  "
 				+ "		 ) as reg_type, "
 		        + "         (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  "
-		        + "		 ) as reg_doc_pat_id "
+		        + "		 ) as reg_doc_pat_id ,"
+		        + " `article`.`medicine_type` ,"
+		        + "(select name from medicinetype m where m.id = `article`.`medicine_type`) as medicine_type_name"
 		        
 				+ " FROM `article`\r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
@@ -332,6 +334,8 @@ public class ArticleDaoImpl {
 			article.setAuthors_name((String) obj[24]);
 			article.setReg_type(""+(Integer) obj[25]);
 			article.setReg_doc_pat_id(""+(Integer) obj[26]);
+			article.setMedicine_type((Integer) obj[27]);
+			article.setMedicine_type_name((String) obj[28]);
 		}
 //		session.getTransaction().commit();   
 		//session.close();
@@ -1124,9 +1128,24 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 						article_location_relative_full =  baseUrl + "/"+cures_articleimages+"/" + article_location_relative_image;
 						System.out.println(article_location_relative_full);
 			        }
+			        String author_medicine_type = "";
+			        String disease_name = "";
+			        if (null != art.getAuthored_by() && !art.getAuthored_by().equals("[]") && !art.getAuthored_by().equals("") 
+			        		&& art.getAuthored_by() !="7" && !art.getAuthors_name().equals("All Cures Team") ) {
+			        	author_medicine_type +="*Author*: "+art.getAuthors_name()+" ";
+			        }
+			        if (null != art.getMedicine_type() && !art.getMedicine_type().equals("[]") && !art.getMedicine_type().equals("")) {
+			        	author_medicine_type +="*Type*: "+art.getMedicine_type_name();
+			        }
+			        if (null != art.getDc_name() && !art.getDc_name().equals("")) {
+			        	disease_name ="_'"+art.getDc_name()+"'_";
+			        }
+//			        if (null != art.getContent() && !art.getContent().equals("")) {
+//			        	author_medicine_type += "   "+art.getContent();
+//			        }
 					if (articleMap.containsKey("update_subscribers") && (Boolean) articleMap.get("update_subscribers")) {
 	//					WhatsAPITrackEvents.POSTRequestTrackEventsByArticleId(article_id);
-						WhatsAPITemplateMessage.POSTRequestTrackEventsByArticleId(art.getTitle(), article_id, type, art.getDisease_condition_id(), article_location_relative_full);
+						WhatsAPITemplateMessage.POSTRequestTrackEventsByArticleId(art.getTitle(), article_id, type, art.getDisease_condition_id(), article_location_relative_full, author_medicine_type, disease_name);
 						System.out.println("Subscription WhatsApp Message sent.");
 					}
 				}

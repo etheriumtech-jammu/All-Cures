@@ -81,6 +81,9 @@ public class Article_dc_name implements Serializable {
 	
 	@Column(name = "over_allrating")
 	private Float over_allrating;
+
+	@Column(name = "medicine_type")
+	private Integer medicine_type;
 	
 	
 	private String authors_name;
@@ -88,6 +91,9 @@ public class Article_dc_name implements Serializable {
 	private String reg_doc_pat_id;
 	
 	private String content_small;
+	
+	private String medicine_type_name;
+
 
 	
 
@@ -432,6 +438,22 @@ public class Article_dc_name implements Serializable {
 
 	public void setContent_small(String content_small) {
 		this.content_small = content_small;
+	}
+	
+	public Integer getMedicine_type() {
+		return medicine_type;
+	}
+
+	public void setMedicine_type(Integer medicine_type) {
+		this.medicine_type = medicine_type;
+	}
+
+	public String getMedicine_type_name() {
+		return medicine_type_name;
+	}
+
+	public void setMedicine_type_name(String medicine_type_name) {
+		this.medicine_type_name = medicine_type_name;
 	}
 
 	/*
