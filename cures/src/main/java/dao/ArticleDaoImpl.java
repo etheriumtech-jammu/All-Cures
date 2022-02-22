@@ -227,7 +227,7 @@ public class ArticleDaoImpl {
 				+ "    `article`.`over_allrating`,\r\n"
 				
 				+ " (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a \r\n"
-				+ ",featured_article"
+				
 				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
 				+ " ) as authors_name ,"
 				
@@ -237,7 +237,7 @@ public class ArticleDaoImpl {
 		        + "		 ) as reg_doc_pat_id ,"
 		        + " `article`.`medicine_type` ,"
 		        + "(select name from medicinetype m where m.id = `article`.`medicine_type`) as medicine_type_name"
-		        
+		        + ",featured_article"
 				+ " FROM `article`\r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
 				+ " where article_id =  " + article_id + ";");
