@@ -85,7 +85,17 @@ public class Article_dc_name implements Serializable {
 	@Column(name = "medicine_type")
 	private Integer medicine_type;
 	
+	@Column(name = "featured_article")
+	private String featured_article;
 	
+	public String getFeatured_article() {
+		return featured_article;
+	}
+
+	public void setFeatured_article(String featured_article) {
+		this.featured_article = featured_article;
+	}
+
 	private String authors_name;
 	private String reg_type;
 	private String reg_doc_pat_id;

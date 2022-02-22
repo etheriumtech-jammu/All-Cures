@@ -227,6 +227,7 @@ public class ArticleDaoImpl {
 				+ "    `article`.`over_allrating`,\r\n"
 				
 				+ " (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a \r\n"
+				+ ",featured_article"
 				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
 				+ " ) as authors_name ,"
 				
@@ -335,7 +336,7 @@ public class ArticleDaoImpl {
 			article.setReg_type(""+(Integer) obj[25]);
 			article.setReg_doc_pat_id(""+(Integer) obj[26]);
 			article.setMedicine_type((Integer) obj[27]);
-			article.setMedicine_type_name((String) obj[28]);
+			article.setFeatured_article((String) obj[28]);
 		}
 //		session.getTransaction().commit();   
 		//session.close();
