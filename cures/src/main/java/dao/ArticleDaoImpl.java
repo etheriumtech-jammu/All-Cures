@@ -1023,9 +1023,14 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 		if (articleMap.containsKey("medicine_type")) {
 			updatestr += "`medicine_type` = " + articleMap.get("medicine_type") + ",\r\n";
 		}
+//		if (articleMap.containsKey("featured_article")) {
+//			updatestr += "`featured_article` = '" + articleMap.get("featured_article") + "',\r\n";
+//		}
+		
 		if (articleMap.containsKey("featured_article")) {
-			updatestr += "`featured_article` = " + articleMap.get("featured_article") + ",\r\n";
+			updatestr += "`featured_article` = '" + articleMap.get("featured_article") + "',\r\n";
 		}
+		
 		/*
 		 * if (articleMap.containsKey("articleContent")) { updatestr += "`content` = '"
 		 * + articleMap.get("articleContent") + "',\r\n"; }
