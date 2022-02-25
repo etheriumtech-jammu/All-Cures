@@ -1,18 +1,16 @@
 package model;
 
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import util.Constant;
-
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;;
+import util.Constant;;
 
 
 @Entity
@@ -33,8 +31,8 @@ public class Registration implements Serializable {
 	 @Column(name = Constant.REGISTRATION_TYPE)
 	private Integer registration_type;
 	 @Column(name = Constant.ACCEPTANCE_CONDITION)
-	
 	private Boolean acceptance_condition;
+	 
 	 @Column(name = Constant.PRIVACY_POLICY)
 	private Boolean privacy_policy;
 	@Column(name = Constant.ACCOUNT_STATE)
@@ -154,12 +152,7 @@ public class Registration implements Serializable {
 	public void setLast_login_datatime(Date last_login_datatime) {
 		this.last_login_datatime = last_login_datatime;
 	}
-	public Boolean getPrivacy_policy() {
-		return privacy_policy;
-	}
-	public void setPrivacy_policy(Boolean privacy_policy) {
-		this.privacy_policy = privacy_policy;
-	}
+	
 	public Long getRowno() {
 		return rowno;
 	}
