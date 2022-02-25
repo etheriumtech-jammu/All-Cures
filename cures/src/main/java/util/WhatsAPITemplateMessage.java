@@ -144,7 +144,7 @@ public class WhatsAPITemplateMessage {
 		// sub_type =1
 		String fileProperties = "whatsapi.properties";
 		// set defalut template name
-		String templateName = "16feblinkonly";
+		String templateName = "25feballcures";
 		try {
 			Properties prop = new WAPICommon().readPropertiesFile(fileProperties);
 			templateName = prop.getProperty("subscriber_template_name");
@@ -173,7 +173,7 @@ public class WhatsAPITemplateMessage {
 			// https://all-cures.com/cure/"+article_id+" ... Here goes the decription of the
 			// disease #" + params[1];// detailing
 //			params[6] = "https://all-cures.com/cure/"+URLEncoder.encode(art_title,"UTF-8");
-			params[6] = "cure/" + article_id + "-" + art_title.replaceAll(" ", "-");
+			params[6] = article_id + "-" + art_title.replaceAll(" ", "-");
 			params[7] = "+" + (Integer) ((HashMap) NSData.get(i)).get("country_code"); // +countryCode
 
 			// }
