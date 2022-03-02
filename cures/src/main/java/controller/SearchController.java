@@ -49,7 +49,7 @@ public class SearchController {
 	
 	@RequestMapping(value = "/medicinetype/{medicine_type}", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List listDataFromMatchingString(@PathVariable Integer medicine_type)  {
-		return diseaseANDconditionDaoImpl.getAllarticlebymedicinetypeList(medicine_type);
+		return diseaseANDconditionDaoImpl.getAllarticlebymedicinetypeList(medicine_type); 
 	}
 	
 	@RequestMapping(value = "/hierarchy/{parent_id}", produces = "application/json", method = RequestMethod.GET)

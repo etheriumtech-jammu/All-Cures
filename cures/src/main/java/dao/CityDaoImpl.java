@@ -97,7 +97,7 @@ public class CityDaoImpl {
 		// creating transaction object
 //		session.beginTransaction();
 		int ret = 0;
-		Query query = session.createNativeQuery("select *   from newsletter where mobile="+mobile+";");
+		Query query = session.createNativeQuery("select * from newsletter where mobile="+mobile+";");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		if(null != results)  ret = results.size();
 		return ret;//)

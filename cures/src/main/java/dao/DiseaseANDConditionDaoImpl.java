@@ -142,7 +142,6 @@ public class DiseaseANDConditionDaoImpl {
 
 	
 	public static List getAllarticlebymedicinetypeList(Integer medicine_type ) {
-
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
 
