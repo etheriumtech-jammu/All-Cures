@@ -22,4 +22,8 @@ public class ProfileController {
 		return registrationDaoImpl.findUserByRegId(id);
 	}
 
+	
+	
+	
 }
+
