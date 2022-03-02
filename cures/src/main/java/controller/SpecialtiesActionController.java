@@ -67,7 +67,7 @@ public class SpecialtiesActionController extends HttpServlet {
 		if (cachesplString.contains(ct)) {
 			splArray = spl.findAllSpecialties();
 			// JsonArray jsArray = new JsonArray(countryArray.toArray());
-			System.out.println("list*****************" + splArray);
+			//System.out.println("list*****************" + splArray);
 			String arrayToString = splArray.toString(); // convert array to
 														// string
 			// JSONObject stringToJsonObject =new JSONObject().put
@@ -81,7 +81,7 @@ public class SpecialtiesActionController extends HttpServlet {
 			// out.write(json);
 			response.getWriter().write(jsondata);
 
-			System.out.println("JSON data from database---->" + jsondata);
+			//System.out.println("JSON data from database---->" + jsondata);
 		} else {
 			cachesplArray.addAll((Collection<? extends String>) mcc.get(Constant.SPL));
 			response.setContentType("application/json");
@@ -95,7 +95,7 @@ public class SpecialtiesActionController extends HttpServlet {
 			// out.write(json);
 			response.getWriter().write(jsondata);
 
-			System.out.println("JSON data cache---->" + jsondata);
+			//System.out.println("JSON data cache---->" + jsondata);
 			// RequestDispatcher view =
 			// request.getRequestDispatcher("/test.html");
 			// response.sendRedirect("test.html");

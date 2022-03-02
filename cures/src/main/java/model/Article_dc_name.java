@@ -77,6 +77,35 @@ public class Article_dc_name implements Serializable {
 	
 	@Column(name = "type")
 	private String type;
+	
+	
+	@Column(name = "over_allrating")
+	private Float over_allrating;
+
+	@Column(name = "medicine_type")
+	private Integer medicine_type;
+	
+	@Column(name = "featured_article")
+	private String featured_article;
+	
+	public String getFeatured_article() {
+		return featured_article;
+	}
+
+	public void setFeatured_article(String featured_article) {
+		this.featured_article = featured_article;
+	}
+
+	private String authors_name;
+	private String reg_type;
+	private String reg_doc_pat_id;
+	
+	private String content_small;
+	
+	private String medicine_type_name;
+
+
+	
 
 	/*
 	 * @OneToOne(targetEntity = Author.class) private String author_firstname;
@@ -142,7 +171,7 @@ public class Article_dc_name implements Serializable {
 
 	public Article_dc_name(Integer article_id, String title, String friendly_name, String subheading,
 			String content_type, String keywords, String window_title, String content_location, Integer lang_id,
-			Integer copyright_file_id, Integer disclaimer_file_id, Integer pubStatus, String type) {
+			Integer copyright_file_id, Integer disclaimer_file_id, Integer pubStatus, String type, Float over_allrating, String authors_name) {
 		super();
 		this.article_id = article_id;
 		this.title = title;
@@ -153,6 +182,8 @@ public class Article_dc_name implements Serializable {
 		this.window_title = window_title;
 		this.content_location = content_location;
 		this.type = type;
+		this.over_allrating = over_allrating;
+		this.authors_name = authors_name;
 		/*
 		 * this.author_firstname = author_firstname; this.author_middlename =
 		 * author_middlename; this.author_lastname = author_lastname; this.author_email
@@ -167,7 +198,7 @@ public class Article_dc_name implements Serializable {
 			String contentTypeId, String keywords, String window_title, String content_location, String authored_by,
 			Integer published_by, Integer edited_by, Integer copyright_id, Integer disclaimer_id, Date create_date,
 			Date published_date, Integer pubstatus_id, Integer language_id, Integer copyright_file_loc_id,
-			Integer disclaimer_file_loc_id, Integer country_id, Integer disease_condition_id, String type) {
+			Integer disclaimer_file_loc_id, Integer country_id, Integer disease_condition_id, String type, Float over_allrating, String authors_name) {
 		super();
 		this.article_id = article_id;
 		this.title = title;
@@ -189,6 +220,8 @@ public class Article_dc_name implements Serializable {
 		this.disease_condition_id = disease_condition_id;
 		this.country_id = country_id;
 		this.type = type;
+		this.over_allrating = over_allrating;
+		this.authors_name = authors_name;
 		/*
 		 * this.copyright_file_loc = copyright_file_loc_id; this.disclaimer_file_loc =
 		 * disclaimer_file_loc_id; this.status_discription = status_discription_id;
@@ -375,6 +408,62 @@ public class Article_dc_name implements Serializable {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public Float getOver_allrating() {
+		return over_allrating;
+	}
+
+	public void setOver_allrating(Float over_allrating) {
+		this.over_allrating = over_allrating;
+	}
+
+	public String getAuthors_name() {
+		return authors_name;
+	}
+
+	public void setAuthors_name(String authors_name) {
+		this.authors_name = authors_name;
+	}
+
+	public String getReg_type() {
+		return reg_type;
+	}
+
+	public void setReg_type(String reg_type) {
+		this.reg_type = reg_type;
+	}
+
+	public String getReg_doc_pat_id() {
+		return reg_doc_pat_id;
+	}
+
+	public void setReg_doc_pat_id(String reg_doc_pat_id) {
+		this.reg_doc_pat_id = reg_doc_pat_id;
+	}
+
+	public String getContent_small() {
+		return content_small;
+	}
+
+	public void setContent_small(String content_small) {
+		this.content_small = content_small;
+	}
+	
+	public Integer getMedicine_type() {
+		return medicine_type;
+	}
+
+	public void setMedicine_type(Integer medicine_type) {
+		this.medicine_type = medicine_type;
+	}
+
+	public String getMedicine_type_name() {
+		return medicine_type_name;
+	}
+
+	public void setMedicine_type_name(String medicine_type_name) {
+		this.medicine_type_name = medicine_type_name;
 	}
 
 	/*

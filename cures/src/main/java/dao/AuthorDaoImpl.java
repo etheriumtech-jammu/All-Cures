@@ -19,9 +19,9 @@ public class AuthorDaoImpl {
 	
 	public List<Author> getAuthors(int authorId, int numAuthors, int authStatus){
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans =(Transaction)session.beginTransaction();		
 		boolean whereClauseAdded = false;
@@ -54,16 +54,16 @@ public class AuthorDaoImpl {
 			Constant.log("Error while Getting Authors ", 3);
 		}
 		finally {
-			session.close();
+			session.getTransaction().commit();   //session.close();
 		}
 		return authList;
 	}
 	
 	public List<Author> getTopAuthors(int numAuthors, int authStatus){
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		Transaction trans =(Transaction)session.beginTransaction();		
 		boolean whereClauseAdded = false;
@@ -87,7 +87,7 @@ public class AuthorDaoImpl {
 			e.printStackTrace();
 			Constant.log("Error while Getting Top Authors ", 3);
 		}finally {
-			session.close();
+			session.getTransaction().commit();   //session.close();
 		}
 		return authList;		
 	}
@@ -95,11 +95,13 @@ public class AuthorDaoImpl {
 	public Author createAuthor(String fName, String mName, String lName, String aEmail, String aAddress, String aTel, Integer aStatus){
 		Author createdAuthor = new Author();		
 		Constant.log("Saving New Author in DB", 1);
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory;		
+		//Session session = factory;		
+
+		session.beginTransaction();
+
 		try {
-			session.getTransaction().begin();
 			createdAuthor.setAuthor_firstname(fName);
 			createdAuthor.setAuthor_address(aAddress);
 			createdAuthor.setAuthor_email(aEmail);
@@ -109,15 +111,16 @@ public class AuthorDaoImpl {
 			createdAuthor.setAuthor_status(aStatus);
 			Constant.log("Saving Author Meta Data", 1);
 			session.save(createdAuthor);
-			session.getTransaction().commit();
+//			session.getTransaction().commit();
 			Constant.log("New Author CREATED in DB", 1);
-			//session.close();			
+			session.getTransaction().commit();   //session.close();			
 		}catch (Exception e) {
 			e.printStackTrace();
 			createdAuthor = null;
+//			session.getTransaction().commit(); //session.getTransaction().rollback();
 			session.getTransaction().rollback();
 		}finally {
-			session.close();
+			session.getTransaction().commit();   //session.close();
 		}
 		
 		return createdAuthor;		

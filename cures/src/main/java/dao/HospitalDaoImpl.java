@@ -16,18 +16,18 @@ public class HospitalDaoImpl {
 	public static ArrayList<Hospital> findAllHospital() {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+//		session.beginTransaction();
 
 		Query query = session.createNativeQuery("select  hospital_affliated  from hospital;");
 		ArrayList<Hospital> list = (ArrayList<Hospital>) query.getResultList();
-		System.out.println("result list hospitalList@@@@@@@@@@@@@" + list);
-		session.close();
+		System.out.println("result list hospitalList@@@@@@@@@@@@@" + list.size());
+//		session.getTransaction().commit();   //session.close();
 		return list;
 	}
 

@@ -21,18 +21,18 @@ public class StatesDaoImpl {
 
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans =(Transaction )session.beginTransaction();
+//		Transaction trans =(Transaction )session.beginTransaction();
 
 		Query query = session.createNativeQuery("select distinct statename  from states;");
 		ArrayList<States> list= (ArrayList<States>) query.getResultList();
-		System.out.println("result list StateList@@@@@@@@@@@@@"+list);
-		session.close();
+		System.out.println("result list StateList@@@@@@@@@@@@@"+list.size());
+//		session.getTransaction().commit();   //session.close();
 		return list;
 	}
 

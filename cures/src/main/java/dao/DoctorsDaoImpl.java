@@ -38,13 +38,13 @@ public class DoctorsDaoImpl {
 	}
 
 	public static int updateProfile(HashMap profileMap) {
-		int docid = 0;
+		int rowno = 0;
 		String updatestr = "";
-		if (profileMap.containsKey("docid")) {
-			docid = (int) profileMap.get("docid");
+		if (profileMap.containsKey("rowno")) {
+			rowno = (int) profileMap.get("rowno");
 		}
-		if (docid == 0) {
-			Constant.log("docid not provided in request", 3);
+		if (rowno == 0) {
+			Constant.log("rowno not provided in request", 3);
 			return 0;
 		} // return error
 		if (profileMap.containsKey("gender")) {
@@ -66,7 +66,7 @@ public class DoctorsDaoImpl {
 			updatestr += " membership = '" + profileMap.get("membership") + "',\r\n";
 		}
 		if (profileMap.containsKey("awards")) {
-			updatestr += " awards = " + profileMap.get("awards") + ",\r\n";
+			updatestr += " awards = '" + profileMap.get("awards") + "',\r\n";
 		}
 		if (profileMap.containsKey("availibity_for_appointment")) {
 			updatestr += " availibity_for_appointment = " + profileMap.get("availibity_for_appointment") + ",\r\n";
@@ -147,35 +147,38 @@ public class DoctorsDaoImpl {
 		if (profileMap.containsKey("about")) {
 			updatestr += " about = '" + profileMap.get("about") + "',\r\n";
 		}
+		if (profileMap.containsKey("website_url")) {
+			updatestr += " website_url = '" + profileMap.get("website_url") + "',\r\n";
+		}
 
 		updatestr = updatestr.replaceAll(",$", "");
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Query query = session
-				.createNativeQuery("UPDATE doctors " + "SET " + updatestr + " WHERE docid = " + docid + ";");
+				.createNativeQuery("UPDATE doctors " + "SET " + updatestr + " WHERE rowno = " + rowno + ";");
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
-			System.out.println("updated doctors table for docid =  " + docid);
-			Constant.log(">>>>>>>>>>>>>>>>>>updated doctors table for docid =  " + docid, 1);
+			System.out.println("updated doctors table for rowno =  " + rowno);
+			Constant.log(">>>>>>>>>>>>>>>>>>updated doctors table for rowno =  " + rowno, 1);
 //			int check = new DoctorsDaoImpl().memcacheUpdateDoctor(docid);
 			if (mcc == null)
 				new DoctorsDaoImpl().initializeCacheClient();
 			// Remove the Doctor Found to the Cache since the same ID will be updated in
 			// next fetch
 			// mcc.replace(Constant.DOCID + "_" + docid, 360000, jsondata).getStatus();
-			mcc.delete(Constant.DOCID + "_" + docid);
-			trans.commit();
+			mcc.delete(Constant.ROWNO + "_" + rowno);
+			session.getTransaction().commit();
 
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
-			session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 		return ret;
 	}
@@ -214,7 +217,7 @@ public class DoctorsDaoImpl {
 		return mcc;
 	}
 
-	public String findDocInCache(int docId) {
+	public String findDocInCache(int rowno) {
 		String cacheString = null;
 
 		// This is the ADDRESS OF MEMCACHE
@@ -223,8 +226,8 @@ public class DoctorsDaoImpl {
 			initializeCacheClient();
 		}
 		Constant.log("Getting docid from MemCache", 0);
-		if (mcc.get(Constant.DOCID + "_" + docId) != null)
-			cacheString = mcc.get(Constant.DOCID + "_" + docId).toString();
+		if (mcc.get(Constant.ROWNO + "_" + rowno) != null)
+			cacheString = mcc.get(Constant.ROWNO + "_" + rowno).toString();
 		Constant.log("Found In MemCache:" + cacheString, 0);
 		return cacheString;
 	}
@@ -257,11 +260,11 @@ public class DoctorsDaoImpl {
 			hashedPass = encrypt.encrypt(updatestrPassword, secretKey);
 		}
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+		session.beginTransaction();
 
 		Query query = session
 				.createNativeQuery("UPDATE doctors " + "SET " + updatestr + " WHERE email = '" + email + "';");
@@ -282,11 +285,11 @@ public class DoctorsDaoImpl {
 			ArrayList list = (ArrayList) queryDocId.getResultList();
 			docid = (list.get(0) != null ? (Integer) list.get(0) : 0);
 			Constant.log(">>>>>>>>>>>>>>>>>>User Found for EMAILID:" + email + " docid=" + docid, 1);
-			trans.commit();
+			session.getTransaction().commit();
 		} catch (Exception ex) {
-			trans.rollback();
+			session.getTransaction().rollback();
 		} finally {
-			session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 
 		return docid;
@@ -297,13 +300,13 @@ public class DoctorsDaoImpl {
 		Constant.log("Finding All Docs", 1);
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+//		session.beginTransaction();
 
 		Query query = session
 				.createNativeQuery("select prefix, docname_first, docname_middle , docname_last from doctors;");
@@ -333,21 +336,21 @@ public class DoctorsDaoImpl {
 			}
 		}
 		Constant.log("Total Doctors Found in the Doctors List:" + docList.size(), 1);
-		session.close();
+//		session.getTransaction().commit();   //session.close();
 		return docList;
 
 	}
 
-	public static Doctors getAllDoctorsInfo(int docid) {
+	public static Doctors getAllDoctorsInfo(int rowno) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
-		Constant.log("In DoctorsDAO, Getting Doctors Info For:" + docid, 1);
+		Session session = HibernateUtil.buildSessionFactory();
+		Constant.log("In DoctorsDAO, Getting Doctors Info For:" + rowno, 1);
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+//		session.beginTransaction();
 		// String HQL= "from doctors INNER JOIN FETCH hospital.hospital_affliated
 		// where.";
 		Query query = session
@@ -356,12 +359,13 @@ public class DoctorsDaoImpl {
 						+ "doctors.gender, doctors.edu_training, hospital.hospital_affliated, doctors.board_certifcate, doctors.membership, doctors.awards, "
 						+ "doctors.availibity_for_appointment, doctors.doctor_location, doctors.telephone_nos, "
 						+ "specialties.spl_name, doctors.other_spls, doctors.address1, doctors.address2, city.cityname, "
-						+ "doctors.over_allrating, doctors.email, doctors.waiting_time,  states.statename , countries.countryname ,"
-						+ "doctors.primary_spl, doctors.sub_spls, doctors.about, doctors.city, doctors.state, doctors.country_code,doctors.hospital_affliated as hospital_affliated_code "
+						+ "doctors.over_allrating, doctors.email, doctors.waiting_time,  states.statename , countries.countryname, "
+						+ "doctors.primary_spl, doctors.sub_spls, doctors.about, doctors.city, doctors.state, doctors.country_code,doctors.hospital_affliated as hospital_affliated_code, "
+						+ "doctors.rowno, doctors.website_url "
 						+ "FROM doctors , hospital , specialties, city, states, countries "
 						+ "WHERE  doctors.hospital_affliated = hospital.hospitalid  and "
 						+ "doctors.primary_spl = specialties.splid and doctors.city = city.citycode and doctors.state = states.codeid and "
-						+ "doctors.country_code = countries.countrycodeid and " + "docid=" + docid + ";");
+						+ "doctors.country_code = countries.countrycodeid and " + "rowno=" + rowno + ";");
 
 		// This should return in only 1 doctor so why the List?
 		// We should be using query.getSingleResult()
@@ -374,7 +378,8 @@ public class DoctorsDaoImpl {
 			Object[] obj = (Object[]) itr.next();
 			{
 				doc = new Doctors();
-				doc.setDocid((Integer) obj[0]);
+				//doc.setDocid((Integer) obj[0]);
+				doc.setDocid(obj[0] != null ? (Integer) obj[0] : 0);
 				Constant.log("--Iterating DocId:" + doc.getDocid(), 1);
 				doc.setPrefix((String) obj[1] != null ? (String) obj[1] : "");
 				doc.setDocname_first((String) obj[2] != null ? (String) obj[2] : "");
@@ -409,24 +414,110 @@ public class DoctorsDaoImpl {
 				doc.setState_code(obj[28] != null ? (Integer) obj[28] : 0);
 				doc.setCountries_code(obj[29] != null ? (Integer) obj[29] : 0);
 				doc.setHospital_affliated_code(obj[30] != null ? (Integer) obj[30] : 0);
+				doc.setRowno((long) (obj[31] != null ? (Integer) obj[31] : 0));
+				doc.setWebsite_url((String) (obj[32]));
 			}
-			Constant.log("--Returning from DoctorsDao, Doc Object for ID:" + doc.getDocid(), 1);
+			Constant.log("--Returning from DoctorsDao, Doc Object for ID:" + doc.getDocid() +" rowno:" + doc.getRowno(), 1);
 		}
-		session.close();
+//		session.getTransaction().commit();   //session.close();
+		return doc;
+	}	
+	
+	public static Doctors getAllDoctorsInfoByDocId(int docid) {
+		// creating seession factory object
+		Session session = HibernateUtil.buildSessionFactory();
+		Constant.log("In DoctorsDAO, Getting Doctors Info For:" + docid, 1);
+
+		// creating session object
+		//Session session = factory;
+
+		// creating transaction object
+//		session.beginTransaction();
+		// String HQL= "from doctors INNER JOIN FETCH hospital.hospital_affliated
+		// where.";
+		Query query = session
+				.createNativeQuery("SELECT doctors.docid,doctors.prefix, doctors.docname_first,doctors.docname_middle, "
+						+ "doctors.docname_last, "
+						+ "doctors.gender, doctors.edu_training, hospital.hospital_affliated, doctors.board_certifcate, doctors.membership, doctors.awards, "
+						+ "doctors.availibity_for_appointment, doctors.doctor_location, doctors.telephone_nos, "
+						+ "specialties.spl_name, doctors.other_spls, doctors.address1, doctors.address2, city.cityname, "
+						+ "doctors.over_allrating, doctors.email, doctors.waiting_time,  states.statename , countries.countryname, "
+						+ "doctors.primary_spl, doctors.sub_spls, doctors.about, doctors.city, doctors.state, doctors.country_code,doctors.hospital_affliated as hospital_affliated_code, "
+						+ "doctors.rowno, doctors.website_url "
+						+ "FROM doctors , hospital , specialties, city, states, countries "
+						+ "WHERE  doctors.hospital_affliated = hospital.hospitalid  and "
+						+ "doctors.primary_spl = specialties.splid and doctors.city = city.citycode and doctors.state = states.codeid and "
+						+ "doctors.country_code = countries.countrycodeid and " + "docid=" + docid + ";");
+
+		// This should return in only 1 doctor so why the List?
+		// We should be using query.getSingleResult()
+		List<Doctors> docsList = (List<Doctors>) query.getResultList();
+		Doctors doc = null;
+		Iterator itr = docsList.iterator();
+		Constant.log("Executed Query and Got:" + docsList.size() + " doctors back", 1);
+
+		while (itr.hasNext()) {
+			Object[] obj = (Object[]) itr.next();
+			{
+				doc = new Doctors();
+				//doc.setDocid((Integer) obj[0]);
+				doc.setDocid(obj[0] != null ? (Integer) obj[0] : 0);
+				Constant.log("--Iterating DocId:" + doc.getDocid(), 1);
+				doc.setPrefix((String) obj[1] != null ? (String) obj[1] : "");
+				doc.setDocname_first((String) obj[2] != null ? (String) obj[2] : "");
+				doc.setDocname_middle(obj[3] != null ? (String) obj[3] : "");
+				doc.setDocname_last(obj[4] != null ? (String) obj[4] : "");
+				doc.setGender(obj[5] != null ? (Integer) obj[5] : 0);
+				doc.setEdu_training(obj[6] != null ? (String) obj[6] : "");
+				doc.setHospital_affliated(obj[7] != null ? (String) obj[7] : "");
+				doc.setBoard_certifcate(obj[8] != null ? (String) obj[8] : "");
+				doc.setMembership(obj[9] != null ? (String) obj[9] : "");
+				doc.setAwards(obj[10] != null ? (String) obj[10] : "");
+				doc.setAvailibity_for_appointment(obj[11] != null ? (Date) obj[11] : null);
+				doc.setDoctor_location(obj[12] != null ? (String) obj[12] : "");
+				doc.setTelephone_nos(obj[13] != null ? (String) obj[13] : "");
+				doc.setPrimary_spl(obj[14] != null ? (String) obj[14] : "");
+				doc.setOther_spls(obj[15] != null ? (String) obj[15] : "");
+				doc.setAddress1(obj[16] != null ? (String) obj[16] : "");
+				doc.setAddress2(obj[17] != null ? (String) obj[17] : "");
+				doc.setCityname(obj[18] != null ? (String) obj[18] : "");
+				float overall = (float) (obj[19] != null ? (Float) obj[19] : 0.0);
+				doc.setOver_allrating(overall);
+				doc.setEmail(obj[20] != null ? (String) obj[20] : "");
+				doc.setWaiting_time(obj[21] != null ? (Integer) obj[21] : 0);
+				doc.setStatename(obj[22] != null ? (String) obj[22] : "");
+				doc.setCountry_code(obj[23] != null ? (String) obj[23] : "");
+
+				doc.setPrimary_spl_code(obj[24] != null ? (Integer) obj[24] : 0);
+				// doc.setOther_spls_code(obj[25] != null ? (Integer) obj[25] : 0);
+				doc.setSub_spls_code(obj[25] != null ? (Integer) obj[25] : 0);
+				doc.setAbout(obj[26] != null ? (String) obj[26] : "");
+				doc.setCity_code(obj[27] != null ? (Integer) obj[27] : 0);
+				doc.setState_code(obj[28] != null ? (Integer) obj[28] : 0);
+				doc.setCountries_code(obj[29] != null ? (Integer) obj[29] : 0);
+				doc.setHospital_affliated_code(obj[30] != null ? (Integer) obj[30] : 0);
+				doc.setRowno((long) (obj[31] != null ? (Integer) obj[31] : 0));
+				doc.setWebsite_url((String) (obj[32]));
+			}
+			Constant.log("--Returning from DoctorsDao, Doc Object for ID:" + doc.getDocid() +" rowno:" + doc.getRowno(), 1);
+		}
+//		session.getTransaction().commit();   //session.close();
 		return doc;
 	}
 
 	public static void saveDoctors(Integer docid, String f_name, String l_name, String email) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 		Constant.log("Saving New Doctor with Firstname to DB:" + f_name, 0);
 
 		// creating session object
-		Session session = factory;
-		Doctors doc = new Doctors();
-		// Transaction trans = (Transaction) session.beginTransaction();
+		//Session session = factory;
+		session.beginTransaction();
 
-		session.getTransaction().begin();
+		Doctors doc = new Doctors();
+		// session.beginTransaction();
+
+		//session.getTransaction().begin();
 		Doctors doctorFound = findDoctorsByEmail(email);
 		if (null != doctorFound && null != doctorFound.getEmail()) {
 
@@ -435,16 +526,16 @@ public class DoctorsDaoImpl {
 			int ret = 0;
 			try {
 				ret = query.executeUpdate();
-				// trans.commit();
+				// session.getTransaction().commit();
 				System.out.println("updated doctors table for email =  " + email + " set docid=" + docid);
-				session.getTransaction().commit();
-				session.close();
+//				session.getTransaction().commit();
+				session.getTransaction().commit();   //session.close();
 
 			} catch (Exception e) {
 				Constant.log(e.getStackTrace().toString(), 3);
-				session.getTransaction().rollback();
+				session.getTransaction().commit(); //session.getTransaction().rollback();
 			} finally {
-				session.close();
+//				session.getTransaction().commit();   //session.close();
 			}
 		} else {
 			try {
@@ -453,10 +544,10 @@ public class DoctorsDaoImpl {
 								+ docid + ",'" + f_name + "','" + l_name + "','" + email + "');");
 				int ret = 0;
 				ret = query.executeUpdate();
-				// trans.commit();
+				// session.getTransaction().commit();
 				System.out.println("insert new doctor with email =  " + email + " and docid=" + docid);
-				session.getTransaction().commit();
-				session.close();
+//				session.getTransaction().commit();
+				session.getTransaction().commit();   //session.close();
 				// TODO: This implementation is wrong; Setting the RegistrationID as the Doctors
 				// DocId;
 //				doc.setDocid(docid);
@@ -466,31 +557,31 @@ public class DoctorsDaoImpl {
 //				doc.setDocname_last(l_name);
 //				session.update(doc);
 //				session.getTransaction().commit();
-//				session.close();
+//				session.getTransaction().commit();   //session.close();
 				// sessionFactory.close();
 
 			} catch (Exception e) {
 				Constant.log(e.getStackTrace().toString(), 3);
-				session.getTransaction().rollback();
+				session.getTransaction().commit(); //session.getTransaction().rollback();
 			} finally {
-				session.close();
+//				session.getTransaction().commit();   //session.close();
 			}
 		}
 	}
 
 	public static Doctors findDoctorsByEmail(String email) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+//		session.beginTransaction();
 		Constant.log((">>>>>>>>>>>>>>>>>>" + email), 0);
 		int docid = 0;
 
 		Doctors doctors = null;
-		Query query = session.createNativeQuery("select docid,email from doctors where email='" + email.trim() + "'");
+		Query query = session.createNativeQuery("select docid,email,rowno from doctors where email='" + email.trim() + "'");
 		ArrayList<Doctors> list = (ArrayList<Doctors>) query.getResultList();
 		Iterator itr = list.iterator();
 		if (itr.hasNext()) {
@@ -500,9 +591,11 @@ public class DoctorsDaoImpl {
 			{
 				doctors.setDocid(obj[0] != null ? (Integer) obj[0] : -1);
 				doctors.setEmail((String) obj[1]);
+				doctors.setRowno(obj[2] != null ? (Long) obj[2] : -1);
+
 			}
 		}
-		session.close();
+//		session.getTransaction().commit();   //session.close();
 		return doctors;
 	}
 }

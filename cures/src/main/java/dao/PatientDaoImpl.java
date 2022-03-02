@@ -18,41 +18,43 @@ public class PatientDaoImpl {
 
 	public static void savePatient(Integer patient_id, String f_name, String l_name, String email) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
+		session.beginTransaction();
+
 		Patient pat = new Patient();
 		Constant.log("Saving New Patient with Firstname to DB:" + f_name, 0);
 
 		try {
-			session.getTransaction().begin();
+			//session.getTransaction().begin();
 			// doc.setPrefix("Dr.");
 			pat.setPatient_id(patient_id);
 			pat.setFirst_name(f_name);
 			pat.setLast_name(l_name);
 			pat.setEmail(email);
 			session.save(pat);
-			session.getTransaction().commit();
-			session.close();
+//			session.getTransaction().commit();
+			session.getTransaction().commit();   //session.close();
 			// sessionFactory.close();
 		} catch (Exception e) {
 			Constant.log(e.getStackTrace().toString(), 3);
-			session.getTransaction().rollback();
+			session.getTransaction().commit(); //session.getTransaction().rollback();
 		} finally {
-			session.close();
+//			session.getTransaction().commit();   //session.close();
 		}
 
 	}
 
 	public static Integer findAllPatientByPatientid(String email, String docfname, String doclname) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+//		session.beginTransaction();
 
 		Query query = session.createNativeQuery("SELECT * FROM patient where email=" + email + ", first_name="
 				+ docfname + ", last_name=" + doclname + ";");
@@ -75,19 +77,19 @@ public class PatientDaoImpl {
 
 		}
 		int pi = patList.getPatient_id();
-		session.close();
+//		session.getTransaction().commit();   //session.close();
 		return pi;
 
 	}
 
 	public static Patient findAllPatientByPatientid(Integer id) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+//		session.beginTransaction();
 
 		Query query = session.createNativeQuery("SELECT * FROM patient where patient_id=" + id + ";");
 		List<Doctors> list = (List<Doctors>) query.getResultList();
@@ -108,7 +110,7 @@ public class PatientDaoImpl {
 			}
 
 		}
-		session.close();
+//		session.getTransaction().commit();   //session.close();
 		return patList;
 
 	}

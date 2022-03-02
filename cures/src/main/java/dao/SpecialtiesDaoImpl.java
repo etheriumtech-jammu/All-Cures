@@ -21,18 +21,18 @@ public class SpecialtiesDaoImpl {
 
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans =(Transaction )session.beginTransaction();
+//		Transaction trans =(Transaction )session.beginTransaction();
 
 		Query query = session.createNativeQuery("select spl_name from specialties;");
 		ArrayList<Specialties> list= (ArrayList<Specialties>) query.getResultList();
-		System.out.println("result list Spl@@@@@@@@@@@@@"+list);
-		session.close();
+		System.out.println("result list Spl@@@@@@@@@@@@@"+list.size());
+//		session.getTransaction().commit();   //session.close();
 		return list;
 	}
 	
@@ -41,13 +41,13 @@ public class SpecialtiesDaoImpl {
 		List hmFinal = new ArrayList();
 
 //		// creating seession factory object
-//		Session factory = HibernateUtil.buildSessionFactory();
+//		Session session = HibernateUtil.buildSessionFactory();
 //
 //		// creating session object
-//		Session session = factory;
+//		//Session session = factory;
 //
 //		// creating transaction object
-//		Transaction trans = (Transaction) session.beginTransaction();
+//		session.beginTransaction();
 //		String splid_str = splid != null ? (int) splid: 0;
 //		if (splid != null ) {
 //			String spl_str = " and spl.splid=" +splid;
@@ -67,7 +67,7 @@ public class SpecialtiesDaoImpl {
 //			hm.put("Pincode", pincode);
 //			hmFinal.add(hm);
 //		}
-//		session.close();
+//		session.getTransaction().commit();   //session.close();
 		return hmFinal;
 	}
 

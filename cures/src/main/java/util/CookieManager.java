@@ -32,9 +32,9 @@ public class CookieManager {
 	 * Just use the user object to construct the cookie Value and then construct the cookie;
 	 * With the new Cookie Manager Implementation, this method is redundant
 	public String storeCookiee(String email , String pass){
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
 		Transaction trans =(Transaction )session.beginTransaction();
@@ -60,11 +60,11 @@ public class CookieManager {
 	}*/
 	
 	public Registration getUserFromEmailAddress(String emailAddress){
-		Session factory = HibernateUtil.buildSessionFactory();
-		Session session = factory;
+		Session session = HibernateUtil.buildSessionFactory();
+		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans =(Transaction )session.beginTransaction();
+//		Transaction trans =(Transaction )session.beginTransaction();
 		Registration register = null;
 		Constant.log(">>>>>>>>>>>>>>>>>>Looking Up User Based On Email: "+ emailAddress, 1);
 		
@@ -93,17 +93,17 @@ public class CookieManager {
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
 		}
-		session.close();
+//		session.getTransaction().commit();   //session.close();
 		return register;
 	}
 	
 	public Registration getUserFromPermCookie(String cookieValue){
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans =(Transaction )session.beginTransaction();
+//		Transaction trans =(Transaction )session.beginTransaction();
 		Registration register = new Registration();
 		Constant.log("Getting User From Cookie with Cookie Value:"+ cookieValue, 1);
 		//Encryption encrypt = new Encryption();
@@ -149,14 +149,14 @@ public class CookieManager {
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
 		}
-		session.close();
+//		session.getTransaction().commit();   //session.close();
 		return register;
 	}
 	
 	public boolean dropSessionCookies(ServletResponse response, Registration user){
 		try{
 			Constant.log("Dropping Session Cookies", 1);
-			Cookie defSessCookie = constructCookie(null, Constant.DefaultSessionCookieName, user.getEmail_address()+"|"+user.getRegistration_id()+"|"+"|"+user.getRegistration_type(),null, 0);
+			Cookie defSessCookie = constructCookie(null, Constant.DefaultSessionCookieName, user.getEmail_address()+"|"+user.getRegistration_id()+"|"+user.getRegistration_type(),null, 0);
 			((HttpServletResponse)response).addCookie(defSessCookie);
 		}catch (Exception e) {
             Constant.log("Error while dropping session cookies: " + e.toString(), 3);

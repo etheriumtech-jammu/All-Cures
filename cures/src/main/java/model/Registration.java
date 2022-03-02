@@ -1,18 +1,16 @@
 package model;
 
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import util.Constant;
-
-import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Column;;
+import util.Constant;;
 
 
 @Entity
@@ -33,8 +31,8 @@ public class Registration implements Serializable {
 	 @Column(name = Constant.REGISTRATION_TYPE)
 	private Integer registration_type;
 	 @Column(name = Constant.ACCEPTANCE_CONDITION)
-	
 	private Boolean acceptance_condition;
+	 
 	 @Column(name = Constant.PRIVACY_POLICY)
 	private Boolean privacy_policy;
 	@Column(name = Constant.ACCOUNT_STATE)
@@ -42,11 +40,16 @@ public class Registration implements Serializable {
 	 @Column(name = Constant.REMEMBER_ME)
 	private Integer remember_me;
 	 
+	 @Column(name = "mobile_number")
+	 private Long mobile_number;
+	 
 	 @Column(name = Constant.LOGIN_ATTEMPT)
 	 private Integer login_attempt;
 	 @Column(name = Constant.LAST_LOGIN_DATETIME)
 	 private Date last_login_datatime;
 	
+	 @Column(name = Constant.ROWNO)
+	 private Long rowno;
 	
 	public Registration() {
 		super();
@@ -54,7 +57,7 @@ public class Registration implements Serializable {
 	}
 	public Registration(Integer registration_id, String first_name, String last_name, String email_address,
 			String pass_word, Integer registration_type, Boolean acceptance_condition, Boolean privacy_policy,
-			Integer account_state, Integer remember_me, Integer login_attempt, Date last_login_datatime) {
+			Integer account_state, Integer remember_me, Integer login_attempt, Date last_login_datatime, Long mobile_number, Long rowno) {
 		super();
 		this.registration_id = registration_id;
 		this.first_name = first_name;
@@ -68,6 +71,8 @@ public class Registration implements Serializable {
 		this.remember_me = remember_me;
 		this.login_attempt = login_attempt;
 		this.last_login_datatime = last_login_datatime;
+		this.mobile_number = mobile_number;
+		this.rowno = rowno;
 	}
 	public Integer getRegistration_id() {
 		return registration_id;
@@ -129,6 +134,12 @@ public class Registration implements Serializable {
 	public void setRemember_me(Integer remember_me) {
 		this.remember_me = remember_me;
 	}
+	public Long getMobile_number() {
+		return mobile_number;
+	}
+	public void setMobile_number(Long mobile_number) {
+		this.mobile_number = mobile_number;
+	}
 	public Integer getLogin_attempt() {
 		return login_attempt;
 	}
@@ -140,6 +151,13 @@ public class Registration implements Serializable {
 	}
 	public void setLast_login_datatime(Date last_login_datatime) {
 		this.last_login_datatime = last_login_datatime;
+	}
+	
+	public Long getRowno() {
+		return rowno;
+	}
+	public void setRowno(Long rowno) {
+		this.rowno = rowno;
 	}
 	
 	

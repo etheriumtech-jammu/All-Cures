@@ -52,6 +52,8 @@ public class RegistrationActionController extends HttpServlet {
 		String docpatient = request.getParameter(Constant.DOCPATIENT);
 		String acceptTnC = request.getParameter(Constant.AcceptTermsAndConditions);
 		String acceptPolicy = request.getParameter(Constant.AcceptPolicy);
+		String number = request.getParameter(Constant.MOBILE_NUMBER);
+		Long mobile = Long.parseLong(number);
 		Integer doc_patient = null;
 		String errMsg = "";	
 		if (docpatient != null && docpatient.trim().equalsIgnoreCase(Constant.DOCTOR)) {
@@ -86,7 +88,7 @@ public class RegistrationActionController extends HttpServlet {
 			errMsg = "Email Address already Exists in the System";
 		}else{
 			Constant.log("Registering New User Into DB with:"+email, 2);
-			user = registerUser(firstname, lastname, psw, email, accTerms, doc_patient, accPolicy, state, rem);
+			user = registerUser(firstname, lastname, psw, email, accTerms, doc_patient, accPolicy, state, rem, mobile);
 			if(user != null){
 				Constant.log("User Registered Successfully:"+email, 1);
 				//Now that the doctor/patient is signed up, should we log her in as well?
@@ -153,7 +155,7 @@ public class RegistrationActionController extends HttpServlet {
 	}
 	
 	public Registration registerUser(String fName,String lName,String pass,String email,Boolean acceptTerms,Integer docOrPat,
-			Boolean acceptPolicy,Integer state,Integer remPwd){
+			Boolean acceptPolicy,Integer state,Integer remPwd, Long mobile_number){
 		Registration user = null;
 		try{
 			RegistrationDaoImpl regDao = new RegistrationDaoImpl();
@@ -165,7 +167,7 @@ public class RegistrationActionController extends HttpServlet {
 			//just to load spring features
 			RegistrationDaoImpl myBean = (RegistrationDaoImpl) SpringUtils.ctx.getBean(RegistrationDaoImpl.class);
 
-			user = myBean.saveRegistration(fName, lName, hashedPass, email, acceptTerms, docOrPat, acceptPolicy, state, remPwd);	
+			user = myBean.saveRegistration(fName, lName, hashedPass, email, acceptTerms, docOrPat, acceptPolicy, state, remPwd,mobile_number);	
 		}catch(Exception e){
 			Constant.log("Error While Trying to Register User", 3);
 			e.printStackTrace();

@@ -37,6 +37,8 @@ public class Doctor {
 	@Field public String waiting_time;
 	@Field public String pincode;
 	@Field public String latlon;
+	@Field public String rowno ;
+
 	
 	public Doctor(String doctorid, Integer gender, String edu_training, String hospital_affliated,
 			Integer insurance_accept, String board_certifcate, String membership, String awards,
@@ -44,7 +46,7 @@ public class Doctor {
 			String other_spls, String sub_spls, String address1, String address2, String city, String state,
 			String country_code, String over_allrating, String create_date, Integer docactive, String prefix,
 			String docname_first, String docname_middle, String docname_last, String name, String email, String waiting_time,
-			String pincode, String latlon) {
+			String pincode, String latlon, String rowno) {
 		super();
 		this.doctorid = doctorid;
 		this.gender = gender;
@@ -77,9 +79,51 @@ public class Doctor {
 		this.waiting_time = waiting_time;
 		this.pincode = pincode;
 		this.latlon = latlon;
+		this.rowno = rowno;
 		
 	}
 	
+	//new sor document with lesser fields
+	public Doctor(String doctorid, Integer gender, String edu_training, String hospital_affliated,
+			String telephone_nos, String primary_spl,
+			String sub_spls, String address1, String city, String state,
+			String country_code, String over_allrating, String prefix,
+			String docname_first, String docname_middle, String docname_last, String name, String email,
+			String pincode, String latlon, String rowno) {
+		super();
+		this.doctorid = doctorid;
+		this.gender = gender;
+		this.edu_training = edu_training;
+		this.hospital_affliated = hospital_affliated;
+		this.insurance_accept = insurance_accept;
+		this.telephone_nos = telephone_nos;
+		this.primary_spl = primary_spl;
+		this.sub_spls = sub_spls;
+		this.address1 = address1;
+		this.city = city;
+		this.state = state;
+		this.country_code = country_code;
+		this.over_allrating = over_allrating;
+		this.prefix = prefix;
+		this.docname_first = docname_first;
+		this.docname_middle = docname_middle;
+		this.docname_last = docname_last;
+		this.name = name;
+		this.email = email;
+		this.pincode = pincode;
+		this.latlon = latlon;
+		this.rowno = rowno;
+		
+	}
+	
+	public String getRowno() {
+		return rowno;
+	}
+
+	public void setRowno(String rowno) {
+		this.rowno = rowno;
+	}
+
 	public Doctor() {
 		super();
 		// TODO Auto-generated constructor stub

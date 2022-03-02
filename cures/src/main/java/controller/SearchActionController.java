@@ -3,19 +3,13 @@ package controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.json.Json;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.json.JSONObject;
 
 import com.google.gson.Gson;
@@ -75,15 +69,22 @@ public class SearchActionController extends HttpServlet {
 			SearchDaoImpl search = new SearchDaoImpl();
 			//Map<String,List<String>> docSolr  = new HashMap<String,List<String>>();
 			List<Doctor> docSolr = new ArrayList<Doctor>();
-			if(!city_pin.equals("") && doc_details.equals("")){
-				Constant.log("Searching By City Pin:"+city_pin, 1);
-				docSolr = search.searchByCityPin(city_pin);
-			}else if (!doc_details.equals("") && city_pin.equals("")) {
-				Constant.log("Searching By Doc Details:"+doc_details, 1);
-				docSolr = search.searchByDocSpl(doc_details,lat,lon);
-			}else {
-				Constant.log("Searching By Both City:"+city_pin, 1);
-				docSolr = search.searchByBoth(doc_details, city_pin);
+			
+			String featuredDoctors= request.getParameter("FeaturedDoctors");
+			if (null !=featuredDoctors && featuredDoctors.length() != 0) {
+				System.out.println("In Featured doctor..");
+				docSolr = search.featuredDoctors(featuredDoctors);
+			}else {		
+				if(!city_pin.equals("") && doc_details.equals("")){
+					Constant.log("Searching By City Pin:"+city_pin, 1);
+					docSolr = search.searchByCityPin(city_pin);
+				}else if (!doc_details.equals("") && city_pin.equals("")) {
+					Constant.log("Searching By Doc Details:"+doc_details, 1);
+					docSolr = search.searchByDocSpl(doc_details,lat,lon);
+				}else {
+					Constant.log("Searching By Both City:"+city_pin, 1);
+					docSolr = search.searchByBoth(doc_details, city_pin);
+				}
 			}
 			
 			response.setContentType("application/json");

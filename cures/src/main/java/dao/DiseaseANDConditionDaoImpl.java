@@ -18,33 +18,63 @@ import util.HibernateUtil;
 public class DiseaseANDConditionDaoImpl {
 	private static ArrayList list = new ArrayList();
 
-	public static List getAllMatchingDCList(String search_str) {
+	public static List getAllMatchingDCList(String search_str, Integer limit, Integer offset, String orderByStr) {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+//		session.beginTransaction();
 
+		String limit_str = "";
+		if (null != limit)
+			limit_str = " limit " + limit;
+		String offset_str = "";
+		if (null != offset)
+			offset_str = " offset " + offset;
+		String orderby_str = " order by `article`.`published_date` desc ";
+		if (null != orderByStr) {
+			String[] orderArr = orderByStr.split(":");
+			orderby_str = " order by  `article`.`" + orderArr[0] +"` "+orderArr[1];
+		}
+//		String search_str_ = "";
+//		if (null != searchStr) {
+//			search_str = " where ";
+////			search_str = " where title like '%" + searchStr + "%'  or  article_id like '%"+searchStr+"%'";
+//			String[] searchArrColums = searchStr.split("~");
+//			for (String columsDetail : searchArrColums) {
+//				String[] columsDetailArr = columsDetail.split(":");
+//				search_str += columsDetailArr[0] +" like '%"+ columsDetailArr[1] + "%' AND ";
+//			}
+//			//replace last AND with blank
+//			search_str = search_str.substring(0,search_str.lastIndexOf("AND"));
+//		}
+//		
 		Query query = session.createNativeQuery(
-				"SELECT a.article_id,  a.title , a.friendly_name,  a.subheading, a.content_type, a.keywords,  a.window_title,  a.content_location \r\n"
+				"SELECT distinct  a.article_id,  a.title , a.friendly_name,  a.subheading, a.content_type, a.keywords,  a.window_title,  a.content_location \r\n"
 						+ " ,a.authored_by, a.published_by, a.edited_by, a.copyright_id, a.disclaimer_id, a.create_date, a.published_date, a.pubstatus_id,"
-						+ " a.language_id, a.disease_condition_id, a.country_id \r\n"
-						+ " ,dc.dc_name , dc.parent_dc_id \r\n" + " FROM allcures_schema.article a \r\n"
+						+ " a.language_id, a.disease_condition_id, a.country_id, a.type \r\n"
+						+ " ,dc.dc_name , dc.parent_dc_id, a.content, a.over_allrating, \r\n" 
+						+" (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a "
+						+" where a.author_id in (trim(trailing ']' from trim(leading '[' from a.authored_by))) " 
+						+" ) as authors_name "
+						+ ", medicine_type "
+						+ " FROM article a \r\n"
 						+ " inner join disease_condition dc on a.disease_condition_id = dc.dc_id\r\n"
 						+ " inner join languages l on a.language_id = l.language_id\r\n"
 						+ "inner join countries c on c.countrycodeid = a.country_id or a.country_id is null \r\n"
 						+ " where (dc.dc_name like '%" + search_str + "%' \r\n" + "or dc.dc_desc like '%" + search_str
 						+ "%'\r\n" + "or title  like '%" + search_str + "%'\r\n" + "or friendly_name  like '%"
 						+ search_str + "%'\r\n" + " or window_title  like '%" + search_str + "%'\r\n"
-						+ " or countryname like '%" + search_str + "%'\r\n" + " or lang_name like '%" + search_str
-						+ "%'\r\n" + ")\r\n" + " and pubstatus_id = 3 \r\n" + "\r\n" + "");
+						+ " or countryname like '%" + search_str + "%'\r\n" + " or keywords like '%"+ search_str +"%' or lang_name like '%" + search_str
+						+ "%' " + " or medicine_type like '%" + search_str + "%'" 
+						+ ") " + " and pubstatus_id = 3 " + limit_str + offset_str + "  order by published_date desc " );
 		// needs other condition too but unable to find correct column
 		// ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
-		System.out.println("result list searched article count@@@@@@@@@@@@@" + query);
+		System.out.println("result list searched article count@@@@@@@@@@@@@" + query.getQueryString());
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
@@ -68,8 +98,13 @@ public class DiseaseANDConditionDaoImpl {
 			int language_id = (int) objects[16];
 			int disease_condition_id = (int) objects[17];
 			int country_id = objects[18] != null ? (int) objects[18] : 0;
-			String dc_name = (String) objects[19];
-			int parent_dc_id = objects[20] != null ? (int) objects[20] : 0;
+			String type = (String) objects[19];
+			String dc_name = (String) objects[20];
+			int parent_dc_id = objects[21] != null ? (int) objects[21] : 0;
+			String content = (String) objects[22] ;
+			float over_allrating = objects[23] != null ? (float) objects[23] : 0;
+			String authors_name = (String) objects[24];
+			int medicine_type = objects[25] != null ? (int) objects[25] : 0;
 
 			hm.put("article_id", article_id);
 			hm.put("title", title);
@@ -90,12 +125,17 @@ public class DiseaseANDConditionDaoImpl {
 			hm.put("language_id", language_id);
 			hm.put("disease_condition_id", disease_condition_id);
 			hm.put("country_id", country_id);
+			hm.put("type", type);
 			hm.put("dc_name", dc_name);
 			hm.put("parent_dc_id", parent_dc_id);
+			hm.put("content", content);
+			hm.put("over_allrating", over_allrating);
+			hm.put("authors_name", authors_name);
+			hm.put("medicine_type", medicine_type);
 			hmFinal.add(hm);
-			System.out.println(hm);
+			//System.out.println(hm);
 		}
-		session.close();
+//		session.getTransaction().commit();   //session.close();
 
 		return hmFinal;
 	}
@@ -103,13 +143,13 @@ public class DiseaseANDConditionDaoImpl {
 	public static List getParentChildDataDiseaseConditon(Integer parent_id) {
 
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+//		session.beginTransaction();
 		String logic_here = "";
 
 		if (parent_id == null || parent_id == 0) {
@@ -150,27 +190,27 @@ public class DiseaseANDConditionDaoImpl {
 			hmFinal.add(hm);
 			System.out.println(hm);
 		}
-		session.close();
+//		session.getTransaction().commit();   //session.close();
 
 		return hmFinal;
 	}
 
 	public List listDataMatchingStrDiseaseConditonAndArticleTables(String search_str) {
 		// creating seession factory object
-		Session factory = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
-		Session session = factory;
+		//Session session = factory;
 
 		// creating transaction object
-		Transaction trans = (Transaction) session.beginTransaction();
+//		session.beginTransaction();
 
 		Query query = session.createNativeQuery(
 				"(SELECT a.title, a.window_title FROM article a where a.pubstatus_id = 3 and a.title like '%"
-						+ search_str + "%')\r\n"
+						+ search_str + "%' or a.keywords like '%"+ search_str +"%')\r\n"
 						+ "union (select dc.dc_name, dc.dc_desc from disease_condition dc where dc.dc_status=1 and dc.dc_name like '%"
 						+ search_str + "%')");
-		System.out.println("result list searched article and dis_condi table query>@@@@@@@@@@@@@" + query);
+		System.out.println("result list searched article and dis_condi table query>@@@@@@@@@@@@@" + query.getQueryString());
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
@@ -181,7 +221,7 @@ public class DiseaseANDConditionDaoImpl {
 //			System.out.println(hm);
 			hmFinal.add(searchresult);
 		}
-		session.close();
+//		session.getTransaction().commit();   //session.close();
 
 		return hmFinal;
 	}

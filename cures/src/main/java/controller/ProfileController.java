@@ -7,19 +7,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import dao.PatientDaoImpl;
-import model.Patient;
+import dao.RegistrationDaoImpl;
+import model.Registration;
 
 @RestController
 @RequestMapping(path = "/profile")
 public class ProfileController {
 
 	@Autowired
-	private PatientDaoImpl patientDaoImpl;
+	private RegistrationDaoImpl registrationDaoImpl;
 
 	@RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody Patient getPatientProfile(@PathVariable Integer id) {
-		return patientDaoImpl.findAllPatientByPatientid(id);
+	public @ResponseBody Registration getProfile(@PathVariable Integer id) {
+		return registrationDaoImpl.findUserByRegId(id);
 	}
 
 }
