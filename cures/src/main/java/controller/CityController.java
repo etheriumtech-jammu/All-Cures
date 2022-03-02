@@ -25,6 +25,7 @@ public class CityController {
 
 	}
 
+
 	@RequestMapping(value = "/newsletter/{mobile}", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody Integer getNewsletterDetails(@PathVariable String mobile) {
 		return cityDaoImpl.getNewsletterDetails(mobile);     

@@ -93,7 +93,6 @@ public class CityDaoImpl {
 
 		// creating session object
 		//Session session = factory;
-
 		// creating transaction object
 //		session.beginTransaction();
 		int ret = 0;
