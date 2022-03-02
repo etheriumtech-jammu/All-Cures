@@ -60,7 +60,6 @@ public class DashboardController {
 //
 //		MemcachedClient mcc = null;
 //		String address = Constant.ADDRESS;
-//
 //		try {
 //			mcc = new MemcachedClient(new ConnectionFactoryBuilder().setDaemon(true).setFailureMode(FailureMode.Retry).build(), AddrUtil.getAddresses(address));
 //		} catch (IOException e) {
