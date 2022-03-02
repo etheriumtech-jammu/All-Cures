@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- Load properties files for placeholder. -->
+	<!-- (1) -->
+	<!-- <context:property-placeholder location="classpath*:/META-INF/spring/*.properties" 
+		/> -->
+	<bean id="jsonMessageConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="objectMapper" ref="objectMapper" />
+	</bean>
+
+	<bean id="objectMapper"
+		class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean">
+		<!-- (2) -->
+		<property name="dateFormat">
+			<bean class="com.fasterxml.jackson.databind.util.StdDateFormat" />
+		</property>
+	</bean>
+
+	<!-- SpringResourceTemplateResolver automatically integrates with Spring's 
+		own -->
+	<!-- resource resolution infrastructure, which is highly recommended. -->
+	<!-- <bean id="templateResolver" class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver"> 
+		<property name="prefix" value="/WEB-INF/templates/" /> <property name="suffix" 
+		value=".html" /> HTML is the default value, added here for the sake of clarity. 
+		<property name="templateMode" value="HTML" /> Template cache is true by default. 
+		Set to false if you want templates to be automatically updated when modified. 
+		<property name="cacheable" value="true" /> </bean> SpringTemplateEngine automatically 
+		applies SpringStandardDialect and enables Spring's own MessageSource message 
+		resolution mechanisms. <bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine"> 
+		<property name="templateResolver" ref="templateResolver" /> Enabling the 
+		SpringEL compiler with Spring 4.2.4 or newer can speed up execution in most 
+		scenarios, but might be incompatible with specific cases when expressions 
+		in one template are reused across different data ypes, so this flag is "false" 
+		by default for safer backwards compatibility. <property name="enableSpringELCompiler" 
+		value="true" /> </bean> -->
+
+	<!-- Register components of Spring MVC. -->
+	<!-- (3) -->
+	<mvc:annotation-driven>
+		<mvc:message-converters
+			register-defaults="false">
+			<ref bean="jsonMessageConverter" />
+		</mvc:message-converters>
+		<!-- (4) -->
+		<!-- <mvc:argument-resolvers> <bean class="org.springframework.data.web.PageableHandlerMethodArgumentResolver" 
+			/> </mvc:argument-resolvers> -->
+	</mvc:annotation-driven>
+	<!-- mvc:resources mapping="/**" location="/ui/" /-->
+	<!-- mvc:resources mapping="/ui/**" location="/ui/"  cache-period="0"/-->
+	
+	<!-- mvc:resources mapping="/ui/static/**" location="/ui/static/" />
+	<mvc:resources mapping="/ui/assets/**" location="/ui/assets/" />
+	<mvc:resources mapping="/api/**" location="/cures" />
+	<mvc:resources mapping="/**.html" location="/ui/" />
+	<mvc:resources mapping="/**.js" location="/ui/" />
+	<mvc:resources mapping="/**.css" location="/ui/" />
+	<mvc:resources mapping="/**.png" location="/ui/" />
+	<mvc:resources mapping="/**.jpg" location="/ui/" />
+	<mvc:resources mapping="/**.jpeg" location="/ui/" />
+	<mvc:resources mapping="/**.svg" location="/ui/" />
+	<mvc:resources mapping="/**.ico" location="/ui/" /-->
+	<!-- mvc:resources mapping="*.jpg" location="/*" />
+	<mvc:resources mapping="*.jpeg" location="/*" />
+	<mvc:resources mapping="*.svg" location="/*" />
+	<mvc:resources mapping="*.ico" location="/*" />
+	<mvc:resources mapping="/*js*" location="/res/" /> <mvc:resources mapping="/*css*" 
+		location="/res/" /> <mvc:resources mapping="/*jsp*" location="/res/" /> -->
+	<!-- mvc:resources mapping="/cures/ui/*.html" location="/cures/ui/*.html" cache-period="0"/>
+	<mvc:resources mapping="/cures/ui/**/*.html" location="/cures/ui/**/*.html" cache-period="0"/-->
+
+	<!-- mvc:cors>
+		<mvc:mapping path="/**" />
+	</mvc:cors-->
+
+	<!-- Register components of interceptor. -->
+	<!-- (5) -->
+	<!-- <mvc:interceptors> <mvc:interceptor> <mvc:mapping path="/**" /> <bean 
+		class="org.terasoluna.gfw.web.logging.TraceLoggingInterceptor" /> </mvc:interceptor> 
+		omitted </mvc:interceptors> -->
+
+	<!-- Scan & register components of RESTful Web Service. -->
+	<!-- (6) -->
+	<context:component-scan
+		base-package="controller,dao,service" />
+<!--
+	<bean id="mailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+
+		<property name="host" value="smtpout.secureserver.net" />
+		<property name="port" value="465" />
+		<property name="username" value="anilraina@etheriumtech.com" />
+		<property name="password" value="password123" />
+-->
+		<!-- The name of the property, following JavaBean naming conventions -->
+		<!--
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.debug">true</prop>
+			</props>
+		</property>
+	</bean> -->
+	<!-- freemarker config -->
+	<!--
+	<bean id="freemarkerConfig"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/WEB-INF/ftl/" />
+	</bean> -->
+
+	<beans>
+		<bean name="BeansConfig" class="dao.BeansConfig" />
+	</beans>
+
+	<!-- Register components of AOP. -->
+	<!-- (7) -->
+	<!-- <bean id="handlerExceptionResolverLoggingInterceptor" class="org.terasoluna.gfw.web.exception.HandlerExceptionResolverLoggingInterceptor"> 
+		<property name="exceptionLogger" ref="exceptionLogger" /> </bean> <aop:config> 
+		<aop:advisor advice-ref="handlerExceptionResolverLoggingInterceptor" pointcut="execution(* 
+		org.springframework.web.servlet.HandlerExceptionResolver.resolveException(..))" 
+		/> </aop:config> -->
+	<!-- bean class="com.concretepage.config.SwaggerConfig"/> <mvc:resources 
+		mapping="swagger-ui.html" location="classpath:/META-INF/resources/"/> <mvc:resources 
+		mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/> -->
+</beans>

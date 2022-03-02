@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/allcures_schema?autoReconnect=true&amp;useSSL=false</property>
+		<property name="hibernate.connection.username">root</property>
+		
+		<property name="hibernate.connection.password">Arnav@1996</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+		<property name="show_sql">true</property>
+		<property name="format_sql">true</property>
+		
+		<property name="hbm2ddl.auto">update</property>
+		
+		        <!-- <property name="hibernate.current_session_context_class">org.hibernate.context.ThreadLocalSessionContext</property> -->
+		<property name="hibernate.current_session_context_class">org.hibernate.context.internal.ThreadLocalSessionContext</property>
+
+		
+		<mapping class="model.countries"></mapping>
+		<mapping class="model.States"></mapping>
+		<mapping class="model.Specialties"></mapping>
+		<mapping resource="model/Subspecialties.hbm.xml" class="model.Subspecialties"></mapping>
+		<mapping class="model.City"></mapping>
+		<mapping resource="model/Registration.hbm.xml" class="model.Registration"></mapping>
+		<mapping resource="model/Patient.hbm.xml" class="model.Patient"></mapping>
+		<mapping class="model.Doctors"></mapping>
+		<mapping class="model.Hospital"></mapping>
+		<mapping resource="model/ArticlePubStatus.xml" class="model.ArticlePubStatus"></mapping>
+		<mapping resource="model/Article.xml" class="model.Article"></mapping>
+		<mapping resource="model/Author.xml" class="model.Author"></mapping>
+		<mapping resource="model/Copyright.xml" class="model.Copyright"></mapping>
+		<mapping resource="model/Disclaimer.xml" class="model.Disclaimer"></mapping>
+		<mapping resource="model/Languages.xml" class="model.Languages"></mapping>
+		<mapping resource="model/Doctorsrating.hbm.xml" class="model.Doctorsrating"></mapping>
+		
+		
+		
+	
+   <!--   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.password">root</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/allcures</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
+    
+    <property name="connection.pool_size">1</property>
+        <property name="show_sql">true</property>
+        <property name="hbm2ddl.auto">create-drop</property>
+        <property name="hibernate.dbcp.initialSize">5</property>
+        <property name="hibernate.dbcp.maxTotal">20</property>
+        <property name="hibernate.dbcp.maxIdle">10</property>
+        <property name="hibernate.dbcp.minIdle">5</property>
+         <property name="hibernate.dbcp.maxWaitMillis">-1</property>
+          <mapping resource="com/allcures/countries.hbm.xml"></mapping> -->
+        <!--  <mapping class="model.countries" resource="com.allcures.countries.hbm.xml"></mapping>-->
+        
+    </session-factory>
+</hibernate-configuration>
