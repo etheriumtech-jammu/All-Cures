@@ -85,5 +85,23 @@ public class CityDaoImpl {
 //		session.getTransaction().commit();   //session.close();
 		return hmFinal;
 	}
+	
+	public static Integer getNewsletterDetails(String mobile) {
+
+		// creating seession factory object
+		Session session = HibernateUtil.buildSessionFactory();
+
+		// creating session object
+		//Session session = factory;
+
+		// creating transaction object
+//		session.beginTransaction();
+		int ret = 0;
+		Query query = session.createNativeQuery("select * from newsletter where mobile="+mobile+";");
+		List<Object[]> results = (List<Object[]>) query.getResultList();
+		if(null != results)  ret = results.size();
+		return ret;//)
+	}
+
 
 }
