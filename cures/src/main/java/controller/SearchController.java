@@ -67,11 +67,6 @@ public class SearchController {
 		return searchDaoImpl.findRegionsNameForDiseaseId(dc_id);
 	}
 
-	@RequestMapping(value = "/medicinetype/{medicine_type}", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody List listDataFromMatchingString(@PathVariable Integer medicine_type)  {
-		return diseaseANDconditionDaoImpl.getAllarticlebymedicinetypeList(medicine_type); 
-	}
-
 //	@RequestMapping(value = "/{article_id}", produces = "application/json", method = RequestMethod.POST)
 //	public @ResponseBody int updateArticle(@PathVariable int article_id, @RequestBody HashMap articleMap) {
 //		return articleDaoImpl.updateArticleId(article_id, articleMap);
