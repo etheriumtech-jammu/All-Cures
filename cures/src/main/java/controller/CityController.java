@@ -29,5 +29,16 @@ public class CityController {
 	public @ResponseBody Integer getNewsletterDetails(@PathVariable String mobile) {
 		return cityDaoImpl.getNewsletterDetails(mobile);     
 	}	
+	
+	@RequestMapping(value = "/state", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List getStateDetails() {
+		return cityDaoImpl.getAllStateDetails();
+
+	}
+	@RequestMapping(value = "/mobile", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List getmobileDetails() {
+		return cityDaoImpl.getAllMobileDetails();
+
+	}
 
 }
