@@ -57,10 +57,8 @@ public class DashboardController {
 		
 //		String cacheCityString = null;
 //		String cachepinString = null;
-//
 //		MemcachedClient mcc = null;
 //		String address = Constant.ADDRESS;
-//
 //		try {
 //			mcc = new MemcachedClient(new ConnectionFactoryBuilder().setDaemon(true).setFailureMode(FailureMode.Retry).build(), AddrUtil.getAddresses(address));
 //		} catch (IOException e) {

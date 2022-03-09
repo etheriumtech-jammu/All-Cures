@@ -41,12 +41,17 @@ public class SearchController {
 //	public @ResponseBody ArrayList<Article> listArticlesAll() {
 //		return diseaseANDconditionDaoImpl.getArticlesListAll();
 //	}
-
+	 
 	@RequestMapping(value = "/{search_string}", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List listDataFromMatchingString(@PathVariable String search_string,@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset,@RequestParam(required = false) String search,@RequestParam(required = false) String order) {
 		return diseaseANDconditionDaoImpl.getAllMatchingDCList(search_string, limit,  offset, order);
 	}
-
+	
+	@RequestMapping(value = "/medicinetype/{medicine_type}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List listDataFromMatchingString(@PathVariable Integer medicine_type)  {
+		return diseaseANDconditionDaoImpl.getAllarticlebymedicinetypeList(medicine_type);
+	}
+	
 	@RequestMapping(value = "/hierarchy/{parent_id}", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List listParentChildDiseaseCondtion(@PathVariable Integer parent_id) {
 		return diseaseANDconditionDaoImpl.getParentChildDataDiseaseConditon(parent_id);

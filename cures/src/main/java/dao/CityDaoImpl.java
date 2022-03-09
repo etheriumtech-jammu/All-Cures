@@ -85,5 +85,73 @@ public class CityDaoImpl {
 //		session.getTransaction().commit();   //session.close();
 		return hmFinal;
 	}
+	public static List getAllStateDetails() {
+
+		// creating seession factory object
+		Session session = HibernateUtil.buildSessionFactory();
+
+		// creating session object
+		//Session session = factory;
+
+		// creating transaction object
+//		session.beginTransaction();
+
+		Query query = session.createNativeQuery("select   statename,  pincode  from states;");
+		List<Object[]> results = (List<Object[]>) query.getResultList();
+		List hmFinal = new ArrayList();
+		for (Object[] objects : results) {
+			HashMap hm = new HashMap();
+			String statename = (String) objects[0];
+			String pincode = (String) objects[1];
+			hm.put("Statename", statename);
+			hm.put("Pincode", pincode);
+			hmFinal.add(hm);
+		}
+//		session.getTransaction().commit();   //session.close();
+		return hmFinal;
+	}
+	
+	
+	public static List getAllMobileDetails() {
+
+		// creating seession factory object
+		Session session = HibernateUtil.buildSessionFactory();
+
+		// creating session object
+		//Session session = factory;
+
+		// creating transaction object
+//		session.beginTransaction();
+
+		Query query = session.createNativeQuery("select   country_code,  mobile  from newsletter;");
+		List<Object[]> results = (List<Object[]>) query.getResultList();
+		List hmFinal = new ArrayList();
+		for (Object[] objects : results) {
+			HashMap hm = new HashMap();
+			Integer country_code = (Integer) objects[0];
+			String mobile = (String) ""+objects[1];
+			hm.put("Country", country_code);
+			hm.put("Mobile", mobile);
+			hmFinal.add(hm);
+		}
+//		session.getTransaction().commit();   //session.close();
+		return hmFinal;
+	}
+	public static Integer getNewsletterDetails(String mobile) {
+
+		// creating seession factory object
+		Session session = HibernateUtil.buildSessionFactory();
+
+		// creating session object
+		//Session session = factory;
+		// creating transaction object
+//		session.beginTransaction();
+		int ret = 0;
+		Query query = session.createNativeQuery("select * from newsletter where mobile="+mobile+";");
+		List<Object[]> results = (List<Object[]>) query.getResultList();
+		if(null != results)  ret = results.size();
+		return ret;//)
+	}
+ 
 
 }

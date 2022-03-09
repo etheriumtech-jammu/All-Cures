@@ -591,7 +591,7 @@ public class DoctorsDaoImpl {
 			{
 				doctors.setDocid(obj[0] != null ? (Integer) obj[0] : -1);
 				doctors.setEmail((String) obj[1]);
-				doctors.setRowno(obj[2] != null ? (Long) obj[2] : -1);
+				doctors.setRowno(obj[2] != null ? (Long) Long.parseLong(""+obj[2]) : -1);
 
 			}
 		}
