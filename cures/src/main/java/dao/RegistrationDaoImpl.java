@@ -269,7 +269,9 @@ public class RegistrationDaoImpl {
 		int docid = 0;
 
 		Registration register = null;
-		Query query = session.createNativeQuery("select * from registration where registration_id=" + regid);
+		Query query = session.createNativeQuery("select registration_id, first_name, last_name, email_address, pass_word, registration_type,"
+				+ " acceptance_condition, privacy_policy, account_state, remember_me, last_login_datetime, login_attempt, last_login_datatime,"
+				+ " concat(\"\",mobile_number), rowno from registration where registration_id=" + regid);
 		ArrayList<Registration> list = (ArrayList<Registration>) query.getResultList();
 		Iterator itr = list.iterator();
 		if (itr.hasNext()) {
@@ -289,6 +291,9 @@ public class RegistrationDaoImpl {
 				register.setprivacy_policy(obj[7] != null ? (Boolean) obj[7] : false);
 				register.setAccount_state(obj[8] != null ? (Integer) obj[8] : 3);
 				register.setRemember_me(obj[9] != null ? (Integer) obj[9] : 0);
+				register.setMobile_number( obj[13] != null ? Long.parseLong((String) obj[13]) : 0);
+//				register.Double setMobile_number = (Double) objects[13];
+
 				Constant.log(Constant.PREFIX + obj[0], 0);
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
