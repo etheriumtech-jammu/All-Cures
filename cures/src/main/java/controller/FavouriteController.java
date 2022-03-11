@@ -29,8 +29,8 @@ public class FavouriteController {
 	}
 	
 	@RequestMapping(value = "/userid/{user_id}/articleid/{article_id}/create", produces = "application/json", method = RequestMethod.POST)
-	public @ResponseBody int addFavouriteDetails(@PathVariable int user_id, @PathVariable int article_id)  {
-		return favouriteDaoImpl.addFavouriteDetails(user_id, article_id);
+	public @ResponseBody int addFavouriteDetails(@PathVariable int user_id, @PathVariable int article_id,@PathVariable int status)  {
+		return favouriteDaoImpl.addFavouriteDetails(user_id, article_id,status);
 
 	}
 	

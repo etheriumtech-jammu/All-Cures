@@ -1,5 +1,6 @@
 package dao;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,14 +23,26 @@ public class FavouriteDaoImpl {
 		// creating transaction object
 //		session.beginTransaction();
 
-		Query query = session.createNativeQuery("SELECT `favourite`.`user_id`," + "	`favourite`.`article_id` "
-				+ "FROM favourite where user_id=" + userid + " and article_id =" + articleid + ";"
+		Query query = session.createNativeQuery("SELECT favourite.user_id," + "	favourite.article_id, " 
+				+ "	article.title, " + "	article.friendly_name, " + "	article.subheading, " + "article.content_type, " + "	article.keywords, "
+				+ "	article.window_title, " + "	article.content_location, " + "	article.authored_by, " + "	article.published_by, "
+				+ "	article.edited_by, " + "	article.copyright_id, " + "	article.disclaimer_id, " + "	article.create_date, " + "	article.published_date, "
+				+ "	article.pubstatus_id, " + "	article.language_id, " + "	article.content, " + "	article.type, " + "	article.comments, "
+				+ "	article.country_id, " + "	article.over_allrating, " + "	dc.dc_name, " 
 				
-			
+				+ " (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a \r\n"
+				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
+				+ " ) as authors_name, "
+				+ " (select count(*) from article) as count , "
+				+ " (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))) as rowno \r\n" 
+				+ " , `article`.`medicine_type` \r\n"
 				
-				)
 				
-				;
+				+ " FROM favourite INNER JOIN article on favourite.article_id=article.article_id"
+				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
+				+ " where favourite.user_id=" + userid + " and favourite.article_id =" + articleid
+
+		);
 
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();
@@ -37,9 +50,64 @@ public class FavouriteDaoImpl {
 			HashMap hm = new HashMap();
 			Integer user_id = (Integer) objects[0];
 			Integer article_id = (Integer) objects[1];
-
+			String title = (String) objects[2];
+			String friendly_name = (String) objects[3];
+			String subheading = (String) objects[4];
+			String content_type = (String) objects[5];
+			String keywords = (String) objects[6];
+			String window_title = (String) objects[7];
+			String content_location = (String) objects[8];
+			String authored_by = (String) objects[9];
+			int published_by = objects[10] != null ? (int) objects[10] : 0;
+			int edited_by = (int) objects[11];
+			int copyright_id = (int) objects[12];
+			int disclaimer_id = (int) objects[13];
+			java.sql.Date create_date = (java.sql.Date) objects[14];
+			java.sql.Date published_date = (java.sql.Date) objects[15];
+			int pubstatus_id = (int) objects[16];
+			int language_id = (int) objects[17];
+			String content = (String) objects[18];
+			String type = (String) objects[19];
+			String comments = (String) objects[20];
+			int country_id = objects[21] != null ? (int) objects[21] : 0;
+			float over_allrating = (float) (objects[22] != null ? (Float) objects[22] : 0.0);
+			String dc_name = (String) objects[23];
+			String authors_name = (String) objects[24];
+			BigInteger count = (BigInteger) objects[25];
+			int rowno = objects[26] != null ? (int) objects[26] : 0;	
+			int medicine_type = objects[27] != null ? (int) objects[27] : 0;
+			
+			
 			hm.put("user_id", user_id);
 			hm.put("article_id", article_id);
+			hm.put("title", title);
+			hm.put("friendly_name", friendly_name);
+			hm.put("subheading", subheading);
+			hm.put("content_type", content_type);
+			hm.put("keywords", keywords);
+			hm.put("window_title", window_title);
+			hm.put("content_location", content_location);
+			hm.put("authored_by", authored_by);
+			hm.put("published_by", published_by);
+			hm.put("edited_by", edited_by);
+			hm.put("copyright_id", copyright_id);
+			hm.put("disclaimer_id", disclaimer_id);
+			hm.put("create_date", create_date);
+			hm.put("published_date", published_date);
+			hm.put("pubstatus_id", pubstatus_id);
+			hm.put("language_id", language_id);
+			hm.put("content", content);
+			hm.put("type", type);
+			hm.put("comments", comments);
+			hm.put("country_id", country_id);
+			hm.put("over_allrating", over_allrating);
+			hm.put("dc_name", dc_name);
+			hm.put("authors_name", authors_name);
+			hm.put("count", count);
+			hm.put("rowno", rowno);
+			hm.put("medicine_type", medicine_type);
+		
+
 
 			hmFinal.add(hm);
 		}
@@ -48,7 +116,7 @@ public class FavouriteDaoImpl {
 
 	}
 
-	public int addFavouriteDetails(int userid, int articleid) {
+	public int addFavouriteDetails(int userid, int articleid, int Status) {
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
@@ -56,13 +124,14 @@ public class FavouriteDaoImpl {
 		// creating transaction object
 		session.beginTransaction();
 
-		Query query = session.createNativeQuery("INSERT INTO `favourite`" + " (`user_id`, `article_id`)" + " VALUES" + " (" + userid + "," + articleid + ");");
+		Query query = session.createNativeQuery("INSERT INTO `favourite`" + " (`user_id`, `article_id`,`status`)" + " VALUES"
+				+ " (" + userid + "," + articleid + "," + Status + ");");
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
 			System.out.println(
-					"inserted new entry to favourite table for user_id =  " + userid + " ,article_id=" + articleid);
+					"inserted new entry to favourite table for user_id =  " + userid + " ,article_id=" + articleid + " ,status=" + Status);
 
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
