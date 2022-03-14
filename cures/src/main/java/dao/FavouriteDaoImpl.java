@@ -51,6 +51,7 @@ public class FavouriteDaoImpl {
 			Integer user_id = (Integer) objects[0];
 			Integer article_id = (Integer) objects[1];
 			Integer status = (Integer) objects[2];
+			
 			String title = (String) objects[3];
 			
 			String friendly_name = (String) objects[4];
@@ -271,7 +272,7 @@ public class FavouriteDaoImpl {
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
-			System.out.println("soft deleteed from favourite, where article_id =  " + article_id);
+			System.out.println("soft deleteed from favourite, where user_id = \"+ user_id + \" and \" article_id =  " + article_id);
 			session.getTransaction().commit();
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
