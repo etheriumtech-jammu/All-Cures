@@ -125,7 +125,7 @@ public class FavouriteDaoImpl {
 	public int addFavouriteDetails(int userid, int articleid, int status) {
 		int ret = 0;
 		if(status==0) {
-			ret = this.deleteFavouriteId(articleid, userid);
+			ret = this.deleteFavouriteId(userid, articleid);
 		}else {
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
@@ -272,7 +272,7 @@ public class FavouriteDaoImpl {
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
-			System.out.println("soft deleteed from favourite, where user_id = \"+ user_id + \" and \" article_id =  " + article_id);
+			System.out.println("soft deleteed from favourite, where user_id = "+ user_id + " and " + article_id + " =  " + article_id);
 			session.getTransaction().commit();
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
