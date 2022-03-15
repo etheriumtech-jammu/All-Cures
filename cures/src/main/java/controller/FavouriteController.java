@@ -41,11 +41,9 @@ public class FavouriteController {
 
 	}
 	
-//	@RequestMapping(value = "/userid/{user_id}/articleid/{article_id}/status/{status}/create", produces = "application/json", method = RequestMethod.POST)
-//	public @ResponseBody int getAddDone(@PathVariable int user_id, @PathVariable int article_id,@PathVariable int status
-//			) {
-//		// rateids is comma separated rate id's
-//		return favouriteDaoImpl.getAddDone(user_id, article_id, status);
+//	@RequestMapping(value = "/userid/{user_id}/articleid/{article_id}/delete", produces = "application/json", method = RequestMethod.DELETE)
+//	public @ResponseBody int addDeleteDetails(@PathVariable int user_id, @PathVariable int article_id)  {
+//		return favouriteDaoImpl.deleteFavouriteId(user_id, article_id);
 //
 //	}
 	
