@@ -150,23 +150,23 @@ public class FavouriteDaoImpl {
 //
 //	}
 	
-	public int getAddDone( HashMap favouriteids,int userid, int articleid,int status) {
+	public int getAddDone( int userid, int articleid,int status) {
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
 		session.beginTransaction();
-		String favouriteidsStr = (String) favouriteids.get("favouriteids");
+//		String favouriteidsStr = (String) favouriteids.get("favouriteids");
 
-		System.out.println(favouriteidsStr);
+//		System.out.println(favouriteidsStr);
 		Query query = session.createNativeQuery("UPDATE favourite SET user_id=" + userid + " , article_id = "
-				+ articleid + ",status= "+status+" WHERE favourite_id in ( " + favouriteidsStr + " );");
+				+ articleid + ",status= "+status+" ;");
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
-			System.out.println("updated favourite table for favourite_id =  " + favouriteidsStr + " ,user_id=" + userid);
+//			System.out.println("updated favourite table for favourite_id =  " + favouriteidsStr + " ,user_id=" + userid);
 
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
