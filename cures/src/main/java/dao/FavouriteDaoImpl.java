@@ -126,7 +126,10 @@ public class FavouriteDaoImpl {
 		int ret = 0;
 		if(status==0) {
 			ret = this.deleteFavouriteId(userid, articleid,status);
-		}else {
+		}if(status==1) {
+			ret = this.deleteFavouriteId(userid, articleid,status);
+		}
+		else {
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
