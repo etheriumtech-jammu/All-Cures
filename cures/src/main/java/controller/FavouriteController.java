@@ -35,9 +35,17 @@ public class FavouriteController {
 	}
 	
 	
+//	@RequestMapping(value = "/userid/{user_id}/articleid/{article_id}/status/{status}/create", produces = "application/json", method = RequestMethod.POST)
+//	public @ResponseBody int addFavouriteDetails(@PathVariable int user_id, @PathVariable int article_id,@PathVariable int status)  {
+//		return favouriteDaoImpl.addFavouriteDetails(user_id, article_id,status);
+//
+//	}
+	
 	@RequestMapping(value = "/userid/{user_id}/articleid/{article_id}/status/{status}/create", produces = "application/json", method = RequestMethod.POST)
-	public @ResponseBody int addFavouriteDetails(@PathVariable int user_id, @PathVariable int article_id,@PathVariable int status)  {
-		return favouriteDaoImpl.addFavouriteDetails(user_id, article_id,status);
+	public @ResponseBody int getAddDone(@PathVariable int userid, @PathVariable int articleid,@PathVariable int status,
+			@RequestBody HashMap favouriteids) {
+		// rateids is comma separated rate id's
+		return favouriteDaoImpl.getAddDone(favouriteids,userid, articleid, status);
 
 	}
 	

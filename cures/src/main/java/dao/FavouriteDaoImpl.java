@@ -122,36 +122,62 @@ public class FavouriteDaoImpl {
 
 	}
 
-	public int addFavouriteDetails(int userid, int articleid, int status) {
-		int ret = 0;
-		if(status==0) {
-			ret = this.deleteFavouriteId(userid, articleid,status);
-		}if(status==1) {
-			ret = this.deleteFavouriteId(userid, articleid,status);
-		}
-		else {
+//	public int addFavouriteDetails(int userid, int articleid, int status) {
+//		int ret = 0;
+//		if(status==0) {
+//			ret = this.deleteFavouriteId(userid, articleid,status);
+//		}else {
+//		// creating seession factory object
+//		Session session = HibernateUtil.buildSessionFactory();
+//		// creating session object
+//		// Session session = factory;
+//		// creating transaction object
+//		session.beginTransaction();
+//
+//		Query query = session.createNativeQuery("INSERT INTO `favourite`" + " (`user_id`, `article_id`,`status`)" + " VALUES"
+//				+ " (" + userid + "," + articleid + "," + status + ");");
+//		try {
+//			ret = query.executeUpdate();
+//			session.getTransaction().commit();
+//			System.out.println(
+//					"inserted new entry to favourite table for user_id =  " + userid + " ,article_id=" + articleid + " ,status=" + status);
+//
+//		} catch (Exception ex) {
+//			session.getTransaction().rollback();
+//		}
+//		}
+//		return ret;
+//
+//	}
+	
+	public int getAddDone( HashMap favouriteids,int userid, int articleid,int status) {
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
-		// Session session = factory;
+		//Session session = factory;
 		// creating transaction object
 		session.beginTransaction();
+		String favouriteidsStr = (String) favouriteids.get("favouriteids");
 
-		Query query = session.createNativeQuery("INSERT INTO `favourite`" + " (`user_id`, `article_id`,`status`)" + " VALUES"
-				+ " (" + userid + "," + articleid + "," + status + ");");
+		System.out.println(favouriteidsStr);
+		Query query = session.createNativeQuery("UPDATE favourite SET user_id=" + userid + " , article_id = "
+				+ articleid + ",status= "+status+" WHERE favourite_id in ( " + favouriteidsStr + " );");
+		int ret = 0;
 		try {
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
-			System.out.println(
-					"inserted new entry to favourite table for user_id =  " + userid + " ,article_id=" + articleid + " ,status=" + status);
+			System.out.println("updated favourite table for favourite_id =  " + favouriteidsStr + " ,user_id=" + userid);
 
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
+		} finally {
+//			session.getTransaction().commit();   //session.close();
 		}
-		}
-		return ret;
 
+		return ret;
 	}
+	
+	
 	public static List getAllFavouriteUserDetails(int userid) {
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
