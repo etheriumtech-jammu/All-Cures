@@ -81,7 +81,7 @@ public class FavouriteDaoImpl {
 			int medicine_type = objects[28] != null ? (int) objects[28] : 0;
 			
 			
-				
+			
 			hm.put("user_id", user_id);
 			hm.put("article_id", article_id);
 			hm.put("status", status);
@@ -111,7 +111,7 @@ public class FavouriteDaoImpl {
 			hm.put("count", count);
 			hm.put("rowno", rowno);
 			hm.put("medicine_type", medicine_type);
-//			hm.put("status", status);
+			hm.put("status", status);
 		
 
 
@@ -123,61 +123,30 @@ public class FavouriteDaoImpl {
 	}
 
 	public int addFavouriteDetails(int userid, int articleid, int status) {
-		int ret = 0;
-		if(status==0) {
-			ret = this.getAddDone(userid, articleid,status);
-		}else {
-		// creating seession factory object
-		Session session = HibernateUtil.buildSessionFactory();
-		// creating session object
-		// Session session = factory;
-		// creating transaction object
-		session.beginTransaction();
-
-		Query query = session.createNativeQuery("INSERT INTO `favourite`" + " (`user_id`, `article_id`,`status`)" + " VALUES"
-				+ " (" + userid + "," + articleid + "," + status + ");");
-		try {
-			ret = query.executeUpdate();
-			session.getTransaction().commit();
-			System.out.println(
-					"inserted new entry to favourite table for user_id =  " + userid + " ,article_id=" + articleid + " ,status=" + status);
-
-		} catch (Exception ex) {
-			session.getTransaction().rollback();
-		}
+		int ret = this.updateFavouriteId(userid, articleid, status);
+		if(ret == 0 ) {
+			// creating seession factory object
+			Session session = HibernateUtil.buildSessionFactory();
+			// creating session object
+			// Session session = factory;
+			// creating transaction object
+			session.beginTransaction();
+	
+			Query query = session.createNativeQuery("INSERT INTO `favourite`" + " (`user_id`, `article_id`,`status`)" + " VALUES"
+					+ " (" + userid + "," + articleid + "," + status + ");");
+			try {
+				ret = query.executeUpdate();
+				session.getTransaction().commit();
+				System.out.println(
+						"inserted new entry to favourite table for user_id =  " + userid + " ,article_id=" + articleid + " ,status=" + status);
+	
+			} catch (Exception ex) {
+				session.getTransaction().rollback();
+			}
 		}
 		return ret;
 
 	}
-	
-	public int getAddDone( int userid, int articleid,int status) {
-		// creating seession factory object
-		Session session = HibernateUtil.buildSessionFactory();
-		// creating session object
-		//Session session = factory;
-		// creating transaction object
-		session.beginTransaction();
-//		String favouriteidsStr = (String) favouriteids.get("favouriteids");
-
-//		System.out.println(favouriteidsStr);
-		Query query = session.createNativeQuery("UPDATE favourite SET user_id=" + userid + " , article_id = "
-				+ articleid + " WHERE status in ( " + status + " );");
-		int ret = 0;
-		try {
-			ret = query.executeUpdate();
-			session.getTransaction().commit();
-			System.out.println("updated favourite table for status =  " + status + " ,user_id=" + userid);
-
-		} catch (Exception ex) {
-			session.getTransaction().rollback();
-		} finally {
-//			session.getTransaction().commit();   //session.close();
-		}
-
-		return ret;
-	}
-	
-	
 	public static List getAllFavouriteUserDetails(int userid) {
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
@@ -280,7 +249,7 @@ public class FavouriteDaoImpl {
 
 	}
 	
-	public static int deleteFavouriteId(int user_id,int article_id,int status) {
+	public static int updateFavouriteId(int user_id,int article_id, int status) {
 
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
@@ -295,20 +264,18 @@ public class FavouriteDaoImpl {
 		// = " + article_id + ";");
 		// SOFT delte done instead of hard delete form database
 		Query query = session
-				.createNativeQuery("UPDATE favourite SET status= "+status+" WHERE user_id = "+ user_id + " and " + article_id + " = " + article_id + ";");
+				.createNativeQuery("UPDATE favourite SET status="+status+" WHERE user_id = "+ user_id + " and " + article_id + " = " + article_id + ";");
 //		where user_id=" + userid + " and favourite.article_id =" + articleid
 		// needs other condition too but unable to find correct column
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
-			System.out.println("soft deleteed from favourite, where user_id = "+ user_id + " and " + article_id + " =  " + article_id);
+			System.out.println("soft deleteed from favourite, where user_id = "+ user_id + " and " + article_id + " =  " + article_id + " status is =>>>>"+ status);
 			session.getTransaction().commit();
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
-		} 
-		
+		}
 
 		return ret;
 	}
-	
 }
