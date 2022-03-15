@@ -81,7 +81,7 @@ public class FavouriteDaoImpl {
 			int medicine_type = objects[28] != null ? (int) objects[28] : 0;
 			
 			
-			
+				
 			hm.put("user_id", user_id);
 			hm.put("article_id", article_id);
 			hm.put("status", status);
@@ -111,7 +111,7 @@ public class FavouriteDaoImpl {
 			hm.put("count", count);
 			hm.put("rowno", rowno);
 			hm.put("medicine_type", medicine_type);
-			hm.put("status", status);
+//			hm.put("status", status);
 		
 
 
@@ -124,7 +124,7 @@ public class FavouriteDaoImpl {
 
 	public int addFavouriteDetails(int userid, int articleid, int status) {
 		int ret = 0;
-		if(status==0) {
+		if(status==1) {
 			ret = this.deleteFavouriteId(userid, articleid);
 		}else {
 		// creating seession factory object
