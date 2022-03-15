@@ -124,7 +124,7 @@ public class FavouriteDaoImpl {
 
 	public int addFavouriteDetails(int userid, int articleid, int status) {
 		int ret = 0;
-		if(status==1) {
+		if(status==0) {
 			ret = this.deleteFavouriteId(userid, articleid);
 		}else {
 		// creating seession factory object
