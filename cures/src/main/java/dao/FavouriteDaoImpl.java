@@ -132,7 +132,7 @@ public class FavouriteDaoImpl {
 		// creating transaction object
 //		session.beginTransaction();
 
-		Query query = session.createNativeQuery("SELECT favourite.user_id," + "	favourite.status, " 
+		Query query = session.createNativeQuery("SELECT favourite.user_id," + "	favourite.article_id, " + "	favourite.status, " 
 				+ "	article.title, " + "	article.friendly_name, " + "	article.subheading, " + "article.content_type, " + "	article.keywords, "
 				+ "	article.window_title, " + "	article.content_location, " + "	article.authored_by, " + "	article.published_by, "
 				+ "	article.edited_by, " + "	article.copyright_id, " + "	article.disclaimer_id, " + "	article.create_date, " + "	article.published_date, "
@@ -158,36 +158,40 @@ public class FavouriteDaoImpl {
 		for (Object[] objects : results) {
 			HashMap hm = new HashMap();
 			Integer user_id = (Integer) objects[0];
-			Integer status = (Integer) objects[1];
-			String title = (String) objects[2];
-			String friendly_name = (String) objects[3];
-			String subheading = (String) objects[4];
-			String content_type = (String) objects[5];
-			String keywords = (String) objects[6];
-			String window_title = (String) objects[7];
-			String content_location = (String) objects[8];
-			String authored_by = (String) objects[9];
-			int published_by = objects[10] != null ? (int) objects[10] : 0;
-			int edited_by = (int) objects[11];
-			int copyright_id = (int) objects[12];
-			int disclaimer_id = (int) objects[13];
-			java.sql.Date create_date = (java.sql.Date) objects[14];
-			java.sql.Date published_date = (java.sql.Date) objects[15];
-			int pubstatus_id = (int) objects[16];
-			int language_id = (int) objects[17];
-			String content = (String) objects[18];
-			String type = (String) objects[19];
-			String comments = (String) objects[20];
-			int country_id = objects[21] != null ? (int) objects[21] : 0;
-			float over_allrating = (float) (objects[22] != null ? (Float) objects[22] : 0.0);
-			String dc_name = (String) objects[23];
-			String authors_name = (String) objects[24];
-			BigInteger count = (BigInteger) objects[25];
-			int rowno = objects[26] != null ? (int) objects[26] : 0;	
-			int medicine_type = objects[27] != null ? (int) objects[27] : 0;
+			Integer article_id = (Integer) objects[1];
+			Integer status = (Integer) objects[2];
+			
+			String title = (String) objects[3];
+			
+			String friendly_name = (String) objects[4];
+			String subheading = (String) objects[5];
+			String content_type = (String) objects[6];
+			String keywords = (String) objects[7];
+			String window_title = (String) objects[8];
+			String content_location = (String) objects[9];
+			String authored_by = (String) objects[10];
+			int published_by = objects[11] != null ? (int) objects[11] : 0;
+			int edited_by = (int) objects[12];
+			int copyright_id = (int) objects[13];
+			int disclaimer_id = (int) objects[14];
+			java.sql.Date create_date = (java.sql.Date) objects[15];
+			java.sql.Date published_date = (java.sql.Date) objects[16];
+			int pubstatus_id = (int) objects[17];
+			int language_id = (int) objects[18];
+			String content = (String) objects[19];
+			String type = (String) objects[20];
+			String comments = (String) objects[21];
+			int country_id = objects[22] != null ? (int) objects[22] : 0;
+			float over_allrating = (float) (objects[23] != null ? (Float) objects[23] : 0.0);
+			String dc_name = (String) objects[24];
+			String authors_name = (String) objects[25];
+			BigInteger count = (BigInteger) objects[26];
+			int rowno = objects[27] != null ? (int) objects[27] : 0;	
+			int medicine_type = objects[28] != null ? (int) objects[28] : 0;
 			
 			
 			hm.put("user_id", user_id);
+			hm.put("article_id",article_id);
 			hm.put("status", status);
 			hm.put("title", title);
 			hm.put("friendly_name", friendly_name);
