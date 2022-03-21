@@ -26,14 +26,15 @@ public class DataDaoImpl {
 		session.beginTransaction();
 
 		int iemi = (int) dataMap.get("iemi");
-		String search = null;
+		
+		String search = (String) dataMap.get("search");
 		int user_id = (int) dataMap.get("user_id");
 //		int date = (int) dataMap.get("date");;
 		
 
 		Query query = session
 				.createNativeQuery("INSERT INTO `data_store`\r\n" + " (`iemi`,"
-						+ " `search`," + " `user_id`," 
+						+ " `search`," + " `user_id`)" 
 						+ " VALUES"
 						+ " (" + iemi + "," + search + "," + user_id + ");");
 		// needs other condition too but unable to find correct column
