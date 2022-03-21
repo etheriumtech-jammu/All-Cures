@@ -34,8 +34,8 @@ public class DataDaoImpl {
 		Query query = session
 				.createNativeQuery("INSERT INTO `data_store`\r\n" + " (`iemi`,"
 						+ " `search`," + " `user_id`," 
-						+ " VALUES" + " ('" + iemi + "'," + " '" + search + "'," 
-						+ " '" + user_id + "',);" + "");
+						+ " VALUES"
+						+ " (" + iemi + "," + search + "," + user_id + ");");
 		// needs other condition too but unable to find correct column
 		int ret = 0;
 		try {
