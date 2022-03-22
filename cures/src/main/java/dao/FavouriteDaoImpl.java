@@ -282,4 +282,36 @@ public class FavouriteDaoImpl {
 
 		return ret;
 	}
+	
+	public static int deleteFavourite(int user_id,int article_id,int status) {
+
+		// creating seession factory object
+		Session session = HibernateUtil.buildSessionFactory();
+
+		// creating session object
+		//Session session = factory;
+
+		// creating transaction object
+		session.beginTransaction();
+
+		// Query query = session.createNativeQuery("DELETE FROM ARTICLE WHERE ARTICLE_ID
+		// = " + article_id + ";");
+		// SOFT delte done instead of hard delete form database
+		Query query = session
+				.createNativeQuery("DELETE FROM `favourite` WHERE (`user_id`, `article_id`,`status`) ="
+						+ " (" + user_id + "," + article_id + "," + status + ");");
+//		where user_id=" + userid + " and favourite.article_id =" + articleid
+		// needs other condition too but unable to find correct column
+		int ret = 0;
+		try {
+			ret = query.executeUpdate();
+			System.out.println("soft deleteed from favourite, where user_id = "+ user_id + " and " + article_id + " =  " + article_id );
+			session.getTransaction().commit();
+		} catch (Exception ex) {
+			session.getTransaction().rollback();
+		}
+
+		return ret;
+	}
+	
 }

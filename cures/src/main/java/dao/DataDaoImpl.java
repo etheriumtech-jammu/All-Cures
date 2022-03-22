@@ -25,24 +25,25 @@ public class DataDaoImpl {
 		// creating transaction object
 		session.beginTransaction();
 
-		int iemi = (int) dataMap.get("iemi");
+		String device_id = (String) dataMap.get("device_id");
 		
-		String search = (String) dataMap.get("search");
+		String event_type = (String) dataMap.get("event_type");
+		String event_value = (String) dataMap.get("event_value");
 		int user_id = (int) dataMap.get("user_id");
 //		int date = (int) dataMap.get("date");;
 		
 
 		Query query = session
-				.createNativeQuery("INSERT INTO `data_store`\r\n" + " (`iemi`,"
-						+ " `search`," + " `user_id`)" 
+				.createNativeQuery("INSERT INTO `data_store`\r\n" + " (`device_id`,"
+						+ " `event_type`," + " `event_value`," + " `user_id`)" 
 						+ " VALUES"
-						+ " (" + iemi + "," + search + "," + user_id + ");");
+						+ " (" + device_id + "," + event_type + ","+ event_value + "," + user_id + ");");
 		// needs other condition too but unable to find correct column
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
-			System.out.println("inserted new entry to data_store table for iemi =  " + iemi);
+			System.out.println("inserted new entry to data_store table for device_id =  " + device_id);
 
 		} catch (Exception ex) {
 			session.getTransaction().rollback();

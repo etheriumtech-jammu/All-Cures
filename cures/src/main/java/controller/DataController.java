@@ -27,8 +27,4 @@ public class DataController {
 		return dataDaoImpl.addDataDetails(dataMasterMap);
 	}
 
-
-	
-	
-
 }
