@@ -648,7 +648,9 @@ public class RegistrationDaoImpl {
 						+ "    `newsletter`.`nl_start_date`,\r\n" + "    `newsletter`.`nl_sub_type`,\r\n"
 						+ "    `newsletter`.`mobile`,\r\n" + "    `newsletter`.`nl_subscription_cures_id`,\r\n"
 						+ "    `newsletter`.`active`,\r\n" + "    `newsletter`.`nl_end_date`,\r\n"
-						+ "    `newsletter`.`country_code` " + " FROM `newsletter`\r\n"
+						+ "    `newsletter`.`country_code`, " 
+						+ "(select dc_name from disease_condition dc where dc.dc_id = `newsletter`.`nl_subscription_disease_id`) as disease_name"
+						+ " FROM `newsletter`\r\n"
 						+ " where mobile=" + mobile + " and country_code=" + country_code + ";");
 
 		List<Object[]> results = (List<Object[]>) query.getResultList();
@@ -665,6 +667,8 @@ public class RegistrationDaoImpl {
 			Integer active = objects[6] != null ? (int) objects[6] : 0;
 			java.sql.Date nl_end_date = (java.sql.Date) objects[7];
 			int country_code1 = (int) objects[8];
+			String disease_name = (String) objects[9];
+
 
 			hm.put("user_id", user_id);
 			hm.put("nl_subscription_disease_id", nl_subscription_disease_id);
@@ -675,6 +679,7 @@ public class RegistrationDaoImpl {
 			hm.put("active", active);
 			hm.put("nl_end_date", nl_end_date);
 			hm.put("country_code", country_code1);
+			hm.put("disease_name", disease_name);
 			hmFinal.add(hm);
 		}
 //		session.getTransaction().commit();   //session.close();
