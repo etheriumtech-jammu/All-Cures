@@ -269,7 +269,9 @@ public class RegistrationDaoImpl {
 		int docid = 0;
 
 		Registration register = null;
-		Query query = session.createNativeQuery("select * from registration where registration_id=" + regid);
+		Query query = session.createNativeQuery("select registration_id, first_name, last_name, email_address, pass_word, registration_type,"
+				+ " acceptance_condition, privacy_policy, account_state, remember_me, last_login_datetime, login_attempt, last_login_datatime,"
+				+ " concat(\"\",mobile_number), rowno from registration where registration_id=" + regid);
 		ArrayList<Registration> list = (ArrayList<Registration>) query.getResultList();
 		Iterator itr = list.iterator();
 		if (itr.hasNext()) {
@@ -289,6 +291,9 @@ public class RegistrationDaoImpl {
 				register.setprivacy_policy(obj[7] != null ? (Boolean) obj[7] : false);
 				register.setAccount_state(obj[8] != null ? (Integer) obj[8] : 3);
 				register.setRemember_me(obj[9] != null ? (Integer) obj[9] : 0);
+				register.setMobile_number( obj[13] != null ? Long.parseLong((String) obj[13]) : 0);
+//				register.Double setMobile_number = (Double) objects[13];
+
 				Constant.log(Constant.PREFIX + obj[0], 0);
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
@@ -643,7 +648,9 @@ public class RegistrationDaoImpl {
 						+ "    `newsletter`.`nl_start_date`,\r\n" + "    `newsletter`.`nl_sub_type`,\r\n"
 						+ "    `newsletter`.`mobile`,\r\n" + "    `newsletter`.`nl_subscription_cures_id`,\r\n"
 						+ "    `newsletter`.`active`,\r\n" + "    `newsletter`.`nl_end_date`,\r\n"
-						+ "    `newsletter`.`country_code` " + " FROM `newsletter`\r\n"
+						+ "    `newsletter`.`country_code`, " 
+						+ "(select dc_name from disease_condition dc where dc.dc_id = `newsletter`.`nl_subscription_disease_id`) as disease_name"
+						+ " FROM `newsletter`\r\n"
 						+ " where mobile=" + mobile + " and country_code=" + country_code + ";");
 
 		List<Object[]> results = (List<Object[]>) query.getResultList();
@@ -660,6 +667,8 @@ public class RegistrationDaoImpl {
 			Integer active = objects[6] != null ? (int) objects[6] : 0;
 			java.sql.Date nl_end_date = (java.sql.Date) objects[7];
 			int country_code1 = (int) objects[8];
+			String disease_name = (String) objects[9];
+
 
 			hm.put("user_id", user_id);
 			hm.put("nl_subscription_disease_id", nl_subscription_disease_id);
@@ -670,6 +679,7 @@ public class RegistrationDaoImpl {
 			hm.put("active", active);
 			hm.put("nl_end_date", nl_end_date);
 			hm.put("country_code", country_code1);
+			hm.put("disease_name", disease_name);
 			hmFinal.add(hm);
 		}
 //		session.getTransaction().commit();   //session.close();
