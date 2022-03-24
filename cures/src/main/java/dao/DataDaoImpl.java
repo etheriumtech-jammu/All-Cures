@@ -37,7 +37,9 @@ public class DataDaoImpl {
 				.createNativeQuery("INSERT INTO `data_store`\r\n" + " (`device_id`,"
 						+ " `event_type`," + " `event_value`," + " `user_id`)" 
 						+ " VALUES"
-						+ " (" + device_id + "," + event_type + ","+ event_value + "," + user_id + ");");
+						+ " ('" + device_id + "'," + " '"+ event_type +" ' ," +"' "+event_value + "' ," + user_id + ");");
+		
+//		'" + promo_code + "'," + " '" + promo_start_datetime + "'
 		// needs other condition too but unable to find correct column
 		int ret = 0;
 		try {
