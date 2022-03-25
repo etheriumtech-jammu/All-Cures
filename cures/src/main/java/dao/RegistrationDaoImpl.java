@@ -644,12 +644,12 @@ public class RegistrationDaoImpl {
 //		session.beginTransaction();
 		Registration register = null;
 		Query query = session.createNativeQuery(
-				"SELECT `newsletter`.`user_id`,\r\n" + "    `newsletter`.`nl_subscription_disease_id`,\r\n"
+				"SELECT `newsletter`.`user_id`,\r\n" + "    `newsletter`.`nl_subscription_disease_id`,"
 						+ "    `newsletter`.`nl_start_date`,\r\n" + "    `newsletter`.`nl_sub_type`,\r\n"
 						+ "    `newsletter`.`mobile`,\r\n" + "    `newsletter`.`nl_subscription_cures_id`,\r\n"
 						+ "    `newsletter`.`active`,\r\n" + "    `newsletter`.`nl_end_date`,\r\n"
 						+ "    `newsletter`.`country_code`, " 
-						+ "(select dc_name from disease_condition dc where dc.dc_id = `newsletter`.`nl_subscription_disease_id`) as disease_name"
+						+ "(select dc_name from disease_condition dc where dc.dc_id in ( `newsletter`.`nl_subscription_disease_id` )) as disease_name"
 						+ " FROM `newsletter`\r\n"
 						+ " where mobile=" + mobile + " and country_code=" + country_code + ";");
 
