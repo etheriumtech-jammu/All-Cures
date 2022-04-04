@@ -35,6 +35,12 @@ public class CityController {
 		return cityDaoImpl.getAllStateDetails();
 
 	}
+	
+	@RequestMapping(value = "/disease", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List getDiseaseDetails() {
+		return cityDaoImpl.getAllDiseaseDetails();
+
+	}
 	@RequestMapping(value = "/mobile", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List getmobileDetails() {
 		return cityDaoImpl.getAllMobileDetails();
