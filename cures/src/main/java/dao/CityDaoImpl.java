@@ -111,6 +111,29 @@ public class CityDaoImpl {
 		return hmFinal;
 	}
 	
+	public static List getAllDiseaseDetails() {
+
+		// creating seession factory object
+		Session session = HibernateUtil.buildSessionFactory();
+
+
+		Query query = session.createNativeQuery("select   dc_name,  dc_status,parent_dc_id  from disease_condition;");
+		List<Object[]> results = (List<Object[]>) query.getResultList();
+		List hmFinal = new ArrayList();
+		for (Object[] objects : results) {
+			HashMap hm = new HashMap();
+			String dc_name = (String) objects[0];
+			Integer dc_status = (Integer) objects[1];
+			Integer parent_dc_id = (Integer) objects[2];
+			hm.put("dcname", dc_name);
+			hm.put("dcstatus", dc_status);
+			hm.put("parentdcid", parent_dc_id);
+			hmFinal.add(hm);
+		}
+//		session.getTransaction().commit();   //session.close();
+		return hmFinal;
+	}
+	
 	
 	public static List getAllMobileDetails() {
 
