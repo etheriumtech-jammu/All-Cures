@@ -251,11 +251,7 @@ public class DiseaseANDConditionDaoImpl {
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
 
-		// creating session object
-		//Session session = factory;
-
-		// creating transaction object
-//		session.beginTransaction();
+	
 
 		
 //		String search_str_ = "";
