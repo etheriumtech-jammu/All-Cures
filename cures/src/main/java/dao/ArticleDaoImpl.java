@@ -880,6 +880,129 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 		return hmFinal;
 	}
 
+
+		
+
+public static List getArticlesListAllKeysProtected(Integer limit, Integer offset, String searchStr, String orderByStr) {
+	
+	Session session = HibernateUtil.buildSessionFactory();
+	
+	
+	String limit_str = "";
+	if (null != limit)
+		limit_str = " limit " + limit;
+	String offset_str = "";
+	if (null != offset)
+		offset_str = " offset " + offset;
+	String orderby_str = " order by `article`.`published_date` desc ";
+	if (null != orderByStr) {
+		String[] orderArr = orderByStr.split(":");
+		orderby_str = " order by  `article`.`" + orderArr[0] +"` "+orderArr[1];
+	}
+	String search_str = "";
+//	if (null != searchStr) {
+////		search_str = " where ";
+//	search_str = " where article_id in ("+searchStr.split(":")[1]+")";
+//	}
+	search_str = " where protected_article ='[1]'";
+
+	Query query = session.createNativeQuery("SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
+			+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
+			+ "    `article`.`content_type`,\r\n" + "    `article`.`keywords`,\r\n"
+			+ "    `article`.`window_title`,\r\n" + "    `article`.`content_location`,\r\n"
+			+ "    `article`.`authored_by`,\r\n" + "    `article`.`published_by`,\r\n"
+			+ "    `article`.`edited_by`,\r\n" + "    `article`.`copyright_id`,\r\n"
+			+ "    `article`.`disclaimer_id`,\r\n" + "    `article`.`create_date`,\r\n"
+			+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
+			+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n" + "    `dc`.`dc_name`\r\n,"
+			+ "	`article`.`comments`\r\n," + " `article`.`type`\r\n, `article`.`country_id`\r\n,  "
+			+ " `article`.`over_allrating`, \r\n "
+			
+			+ " (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a \r\n"
+			+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
+			+ " ) as authors_name, "
+			+ " (select count(*) from article) as count , "
+			+ " (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))) as rowno \r\n" 
+			+ " , `article`.`medicine_type` \r\n"
+			+ " FROM `article` \r\n"
+			+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
+			+  search_str + orderby_str
+			+ limit_str + offset_str + " ;");
+	// needs other condition too but unable to find correct column
+	List<Object[]> results = (List<Object[]>) query.getResultList();
+	System.out.println("result list article@@@@@@@@@@@@@" + results.size());
+//	session.getTransaction().commit();   //session.close();
+	
+	List hmFinal = new ArrayList();
+	for (Object[] objects : results) {
+		HashMap hm = new HashMap();
+		int article_id = (int) objects[0];
+		String title = (String) objects[1];
+		String friendly_name = (String) objects[2];
+		String subheading = (String) objects[3];
+		String content_type = (String) objects[4];
+		String keywords = (String) objects[5];
+		String window_title = (String) objects[6];
+		String content_location = (String) objects[7];
+		String authored_by = (String) objects[8];
+		int published_by = objects[9] != null ? (int) objects[9] : 0;
+		int edited_by = (int) objects[10];
+		int copyright_id = (int) objects[11];
+		int disclaimer_id = (int) objects[12];
+		java.sql.Date create_date = (java.sql.Date) objects[13];
+		java.sql.Date published_date = (java.sql.Date) objects[14];
+		int pubstatus_id = (int) objects[15];
+		int language_id = (int) objects[16];
+		String content = (String) objects[17];
+		String dc_name = (String) objects[18];
+		String comments = (String) objects[19];
+		String type = (String) objects[20];
+		int country_id = objects[21] != null ? (int) objects[21] : 0;
+		float over_allrating = (float) (objects[22] != null ? (Float) objects[22] : 0.0);
+		String authors_name = (String) objects[23];
+		BigInteger count = (BigInteger) objects[24];
+		int rowno = objects[25] != null ? (int) objects[25] : 0;	
+		int medicine_type = objects[26] != null ? (int) objects[26] : 0;
+		
+		hm.put("article_id", article_id);
+		hm.put("title", title);
+		hm.put("friendly_name", friendly_name);
+		hm.put("subheading", subheading);
+		hm.put("content_type", content_type);
+		hm.put("keywords", keywords);
+		hm.put("window_title", window_title);
+		hm.put("content_location", content_location);
+		hm.put("authored_by", authored_by);
+		hm.put("published_by", published_by);
+		hm.put("edited_by", edited_by);
+		hm.put("copyright_id", copyright_id);
+		hm.put("disclaimer_id", disclaimer_id);
+		hm.put("create_date", create_date);
+		hm.put("published_date", published_date);
+		hm.put("pubstatus_id", pubstatus_id);
+		hm.put("language_id", language_id);
+		hm.put("content", content);
+		hm.put("dc_name", dc_name);
+		hm.put("comments", comments);
+		hm.put("type", type);
+		hm.put("country_id", country_id);
+		hm.put("over_allrating", over_allrating);
+		hm.put("authors_name", authors_name);
+		hm.put("count", count);
+		hm.put("rowno", rowno);
+		hm.put("medicine_type", medicine_type);
+		
+		hmFinal.add(hm);
+//		System.out.println(hm);
+	}
+//	session.getTransaction().commit(); 
+	
+	//session.close();
+	
+	return hmFinal;
+}
+
+
 public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset, String searchStr, String orderByStr) {
 	
 	// creating seession factory object

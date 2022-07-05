@@ -98,6 +98,17 @@ public class ArticleController {
 		return articleDaoImpl.getArticlesListAllKeysFeatured(limit,offset,search,order);
 	}
 	
+	@RequestMapping(value = "/allkvprotected", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List listArticlesAllKeysProtected(@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset,@RequestParam(required = false) String search,@RequestParam(required = false) String order) {
+		return articleDaoImpl.getArticlesListAllKeysProtected(limit,offset,search,order);
+	}
+	
+	@RequestMapping(value = "/allkvfavourite", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List listArticlesAllKeysFavourite(@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset,@RequestParam(required = false) String search,@RequestParam(required = false) String order) {
+		return articleDaoImpl.getArticlesListAllKeysFavourite(limit,offset,search,order);
+	}
+
+	
 	@RequestMapping(value = "/authallkv/reg_type/{reg_type}/reg_doc_pat_id/{reg_doc_pat_id}", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List listArticlesAllKeysByRegTypeAndID(@RequestParam(required = false) Integer limit, @PathVariable int reg_type, @PathVariable int reg_doc_pat_id, @RequestParam(required = false) Integer offset) {
 		return articleDaoImpl.getArticlesListAllKeysbyAuthIdandregType(reg_type, reg_doc_pat_id, limit, offset);
