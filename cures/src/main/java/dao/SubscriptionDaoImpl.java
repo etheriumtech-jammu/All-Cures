@@ -80,7 +80,7 @@ public class SubscriptionDaoImpl {
 				+ "    `subscription_master`.`subscription_details`," + "    `subscription_master`.`subscription_status`,"
 				+ "    `subscription_master`.`subscription_starttime`," + "    `subscription_master`.`subscription_endtime`,"
 				
-				+ "    `subscription_master`.`price_id`" + "    `subscription_master`.`detailing`,"+ "FROM `subscription_master`;");
+				+ "    `subscription_master`.`price_id`," + "    `subscription_master`.`detailing`"+ "FROM `subscription_master`;");
 		
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println("result list Subscription@@@@@@@@@@@@@ size=" + results.size());
