@@ -80,7 +80,7 @@ public class SubscriptionDaoImpl {
 				+ "    `subscription_master`.`subscription_details`," + "    `subscription_master`.`subscription_status`,"
 				+ "    `subscription_master`.`subscription_starttime`," + "    `subscription_master`.`subscription_endtime`,"
 				
-				+ "    `subscription_master`.`price_id`," + "    `subscription_master`.`detailing`"+ "FROM `subscription_master`;");
+				+ "    `subscription_master`.`price_id`," + "    `subscription_master`.`detailing`,"+ "    `subscription_master`.`plan` "+ "FROM `subscription_master`;");
 		
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println("result list Subscription@@@@@@@@@@@@@ size=" + results.size());
@@ -94,6 +94,8 @@ public class SubscriptionDaoImpl {
 			java.sql.Timestamp subscription_endtime = (java.sql.Timestamp) objects[4];
 			int price_id = (int) objects[5];
 			String detailing = (String) objects[6];
+			String plan= (String) objects[7];
+
 
 
 			hm.put("subscription_id", subscription_id);
@@ -103,6 +105,7 @@ public class SubscriptionDaoImpl {
 			hm.put("subscription_endtime", subscription_endtime);
 			hm.put("price_id", price_id);
 			hm.put("detailing", detailing);
+			hm.put("plan", plan);
 			hmFinal.add(hm);
 		}
 		return (ArrayList) hmFinal;
