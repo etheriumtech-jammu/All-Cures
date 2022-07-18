@@ -226,23 +226,21 @@ public class SubscriptionDaoImpl {
 		return (ArrayList) hmFinal;
 	}
 		
-	public static int addUserSubscriptionDetails(HashMap dataMap) {
+	public static int addUserSubscriptionDetails(int user_id,int subscription_id,int status) {
 
 		Session session = HibernateUtil.buildSessionFactory();
 
 		session.beginTransaction();
 		
-		int subscription_id = (int) dataMap.get("subscription_id");
-		int user_id = (int) dataMap.get("user_id");
-		int status = (int) dataMap.get("status");
+//		int status = (int) dataMap.get("status");
 
-		String current_time_start = null; 
-		String current_period_end = null;
+//		String current_time_start = null; 
+//		String current_period_end = null;
 		
-			java.util.Date date=new java.util.Date();
-			java.sql.Timestamp sqlDate=new java.sql.Timestamp(date.getTime());
-			current_time_start = sqlDate.toString();
-			System.out.println("current_time_start>>>>>"+current_time_start);
+//			java.util.Date date=new java.util.Date();
+//			java.sql.Timestamp sqlDate=new java.sql.Timestamp(date.getTime());
+//			current_time_start = sqlDate.toString();
+//			System.out.println("current_time_start>>>>>"+current_time_start);
 			
 //			java.util.Date date=new java.util.Date();
 //			java.sql.Timestamp sqlDate=new java.sql.Timestamp(date.getTime());
@@ -250,12 +248,8 @@ public class SubscriptionDaoImpl {
 //			System.out.println("current_period_end>>>>>"+current_period_end);
 		
 		Query query = session
-				.createNativeQuery("INSERT INTO `user_subscription`" + " (`subscription_id`,"
-						+ " `user_id `," + " `status`," + " `current_time_start`,"
-						+ "  )"
-						+ " VALUES" + " ('" + subscription_id + "', " + "  '" + user_id + "', " + "  '"
-						+ status+ "', "+"  " + " '" +current_time_start
-						+ "'," + " );" + "");
+				.createNativeQuery("INSERT INTO `user_subscription`" + " (`user_id`, `subscription_id`,`status`)" + " VALUES"
+						+ " (" + user_id + "," + subscription_id + "," + status + ");");
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();

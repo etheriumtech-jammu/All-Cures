@@ -27,6 +27,11 @@ public class SubscriptionController {
 		return subscriptionDaoImpl.addSubscriptionDetails(promoMasterMap);
 	}
 	
+	@RequestMapping(value = "/create/{user_id}/{subscription_id}/{status}", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody int addUserDetails(@PathVariable int user_id,@PathVariable int subscription_id,@PathVariable int status) {
+		return subscriptionDaoImpl.addUserSubscriptionDetails(user_id,subscription_id,status);
+	}
+	
 	@RequestMapping(value = "/get", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List getAllSubscriptionDetails() {
 		return subscriptionDaoImpl.getAllSubscriptionDetails();
