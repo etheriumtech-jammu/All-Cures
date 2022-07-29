@@ -168,6 +168,7 @@ public class SubscriptionDaoImpl {
 		return ret;
 	}
 	
+	
 	public static int deleteSubscriptionId(int subscription_id ) {
 
 		Session session = HibernateUtil.buildSessionFactory();
@@ -191,6 +192,7 @@ public class SubscriptionDaoImpl {
 		return ret;
 	}
 
+	
 	public static ArrayList getSubscriptionDetailsById(int subscription_id) {
 		
 		Session session = HibernateUtil.buildSessionFactory();
@@ -226,44 +228,6 @@ public class SubscriptionDaoImpl {
 		return (ArrayList) hmFinal;
 	}
 		
-	public static int addUserSubscriptionDetails(int user_id,int subscription_id,int status) {
-
-		Session session = HibernateUtil.buildSessionFactory();
-
-		session.beginTransaction();
-		
-//		int status = (int) dataMap.get("status");
-
-//		String current_time_start = null; 
-//		String current_period_end = null;
-		
-//			java.util.Date date=new java.util.Date();
-//			java.sql.Timestamp sqlDate=new java.sql.Timestamp(date.getTime());
-//			current_time_start = sqlDate.toString();
-//			System.out.println("current_time_start>>>>>"+current_time_start);
-			
-//			java.util.Date date=new java.util.Date();
-//			java.sql.Timestamp sqlDate=new java.sql.Timestamp(date.getTime());
-//			current_period_end = sqlDate.toString();
-//			System.out.println("current_period_end>>>>>"+current_period_end);
-		
-		Query query = session
-				.createNativeQuery("INSERT INTO `user_subscription`" + " (`user_id`, `subscription_id`,`status`)" + " VALUES"
-						+ " (" + user_id + "," + subscription_id + "," + status + ");");
-		int ret = 0;
-		try {
-			ret = query.executeUpdate();
-			session.getTransaction().commit();
-			System.out.println("inserted new entry to user_subscription table for subscription_details =  " + subscription_id);
-
-		} catch (Exception ex) {
-			session.getTransaction().rollback();
-		} finally {
-		
-		}
-
-		return ret;
-	}
 	
 
 }

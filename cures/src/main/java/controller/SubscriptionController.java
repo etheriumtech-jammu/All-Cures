@@ -2,15 +2,21 @@ package controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.razorpay.Order;
+import com.razorpay.*;
 
 import dao.SubscriptionDaoImpl;
 
@@ -25,11 +31,6 @@ public class SubscriptionController {
 	@RequestMapping(value = "/create", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody int addSubscriptionDetails(@RequestBody HashMap promoMasterMap) {
 		return subscriptionDaoImpl.addSubscriptionDetails(promoMasterMap);
-	}
-	
-	@RequestMapping(value = "/create/{user_id}/{subscription_id}/{status}", produces = "application/json", method = RequestMethod.POST)
-	public @ResponseBody int addUserDetails(@PathVariable int user_id,@PathVariable int subscription_id,@PathVariable int status) {
-		return subscriptionDaoImpl.addUserSubscriptionDetails(user_id,subscription_id,status);
 	}
 	
 	@RequestMapping(value = "/get", produces = "application/json", method = RequestMethod.GET)
@@ -52,5 +53,30 @@ public class SubscriptionController {
 		return subscriptionDaoImpl.getSubscriptionDetailsById(subscription_id);
 	}
 
+	//creating order for payment
 	
+		@PostMapping("/create_order")
+		@ResponseBody
+		public String createOrder(@RequestBody Map<String, Object> data) throws Exception
+		{
+			System.out.println(data);
+			
+			int amt=Integer.parseInt(data.get("amount").toString());
+			
+			RazorpayClient client=new RazorpayClient("rzp_test_GgDGBdRu7fT3hC", "KrDza5wbzpVN7lUAYxiz1xRf");
+			
+			JSONObject ob=new JSONObject();
+			ob.put("amount", amt*100);
+			ob.put("currency", "INR");
+			ob.put("receipt", "txn_235425");
+			
+			//creating new order
+			
+			Order order = client.Orders.create(ob);
+			System.out.println(order);
+			
+			return order.toString();
+		}
+	
+
 }
