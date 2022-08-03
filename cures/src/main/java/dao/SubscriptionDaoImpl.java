@@ -71,6 +71,41 @@ public class SubscriptionDaoImpl {
 
 		return ret;
 	}
+	
+	public static int addOrderDetails(HashMap promoMap) {
+
+		Session session = HibernateUtil.buildSessionFactory();
+
+		session.beginTransaction();
+
+		String amount = (String) promoMap.get("amount");
+		String id = (String) promoMap.get("order_id");
+		String PaymentId = null;
+		String Status = "created";
+		
+
+
+          Query query = session
+				.createNativeQuery("INSERT INTO `orders`" + " (`amount`,"
+						+ " `order_id`," + " `payment_id`,"
+						+ " `status` )"
+						+ " VALUES" + " ('" + amount + "',    " + "     '" + id + "',    " + "    '"
+						+ PaymentId + "',    "+"      '" + Status 
+						+ "'   );" + "");
+		int ret = 0;
+		try {
+			ret = query.executeUpdate();
+			session.getTransaction().commit();
+			System.out.println("inserted new entry to orders table for amount =  " + amount);
+
+		} catch (Exception ex) {
+			session.getTransaction().rollback();
+		} finally {
+		
+		}
+
+		return ret;
+	}
 		
 	public static ArrayList getAllSubscriptionDetails() {
 
@@ -227,6 +262,8 @@ public class SubscriptionDaoImpl {
 		}
 		return (ArrayList) hmFinal;
 	}
+	
+	
 		
 	
 

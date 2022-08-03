@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.query.Query;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,15 +53,12 @@ public class SubscriptionController {
 	public @ResponseBody List getSubscriptionDetailsById(@PathVariable int subscription_id) {
 		return subscriptionDaoImpl.getSubscriptionDetailsById(subscription_id);
 	}
-
-	//creating order for payment
 	
-		@PostMapping("/create_order")
-		@ResponseBody
-		public String createOrder(@RequestBody Map<String, Object> data) throws Exception
+	@RequestMapping(value = "/create_order", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody int addOrderDetails(@RequestBody Map<String, Object> data) throws Exception {
+		
 		{
-			System.out.println(data);
-			
+			 HashMap promoMasterMap= new HashMap();
 			int amt=Integer.parseInt(data.get("amount").toString());
 			
 			RazorpayClient client=new RazorpayClient("rzp_test_GgDGBdRu7fT3hC", "KrDza5wbzpVN7lUAYxiz1xRf");
@@ -75,8 +73,37 @@ public class SubscriptionController {
 			Order order = client.Orders.create(ob);
 			System.out.println(order);
 			
-			return order.toString();
+			
+			return subscriptionDaoImpl.addOrderDetails(promoMasterMap);
+
 		}
+	}
+
+	//creating order for payment
+	
+//		@PostMapping("/create_order")
+//		@ResponseBody
+//		public String createOrder(@RequestBody Map<String, Object> data) throws Exception
+//		{
+//			System.out.println(data);
+//			
+//			int amt=Integer.parseInt(data.get("amount").toString());
+//			
+//			RazorpayClient client=new RazorpayClient("rzp_test_GgDGBdRu7fT3hC", "KrDza5wbzpVN7lUAYxiz1xRf");
+//			
+//			JSONObject ob=new JSONObject();
+//			ob.put("amount", amt*100);
+//			ob.put("currency", "INR");
+//			ob.put("receipt", "txn_235425");
+//			
+//			//creating new order
+//			
+//			Order order = client.Orders.create(ob);
+//			System.out.println(order);
+//			
+//			
+//			return order.toString();
+//		}
 	
 
 }
