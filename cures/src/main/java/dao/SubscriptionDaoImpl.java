@@ -107,6 +107,39 @@ public class SubscriptionDaoImpl {
 		return ret;
 	}
 		
+	public static int updateOrderDetails(int id, HashMap articleMap) {
+
+		Session session = HibernateUtil.buildSessionFactory();
+
+		
+		session.beginTransaction();
+
+		String updatestr = "";
+		if (articleMap.containsKey("payment_id")) {
+			updatestr += "`payment_id` = '" + articleMap.get("payment_id") + "',";
+		}
+		if (articleMap.containsKey("status")) {
+			updatestr += "`status` = " + articleMap.get("status") + ",";
+		}
+		
+		updatestr = updatestr.replaceAll(",$", "");
+		Query query = session.createNativeQuery(
+				"UPDATE `orders`" + "SET" + updatestr + " WHERE `order_id` = " + id + ";");
+		int ret = 0;
+		try {
+			ret = query.executeUpdate();
+			session.getTransaction().commit();
+			System.out.println("updated order table for order_id =  " + id);
+
+		} catch (Exception ex) {
+			session.getTransaction().rollback();
+		} finally {
+	
+		}
+
+		return ret;
+	}
+	
 	public static ArrayList getAllSubscriptionDetails() {
 
 		Session session = HibernateUtil.buildSessionFactory();
