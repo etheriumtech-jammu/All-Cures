@@ -107,7 +107,7 @@ public class SubscriptionDaoImpl {
 		return ret;
 	}
 		
-	public static int updateOrderDetails(int id, HashMap articleMap) {
+	public static int updateOrderDetails(String id, HashMap articleMap) {
 
 		Session session = HibernateUtil.buildSessionFactory();
 
