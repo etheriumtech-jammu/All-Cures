@@ -54,11 +54,21 @@ public class SubscriptionController {
 		return subscriptionDaoImpl.getSubscriptionDetailsById(subscription_id);
 	}
 	
-	@RequestMapping(value = "/create_order", produces = "application/json", method = RequestMethod.POST)
-	public @ResponseBody int addOrderDetails(@RequestBody Map<String, Object> data) throws Exception {
+	@RequestMapping(value = "/order", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody int addOrderDetails(@RequestBody HashMap promoMasterMap) {
 		
+		
+		return subscriptionDaoImpl.addOrderDetails(promoMasterMap);
+	}
+
+	//creating order for payment
+	
+		@PostMapping("/create_order")
+		@ResponseBody
+		public String createOrder(@RequestBody Map<String, Object> data) throws Exception
 		{
-			 HashMap promoMasterMap= new HashMap();
+			System.out.println(data);
+			
 			int amt=Integer.parseInt(data.get("amount").toString());
 			
 			RazorpayClient client=new RazorpayClient("rzp_test_GgDGBdRu7fT3hC", "KrDza5wbzpVN7lUAYxiz1xRf");
@@ -74,36 +84,8 @@ public class SubscriptionController {
 			System.out.println(order);
 			
 			
-			return subscriptionDaoImpl.addOrderDetails(promoMasterMap);
-
+			return order.toString();
 		}
-	}
-
-	//creating order for payment
-	
-//		@PostMapping("/create_order")
-//		@ResponseBody
-//		public String createOrder(@RequestBody Map<String, Object> data) throws Exception
-//		{
-//			System.out.println(data);
-//			
-//			int amt=Integer.parseInt(data.get("amount").toString());
-//			
-//			RazorpayClient client=new RazorpayClient("rzp_test_GgDGBdRu7fT3hC", "KrDza5wbzpVN7lUAYxiz1xRf");
-//			
-//			JSONObject ob=new JSONObject();
-//			ob.put("amount", amt*100);
-//			ob.put("currency", "INR");
-//			ob.put("receipt", "txn_235425");
-//			
-//			//creating new order
-//			
-//			Order order = client.Orders.create(ob);
-//			System.out.println(order);
-//			
-//			
-//			return order.toString();
-//		}
 	
 
 }
