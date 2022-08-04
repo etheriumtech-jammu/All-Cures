@@ -107,7 +107,7 @@ public class SubscriptionDaoImpl {
 		return ret;
 	}
 		
-	public static int updateOrderDetails(String order_id, HashMap articleMap) {
+	public static int updateOrderDetails(String id, HashMap articleMap) {
 
 		Session session = HibernateUtil.buildSessionFactory();
 
@@ -124,12 +124,12 @@ public class SubscriptionDaoImpl {
 		
 		updatestr = updatestr.replaceAll(",$", "");
 		Query query = session.createNativeQuery(
-				"UPDATE `orders`" + "SET" + updatestr + " WHERE `order_id` = " + order_id + ";");
+				"UPDATE `orders`" + "SET" + updatestr + " WHERE `order_id` = " + id + ";");
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
-			System.out.println("updated order table for order_id =  " + order_id);
+			System.out.println("updated order table for order_id =  " + id);
 
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
