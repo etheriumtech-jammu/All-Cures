@@ -127,7 +127,7 @@ public class SubscriptionDaoImpl {
 		
 		updatestr = updatestr.replaceAll(",$", "");
 		Query query = session.createNativeQuery(
-				"UPDATE `orders`" + "SET" + updatestr + " WHERE `order_id` = " + order_id + ";");
+				"UPDATE `orders`" + "SET" + updatestr + " WHERE `order_id` = " + "order_id" + ";");
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
