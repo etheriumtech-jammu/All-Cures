@@ -56,14 +56,12 @@ public class SubscriptionController {
 	
 	@RequestMapping(value = "/order", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody int addOrderDetails(@RequestBody HashMap promoMasterMap) {
-		
-		
 		return subscriptionDaoImpl.addOrderDetails(promoMasterMap);
 	}
 
 	//creating order for payment
 	
-		@PostMapping("/create_order")
+		@PostMapping("/create_order")  
 		@ResponseBody
 		public String createOrder(@RequestBody Map<String, Object> data) throws Exception
 		{
