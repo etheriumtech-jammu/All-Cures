@@ -118,9 +118,12 @@ public class SubscriptionDaoImpl {
 		if (articleMap.containsKey("payment_id")) {
 			updatestr += "`payment_id` = '" + articleMap.get("payment_id") + "',";
 		}
+		
 		if (articleMap.containsKey("status")) {
-			updatestr += "`status` = " + articleMap.get("status") + ",";
+			updatestr += "`status` = '" + articleMap.get("status") + "',";
 		}
+		
+		
 		
 		updatestr = updatestr.replaceAll(",$", "");
 		Query query = session.createNativeQuery(
