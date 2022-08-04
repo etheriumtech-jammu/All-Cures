@@ -65,8 +65,7 @@ public class SubscriptionController {
 	}
 
 	//creating order for payment
-	
-		@PostMapping("/create_order")  
+			@PostMapping("/create_order")  
 		@ResponseBody
 		public String createOrder(@RequestBody Map<String, Object> data) throws Exception
 		{
