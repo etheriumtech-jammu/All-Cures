@@ -72,7 +72,7 @@ public class SubscriptionDaoImpl {
 		return ret;
 	}
 	
-	public static int addOrderDetails(HashMap promoMap) {
+	public static int addOrderDetails(int userid, int subscriptionid,HashMap promoMap) {
 
 		Session session = HibernateUtil.buildSessionFactory();
 
@@ -88,10 +88,10 @@ public class SubscriptionDaoImpl {
           Query query = session
 				.createNativeQuery("INSERT INTO `orders`" + " (`amount`,"
 						+ " `order_id`," + " `payment_id`," 
-						+ " `status` )"
+						+ " `status,`" + " `user_id`,"+ " `subscription_id` )"
 						+ " VALUES" + " ('" + amount + "',    " + "     '" + id + "',    " + "    '"
 						+ PaymentId + "',    "+"      '" + Status 
-						+ "'   );" + "");
+						+ "', " + " '" + userid + "', " + " '" + subscriptionid + "'   );" + "");
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
