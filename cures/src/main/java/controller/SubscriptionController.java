@@ -63,7 +63,11 @@ public class SubscriptionController {
 	public @ResponseBody int updateOrderMaster(@PathVariable String order_id, @RequestBody HashMap subscriptionMasterMap) {
 		return subscriptionDaoImpl.updateOrderDetails(order_id, subscriptionMasterMap);
 	}
-
+	
+	@RequestMapping(value = "orders/{user_id}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List getOrderDetailsById(@PathVariable int user_id) {
+		return subscriptionDaoImpl.getOrderDetailsById(user_id);
+	}
 	//creating order for payment
 			@PostMapping("/create_order")  
 		@ResponseBody

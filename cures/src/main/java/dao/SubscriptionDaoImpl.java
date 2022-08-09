@@ -299,6 +299,33 @@ public class SubscriptionDaoImpl {
 		return (ArrayList) hmFinal;
 	}
 	
+public static ArrayList getOrderDetailsById(int user_id) {
+		
+		Session session = HibernateUtil.buildSessionFactory();
+		
+	
+		
+		Query query = session.createNativeQuery("SELECT `orders`.`status`,"
+				+ "    `orders`.`user_id`, "+ "    `orders`.`subscription_id`" + "FROM `orders` where user_id="+user_id+";");
+		List<Object[]> results = (List<Object[]>) query.getResultList();
+		System.out.println("result list Subscription@@@@@@@@@@@@@ size=" + results.size());
+		List hmFinal = new ArrayList();
+		for (Object[] objects : results) {
+			HashMap hm = new HashMap();
+			
+			String status = (String) objects[0];
+			int user_id1 = (int) objects[1];
+			int subscription_id = (int) objects[2];
+			
+			hm.put("status", status);
+			hm.put("user_id1", user_id1);
+			hm.put("subscription_id", subscription_id);
+			
+			hmFinal.add(hm);
+		}
+		return (ArrayList) hmFinal;
+	}
+	
 	
 		
 	
