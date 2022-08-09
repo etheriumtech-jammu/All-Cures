@@ -1151,8 +1151,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 
 	public int updateArticleId(int article_id, HashMap articleMap, String baseUrl) {
 
-		// SendEmailUtil.shootEmail(null, "Article updated top ", "Hi
-		// aritcleid="+article_id);
+		
 
 		String[] params = new String[6];
 
@@ -1212,9 +1211,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 		if (articleMap.containsKey("create_date")) {
 			updatestr += "`create_date` = '" + articleMap.get("create_date") + "',\r\n";
 		}
-//		if (articleMap.containsKey("published_date")) {
-//			updatestr += "`published_date` = '" + articleMap.get("published_date") + "',\r\n";
-//		}
+
 		if (articleMap.containsKey("pubstatus_id")) {
 			updatestr += "`pubstatus_id` = " + articleMap.get("pubstatus_id") + ",\r\n";
 			// in case article is set to be PUBLISHED status_id=3 set published_date to
@@ -1280,6 +1277,11 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 		if (articleMap.containsKey("featured_article")) {
 			updatestr += "`featured_article` = '" + articleMap.get("featured_article") + "',\r\n";
 		}
+		
+		if (articleMap.containsKey("protected_article")) {
+			updatestr += "`protected_article` = '" + articleMap.get("protected_article") + "',\r\n";
+		}
+		
 		
 		/*
 		 * if (articleMap.containsKey("articleContent")) { updatestr += "`content` = '"
