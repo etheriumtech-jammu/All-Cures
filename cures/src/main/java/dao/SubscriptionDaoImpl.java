@@ -88,7 +88,7 @@ public class SubscriptionDaoImpl {
           Query query = session
 				.createNativeQuery("INSERT INTO `orders`" + " (`amount`,"
 						+ " `order_id`," + " `payment_id`," 
-						+ " `status,`" + " `user_id`,"+ " `subscription_id` )"
+						+ " `status`," + " `user_id`,"+ " `subscription_id` )"
 						+ " VALUES" + " ('" + amount + "',    " + "     '" + id + "',    " + "    '"
 						+ PaymentId + "',    "+"      '" + Status 
 						+ "', " + " '" + userid + "', " + " '" + subscriptionid + "'   );" + "");
