@@ -268,7 +268,6 @@ public class SubscriptionDaoImpl {
 		return ret;
 	}
 
-	
 	public static ArrayList getSubscriptionDetailsById(int subscription_id) {
 		
 		Session session = HibernateUtil.buildSessionFactory();
