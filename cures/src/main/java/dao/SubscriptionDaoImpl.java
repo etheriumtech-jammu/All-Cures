@@ -305,10 +305,11 @@ public static ArrayList getOrderDetailsById(int user_id) {
 		
 		Session session = HibernateUtil.buildSessionFactory();
 		
-	
-		
+//		String search_str = ""; 
+//		search_str = " and status ='1'";
+//		
 		Query query = session.createNativeQuery("SELECT `orders`.`status`,"
-				+ "    `orders`.`user_id`, "+ "    `orders`.`subscription_id`" + "FROM `orders` where user_id="+user_id+";");
+				+ "    `orders`.`user_id`, "+ "    `orders`.`subscription_id`" + "FROM `orders` where user_id=" +user_id+  " AND status =1"+  ";");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println("result list Subscription@@@@@@@@@@@@@ size=" + results.size());
 		List hmFinal = new ArrayList();
