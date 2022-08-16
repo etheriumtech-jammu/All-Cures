@@ -82,16 +82,17 @@ public class SubscriptionDaoImpl {
 		String id = (String) promoMap.get("order_id");
 		String PaymentId = null;
 		String Status = "created";
+		int status = 0;
 		
 
 
           Query query = session
 				.createNativeQuery("INSERT INTO `orders`" + " (`amount`,"
 						+ " `order_id`," + " `payment_id`," 
-						+ " `status`," + " `user_id`,"+ " `subscription_id` )"
+						+ " `razorpay_status`," + " `user_id`,"+ " `subscription_id`,"+" `status` )"
 						+ " VALUES" + " ('" + amount + "',    " + "     '" + id + "',    " + "    '"
 						+ PaymentId + "',    "+"      '" + Status 
-						+ "', " + " '" + userid + "', " + " '" + subscriptionid + "'   );" + "");
+						+ "', " + " '" + userid + "', " + " '" + subscriptionid + "', "+" '" + status + "'   );" + "");
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
@@ -119,10 +120,14 @@ public class SubscriptionDaoImpl {
 			updatestr += "`payment_id` = '" + articleMap.get("payment_id") + "',";
 		}
 		
+		if (articleMap.containsKey("razorpay_status")) {
+			updatestr += "`razorpay_status` = '" + articleMap.get("razorpay_status") + "',";
+		}
+		
+
 		if (articleMap.containsKey("status")) {
 			updatestr += "`status` = '" + articleMap.get("status") + "',";
 		}
-		
 		
 		
 		updatestr = updatestr.replaceAll(",$", "");
