@@ -315,15 +315,15 @@ public static ArrayList getOrderDetailsById(int user_id) {
 		for (Object[] objects : results) {
 			HashMap hm = new HashMap();
 			
-			int user_id1 = (int) objects[0];
-			int subscription_id = (int) objects[1];
-			int status = (int) objects[2];
-
+			int status = (int) objects[0];
+			int user_id1 = (int) objects[1];
+			int subscription_id = (int) objects[2];
 			
 			
+			hm.put("status", status);
 			hm.put("user_id1", user_id1);
 			hm.put("subscription_id", subscription_id);
-			hm.put("status", status);
+			
 			
 			hmFinal.add(hm);
 		}
