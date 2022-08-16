@@ -272,8 +272,6 @@ public class SubscriptionDaoImpl {
 		
 		Session session = HibernateUtil.buildSessionFactory();
 		
-	
-		
 		Query query = session.createNativeQuery("SELECT `subscription_master`.`subscription_id`,"
 				+ "    `subscription_master`.`subscription_details`," + "    `subscription_master`.`subscription_status`,"
 				+ "    `subscription_master`.`subscription_starttime`," + "    `subscription_master`.`subscription_endtime`,"
