@@ -1,6 +1,8 @@
 package dao;
 
 import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -49,6 +51,9 @@ public class SubscriptionDaoImpl {
 			subscription_updatedtime = sqlDate.toString();
 			System.out.println("subscription_updatedtime>>>>>"+subscription_updatedtime);
 		
+//			java.util.Date date = new java.util.Date();
+//			java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+//			updatestr += "`published_date` = '" + sqlDate + "',\r\n";
 		
 		Query query = session
 				.createNativeQuery("INSERT INTO `subscription_master`" + " (`subscription_details`,"
@@ -83,16 +88,30 @@ public class SubscriptionDaoImpl {
 		String PaymentId = null;
 		String Status = "created";
 		int status = 0;
+		String start_time = null;
+		String end_date = null;
 		
-
-
+		java.util.Date date=new java.util.Date();
+		java.sql.Timestamp sqlDate=new java.sql.Timestamp(date.getTime());
+		start_time = sqlDate.toString();
+		System.out.println("start_time>>>>>"+start_time);
+		
+		
+		java.util.Date dates=new java.util.Date();
+		java.sql.Timestamp sqlDates=new java.sql.Timestamp(date.getTime());
+		end_date = sqlDate.toString();
+		System.out.println("start_time>>>>>"+start_time);
+		
+		
+		
+		
           Query query = session
 				.createNativeQuery("INSERT INTO `orders`" + " (`amount`,"
 						+ " `order_id`," + " `payment_id`," 
-						+ " `razorpay_status`," + " `user_id`,"+ " `subscription_id`,"+" `status` )"
+						+ " `razorpay_status`," + " `user_id`,"+ " `subscription_id`,"+" `status`,"+"`start_date`,"+"`End_date` )"
 						+ " VALUES" + " ('" + amount + "',    " + "     '" + id + "',    " + "    '"
 						+ PaymentId + "',    "+"      '" + Status 
-						+ "', " + " '" + userid + "', " + " '" + subscriptionid + "', "+" '" + status + "'   );" + "");
+						+ "', " + " '" + userid + "', " + " '" + subscriptionid + "', "+" '" + status + "', "+" '"+start_time+"', "+" '"+end_date+"');" + "");
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
@@ -129,7 +148,45 @@ public class SubscriptionDaoImpl {
 			updatestr += "`status` = '" + articleMap.get("status") + "',";
 		}
 		
+		if (articleMap.containsKey("subscription_id")) {
+			updatestr += "`subscription_id` = " + articleMap.get("subscription_id") + ",\r\n";
+			
+			if ((int) articleMap.get("subscription_id") == 1) {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+				Calendar cal = Calendar.getInstance();
+				System.out.println("Current Date: "+sdf.format(cal.getTime()));
+				   
+			        cal.add(Calendar.DATE, 1);  
+				String end_date = sdf.format(cal.getTime());  
+				System.out.println("Date after Addition: "+end_date);
+			updatestr += "`End_date` = '" + end_date + "',\r\n";
+		}
+			else if  ((int) articleMap.get("subscription_id") == 2) {
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+				Calendar cal = Calendar.getInstance();
+				System.out.println("Current Date: "+sdf.format(cal.getTime()));
+				   
+			        cal.add(Calendar.DAY_OF_MONTH, 30);  
+				String end_date = sdf.format(cal.getTime());  
+				System.out.println("Date after Addition: "+end_date);
+			updatestr += "`End_date` = '" + end_date + "',\r\n";
+		}
+        else if  ((int) articleMap.get("subscription_id") == 3) {
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+				Calendar cal = Calendar.getInstance();
+				System.out.println("Current Date: "+sdf.format(cal.getTime()));
+				   
+			        cal.add(Calendar.YEAR, 1);  
+				String end_date = sdf.format(cal.getTime());  
+				System.out.println("Date after Addition: "+end_date);
+			updatestr += "`End_date` = '" + end_date + "',\r\n";
+		}
 		
+		}
+		
+
 		updatestr = updatestr.replaceAll(",$", "");
 		Query query = session.createNativeQuery(
 				"UPDATE `orders`" + "SET" + updatestr + " WHERE `order_id` = " + order_id + ";");
@@ -143,6 +200,30 @@ public class SubscriptionDaoImpl {
 			session.getTransaction().rollback();
 		} finally {
 	
+		}
+
+		return ret;
+	}
+	
+	
+	public static int updateStatus(String curdate ) {
+
+		Session session = HibernateUtil.buildSessionFactory();
+
+		session.beginTransaction();
+
+	
+		Query query = session
+				.createNativeQuery("UPDATE orders SET status=0 WHERE End_date  = " + curdate  + ";");
+		int ret = 0;
+		try {
+			ret = query.executeUpdate();
+			System.out.println("soft deleteed from orders, where End_date  =  " + curdate );
+			session.getTransaction().commit();
+		} catch (Exception ex) {
+			session.getTransaction().rollback();
+		} finally {
+
 		}
 
 		return ret;
@@ -218,6 +299,8 @@ public class SubscriptionDaoImpl {
 			updatestr += "`subscription_updatedtime` = '" + articleMap.get("subscription_updatedtime") + "',";
 		}
 		
+		
+		
 		java.util.Date date=new java.util.Date();
 		java.sql.Timestamp sqlDate=new java.sql.Timestamp(date.getTime());
 		String subscription_updatedtime = sqlDate.toString();
@@ -242,7 +325,7 @@ public class SubscriptionDaoImpl {
 		}
 
 		return ret;
-	}
+	}  
 	
 	
 	public static int deleteSubscriptionId(int subscription_id ) {
