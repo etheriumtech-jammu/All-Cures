@@ -90,37 +90,7 @@ public class TipDaoImpl {
 		}
 		
 
-//	public static ArrayList getAllTipDetails() {
-//
-//		Session session = HibernateUtil.buildSessionFactory();
-//
-//		Query query = session.createNativeQuery("SELECT `tip`.`tip_id`,"
-//				+ "    `tip`.`tip_title`," + "    `tip`.`tip_date`,"
-//				+ "    `tip`.`user_id`," + "    `tip`.`tip_status` "+ "FROM `tip`;");
-//		
-//		
-//		List<Object[]> results = (List<Object[]>) query.getResultList();
-//		System.out.println("result list Subscription@@@@@@@@@@@@@ size=" + results.size());
-//		List hmFinal = new ArrayList();
-//		for (Object[] objects : results) {
-//			HashMap hm = new HashMap();
-//			int tip_id = (int) objects[0];
-//			String tip_title = (String) objects[1];
-//			java.sql.Timestamp tip_date = (java.sql.Timestamp) objects[2];
-//			int user_id = (int) objects[3];
-//			int tip_status = (int) objects[4];
-//
-//
-//			hm.put("tip_id", tip_id);
-//			hm.put("tip_title", tip_title);
-//			hm.put("tip_date", tip_date);
-//			hm.put("user_id", user_id);
-//			hm.put("tip_status", tip_status);
-//			
-//			hmFinal.add(hm);
-//		}
-//		return (ArrayList) hmFinal;
-//	}
+
 	
 	public static int updateTipDetails(int tip_id, HashMap articleMap) {
 
