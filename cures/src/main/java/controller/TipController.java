@@ -54,10 +54,6 @@ public class TipController {
 		return tipDaoImpl.getTipDetailsById(tip_id);
 	}
 	
-//	@RequestMapping(value = "/{tip_id}", produces = "application/json", method = RequestMethod.GET)
-//	public @ResponseBody List getTipDetailsById(@PathVariable int tip_id) {
-//		return tipDaoImpl.getTipDetailsById(tip_id);
-//	}
-	
+
 
 }
