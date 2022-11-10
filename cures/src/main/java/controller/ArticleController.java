@@ -6,17 +6,21 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import util.Constant;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +29,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,8 +39,10 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import dao.ArticleDaoImpl;
+import dao.ip_detaildao;
 import model.Article;
 import model.Article_dc_name;
+import model.Registration;
 import util.ArticleUtils;
 
 @RestController
@@ -65,7 +72,6 @@ public class ArticleController {
 		return articleDaoImpl.getArticleDetails(article_id);
 
 	}
-	
 	
 	
 //	@RequestMapping(value = "/title/{article_title}", produces = "application/json", method = RequestMethod.GET)
@@ -114,10 +120,13 @@ public class ArticleController {
 		return articleDaoImpl.getTablesDataListAll(table_name);
 	}
 
+	 
 	@RequestMapping(value = "/{article_id}", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody int updateArticle(@PathVariable int article_id, @RequestBody HashMap articleMap, HttpServletRequest request) {
-		String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).build().toUriString();
-		return articleDaoImpl.updateArticleId(article_id, articleMap, baseUrl);
+	String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).build().toUriString();
+	
+		
+return articleDaoImpl.updateArticleId(article_id, articleMap, baseUrl);
 	}
 
 	@RequestMapping(value = "/{article_id}", produces = "application/json", method = RequestMethod.DELETE)
