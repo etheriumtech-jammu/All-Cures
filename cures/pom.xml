@@ -166,6 +166,9 @@
 </dependency>
 
 		
+	
+		
+		
 		<!-- Hibernate library dependecy end -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
