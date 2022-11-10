@@ -58,16 +58,6 @@ public class ArticleController {
 	public @ResponseBody Article_dc_name getArticleDetails(@PathVariable int article_id, HttpServletRequest request,@RequestHeader Map<String,String> headers) {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpSession session = req.getSession(true);
-		 int reg_id = 0;
-		String cookie1=headers.get("cookie");
-		
-		 if (session.getAttribute(Constant.USER) != null) {
-			 Constant.log("#########USER IS IN SESSION########", 0);
-			 Registration user = (Registration) session.getAttribute(Constant.USER); 
-			 reg_id =user.getRegistration_id();
-			 System.out.println(reg_id);
-			 }
-		 ip_detaildao.Insert(article_id,cookie1,reg_id);
 		
 		return articleDaoImpl.getArticleDetails(article_id);
 
