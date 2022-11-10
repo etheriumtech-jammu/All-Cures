@@ -158,13 +158,13 @@
 			<version>2.2</version>
 		</dependency>
 
-<!-- https://mvnrepository.com/artifact/com.google.firebase/firebase-admin -->
-		<dependency>
-			<groupId>com.google.firebase</groupId>
-			<artifactId>firebase-admin</artifactId>
-			<version>6.11.0</version>
-		</dependency>
-		
+<dependency>
+    <groupId>com.google.firebase</groupId>
+    <artifactId>firebase-admin</artifactId>
+    <version>7.1.0</version>
+    <scope>runtime</scope>
+</dependency>
+
 		
 		<!-- Hibernate library dependecy end -->
 		<dependency>
