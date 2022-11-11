@@ -62,7 +62,7 @@
 		<mapping resource="model/Disclaimer.xml" class="model.Disclaimer"></mapping>
 		<mapping resource="model/Languages.xml" class="model.Languages"></mapping>
 		<mapping resource="model/Doctorsrating.hbm.xml" class="model.Doctorsrating"></mapping>
-		
+		<mapping class="model.IP_Details"/>
 		
 		
 	
