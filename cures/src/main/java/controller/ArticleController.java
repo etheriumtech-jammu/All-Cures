@@ -64,22 +64,10 @@ public class ArticleController {
 
 	}
 	
-	@RequestMapping(value = "/analytics/{article_id}", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody void  getDetails(@PathVariable int article_id, HttpServletRequest request,@RequestHeader Map<String,String> headers) {
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpSession session = req.getSession(true);
-		 int reg_id = 0;
-		String cookie1=headers.get("cookie");
-		String user1=null;
-		user1=(String) session.getAttribute(Constant.USER);
-		 System.out.println(user1);
-		 if (session.getAttribute(Constant.USER) != null) {
-			 Constant.log("#########USER IS IN SESSION########", 0);
-			 Registration user = (Registration) session.getAttribute(Constant.USER); 
-			 reg_id =user.getRegistration_id();
-			 System.out.println(reg_id);
-			 }
-		 ip_detaildao.Insert(article_id,cookie1,reg_id);
+	@RequestMapping(value = "/{article_id}/{user_id}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody int  getDetails(@PathVariable int article_id,@PathVariable int user_id, HttpServletRequest request,@RequestHeader Map<String,String> headers) {
+		
+	return	 ip_detaildao.Insert(article_id,request,headers,user_id);
 		
 	}
 	
