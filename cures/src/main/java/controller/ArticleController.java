@@ -64,12 +64,12 @@ public class ArticleController {
 
 	}
 	
-	@RequestMapping(value = "/{article_id}/{user_id}", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody int  getDetails(@PathVariable int article_id,@PathVariable int user_id, HttpServletRequest request,@RequestHeader Map<String,String> headers) {
+//	@RequestMapping(value = "/{article_id}/{user_id}", produces = "application/json", method = RequestMethod.GET)
+//	public @ResponseBody int  getDetails(@PathVariable int article_id,@PathVariable int user_id, HttpServletRequest request,@RequestHeader Map<String,String> headers) {
+//		
+//	return	 ip_detaildao.Insert(article_id,request,headers,user_id);
 		
-	return	 ip_detaildao.Insert(article_id,request,headers,user_id);
-		
-	}
+//	}
 	
 	
 	
