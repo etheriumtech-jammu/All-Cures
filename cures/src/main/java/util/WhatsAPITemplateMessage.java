@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
+import javax.net.ssl.HttpsURLConnection;
+
 public class WhatsAPITemplateMessage {
 
 	public static void main(String[] args) throws IOException, SQLException {
@@ -101,10 +103,16 @@ public class WhatsAPITemplateMessage {
 				+ " \"bodyValues\": [ \"" + disease_name + "\", \"" + BV3_desc + "\",\"" + author_medicine_type + "\"]"
 				+ "}}";
 
+		System.setProperty("javax.net.ssl.trustStoreType", "jks");
+	       System.setProperty("javax.net.ssl.trustStore", "/etc/ssl/certs/java/cacerts");
+	        System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
+		
+		
 		System.out.println(POST_PARAMS);
 //		URL obj = new URL("https://api.interakt.ai/v1/public/track/events/");
 		URL obj = new URL(prop.getProperty("URL_API_TEMPLATES"));
-		HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
+		//  HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
+		HttpsURLConnection postConnection = (HttpsURLConnection) obj.openConnection();
 		postConnection.setRequestMethod("POST");
 		postConnection.setRequestProperty("Authorization", "Basic " + prop.getProperty("Authorization_Key"));
 		postConnection.setRequestProperty("Content-Type", "application/json");
