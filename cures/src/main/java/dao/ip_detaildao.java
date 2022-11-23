@@ -33,7 +33,7 @@ public class ip_detaildao {
 		HttpSession session = req.getSession(true);
 	
 		String cookie1=headers.get("cookie");
-		
+		System.out.println(cookie1);
 		
 		
 		 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
