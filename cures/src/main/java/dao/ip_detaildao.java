@@ -22,7 +22,7 @@ import util.HibernateUtil;
 
 public class ip_detaildao {
 
-	public static Integer Insert(Integer article_id, HttpServletRequest request,Map<String,String> headers,Integer user_id) {
+	public static Integer Insert(Integer article_id, HttpServletRequest request,Integer user_id,String cookie,String whats_app) {
 	
 		SessionFactory factory=new Configuration().configure().buildSessionFactory();
 	//	Session session = HibernateUtil.buildSessionFactory();
@@ -32,18 +32,27 @@ public class ip_detaildao {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpSession session = req.getSession(true);
 	
-		String cookie1=headers.get("cookie");
-		System.out.println(cookie1);
+	//	String cookie1=headers.get("cookie");
+		System.out.println(cookie);
+		IP_Details ip =new IP_Details();
+		if (whats_app.equals("whatsapp"))
+		{
+			 ip.setInfo(whats_app);
+		}
 		
+		else
+		{
+			 ip.setInfo("NA");
+		}
 		
 		 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
 	        Date date = new Date();  
-		IP_Details ip =new IP_Details();
+		
 		 ip.setArticle_id(article_id);
 		 ip.setDate(formatter.format(date));
-		 ip.setIp_address(cookie1);
+		 ip.setCookie_list(cookie);
 		 ip.setReg_id(user_id);
-	       Session session1=factory.openSession();
+		 Session session1=factory.openSession();
 	       Transaction tx=session1.beginTransaction();
 	     session1.save(ip);
 	       tx.commit();
