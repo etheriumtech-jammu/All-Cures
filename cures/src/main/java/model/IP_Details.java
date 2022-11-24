@@ -42,7 +42,21 @@ public class IP_Details implements Serializable{
 	}
 	private Integer article_id;
 	private String cookie_list;
+private String info;
+	public String getInfo() {
+		return info;
+	}
+	public void setInfo(String info) {
+		this.info = info;
+	}
+
 	private String date;
+	public String getCookie_list() {
+		return cookie_list;
+	}
+	public void setCookie_list(String cookie_list) {
+		this.cookie_list = cookie_list;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -55,18 +69,14 @@ public class IP_Details implements Serializable{
 	public void setArticle_id(Integer article_id) {
 		this.article_id = article_id;
 	}
-	public String getIp_address() {
-		return cookie_list;
-	}
-	public void setIp_address(String ip_address) {
-		this.cookie_list = ip_address;
-	}
+	
 	public String getDate() {
 		return date;
 	}
 	public void setDate(String date) {
 		this.date = date;
 	}
+	
 	
 	
 	
