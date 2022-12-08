@@ -24,7 +24,7 @@ public class AnalyticsDao {
 		if (order == null) {
 			
 			query = session.createNativeQuery(
-					"SELECT count(id), CAST(date AS DATE) FROM allcures1.article_details group by CAST(date AS DATE);");
+					"SELECT count(id), CAST(date AS DATE) FROM article_details group by CAST(date AS DATE);");
 		} else {
 
 			if (order.equals("asc")) {
@@ -32,13 +32,13 @@ public class AnalyticsDao {
 				if (column.equals("date")) {
 
 					query = session.createNativeQuery(
-							"SELECT count(id), CAST(date AS DATE) FROM allcures1.article_details group by CAST(date AS DATE);");
+							"SELECT count(id), CAST(date AS DATE) FROM article_details group by CAST(date AS DATE);");
 				}
 
 				else {
 					System.out.println("hello");
 					query = session.createNativeQuery(
-							"SELECT count(id) as id, CAST(date AS DATE) FROM allcures1.article_details  group by CAST(date AS DATE) order by  id asc;");
+							"SELECT count(id) as id, CAST(date AS DATE) FROM article_details  group by CAST(date AS DATE) order by  id asc;");
 				}
 			}
 
@@ -46,12 +46,12 @@ public class AnalyticsDao {
 
 				if (column.equals("date")) {
 					query = session.createNativeQuery(
-							"SELECT count(id), CAST(date AS DATE) FROM allcures1.article_details group by CAST(date AS DATE) order by CAST(date AS DATE) desc;");
+							"SELECT count(id), CAST(date AS DATE) FROM article_details group by CAST(date AS DATE) order by CAST(date AS DATE) desc;");
 				}
 
 				else {
 					query = session.createNativeQuery(
-							"SELECT count(id), CAST(date AS DATE) FROM allcures1.article_details group by CAST(date AS DATE) order by count(id) desc ;");
+							"SELECT count(id), CAST(date AS DATE) FROM article_details group by CAST(date AS DATE) order by count(id) desc ;");
 				}
 			}
 		}
@@ -78,7 +78,7 @@ public class AnalyticsDao {
 
 		if (order == null) {
 			query = session.createNativeQuery(
-					"Select count(id) as Totalcount, article_id  from allcures1.article_details  group by article_id;");
+					"Select count(id) as Totalcount, article_id  from article_details  group by article_id;");
 		}
 
 		else {
@@ -86,22 +86,22 @@ public class AnalyticsDao {
 
 				if (column.equals("count")) {
 					query = session.createNativeQuery(
-							"Select count(id) as Totalcount, article_id  from allcures1.article_details  group by article_id order by Totalcount asc;");
+							"Select count(id) as Totalcount, article_id  from article_details  group by article_id order by Totalcount asc;");
 				}
 
 				else {
 					query = session.createNativeQuery(
-							"Select count(id) as Totalcount, article_id  from allcures1.article_details  group by article_id order by article_id asc;");
+							"Select count(id) as Totalcount, article_id  from article_details  group by article_id order by article_id asc;");
 				}
 			} else if (order.equals("desc")) {
 				if (column.equals("count")) {
 					query = session.createNativeQuery(
-							"Select count(id) as Totalcount, article_id  from allcures1.article_details  group by article_id order by Totalcount desc;");
+							"Select count(id) as Totalcount, article_id  from article_details  group by article_id order by Totalcount desc;");
 				}
 
 				else {
 					query = session.createNativeQuery(
-							"Select count(id) as Totalcount, article_id  from allcures1.article_details  group by article_id order by article_id desc;");
+							"Select count(id) as Totalcount, article_id  from article_details  group by article_id order by article_id desc;");
 				}
 
 			}
@@ -134,7 +134,7 @@ public class AnalyticsDao {
 
 		if (order == null) {
 			query = session.createNativeQuery(
-					"Select count(id) as Totalcount, CAST(date AS DATE) as Date from allcures1.article_details where info='"
+					"Select count(id) as Totalcount, CAST(date AS DATE) as Date from article_details where info='"
 							+ str + "' group by CAST(date AS DATE);");
 		}
 
@@ -143,25 +143,25 @@ public class AnalyticsDao {
 
 				if (column.equals("count")) {
 					query = session.createNativeQuery(
-							"Select count(id) as Totalcount, CAST(date AS DATE) as Date from allcures1.article_details where info='"
+							"Select count(id) as Totalcount, CAST(date AS DATE) as Date from article_details where info='"
 									+ str + "' group by CAST(date AS DATE) order by Totalcount asc;");
 				}
 
 				else {
 					query = session.createNativeQuery(
-							"Select count(id) as Totalcount, CAST(date AS DATE) as Date from allcures1.article_details where info='"
+							"Select count(id) as Totalcount, CAST(date AS DATE) as Date from article_details where info='"
 									+ str + "' group by CAST(date AS DATE) order by CAST(date AS DATE)  asc;");
 				}
 			} else if (order.equals("desc")) {
 				if (column.equals("count")) {
 					query = session.createNativeQuery(
-							"Select count(id) as Totalcount, CAST(date AS DATE) as Date from allcures1.article_details where info='"
+							"Select count(id) as Totalcount, CAST(date AS DATE) as Date from article_details where info='"
 									+ str + "' group by CAST(date AS DATE) order by Totalcount desc;");
 				}
 
 				else {
 					query = session.createNativeQuery(
-							"Select count(id) as Totalcount, CAST(date AS DATE) as Date from allcures1.article_details where info='"
+							"Select count(id) as Totalcount, CAST(date AS DATE) as Date from article_details where info='"
 									+ str + "' group by CAST(date AS DATE) order by CAST(date AS DATE)  desc;");
 				}
 
@@ -190,7 +190,7 @@ public class AnalyticsDao {
 		Session session = HibernateUtil.buildSessionFactory();
 
 		Query query = session.createNativeQuery(
-				"Select count(id) as Totalcount, article_id  from allcures1.article_details  group by article_id order by Totalcount desc limit 5;");
+				"Select count(id) as Totalcount, article_id  from article_details  group by article_id order by Totalcount desc limit 5;");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
@@ -217,7 +217,7 @@ public class AnalyticsDao {
 
 		if (order == null) {
 			query = session.createNativeQuery(
-					"Select count(id) as Totalcount, article_id from allcures1.article_details where DATE(date) between '"
+					"Select count(id) as Totalcount, article_id from article_details where DATE(date) between '"
 							+ date1 + "' and '" + date2 + "'  group by article_id;" + "");
 
 		} else {
@@ -225,26 +225,26 @@ public class AnalyticsDao {
 
 				if (column.equals("count")) {
 					query = session.createNativeQuery(
-							"Select count(id) as Totalcount, article_id from allcures1.article_details where DATE(date) between '"
+							"Select count(id) as Totalcount, article_id from article_details where DATE(date) between '"
 									+ date1 + "' and '" + date2 + "'  group by article_id order by Totalcount asc;");
 				}
 
 				else {
 					query = session.createNativeQuery(
-							"Select count(id) as Totalcount, article_id from allcures1.article_details where DATE(date) between '"
+							"Select count(id) as Totalcount, article_id from article_details where DATE(date) between '"
 									+ date1 + "' and '" + date2 + "'  group by article_id order by article_id asc;");
 				}
 
 			} else if (order.equals("desc")) {
 				if (column.equals("count")) {
 					query = session.createNativeQuery(
-							"Select count(id) as Totalcount, article_id from allcures1.article_details where DATE(date) between '"
+							"Select count(id) as Totalcount, article_id from article_details where DATE(date) between '"
 									+ date1 + "' and '" + date2 + "'  group by article_id order by Totalcount desc;");
 				}
 
 				else {
 					query = session.createNativeQuery(
-							"Select count(id) as Totalcount, article_id from allcures1.article_details where DATE(date) between '"
+							"Select count(id) as Totalcount, article_id from article_details where DATE(date) between '"
 									+ date1 + "' and '" + date2 + "'  group by article_id order by article_id desc;");
 				}
 
@@ -309,7 +309,7 @@ public class AnalyticsDao {
 	public static List rating1(String date1,String date2) {
 		Session session = HibernateUtil.buildSessionFactory();
 		
-		Query query = session.createNativeQuery("Select target_id ID, count(ratingVal) rating ,IF(target_type_id=1,\"Doctor\",\"Article\") About from allcures1.doctorsrating where DATE(updated_at) between ' "	+ date1 + "' and '" + date2 + "'  group by target_id order by target_id desc;");
+		Query query = session.createNativeQuery("Select target_id ID, count(ratingVal) rating ,IF(target_type_id=1,\"Doctor\",\"Article\") About from doctorsrating where DATE(updated_at) between ' "	+ date1 + "' and '" + date2 + "'  group by target_id order by target_id desc;");
 		
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		
@@ -337,7 +337,7 @@ public class AnalyticsDao {
 	public static List comment(String date1,String date2) {
 		Session session = HibernateUtil.buildSessionFactory();
 		
-		Query query = session.createNativeQuery("Select target_id ID, count(comments) ,IF(target_type_id=1,\"Doctor\",\"Article\") About from allcures1.doctorsrating where DATE(updated_at) between ' "	+ date1 + "' and '" + date2 + "' and comments!=\"null\" group by target_id order by target_id desc;");
+		Query query = session.createNativeQuery("Select target_id ID, count(comments) ,IF(target_type_id=1,\"Doctor\",\"Article\") About from doctorsrating where DATE(updated_at) between ' "	+ date1 + "' and '" + date2 + "' and comments!=\"null\" group by target_id order by target_id desc;");
 		
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		
