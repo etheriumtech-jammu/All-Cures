@@ -272,7 +272,7 @@ public class AnalyticsDao {
 	public static List recordarticle() {
 		Session session = HibernateUtil.buildSessionFactory();
 		
-		Query query = session.createNativeQuery("Select article_id, title,author_firstname,author_lastname, first_name Published_by,published_date from Details LEFT JOIN author  ON author.author_id=Details.authoredby order by published_date desc;");
+		Query query = session.createNativeQuery("Select article_id, title,author_firstname,author_lastname, first_name Published_by,published_date from DETAILS LEFT JOIN author  ON author.author_id=DETAILS.authoredby order by published_date desc;");
 		
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		
