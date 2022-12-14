@@ -20,6 +20,8 @@ public class AnalyticsDao {
 		Session session = HibernateUtil.buildSessionFactory();
 
 		Query query = null;
+		Query query1=null;
+		Query query2,query3,query4,query5,query6=null;
 
 		if (order == null) {
 			
@@ -55,7 +57,10 @@ public class AnalyticsDao {
 				}
 			}
 		}
-
+		
+		
+		
+		
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
@@ -63,8 +68,70 @@ public class AnalyticsDao {
 			// System.out.println("hhh");
 			BigInteger count1 = (BigInteger) objects[0];
 			Date date = (Date) objects[1];
-			hm.put("Count", count1);
+			hm.put("Daily_views", count1);
 			hm.put("Date", date);
+			query1 = session.createNativeQuery(
+					"SELECT count(article_id),title from article where published_date='" + date + "';");
+			List<Object[]> result = (List<Object[]>) query1.getResultList();
+		//	System.out.println(result);
+			for (Object[] object : result) {
+				BigInteger count2 = (BigInteger) object[0];
+				hm.put("Daily_Published", count2);
+			}
+			
+			query2 = session.createNativeQuery(
+					"Select count(id),info FROM article_details where info=\"whatsapp\" and CAST(date AS DATE)='" + date + "';");
+			List<Object[]> result2 = (List<Object[]>) query2.getResultList();
+		//	System.out.println(result2);
+			for (Object[] object : result2) {
+				BigInteger count2 = (BigInteger) object[0];
+				hm.put("Whatsapp", count2);
+			}
+			
+			query3 = session.createNativeQuery(
+					"Select count(ratingVal),CAST(updated_at AS DATE) FROM doctorsrating where target_type_id=2 and CAST(updated_at AS DATE)='" + date + "';");
+			List<Object[]> result3 = (List<Object[]>) query3.getResultList();
+		//	System.out.println(result3);
+			for (Object[] object : result3) {
+				BigInteger count2 = (BigInteger) object[0];
+				hm.put("Ratings", count2);
+			}
+			
+			
+			query4 = session.createNativeQuery(
+			"Select count(comments),CAST(updated_at AS DATE) FROM doctorsrating where target_type_id=2 and comments!=\"null\" and CAST(updated_at AS DATE)='" + date + "';");
+			List<Object[]> result4 = (List<Object[]>) query4.getResultList();
+		
+		//	System.out.println(result4);
+			for (Object[] object : result4) {
+				BigInteger count2 = (BigInteger) object[0];
+				hm.put("Comments", count2);
+			}
+
+			query5 = session.createNativeQuery(
+					"Select count(ratingVal),CAST(updated_at AS DATE) FROM doctorsrating where target_type_id=1 and CAST(updated_at AS DATE)='" + date + "';");
+			List<Object[]> result5 = (List<Object[]>) query5.getResultList();
+	//		System.out.println(result5);
+			for (Object[] object : result5) {
+				BigInteger count2 = (BigInteger) object[0];
+				hm.put("Ratings_Doctor", count2);
+			}
+			
+		query6 = session.createNativeQuery(
+				"Select count(comments),CAST(updated_at AS DATE) FROM doctorsrating where target_type_id=1 and comments!=\"null\" and CAST(updated_at AS DATE)='" + date + "';");
+			
+	
+			List<Object[]> result6 = (List<Object[]>) query6.getResultList();
+		
+			
+		for (Object[] object : result6) {
+				BigInteger count2 = (BigInteger) object[0];
+				hm.put("Comments_Doctor", count2);
+				
+				
+		}
+
+
 			hmFinal.add(hm);
 		}
 
