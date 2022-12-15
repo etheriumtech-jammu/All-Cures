@@ -257,7 +257,7 @@ public class AnalyticsDao {
 		Session session = HibernateUtil.buildSessionFactory();
 
 		Query query = session.createNativeQuery(
-				"Select count(id) as Totalcount, article_id  from article_details  group by article_id order by Totalcount desc limit 5;");
+				"Select count(id) as Totalcount, article_id  from article_details  group by article_id order by Totalcount desc limit 10;");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
