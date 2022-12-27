@@ -47,6 +47,12 @@ public class SearchController {
 		return diseaseANDconditionDaoImpl.getAllMatchingDCList(search_string, limit,  offset, order);
 	}
 	
+	@RequestMapping(value = "/limit/{search_string}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List listDataFromMatchingStringLimit(@PathVariable String search_string,@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset,@RequestParam(required = false) String search,@RequestParam(required = false) String order) {
+		return diseaseANDconditionDaoImpl.getAllMatchingDCListLimit(search_string, limit,  offset, order);
+	}
+	
+	
 	@RequestMapping(value = "/medicinetype/{medicine_type}", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List listDataFromMatchingString(@PathVariable Integer medicine_type)  {
 		return diseaseANDconditionDaoImpl.getAllarticlebymedicinetypeList(medicine_type);
