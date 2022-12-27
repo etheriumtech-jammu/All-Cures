@@ -38,7 +38,7 @@ public class DiseaseANDConditionDaoImpl {
 		String orderby_str = " order by `article`.`published_date` desc ";
 		if (null != orderByStr) {
 			String[] orderArr = orderByStr.split(":");
-			orderby_str = " order by  `a`.`" + orderArr[0] +"` "+orderArr[1];
+			orderby_str = " order by  `article`.`" + orderArr[0] +"` "+orderArr[1];
 		}
 //		String search_str_ = "";
 //		if (null != searchStr) {
@@ -71,8 +71,7 @@ public class DiseaseANDConditionDaoImpl {
 						+ search_str + "%'\r\n" + " or window_title  like '%" + search_str + "%'\r\n"
 						+ " or countryname like '%" + search_str + "%'\r\n" + " or keywords like '%"+ search_str +"%' or lang_name like '%" + search_str
 						+ "%' " + " or medicine_type like '%" + search_str + "%'" 
-						+ ") " + " and pubstatus_id = 3 " + orderby_str
-						+ limit_str + offset_str + " ;");
+						+ ") " + " and pubstatus_id = 3 " + limit_str + offset_str + "  order by published_date desc " );
 		// needs other condition too but unable to find correct column
 		// ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list searched article count@@@@@@@@@@@@@" + query.getQueryString());
@@ -140,7 +139,6 @@ public class DiseaseANDConditionDaoImpl {
 
 		return hmFinal;
 	}
-
 	public static List getAllarticlebymedicinetypeList(Integer medicine_type ) {
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
