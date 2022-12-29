@@ -26,5 +26,10 @@ public class DataController {
 	public @ResponseBody int addDataDetails(@RequestBody HashMap dataMasterMap) {
 		return dataDaoImpl.addDataDetails(dataMasterMap);
 	}
+	
+	@RequestMapping(value = "/categories", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List Categories() {
+		return dataDaoImpl.viewCategories();
+	}
 
 }
