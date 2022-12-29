@@ -61,7 +61,7 @@ public class DataDaoImpl {
 	public static List viewCategories() {
 		Session session = HibernateUtil.buildSessionFactory();
 		
-		Query query = session.createNativeQuery("SELECT dc_id,dc_desc FROM allcures1.disease_condition where dc_status=1;");
+		Query query = session.createNativeQuery("SELECT dc_id,dc_desc FROM disease_condition where dc_status=1;");
 		
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		
