@@ -345,7 +345,23 @@ public class DoctorsDaoImpl {
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
 		Constant.log("In DoctorsDAO, Getting Doctors Info For:" + rowno, 1);
-
+		
+		Query query1 = session.createNativeQuery("Select docid,docname_first from doctors doc inner join orders  on doc.docid=orders.user_id where docid is not null and End_date >= now();");
+		Integer subscription=0;
+		List<Object[]> results = (List<Object[]>) query1.getResultList();
+		
+		List hmFinal = new ArrayList();
+		
+		for (Object[] objects : results) {
+		
+			if ((Integer)objects[0] ==  rowno)
+			{
+				subscription=1;
+				
+			}
+			System.out.println("Subscription id :"+subscription);
+			
+		}
 		// creating session object
 		//Session session = factory;
 
@@ -416,6 +432,7 @@ public class DoctorsDaoImpl {
 				doc.setHospital_affliated_code(obj[30] != null ? (Integer) obj[30] : 0);
 				doc.setRowno((long) (obj[31] != null ? (Integer) obj[31] : 0));
 				doc.setWebsite_url((String) (obj[32]));
+				doc.setSubscription(subscription);
 			}
 			Constant.log("--Returning from DoctorsDao, Doc Object for ID:" + doc.getDocid() +" rowno:" + doc.getRowno(), 1);
 		}
