@@ -457,6 +457,7 @@ public class DoctorsDaoImpl {
 				subscription=1;
 				
 			}
+		}
 			System.out.println("Subscription id :"+subscription);
 		// creating session object
 		//Session session = factory;
