@@ -452,7 +452,7 @@ public class DoctorsDaoImpl {
 		
 		for (Object[] objects : results) {
 		
-			if ((Integer)objects[0] ==  rowno)
+			if ((Integer)objects[0] ==  docid)
 			{
 				subscription=1;
 				
