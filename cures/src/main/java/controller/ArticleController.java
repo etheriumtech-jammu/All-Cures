@@ -39,7 +39,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import dao.ArticleDaoImpl;
-//import dao.ip_detaildao;
+import dao.ip_detaildao;
 import model.Article;
 import model.Article_dc_name;
 import model.Registration;
