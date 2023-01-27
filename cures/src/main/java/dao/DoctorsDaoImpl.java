@@ -355,12 +355,11 @@ public class DoctorsDaoImpl {
 		
 			if ((Integer)objects[0] ==  rowno)
 			{
-				System.out.println("hello");
 				subscription=1;
-				
+				Constant.log("Subscription id=" + subscription,1);
 			}
 		}
-		Constant.log("Subscription id=" + subscription,1);
+		
 		// creating session object
 		//Session session = factory;
 
@@ -454,10 +453,10 @@ public class DoctorsDaoImpl {
 			if ((Integer)objects[0] ==  docid)
 			{
 				subscription=1;
-				
+				Constant.log("Subscription id" + subscription,1);
 			}
 		}
-		Constant.log("Subscription id" + subscription,1);
+		
 		
 		// creating session object
 		//Session session = factory;
