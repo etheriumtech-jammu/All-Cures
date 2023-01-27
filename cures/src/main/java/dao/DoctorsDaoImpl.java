@@ -346,22 +346,21 @@ public class DoctorsDaoImpl {
 		Session session = HibernateUtil.buildSessionFactory();
 		Constant.log("In DoctorsDAO, Getting Doctors Info For:" + rowno, 1);
 		
-		Query query1 = session.createNativeQuery("Select docid,docname_first from doctors doc inner join orders  on doc.docid=orders.user_id where docid is not null and End_date >= now();");
+		Query query1 = session.createNativeQuery("Select docid,docname_first from doctors doc inner JOin orders  on doc.docid=orders.user_id where docid is not null and End_date >= now();");
 		Integer subscription=0;
 		List<Object[]> results = (List<Object[]>) query1.getResultList();
-		
 		List hmFinal = new ArrayList();
 		
 		for (Object[] objects : results) {
 		
 			if ((Integer)objects[0] ==  rowno)
 			{
+				System.out.println("hello");
 				subscription=1;
 				
 			}
-			System.out.println("Subscription id :"+subscription);
-			
 		}
+		Constant.log("Subscription id=" + subscription,1);
 		// creating session object
 		//Session session = factory;
 
@@ -444,7 +443,7 @@ public class DoctorsDaoImpl {
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
 		Constant.log("In DoctorsDAO, Getting Doctors Info For:" + docid, 1);
-		Query query1 = session.createNativeQuery("Select docid,docname_first from doctors doc inner join orders  on doc.docid=orders.user_id where docid is not null and End_date >= now();");
+		Query query1 = session.createNativeQuery("Select docid,docname_first from doctors doc inner JOin orders  on doc.docid=orders.user_id where docid is not null and End_date >= now();");
 		Integer subscription=0;
 		List<Object[]> results = (List<Object[]>) query1.getResultList();
 		
@@ -458,7 +457,8 @@ public class DoctorsDaoImpl {
 				
 			}
 		}
-			System.out.println("Subscription id :"+subscription);
+		Constant.log("Subscription id" + subscription,1);
+		
 		// creating session object
 		//Session session = factory;
 
