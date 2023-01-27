@@ -107,6 +107,8 @@ public class ArticleController {
 	public @ResponseBody ArrayList<Article> listArticlesAll(@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset) {
 		return articleDaoImpl.getArticlesListAll(limit, offset);
 	}
+	
+	
 
 	@RequestMapping(value = "/allkv", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List listArticlesAllKeys(@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset,@RequestParam(required = false) String search,@RequestParam(required = false) String order) {
@@ -116,6 +118,11 @@ public class ArticleController {
 	@RequestMapping(value = "/allkvfeatured", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List listArticlesAllKeysFeatured(@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset,@RequestParam(required = false) String search,@RequestParam(required = false) String order) {
 		return articleDaoImpl.getArticlesListAllKeysFeatured(limit,offset,search,order);
+	}
+	
+	@RequestMapping(value = "/allkvprotected", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List listArticlesAllKeysProtected(@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset,@RequestParam(required = false) String search,@RequestParam(required = false) String order) {
+		return articleDaoImpl.getArticlesListAllKeysProtected(limit,offset,search,order);
 	}
 	
 	@RequestMapping(value = "/authallkv/reg_type/{reg_type}/reg_doc_pat_id/{reg_doc_pat_id}", produces = "application/json", method = RequestMethod.GET)
