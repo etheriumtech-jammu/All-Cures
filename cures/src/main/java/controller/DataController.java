@@ -36,5 +36,14 @@ public class DataController {
 	public @ResponseBody List Medicines() {
 		return dataDaoImpl.viewMedicines();
 	}
+	
+	@RequestMapping(value = "/deactivate/{usr_id}", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody int delete_update(@PathVariable Integer usr_id, HttpServletRequest request,@RequestParam(required = false) String reason) throws SQLException {
+		
+		System.out.println("Request to deactivate");
+		return DeleteDaoImpl.Delete_Update(usr_id,reason);
+	
+		
+	}
 
 }
