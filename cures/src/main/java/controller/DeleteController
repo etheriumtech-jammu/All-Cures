@@ -19,7 +19,7 @@ import dao.DeleteDaoImpl;
 @RestController
 
 
-
+@RequestMapping(path = "/delete")
 public class DeleteController {
 
 	@RequestMapping(value = "/deactivate/{usr_id}", produces = "application/json", method = RequestMethod.POST)
