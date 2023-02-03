@@ -41,7 +41,7 @@ public class DeleteDaoImpl {
 		
 		
 		session.getTransaction().commit();
-		System.out.println(ret1);
+		
 		session.close();
 		
 		return ret;
