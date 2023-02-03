@@ -1,0 +1,43 @@
+package controller;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+
+import dao.DeleteDaoImpl;
+
+@RestController
+
+
+
+public class DeleteController {
+
+	@RequestMapping(value = "/deactivate/{usr_id}", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody int delete_update(@PathVariable Integer usr_id, HttpServletRequest request,@RequestParam(required = false) String reason) throws SQLException {
+		
+		
+		return DeleteDaoImpl.Delete_Update(usr_id,reason);
+	
+		
+	}
+	
+	@RequestMapping(value = "/delete/{usr_id}", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody int login_delete(@PathVariable Integer usr_id, HttpServletRequest request) {
+		
+		
+		return DeleteDaoImpl.Login_Delete(usr_id);
+	
+		
+	}
+}
+
