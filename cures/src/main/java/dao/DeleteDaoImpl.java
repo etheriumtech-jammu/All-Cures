@@ -66,7 +66,7 @@ public class DeleteDaoImpl {
 		for (Object[] objects : results) {
 			
 			Integer deactivated = (Integer) objects[0];
-
+			System.out.println(deactivated);
 			Date date1 = (Date) objects[1];
 			Date date2 = (Date) objects[2];
 			
