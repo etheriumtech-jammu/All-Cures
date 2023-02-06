@@ -57,20 +57,18 @@ public class DeleteDaoImpl {
 		session.beginTransaction();
 		
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println(results.size());
+		
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
 			
-			System.out.println("hh");
+			
 			
 			Integer deactivated = (Integer) objects[0];
 
 			Date date1 = (Date) objects[1];
 			Date date2 = (Date) objects[2];
 			
-			System.out.println(deactivated);
-			System.out.println(date1);
-			System.out.println(date2);
+			
 			
 			if (deactivated == 1)
 			{
@@ -89,13 +87,13 @@ public class DeleteDaoImpl {
 				    
 				    else
 				    {
-				    	result="Accout is deactivated";
+				    	result="Account is deactivated";
 				    }
 			}
 			
 			    else if(deactivated == 0)
 			    {
-			    	result="Accout exists";
+			    	result="Account exists";
 			    }
 			
 
