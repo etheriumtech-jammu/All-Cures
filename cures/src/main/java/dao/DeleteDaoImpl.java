@@ -47,41 +47,57 @@ public class DeleteDaoImpl {
 		return ret;
 	}
 	
-	public static Integer Login_Delete(Integer usr_id) {
+	public static String Login_Delete(String email) {
 		Session session = HibernateUtil.buildSessionFactory();
 
+		String result="";
+			
 		Query query = session.createNativeQuery(
-				"Select registration.activated,CAST(last_login_datetime AS DATE) ,CAST(Deactivated_time AS DATE) from allcures1.registration where registration_id= " + usr_id + " ;");
+				"Select registration.deactivated,CAST(last_login_datetime AS DATE) ,CAST(Deactivated_time AS DATE) from registration where email_address='" + email + "'");
 		session.beginTransaction();
 		
 		List<Object[]> results = (List<Object[]>) query.getResultList();
+		System.out.println(results.size());
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
 			
-			HashMap hm = new HashMap();
-
-			Integer count1 = (Integer) objects[0];
+			System.out.println("hh");
+			
+			Integer deactivated = (Integer) objects[0];
 
 			Date date1 = (Date) objects[1];
 			Date date2 = (Date) objects[2];
-			hm.put("No. of hits", count1);
+			
+			System.out.println(deactivated);
 			System.out.println(date1);
-			System.out.println(count1);
 			System.out.println(date2);
 			
-			 int result = date1.compareTo(date2);
-			    if (result < 0) {
-			      System.out.println(date1 + " is before " + date2);
-			      System.out.println("Account is deleted");
-			      
-			    } 
-			    else
+			if (deactivated == 1)
+			{
+				Date today=new Date();
+				
+				long deactivationDiff=today.getTime()-date2.getTime();
+				long daysSinceDeactivation = Math.round(deactivationDiff/(1000*3600*24));
+				
+				 int result1 = date1.compareTo(date2);
+				    if (result1 < 0 && daysSinceDeactivation >= 30 )   {
+				    	
+				      System.out.println(date1 + " is before " + date2);
+				     
+				      result="Account is deleted";
+				    } 
+				    
+				    else
+				    {
+				    	result="Accout is deactivated";
+				    }
+			}
+			
+			    else if(deactivated == 0)
 			    {
-			    	System.out.println("Account is not deleted");
+			    	result="Accout exists";
 			    }
 			
-			
-			hmFinal.add(hm);
 
 		}
 		
@@ -89,10 +105,9 @@ public class DeleteDaoImpl {
 
 		session.close();
 		
-	return 1;
+	return result;
 	
 	}
-	
 	
 	}
 
