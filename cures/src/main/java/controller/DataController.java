@@ -50,7 +50,7 @@ public class DataController {
 	}
 	
 	@RequestMapping(value = "/delete/{email}", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody String login_delete(@PathVariable String email, HttpServletRequest request) {
+	public @ResponseBody String login_delete(@PathVariable String email) {
 		
 		
 		return DeleteDaoImpl.Login_Delete(email);		
