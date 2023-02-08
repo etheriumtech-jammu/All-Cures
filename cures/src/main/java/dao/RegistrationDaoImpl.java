@@ -448,7 +448,7 @@ public class RegistrationDaoImpl {
 
 		java.sql.Timestamp last_login_datetime = new java.sql.Timestamp(new java.util.Date().getTime());
 		Query query = session
-				.createNativeQuery("update registration set login_attempt = 0 \r\n" + " , last_login_datetime = '"
+				.createNativeQuery("update registration set login_attempt = 0 \r\n" + " ,deactivated=0,deactivated_time=NULL,reason=NULL, last_login_datetime = '"
 						+ last_login_datetime + "'\r\n" + " where registration_id =" + regId + ";");
 		// needs other condition too but unable to find correct column
 		int ret = 0;
