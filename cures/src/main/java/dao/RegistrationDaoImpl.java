@@ -227,7 +227,7 @@ public class RegistrationDaoImpl {
 
 		Registration register = null;
 		Query query = session
-				.createNativeQuery("select * from registration where email_address='" + email.trim() + "'");
+				.createNativeQuery("select * from registration where email_address='" + email.trim() + "'and deactivated!=1");
 		ArrayList<Registration> list = (ArrayList<Registration>) query.getResultList();
 		Iterator itr = list.iterator();
 		if (itr.hasNext()) {
