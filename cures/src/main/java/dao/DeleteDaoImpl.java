@@ -58,10 +58,7 @@ public class DeleteDaoImpl {
 		
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println(results.size());
-		if (results.size() == 0)
-		{
-			result="Account does not  exist";
-		}
+		
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
 			
