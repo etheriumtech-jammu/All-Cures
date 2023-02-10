@@ -41,7 +41,7 @@ public class DataController {
 	}
 	
 	@RequestMapping(value = "/deactivate/{usr_id}/{reason_id}", produces = "application/json", method = RequestMethod.POST)
-	public @ResponseBody int delete_update(@PathVariable Integer usr_id,@PathVariable Integer reason_id ) throws SQLException {
+	public @ResponseBody int delete_update(@PathVariable Integer usr_id,@PathVariable Integer reason_id )  {
 		
 		
 		return DeleteDaoImpl.Delete_Update(usr_id,reason_id);
