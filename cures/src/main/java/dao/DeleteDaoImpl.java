@@ -81,7 +81,7 @@ public class DeleteDaoImpl {
 				long daysSinceDeactivation = Math.round(deactivationDiff/(1000*3600*24));
 				
 				 int result1 = date1.compareTo(date2);
-				    if (result1 < 0 && daysSinceDeactivation >= 30 )   {
+				    if (result1 <= 0 && daysSinceDeactivation >= 30 )   {
 				    	
 				      System.out.println(date1 + " is before " + date2);
 				     
