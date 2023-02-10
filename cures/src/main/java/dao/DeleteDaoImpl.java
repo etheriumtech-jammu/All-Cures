@@ -20,7 +20,7 @@ import model.Registration;
 import util.HibernateUtil;
 
 public class DeleteDaoImpl {
-	public static Integer Delete_Update(Integer usr_id, String reason) {
+	public static Integer Delete_Update(Integer usr_id, Integer reason_id) {
 		
 		
 		Session session = HibernateUtil.buildSessionFactory();
@@ -32,7 +32,7 @@ public class DeleteDaoImpl {
 	//	 LocalDateTime now = LocalDateTime.now();  
 		java.sql.Timestamp now = new java.sql.Timestamp(new java.util.Date().getTime());
 		Query query = session.createNativeQuery(
-				"Update registration set Deactivated_time= '" + now + "' ,deactivated=1,reason='"+ reason + "' where registration_id=" + usr_id + " ;");
+				"Update registration set Deactivated_time= '" + now + "' ,deactivated=1,reason_id='"+ reason_id + "'  where registration_id=" + usr_id + " ;");
     
 		
 		// needs other condition too but unable to find correct column
@@ -58,10 +58,7 @@ public class DeleteDaoImpl {
 		
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println(results.size());
-		if (results.size() == 0)
-		{
-			result="Account does not  exist";
-		}
+		
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
 			
@@ -72,6 +69,10 @@ public class DeleteDaoImpl {
 			
 			if(deactivated !=null)
 			{
+				if (deactivated == 0)
+				{ 
+					result="Account is activated";
+				}
 			if (deactivated == 1)
 			{
 				Date today=new Date();
@@ -108,6 +109,40 @@ public class DeleteDaoImpl {
 	return result;
 	
 	}
+	
+	public static List Delete_Reasons() {
+	Session session = HibernateUtil.buildSessionFactory();
+
+	String result="";
+		
+	Query query = session.createNativeQuery(
+			"Select * from delete_reasons;");
+	session.beginTransaction();
+	
+	List<Object[]> results = (List<Object[]>) query.getResultList();
+	
+	List hmFinal = new ArrayList();
+	for (Object[] objects : results) {
+		
+		Integer reason_id = (Integer) objects[0];
+		
+		String reason = (String) objects[1];
+		
+		HashMap hm = new HashMap();
+
+		hm.put("Reason_id", reason_id);
+		hm.put("Reason", reason);
+		
+		hmFinal.add(hm);
+
+	}
+	session.getTransaction().commit();
+
+	session.close();
+	return hmFinal;
+
+	}
+	
 	
 	}
 
