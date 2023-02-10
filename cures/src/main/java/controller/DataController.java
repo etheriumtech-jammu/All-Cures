@@ -31,14 +31,14 @@ public class DataController {
 	}
 	
 	
-@RequestMapping(value = "/deactivate/{usr_id}", produces = "application/json", method = RequestMethod.POST)
-	public @ResponseBody int delete_update(@PathVariable Integer usr_id,@RequestParam(required = false) String reason) {
+	@RequestMapping(value = "/deactivate/{usr_id}/{reason_id}", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody int delete_update(@PathVariable Integer usr_id,@PathVariable Integer reason_id )  {
 		
 		System.out.println("Request to deactivate");
-		return DeleteDaoImpl.Delete_Update(usr_id,reason);
+		return DeleteDaoImpl.Delete_Update(usr_id,reason_id);
 	
 		
-	}
+	}	
 	
 	@RequestMapping(value = "/delete/{email}", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody String login_delete(@PathVariable String email) {
@@ -46,5 +46,15 @@ public class DataController {
 		
 		return DeleteDaoImpl.Login_Delete(email);		
 	}
+	
+	@RequestMapping(value = "/reasons", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List Reasons() {
+		
+		return DeleteDaoImpl.Delete_Reasons();
+	
+		
+	}
+	
+	
 
 }
