@@ -55,7 +55,7 @@ public class DataController {
 		return DeleteDaoImpl.Login_Delete(email);		
 	}
 	
-	@RequestMapping(value = "/delete/reasons", produces = "application/json", method = RequestMethod.GET)
+	@RequestMapping(value = "/reasons", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List Reasons() {
 		
 		return DeleteDaoImpl.Delete_Reasons();
