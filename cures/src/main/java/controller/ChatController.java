@@ -72,4 +72,24 @@ public class ChatController {
 			return ChatDaoImpl.Chat_Archive();
 		
 		}
+	
+	@RequestMapping(value = "/chat/{from_id}/{to_id}", produces = "application/json", method = RequestMethod.GET)
+		public @ResponseBody List chat_stored(@PathVariable int from_id,@PathVariable int to_id, HttpServletRequest request) {
+		
+			
+			return ChatDaoImpl.ChatStored(from_id,to_id);
+		
+		
+		}
+		
+		@RequestMapping(value = "/chat/start/{from_id}/{to_id}", produces = "application/json", method = RequestMethod.POST)
+		public @ResponseBody Integer chat_start(@PathVariable int from_id,@PathVariable int to_id, HttpServletRequest request) {
+		
+			
+			return ChatDaoImpl.ChatStart(from_id,to_id);
+		
+		
+		}
+	
+	
 }
