@@ -114,33 +114,42 @@ public class ChatDaoImpl {
 	
 	public static List Chat_Search(Integer chat_id) {
 		Session session = HibernateUtil.buildSessionFactory();
-		
+
 		Query query = session.createNativeQuery(
-				"Select chat_id,from_id,to_id,message  from allcures1.dp_chat_history where chat_id=" + chat_id + " ;");
+				"SELECT chat.chat_id,chat.to_id as to_id,reg.first_name,reg.last_name, (SELECT reg.first_name FROM registration as reg where reg.registration_id=to_id) as user_first,(SELECT reg.last_name FROM registration as reg where reg.registration_id=to_id) as user_last, chat.message\r\n"
+				+ "FROM registration as reg\r\n"
+				+ "LEFT JOIN dp_chat_history as chat ON chat.from_id = reg.registration_id where chat.chat_id= \r\n"
+				+ "" + chat_id + " ;");
+		
 		List<Object[]> results = (List<Object[]>) query.getResultList();
+		System.out.println("Getting results:" );
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
-			
 			HashMap hm = new HashMap();
-
+			
 			Integer Chat_id = (Integer) objects[0];
+			
 
-			Integer from = (Integer) objects[1];
-			Integer to = (Integer) objects[2];
-			String message=(String) objects[3];
+			String from_first = (String) objects[2];
+			String from_last = (String) objects[3];
+			
+			String to_first = (String) objects[4];
+			String to_last = (String) objects[5];
+			
+			String message = (String) objects[6];
+				
 			hm.put("Chat_id", Chat_id);
-			hm.put("From", from);
-			hm.put("To", to);
+			hm.put("From", from_first + " " + from_last);
+			hm.put("To", to_first + " " + to_last);
 			hm.put("Message", message);
 			
 			hmFinal.add(hm);
-
+			
 		}
 
 		return hmFinal;
 
 	}
-	
 	public static List Chat_History(Integer doc_id, String date) {
 		Session session = HibernateUtil.buildSessionFactory();
 	
@@ -181,7 +190,7 @@ public class ChatDaoImpl {
 		session.beginTransaction();
 
 		int ret = 0;
-		String Str = "INSERT into allcures1.dp_chat_archive select * from allcures1.dp_chat_history;";
+		String Str = "INSERT into dp_chat_archive select * from allcures1.dp_chat_history;";
 		System.out.println(Str);
 		
 		Query query = session.createNativeQuery(Str);
@@ -206,7 +215,7 @@ public class ChatDaoImpl {
         path.toString();
 		
 		Query query = session.createNativeQuery(
-				"Update allcures1.dp_chat_archive set document_path=\"  '" + path + "'  \"where chat_id=" + chat_id + " ;");
+				"Update dp_chat_archive set document_path=\"  '" + path + "'  \"where chat_id=" + chat_id + " ;");
 
 		// needs other condition too but unable to find correct column
 		ret = query.executeUpdate();
@@ -216,5 +225,64 @@ public class ChatDaoImpl {
 		
 		return 1;
 	}
+	
+	public static List ChatStored(Integer from_id, Integer to_id) {
+		Session session = HibernateUtil.buildSessionFactory();
+		session.beginTransaction();
+		List hmFinal = new ArrayList();
+
+		// System.out.println(session.isOpen());
+		int res = 0;
+		Query query = session.createNativeQuery(
+				"Select chat_id  from dp_chat where (from_id=" + from_id + " and to_id=" + to_id + ");");
+		
+		try {
+			res = (int) query.getSingleResult();
+			
+			System.out.println(res);
+			
+		} catch (NoResultException e) {
+
+		}
+		if (res == 0) {
+			
+			HashMap hm = new HashMap();
+			hm.put("Chat_id", null);
+			hm.put("status", 0);
+			hmFinal.add(hm);
+			
+		}
+
+		else {
+			
+			hmFinal = Chat_Search(res);
+		}
+
+		session.getTransaction().commit();
+
+		session.close();
+
+		return hmFinal;
+	}
+	
+	public static Integer ChatStart(Integer from_id, Integer to_id) {
+		Session session = HibernateUtil.buildSessionFactory();
+		session.beginTransaction();
+		
+			Date d1 = new Date();
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			String Date1 = dateFormat.format(d1);
+			Query query2 = session.createNativeQuery("insert into dp_chat(from_id,to_id,date) values("
+					 + from_id + "," + to_id + ", '" + Date1 + "' );");
+			int ret = query2.executeUpdate();
+			System.out.println(ret);
+			
+			session.getTransaction().commit();
+
+			session.close();
+			return ret;
+}
+	
+	
 	
 }
