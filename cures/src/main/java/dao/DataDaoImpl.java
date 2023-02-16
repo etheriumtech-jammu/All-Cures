@@ -23,7 +23,7 @@ public class DataDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		session.beginTransaction();
+	//	session.beginTransaction();
 
 		String device_id = (String) dataMap.get("device_id");
 		
@@ -44,7 +44,7 @@ public class DataDaoImpl {
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
-			session.getTransaction().commit();
+	//		session.getTransaction().commit();
 			System.out.println("inserted new entry to data_store table for device_id =  " + device_id);
 
 		} catch (Exception ex) {
