@@ -25,7 +25,7 @@ public class DeleteDaoImpl {
 		
 		Session session = HibernateUtil.buildSessionFactory();
 
-		session.beginTransaction();
+//		session.beginTransaction();
 
 		int ret = 0;
 	
@@ -41,9 +41,9 @@ public class DeleteDaoImpl {
 		
 		
 		
-		session.getTransaction().commit();
+	//	session.getTransaction().commit();
 		
-		session.close();
+	//	session.close();
 		
 		return ret;
 	}
@@ -55,7 +55,7 @@ public class DeleteDaoImpl {
 			
 		Query query = session.createNativeQuery(
 				"Select registration.deactivated,CAST(last_login_datetime AS DATE) ,CAST(Deactivated_time AS DATE) from registration where email_address='" + email + "'");
-		session.beginTransaction();
+//		session.beginTransaction();
 		
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		
@@ -103,9 +103,9 @@ public class DeleteDaoImpl {
 
 		}
 		
-		session.getTransaction().commit();
+	//	session.getTransaction().commit();
 
-		session.close();
+	//	session.close();
 		
 	return result;
 	
@@ -118,7 +118,7 @@ public class DeleteDaoImpl {
 		
 	Query query = session.createNativeQuery(
 			"Select * from delete_reasons;");
-	session.beginTransaction();
+//	session.beginTransaction();
 	
 	List<Object[]> results = (List<Object[]>) query.getResultList();
 	
@@ -137,9 +137,9 @@ public class DeleteDaoImpl {
 		hmFinal.add(hm);
 
 	}
-	session.getTransaction().commit();
+//	session.getTransaction().commit();
 
-	session.close();
+//	session.close();
 	return hmFinal;
 
 	}
