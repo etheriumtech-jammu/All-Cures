@@ -33,7 +33,7 @@ public class ChatDaoImpl {
 
 		Session session = HibernateUtil.buildSessionFactory();
 
-		session.beginTransaction();
+	//	session.beginTransaction();
 		System.out.println(chat_id);
 		System.out.println(session.isOpen());
 
@@ -63,9 +63,9 @@ public class ChatDaoImpl {
 
 			// needs other condition too but unable to find correct column
 			ret = query.executeUpdate();
-			session.getTransaction().commit();
+//			session.getTransaction().commit();
 
-			session.close();
+//			session.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -88,7 +88,7 @@ public class ChatDaoImpl {
 
 		Transaction tx = session.beginTransaction();
 		session.save(chat);
-		tx.commit();
+//		tx.commit();
 
 		// session.close();
 
@@ -99,7 +99,7 @@ public class ChatDaoImpl {
 	public static Integer DoctorLeads(Integer doc_id) {
 		Session session = HibernateUtil.buildSessionFactory();
 
-		session.beginTransaction();
+//		session.beginTransaction();
 
 		int ret = 0;
 		String insertStr = "INSERT into dp_doctor_leads " + "(doc_id)" + "values(" + doc_id + ");";
@@ -109,9 +109,9 @@ public class ChatDaoImpl {
 
 		// needs other condition too but unable to find correct column
 		ret = query.executeUpdate();
-		session.getTransaction().commit();
+//		session.getTransaction().commit();
 
-		session.close();
+//		session.close();
 		return 1;
 	}
 	
@@ -190,7 +190,7 @@ public class ChatDaoImpl {
 	public static Integer Chat_Archive() {
 		Session session = HibernateUtil.buildSessionFactory();
 
-		session.beginTransaction();
+//		session.beginTransaction();
 
 		int ret = 0;
 		String Str = "INSERT into dp_chat_archive select * from allcures1.dp_chat_history;";
@@ -200,16 +200,16 @@ public class ChatDaoImpl {
 
 		// needs other condition too but unable to find correct column
 		ret = query.executeUpdate();
-		session.getTransaction().commit();
+//		session.getTransaction().commit();
 
-		session.close();
+//		session.close();
 		return 1;
 	}
 	
 	public static Integer save_doc_path(Integer chat_id, String path) {
 		Session session = HibernateUtil.buildSessionFactory();
 
-		session.beginTransaction();
+//		session.beginTransaction();
 
 		int ret = 0;
 	
@@ -222,16 +222,16 @@ public class ChatDaoImpl {
 
 		// needs other condition too but unable to find correct column
 		ret = query.executeUpdate();
-		session.getTransaction().commit();
+//		session.getTransaction().commit();
 
-		session.close();
+//		session.close();
 		
 		return 1;
 	}
 	
 	public static List ChatStored(Integer from_id, Integer to_id) {
 		Session session = HibernateUtil.buildSessionFactory();
-		session.beginTransaction();
+//		session.beginTransaction();
 		List hmFinal = new ArrayList();
 
 		// System.out.println(session.isOpen());
@@ -261,16 +261,16 @@ public class ChatDaoImpl {
 			hmFinal = Chat_Search(res);
 		}
 
-		session.getTransaction().commit();
+//		session.getTransaction().commit();
 
-		session.close();
+//		session.close();
 
 		return hmFinal;
 	}
 	
 	public static Integer ChatStart(Integer from_id, Integer to_id) {
 		Session session = HibernateUtil.buildSessionFactory();
-		session.beginTransaction();
+	//	session.beginTransaction();
 		
 			Date d1 = new Date();
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -280,9 +280,9 @@ public class ChatDaoImpl {
 			int ret = query2.executeUpdate();
 			System.out.println(ret);
 			
-			session.getTransaction().commit();
+	//		session.getTransaction().commit();
 
-			session.close();
+	//		session.close();
 			return ret;
 }
 	
