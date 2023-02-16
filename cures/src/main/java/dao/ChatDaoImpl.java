@@ -271,7 +271,8 @@ public class ChatDaoImpl {
 	public static Integer ChatStart(Integer from_id, Integer to_id) {
 		Session session = HibernateUtil.buildSessionFactory();
 	//	session.beginTransaction();
-		
+			System.out.println("NEW CHAT ");
+			
 			Date d1 = new Date();
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			String Date1 = dateFormat.format(d1);
