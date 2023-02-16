@@ -281,7 +281,7 @@ public class ChatDaoImpl {
 			int ret = query2.executeUpdate();
 			System.out.println(ret);
 			
-	//		session.getTransaction().commit();
+			session.getTransaction().commit();
 
 	//		session.close();
 			return ret;
