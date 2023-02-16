@@ -279,6 +279,7 @@ public class ChatDaoImpl {
 			Query query2 = session.createNativeQuery("insert into dp_chat(from_id,to_id,date) values("
 					 + from_id + "," + to_id + ", '" + Date1 + "' );");
 			int ret = query2.executeUpdate();
+			System.out.println("Executed");
 			System.out.println(ret);
 			
 			session.getTransaction().commit();
