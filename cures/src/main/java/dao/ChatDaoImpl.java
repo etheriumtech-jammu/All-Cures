@@ -63,7 +63,7 @@ public class ChatDaoImpl {
 
 			// needs other condition too but unable to find correct column
 			ret = query.executeUpdate();
-//			session.getTransaction().commit();
+			session.getTransaction().commit();
 
 //			session.close();
 
@@ -114,10 +114,10 @@ public class ChatDaoImpl {
 			    session.getTransaction().rollback();
 			    }
 			
-//		session.getTransaction().commit();
+		session.getTransaction().commit();
 
 //		session.close();
-		return 1;
+		return ret;
 	}
 	
 	public static List Chat_Search(Integer chat_id) {
@@ -287,6 +287,7 @@ public class ChatDaoImpl {
 			try {
 				ret = query2.executeUpdate();
 				System.out.println(ret);
+				session.getTransaction().commit();
 			}
 			catch (Exception e) {
 			    session.getTransaction().rollback();
