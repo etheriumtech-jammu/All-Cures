@@ -40,7 +40,7 @@ public class DataController {
 		return dataDaoImpl.viewMedicines();
 	}
 	
-	@RequestMapping(value = "/deactivate/{usr_id}/{reason_id}", produces = "application/json", method = RequestMethod.POST)
+	@RequestMapping(value = "/deactivate/{usr_id}/{reason_id}", produces = "application/json", method = RequestMethod.PUT)
 	public @ResponseBody int delete_update(@PathVariable Integer usr_id,@PathVariable Integer reason_id )  {
 		
 		
