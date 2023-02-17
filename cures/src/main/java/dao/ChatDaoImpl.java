@@ -33,7 +33,7 @@ public class ChatDaoImpl {
 
 		Session session = HibernateUtil.buildSessionFactory();
 
-	//	session.beginTransaction();
+		session.beginTransaction();
 		System.out.println(chat_id);
 		System.out.println(session.isOpen());
 
@@ -99,7 +99,7 @@ public class ChatDaoImpl {
 	public static Integer DoctorLeads(Integer doc_id) {
 		Session session = HibernateUtil.buildSessionFactory();
 
-//		session.beginTransaction();
+		session.beginTransaction();
 
 		int ret = 0;
 		String insertStr = "INSERT into dp_doctor_leads " + "(doc_id)" + "values(" + doc_id + ");";
@@ -108,7 +108,12 @@ public class ChatDaoImpl {
 		Query query = session.createNativeQuery(insertStr);
 
 		// needs other condition too but unable to find correct column
+		try {
 		ret = query.executeUpdate();
+		}catch (Exception e) {
+			    session.getTransaction().rollback();
+			    }
+			
 //		session.getTransaction().commit();
 
 //		session.close();
@@ -190,7 +195,7 @@ public class ChatDaoImpl {
 	public static Integer Chat_Archive() {
 		Session session = HibernateUtil.buildSessionFactory();
 
-//		session.beginTransaction();
+		session.beginTransaction();
 
 		int ret = 0;
 		String Str = "INSERT into dp_chat_archive select * from allcures1.dp_chat_history;";
@@ -209,7 +214,7 @@ public class ChatDaoImpl {
 	public static Integer save_doc_path(Integer chat_id, String path) {
 		Session session = HibernateUtil.buildSessionFactory();
 
-//		session.beginTransaction();
+		session.beginTransaction();
 
 		int ret = 0;
 	
@@ -245,13 +250,13 @@ public class ChatDaoImpl {
 			System.out.println(res);
 			
 		} catch (NoResultException e) {
-
+		e.printStackTrace();
 		}
 		if (res == 0) {
 			
 			HashMap hm = new HashMap();
 			hm.put("Chat_id", null);
-			hm.put("status", 0);
+			
 			hmFinal.add(hm);
 			
 		}
@@ -270,19 +275,23 @@ public class ChatDaoImpl {
 	
 	public static Integer ChatStart(Integer from_id, Integer to_id) {
 		Session session = HibernateUtil.buildSessionFactory();
-	//	session.beginTransaction();
-			System.out.println("NEW CHAT ");
-			
+		session.beginTransaction();
+		
+			System.out.println("NEW CHAT");
 			Date d1 = new Date();
+			int ret=0;
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			String Date1 = dateFormat.format(d1);
 			Query query2 = session.createNativeQuery("insert into dp_chat(from_id,to_id,date) values("
 					 + from_id + "," + to_id + ", '" + Date1 + "' );");
-			int ret = query2.executeUpdate();
-			System.out.println("Executed");
-			System.out.println(ret);
-			
-			session.getTransaction().commit();
+			try {
+				ret = query2.executeUpdate();
+				System.out.println(ret);
+			}
+			catch (Exception e) {
+			    session.getTransaction().rollback();
+			    }
+	//		session.getTransaction().commit();
 
 	//		session.close();
 			return ret;
