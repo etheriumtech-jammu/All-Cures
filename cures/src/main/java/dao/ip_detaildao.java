@@ -27,7 +27,7 @@ public class ip_detaildao {
 		SessionFactory factory=new Configuration().configure().buildSessionFactory();
 	//	Session session = HibernateUtil.buildSessionFactory();
 		//Transaction transaction = session.getTransaction();
-		session.beginTransaction();
+//		session.beginTransaction();
 		
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpSession session = req.getSession(true);
