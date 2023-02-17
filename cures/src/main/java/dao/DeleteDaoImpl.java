@@ -25,7 +25,7 @@ public class DeleteDaoImpl {
 		
 		Session session = HibernateUtil.buildSessionFactory();
 
-//		session.beginTransaction();
+		session.beginTransaction();
 
 		int ret = 0;
 	
@@ -36,7 +36,15 @@ public class DeleteDaoImpl {
     
 		
 		// needs other condition too but unable to find correct column
-		ret = query.executeUpdate();
+			try {
+			ret = query.executeUpdate();
+			System.out.println(ret);
+			}
+			catch (Exception e) {
+			    session.getTransaction().rollback();
+			    }
+			
+		
 		
 		
 		
