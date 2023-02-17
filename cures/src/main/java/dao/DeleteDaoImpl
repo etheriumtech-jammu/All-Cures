@@ -38,9 +38,9 @@ public class DeleteDaoImpl {
 		// needs other condition too but unable to find correct column
 		ret = query.executeUpdate();
 		
-		session.getTransaction().commit();
+	//	session.getTransaction().commit();
 
-		session.close();
+	//	session.close();
 		
 		return ret;
 	}
@@ -50,7 +50,7 @@ public class DeleteDaoImpl {
 
 		Query query = session.createNativeQuery(
 				"Select allcures1.registration.activated,CAST(last_login_datetime AS DATE) ,CAST(Deactivated_time AS DATE) from allcures1.registration where registration_id= " + usr_id + " ;");
-		session.beginTransaction();
+	//	session.beginTransaction();
 		
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();
@@ -83,9 +83,9 @@ public class DeleteDaoImpl {
 
 		}
 		
-		session.getTransaction().commit();
+	//	session.getTransaction().commit();
 
-		session.close();
+	//	session.close();
 		
 	return 1;
 	
