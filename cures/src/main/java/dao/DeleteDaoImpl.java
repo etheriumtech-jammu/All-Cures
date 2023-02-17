@@ -38,6 +38,7 @@ public class DeleteDaoImpl {
 		// needs other condition too but unable to find correct column
 			try {
 			ret = query.executeUpdate();
+			session.getTransaction().commit();
 			System.out.println(ret);
 			}
 			catch (Exception e) {
