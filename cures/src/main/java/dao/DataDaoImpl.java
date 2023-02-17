@@ -23,7 +23,7 @@ public class DataDaoImpl {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-//		session.beginTransaction();
+		session.beginTransaction();
 
 		String device_id = (String) dataMap.get("device_id");
 		
