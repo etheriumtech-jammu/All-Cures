@@ -124,7 +124,7 @@ public class ChatDaoImpl {
 		Session session = HibernateUtil.buildSessionFactory();
 
 		Query query = session.createNativeQuery(
-				"SELECT chat.chat_id,chat.to_id as to_id,reg.first_name,reg.last_name, (SELECT reg.first_name FROM registration as reg where reg.registration_id=to_id) as user_first,(SELECT reg.last_name FROM registration as reg where reg.registration_id=to_id) as user_last, chat.message\r\n"
+				"SELECT chat.chat_id,chat.to_id as to_id,reg.first_name,reg.last_name, (SELECT reg.first_name FROM registration as reg where reg.registration_id=to_id) as user_first,(SELECT reg.last_name FROM registration as reg where reg.registration_id=to_id) as user_last, chat.message,chat.time\r\n"
 				+ "FROM registration as reg\r\n"
 				+ "LEFT JOIN dp_chat_history as chat ON chat.from_id = reg.registration_id where chat.chat_id= \r\n"
 				+ "" + chat_id + " ;");
@@ -145,11 +145,12 @@ public class ChatDaoImpl {
 			String to_last = (String) objects[5];
 			
 			String message = (String) objects[6];
-				
+			Timestamp time=(Timestamp) objects[7];
 			hm.put("Chat_id", Chat_id);
 			hm.put("From", from_first + " " + from_last);
 			hm.put("To", to_first + " " + to_last);
 			hm.put("Message", message);
+			hm.put("Time", time);
 			
 			hmFinal.add(hm);
 			
