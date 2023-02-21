@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.drafts.Draft_10;
+
 import org.java_websocket.exceptions.WebsocketNotConnectedException;
 import org.java_websocket.handshake.ServerHandshake;
 import javax.websocket.WebSocketContainer;
@@ -20,7 +20,7 @@ public class ClientExample {
     try {
   //    client = new WebSocketClient(new URI("ws://localhost:3013")) {
     	
-     client = new WebSocketClient(new URI("ws://localhost:3017")) {
+     client = new WebSocketClient(new URI("ws://all-cures.com:3017")) {
     		 
         @Override
         public void onOpen(ServerHandshake handshake) {
