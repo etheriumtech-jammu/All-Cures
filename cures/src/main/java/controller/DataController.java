@@ -28,7 +28,7 @@ import dao.DeleteDaoImpl;
 @RestController
 @RequestMapping(path = "/data")
 public class DataController {
-
+	public static boolean isRunning ;
 	@Autowired
 	private DataDaoImpl dataDaoImpl;
 
