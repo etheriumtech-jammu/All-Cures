@@ -67,11 +67,7 @@ public class SocketIOServer1 extends WebSocketServer {
 	  public void onMessage(WebSocket conn, String message) {
 		  System.out.println("Received message is" + message);
 		    int separatorIndex = message.indexOf(":");
-		    if (message.equals("exit")) {
-		    
-		    SocketEg.isRunning=false;
-		    }
-		    
+		   
 		    String recipientId = message.substring(0, separatorIndex);
 		    
 		    int separatorIndex1 = message.indexOf(":",separatorIndex +1);
