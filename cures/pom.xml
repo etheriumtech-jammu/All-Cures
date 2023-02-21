@@ -67,6 +67,12 @@
 			<version>1.1</version>
 			<scope>provided</scope>
 		</dependency>
+		
+		<dependency>
+    	<groupId>org.java-websocket</groupId>
+   	 <artifactId>Java-WebSocket</artifactId>
+   	 <version>1.5.1</version>
+	</dependency>
 		<!-- Filter Dependency -->
 		<dependency>
 			<groupId>org.apache.maven.shared</groupId>
