@@ -77,7 +77,7 @@ public class DataController {
 	public String startWebSocketServer() {
 //	  try {
 //	    WebSocketImpl.DEBUG = true;
-	    int port = 3017; // port number
+	    int port = 3018; // port number
 	    
 
 	    if (!isRunning == true) {
