@@ -20,7 +20,7 @@ public class ClientExample {
     try {
   //    client = new WebSocketClient(new URI("ws://localhost:3013")) {
     	
-     client = new WebSocketClient(new URI("ws://all-cures.com:3017")) {
+     client = new WebSocketClient(new URI("ws://all-cures.com:3018")) {
     		 
         @Override
         public void onOpen(ServerHandshake handshake) {
