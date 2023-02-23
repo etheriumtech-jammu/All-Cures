@@ -47,8 +47,10 @@ public class SocketIOServer1 extends WebSocketServer {
 	  @Override
 	  public void onClose(WebSocket conn, int code, String reason, boolean remote) {
 	    System.out.println("A client has disconnected");
+		connectionCount.decrementAndGet();
 	    System.out.println(connectionCount);
-	    if (connectionCount.decrementAndGet() == 0) {
+	
+/*	    if (connectionCount.decrementAndGet() == 0) {
             // All clients have disconnected, so stop the server
             try {
             	System.out.println("Server is stopping...");
@@ -58,6 +60,7 @@ public class SocketIOServer1 extends WebSocketServer {
                 e.printStackTrace();
             }
       }
+ */
             // You can stop the server using whatever mechanism you prefer
             // For example, if you're using an embedded Jetty server, you can call stop() on the server object.
         }
@@ -68,14 +71,14 @@ public class SocketIOServer1 extends WebSocketServer {
 		  System.out.println("Received message is" + message);
 		    int separatorIndex = message.indexOf(":");
 		   
-		    String recipientId = message.substring(0, separatorIndex);
+		    String sendId = message.substring(0, separatorIndex);
 		    
 		    int separatorIndex1 = message.indexOf(":",separatorIndex +1);
 		    
 		    int separatorIndex2 = message.indexOf(":",separatorIndex1 +1);
 		    
 		    int separatorIndex3 = message.indexOf(":",separatorIndex2 +1);
-		    String sendId = message.substring( separatorIndex + 1 , separatorIndex1);
+		    String recipientId = message.substring( separatorIndex + 1 , separatorIndex1);
 		    String roomName = message.substring( separatorIndex1 + 1 , separatorIndex2);
 		Integer chat_id=    Integer.parseInt(roomName);
 		Integer rec_id=Integer.parseInt(recipientId);
