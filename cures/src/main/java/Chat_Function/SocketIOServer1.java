@@ -68,30 +68,41 @@ public class SocketIOServer1 extends WebSocketServer {
 
 	  @Override
 	  public void onMessage(WebSocket conn, String message) {
-		  System.out.println("Received message is" + message);
-		    int separatorIndex = message.indexOf(":");
-		   
-		    String sendId = message.substring(0, separatorIndex);
-		    
-		    int separatorIndex1 = message.indexOf(":",separatorIndex +1);
-		    
-		    int separatorIndex2 = message.indexOf(":",separatorIndex1 +1);
-		    
-		    int separatorIndex3 = message.indexOf(":",separatorIndex2 +1);
-		    String recipientId = message.substring( separatorIndex + 1 , separatorIndex1);
-		    String roomName = message.substring( separatorIndex1 + 1 , separatorIndex2);
+		  	System.out.println("Received message is" + message);
+		
+		// Find the separator index of the recipient ID
+	    int separatorIndex = message.indexOf(":");
+	    
+	   
+	    
+	    
+	    // Extract the recipient ID, sender ID, room name, and message from the message string
+	    String sendId = message.substring(0, separatorIndex);
+	    int separatorIndex1 = message.indexOf(":",separatorIndex +1);
+	    int separatorIndex2 = message.indexOf(":",separatorIndex1 +1);
+	    int separatorIndex3 = message.indexOf(":",separatorIndex2 +1);
+	    String recipientId = message.substring(separatorIndex + 1 , separatorIndex1);
+	    String roomName = message.substring(separatorIndex1 + 1 , separatorIndex2);
 		Integer chat_id=    Integer.parseInt(roomName);
 		Integer rec_id=Integer.parseInt(recipientId);
 		Integer send_id=Integer.parseInt(sendId);
+		String message1= message.substring(separatorIndex2 + 1);
 		
+		System.out.println(roomName);
+		
+		// Store the message in the database
+		HashMap hm = new HashMap();
+		hm.put("from_id", send_id);
+		hm.put("to_id", rec_id);
+		hm.put("message", message1);
+		
+		System.out.println("Send" +send_id);
+		System.out.println("Recipient" +rec_id);
 	
-		    String message1= message.substring(separatorIndex2 + 1);
-		    System.out.println(roomName);
-		    HashMap hm = new HashMap();
-			hm.put("from_id", send_id);
-			hm.put("to_id", rec_id);
-			hm.put("message", message1);
+		
+
 			Integer result=	ChatDaoImpl.Chat_Store(chat_id,hm);
+			 // Add the client to the chat room and broadcast the message to all clients in the room
 		    if (!rooms.containsKey(roomName)) {
 		        rooms.put(roomName, new CopyOnWriteArraySet<>());
 		    }
