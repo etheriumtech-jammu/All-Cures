@@ -65,7 +65,7 @@ public class ChatDaoImpl {
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
 
-//			session.close();
+	//		session.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -74,8 +74,9 @@ public class ChatDaoImpl {
 //		session.getTransaction().commit(); session.close();
 		}
 
-		return chat_id;
+		return ret;
 	}
+
 
 	public static Integer ChatStore() {
 		Session session = HibernateUtil.buildSessionFactory();
