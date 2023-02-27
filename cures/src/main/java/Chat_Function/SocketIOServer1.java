@@ -57,7 +57,7 @@ public class SocketIOServer1 extends WebSocketServer {
 	    System.out.println("A client has disconnected");
 		connectionCount.decrementAndGet();
 	    System.out.println(connectionCount);
-	
+	/*
 	    if (connectionCount.decrementAndGet() == 0) {
             // All clients have disconnected, so stop the server
             try {
@@ -67,8 +67,9 @@ public class SocketIOServer1 extends WebSocketServer {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+	 
       }
- 
+ */
             // You can stop the server using whatever mechanism you prefer
             // For example, if you're using an embedded Jetty server, you can call stop() on the server object.
         }
