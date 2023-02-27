@@ -28,7 +28,7 @@ public class SocketIOServer1 extends WebSocketServer {
 	
 		
 	      public SocketIOServer1(int port) {
-	          super(new InetSocketAddress(port));
+	          super(new InetSocketAddress("all-cures.com",port));
 	      }
 	      
 	  @Override
