@@ -39,6 +39,14 @@ public class SocketIOServer1 extends WebSocketServer {
 		 
 	    System.out.println("A client has connected");
 	    conn.send("Welcome to the Chat Server");
+		  while (!conn.isOpen()) {
+		    try {
+		        Thread.sleep(1000); // Wait for 1 second
+		    } catch (InterruptedException e) {
+		        e.printStackTrace();
+		    }
+		}
+
 	    connectionCount.incrementAndGet();
 	    
 	    
@@ -50,7 +58,7 @@ public class SocketIOServer1 extends WebSocketServer {
 		connectionCount.decrementAndGet();
 	    System.out.println(connectionCount);
 	
-/*	    if (connectionCount.decrementAndGet() == 0) {
+	    if (connectionCount.decrementAndGet() == 0) {
             // All clients have disconnected, so stop the server
             try {
             	System.out.println("Server is stopping...");
@@ -60,7 +68,7 @@ public class SocketIOServer1 extends WebSocketServer {
                 e.printStackTrace();
             }
       }
- */
+ 
             // You can stop the server using whatever mechanism you prefer
             // For example, if you're using an embedded Jetty server, you can call stop() on the server object.
         }
@@ -109,6 +117,7 @@ public class SocketIOServer1 extends WebSocketServer {
 		    rooms.get(roomName).add(conn);
 
 		    broadcast(roomName, message1);
+		  
 	 }
 
 	  @Override
@@ -125,13 +134,13 @@ public class SocketIOServer1 extends WebSocketServer {
 		    }
 		}
 
-	  
+  
 
 
 
 	@Override
 	public void onStart() {
 		// TODO Auto-generated method stub
-		
+	System.out.println("Server Started");	
 	}
 }
