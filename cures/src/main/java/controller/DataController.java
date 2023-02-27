@@ -78,9 +78,10 @@ public class DataController {
 //	  try {
 //	    WebSocketImpl.DEBUG = true;
 	    int port = 8000; // port number
-	    
-
-	    if (!isRunning == true) {
+	    SocketIOServer1 s = new SocketIOServer1(port);
+	      s.start();
+		System.out.println("ChatServer started on port: " + s.getPort());
+/*	    if (!isRunning == true) {
 	    	SocketIOServer1 s = new SocketIOServer1(port);
 	      s.start();
 	      isRunning = true;
@@ -89,7 +90,7 @@ public class DataController {
 	    } else {
 	      System.out.println("ChatServer continues on port: " );
 	    }
-
+*/
 	    new ClientExample();
 	   
 	  return "WebSocket server started!";
