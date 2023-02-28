@@ -79,6 +79,10 @@ public class SocketIOServer1 extends WebSocketServer {
 	  public void onMessage(WebSocket conn, String message) {
 		  	System.out.println("Received message is" + message);
 		
+		  if(message.equals("exit"))
+		{
+			this.stop();
+		}
 		// Find the separator index of the recipient ID
 	    int separatorIndex = message.indexOf(":");
 	    
