@@ -81,7 +81,12 @@ public class SocketIOServer1 extends WebSocketServer {
 		
 		  if(message.equals("exit"))
 		{
-			this.stop();
+			try {
+				    this.stop();
+				} catch (IOException e) {
+				    // Handle the exception here
+					e.printStackTrace();
+				}
 		}
 		// Find the separator index of the recipient ID
 	    int separatorIndex = message.indexOf(":");
