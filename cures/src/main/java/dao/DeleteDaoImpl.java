@@ -25,7 +25,7 @@ public class DeleteDaoImpl {
 		
 		Session session = HibernateUtil.buildSessionFactory();
 
-//		session.beginTransaction();
+		session.beginTransaction();
 
 		int ret = 0;
 	
@@ -41,7 +41,7 @@ public class DeleteDaoImpl {
 		
 		
 		
-	//	session.getTransaction().commit();
+		session.getTransaction().commit();
 		
 	//	session.close();
 		
