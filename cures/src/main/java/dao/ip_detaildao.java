@@ -56,7 +56,7 @@ public class ip_detaildao {
 		 Session session1=factory.openSession();
 	       Transaction tx=session1.beginTransaction();
 	     session1.save(ip);
-//	       tx.commit();
+	       tx.commit();
 	    
 //	       session1.close();
 		
