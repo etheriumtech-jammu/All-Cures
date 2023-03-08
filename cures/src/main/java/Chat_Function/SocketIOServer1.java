@@ -25,6 +25,7 @@ public class SocketIOServer1 extends WebSocketServer {
 	private static final AtomicInteger connectionCount = new AtomicInteger(0);
 	 String roomName;
 	private static final Map<String, Set<WebSocket>> rooms = new HashMap<>();
+	private static final Map<WebSocket, String> clients = new HashMap<>();
 	
 		
 	      public SocketIOServer1(int port) {
@@ -38,6 +39,7 @@ public class SocketIOServer1 extends WebSocketServer {
 	//	  System.out.println("A client has connected" + clientId); 
 		 
 	    System.out.println("A client has connected");
+	    clients.put(conn, null);
 	    conn.send("Welcome to the Chat Server");
 		  while (!conn.isOpen()) {
 		    try {
@@ -57,6 +59,12 @@ public class SocketIOServer1 extends WebSocketServer {
 	    System.out.println("A client has disconnected");
 		connectionCount.decrementAndGet();
 	    System.out.println(connectionCount);
+	  System.out.println(connectionCount);
+	    String roomName = clients.get(conn);
+        if (roomName != null) {
+            rooms.get(roomName).remove(conn);
+        }
+        clients.remove(conn);
 	/*
 	    if (connectionCount.decrementAndGet() == 0) {
             // All clients have disconnected, so stop the server
@@ -129,6 +137,7 @@ public class SocketIOServer1 extends WebSocketServer {
 		        rooms.put(roomName, new CopyOnWriteArraySet<>());
 		    }
 		    rooms.get(roomName).add(conn);
+		    clients.put(conn, roomName);
 
 		    broadcast(roomName, message1);
 		  
