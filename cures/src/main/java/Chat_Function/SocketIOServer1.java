@@ -30,6 +30,7 @@ public class SocketIOServer1 extends WebSocketServer {
 		
 	      public SocketIOServer1(int port) {
 	          super(new InetSocketAddress("0.0.0.0",port));
+		      
 	      }
 	      
 	  @Override
@@ -86,6 +87,7 @@ public class SocketIOServer1 extends WebSocketServer {
 	  @Override
 	  public void onMessage(WebSocket conn, String message) {
 		  	System.out.println("Received message is" + message);
+		  WebSocket sender = conn;
 		
 		  if(message.equals("exit"))
 		{
@@ -139,7 +141,18 @@ public class SocketIOServer1 extends WebSocketServer {
 		    rooms.get(roomName).add(conn);
 		    clients.put(conn, roomName);
 
-		    broadcast(roomName, message1);
+	//	    broadcast(roomName, message1);
+		   if (!rooms.containsKey(roomName)) {
+		        
+		    }
+		    for (WebSocket client : rooms.get(roomName)) {
+		    	if (client != sender) {
+		            client.send(message);
+		        }
+		       
+		        System.out.println(" message is" + message);
+		    }
+		    
 		  
 	 }
 
