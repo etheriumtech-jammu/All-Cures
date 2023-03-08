@@ -147,10 +147,10 @@ public class SocketIOServer1 extends WebSocketServer {
 		    }
 		    for (WebSocket client : rooms.get(roomName)) {
 		    	if (client != sender) {
-		            client.send(message);
+		            client.send(message1);
 		        }
 		       
-		        System.out.println(" message is" + message);
+		        System.out.println(" message1 is" + message);
 		    }
 		    
 		  
