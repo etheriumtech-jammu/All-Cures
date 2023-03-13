@@ -325,7 +325,7 @@ public class ChatDaoImpl {
 				+ ") AS m\r\n"
 				+ "\r\n"
 				+ "INNER JOIN (\r\n"
-				+ " Select r.first_name,r.last_name, r.registration_type ,r.registration_id, r.rowno FROM allcures1.registration as r\r\n"
+				+ " Select r.first_name,r.last_name, r.registration_type ,r.registration_id, r.rowno FROM registration as r\r\n"
 				+ "   \r\n"
 				+ ") AS reg\r\n"
 				+ "\r\n"
