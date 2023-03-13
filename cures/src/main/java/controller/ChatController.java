@@ -90,6 +90,11 @@ public class ChatController {
 		
 		
 		}
-	
+	@RequestMapping(value = "/chat/list/{chat_id}", produces = "application/json", method = RequestMethod.GET)
+		public @ResponseBody List chat_list(@PathVariable int chat_id) {
+		
+			return ChatDaoImpl.Chat_List(chat_id);
+		
+		}
 	
 }
