@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -306,6 +307,68 @@ public class ChatDaoImpl {
 			return ret;
 }
 	
+	public static List Chat_List(Integer chat_id) {
+		
+		Session session = HibernateUtil.buildSessionFactory();
+		
+		Query query = session.createNativeQuery(
+				"SELECT 	reg.first_name,reg.last_name, reg.registration_type , reg.rowno, reg.registration_id as user,\r\n"
+				+ "	 MAX(h.time) AS last_time, \r\n"
+				+ "       h.message AS last_message\r\n"
+				+ "       \r\n"
+				+ "FROM dp_chat_history AS h\r\n"
+				+ "INNER JOIN (\r\n"
+				+ "    SELECT chat_id,to_id as user, MAX(time) AS last_time\r\n"
+				+ "    FROM dp_chat_history\r\n"
+				+ "    WHERE (from_id = " + chat_id + " OR to_id = " + chat_id + ")\r\n"
+				+ "    GROUP BY chat_id\r\n"
+				+ ") AS m\r\n"
+				+ "\r\n"
+				+ "INNER JOIN (\r\n"
+				+ " Select r.first_name,r.last_name, r.registration_type ,r.registration_id, r.rowno FROM allcures1.registration as r\r\n"
+				+ "   \r\n"
+				+ ") AS reg\r\n"
+				+ "\r\n"
+				+ "\r\n"
+				+ "\r\n"
+				+ "ON h.chat_id = m.chat_id AND h.time = m.last_time\r\n"
+				+ "WHERE (h.from_id = " + chat_id + " OR h.to_id = " + chat_id + ") AND reg.registration_id=m.user\r\n"
+				+ "GROUP BY h.chat_id\r\n"
+				+ "ORDER BY last_time DESC;\r\n"
+				+ "");
+		
+		List<Object[]> results = (List<Object[]>) query.getResultList();
+		System.out.println(results.size());
+		List hmFinal = new ArrayList();
+		for (Object[] objects : results) {
+			LinkedHashMap<String, Object> hm = new LinkedHashMap<>();   
+			// add linkedhashmap to preserve the order
+			String first_name = (String) objects[0];
+			
+			String last_name = (String) objects[1];
+			
 	
+			Integer row_no = (Integer) objects[3];
+			
+			Integer user=(Integer) objects[4];
+					
+			Timestamp time=(Timestamp) objects[5];
+			String message=(String) objects[6];
+			
+			hm.put("First_name", first_name);
+			hm.put("Last_name",last_name);
+			hm.put("User",user);
+			hm.put("Rowno", row_no);
+			hm.put("Message", message);
+			hm.put("Time", time);
+			
+			hmFinal.add(hm);
+			
+		}
+		
+		return hmFinal;
+
+	}
+
 	
 }
