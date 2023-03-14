@@ -91,6 +91,7 @@ public class ChatDaoImpl {
 			// needs other condition too but unable to find correct column
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
+/*
 			 // Store the data in Memcache along with the timestamp
 	        if(mcc == null) {
 	            initializeCacheClient();
@@ -143,7 +144,7 @@ public class ChatDaoImpl {
 //		session.getTransaction().commit(); session.close();
 		}
 		
-		
+	*/	
 		return ret;
 	}
 
