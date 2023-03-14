@@ -133,7 +133,7 @@ public class ChatDaoImpl {
 	        Gson gson = new GsonBuilder().create();
 	        String jsonData = gson.toJson(chatData);
 	        mcc.set("Chat_id_" + chat_id, 3600, jsonData);
-
+		System.out.println("Added to memcached");
 	//		session.close();
 
 		} catch (Exception e) {
