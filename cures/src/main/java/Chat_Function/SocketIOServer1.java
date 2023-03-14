@@ -119,14 +119,18 @@ public class SocketIOServer1 extends WebSocketServer {
 		Integer rec_id=Integer.parseInt(recipientId);
 		Integer send_id=Integer.parseInt(sendId);
 		String message1= message.substring(separatorIndex2 + 1);
-		
+		String enmsg =  null;
+		final String secretKey = Constant.SECRETE;
+		Encryption encrypt = new Encryption();
+
+		enmsg = encrypt.encrypt(message1, secretKey);
 		System.out.println(roomName);
 		
 		// Store the message in the database
 		HashMap hm = new HashMap();
 		hm.put("from_id", send_id);
 		hm.put("to_id", rec_id);
-		hm.put("message", message1);
+		hm.put("message", enmsg);
 		
 		System.out.println("Send" +send_id);
 		System.out.println("Recipient" +rec_id);
@@ -150,7 +154,7 @@ public class SocketIOServer1 extends WebSocketServer {
 		            client.send(message);
 		        }
 		    
-		        System.out.println(" message is" + message);
+		     
 		    }
 		    
 		  
