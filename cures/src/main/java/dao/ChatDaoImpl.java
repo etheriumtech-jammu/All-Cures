@@ -473,7 +473,7 @@ public class ChatDaoImpl {
 			return ret;
 }
 	
-	public static List Chat_List(Integer chat_id) {
+	public static List Chat_List(Integer user_id) {
 		
 		Session session = HibernateUtil.buildSessionFactory();
 		
@@ -486,7 +486,7 @@ public class ChatDaoImpl {
 				+ "INNER JOIN (\r\n"
 				+ "    SELECT chat_id,to_id as user, MAX(time) AS last_time\r\n"
 				+ "    FROM dp_chat_history\r\n"
-				+ "    WHERE (from_id = " + chat_id + " OR to_id = " + chat_id + ")\r\n"
+				+ "    WHERE (from_id = " + user_id + " OR to_id = " + user_id + ")\r\n"
 				+ "    GROUP BY chat_id\r\n"
 				+ ") AS m\r\n"
 				+ "\r\n"
@@ -498,7 +498,7 @@ public class ChatDaoImpl {
 				+ "\r\n"
 				+ "\r\n"
 				+ "ON h.chat_id = m.chat_id AND h.time = m.last_time\r\n"
-				+ "WHERE (h.from_id = " + chat_id + " OR h.to_id = " + chat_id + ") AND reg.registration_id=m.user\r\n"
+				+ "WHERE (h.from_id = " + user_id + " OR h.to_id = " + user_id + ") AND reg.registration_id=m.user\r\n"
 				+ "GROUP BY h.chat_id\r\n"
 				+ "ORDER BY last_time DESC;\r\n"
 				+ "");
