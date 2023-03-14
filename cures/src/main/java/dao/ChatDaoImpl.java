@@ -91,7 +91,7 @@ public class ChatDaoImpl {
 			// needs other condition too but unable to find correct column
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
-/*
+
 			 // Store the data in Memcache along with the timestamp
 	        if(mcc == null) {
 	            initializeCacheClient();
@@ -136,7 +136,7 @@ public class ChatDaoImpl {
 	        mcc.set("Chat_id_" + chat_id, 3600, jsonData);
 		System.out.println("Added to memcached");
 	//		session.close();
-		*/
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
@@ -520,7 +520,14 @@ public class ChatDaoImpl {
 			Integer user=(Integer) objects[4];
 					
 			Timestamp time=(Timestamp) objects[5];
-			String message=(String) objects[6];
+			
+			String demsg = (String) objects[6];
+			
+			final String secretKey = Constant.SECRETE;
+			Encryption encrypt = new Encryption();
+		
+			String message = encrypt.decrypt(demsg, secretKey);
+			
 			
 			hm.put("First_name", first_name);
 			hm.put("Last_name",last_name);
