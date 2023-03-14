@@ -48,10 +48,10 @@ public class ChatController {
 		
 		}
 		
-		@RequestMapping(value = "/chat/{chat_id}", produces = "application/json", method = RequestMethod.GET)
-		public @ResponseBody List chat_search(@PathVariable int chat_id) {
+		@RequestMapping(value = "/chat/search/{chat_id}", produces = "application/json", method = RequestMethod.GET)
+		public @ResponseBody String chat_search(@PathVariable int chat_id) {
 		
-			return ChatDaoImpl.Chat_Search(chat_id);
+			return ChatDaoImpl.Chat_ID_Search(chat_id);
 		
 		}
 		
@@ -90,10 +90,10 @@ public class ChatController {
 		
 		
 		}
-	@RequestMapping(value = "/chat/list/{chat_id}", produces = "application/json", method = RequestMethod.GET)
-		public @ResponseBody List chat_list(@PathVariable int chat_id) {
+	@RequestMapping(value = "/chat/list/{user_id}", produces = "application/json", method = RequestMethod.GET)
+		public @ResponseBody List chat_list(@PathVariable int user_id) {
 		
-			return ChatDaoImpl.Chat_List(chat_id);
+			return ChatDaoImpl.Chat_List(user_id);
 		
 		}
 	
