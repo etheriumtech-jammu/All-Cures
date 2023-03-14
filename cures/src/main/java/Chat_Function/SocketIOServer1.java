@@ -128,6 +128,9 @@ public class SocketIOServer1 extends WebSocketServer {
 
 		enmsg = encrypt.encrypt(message1, secretKey);
 		System.out.println(roomName);
+		  
+		  System.out.println("Encrypted Message:" + enmsg);
+		  
 		
 		// Store the message in the database
 		HashMap hm = new HashMap();
