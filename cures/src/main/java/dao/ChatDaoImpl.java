@@ -136,7 +136,7 @@ public class ChatDaoImpl {
 	        mcc.set("Chat_id_" + chat_id, 3600, jsonData);
 		System.out.println("Added to memcached");
 	//		session.close();
-
+		*/
 		} catch (Exception e) {
 			e.printStackTrace();
 			session.getTransaction().rollback();
@@ -144,7 +144,7 @@ public class ChatDaoImpl {
 //		session.getTransaction().commit(); session.close();
 		}
 		
-	*/	
+		
 		return ret;
 	}
 
