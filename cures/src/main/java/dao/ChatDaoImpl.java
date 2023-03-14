@@ -22,22 +22,42 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
+import util.HibernateUtil;
+
+import org.json.JSONObject;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import model.Chat;
+
+import model.Registration;
+import net.spy.memcached.AddrUtil;
+import net.spy.memcached.ConnectionFactoryBuilder;
+import net.spy.memcached.FailureMode;
+import net.spy.memcached.MemcachedClient;
 import util.Constant;
+import util.Encryption;
 import util.HibernateUtil;
 
 public class ChatDaoImpl {
 
+	public static MemcachedClient mcc = null;
 	// static Session session = HibernateUtil.buildSessionFactory();
 	@Transactional
 	public static Integer Chat_Store(Integer chat_id, HashMap<String, Object> chatMap) {
+//		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
 		Session session = HibernateUtil.buildSessionFactory();
 
 		session.beginTransaction();
 		System.out.println(chat_id);
 		System.out.println(session.isOpen());
-
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		chatMap.put("time",timestamp);
+		
+		
 		int ret = 0;
 		String insertStr = "INSERT into dp_chat_history " + "(chat_id,";
 
@@ -50,9 +70,12 @@ public class ChatDaoImpl {
 
 				if (chatDetail.getValue() instanceof Integer) {
 					insertStr_values += (Integer) (chatDetail.getValue()) + ", ";
-				} else {
+				} else if (chatDetail.getValue() instanceof Timestamp) {
+					insertStr_values += "'" + (Timestamp) (chatDetail.getValue()) + "' , ";
+				}else {
 					insertStr_values += "'" + (String) (chatDetail.getValue()) + "' , ";
 				}
+				
 			}
 
 			insertStr = insertStr.substring(0, insertStr.lastIndexOf(","));
@@ -65,6 +88,48 @@ public class ChatDaoImpl {
 			// needs other condition too but unable to find correct column
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
+			 // Store the data in Memcache along with the timestamp
+	        if(mcc == null) {
+	            initializeCacheClient();
+	        }
+	        
+	 //       mcc.delete("Chat_id" + "_" + chat_id);
+	 //      // Retrieve the existing chat data from memcached
+	        String cacheString = (String) mcc.get("Chat_id_" + chat_id);
+	        System.out.println("Cache String: " + cacheString); // 
+	        HashMap<String, Object> chatData = null;
+	        if (cacheString != null) {
+	            chatData = new Gson().fromJson(cacheString, new TypeToken<HashMap<String, Object>>() {}.getType());
+	        } else {
+	            chatData = new HashMap<String, Object>();
+	        }
+	        
+	        
+	        
+	        // Get the existing message list or create a new one if it doesn't exist
+	     // Get the existing message list or create a new one if it doesn't exist
+	        Object messagesObj = chatData.get("messages");
+	        ArrayList<HashMap<String, Object>> messages = new ArrayList<>();
+	        if (messagesObj != null) {
+	            // Check if the type is ArrayList or HashMap
+	            if (messagesObj instanceof ArrayList) {
+	                // If it is an ArrayList, cast it and use it as is
+	                messages = (ArrayList<HashMap<String, Object>>) messagesObj;
+	            } else if (messagesObj instanceof HashMap) {
+	                // If it is a HashMap, create an ArrayList and add the existing message
+	                HashMap<String, Object> messageMap = (HashMap<String, Object>) messagesObj;
+	                messages.add(messageMap);
+	            }
+	        }
+
+	        // Append the new message to the existing messages
+	        messages.add(chatMap);
+	        chatData.put("messages", messages);
+
+	        // Add the updated chat data to memcached
+	        Gson gson = new GsonBuilder().create();
+	        String jsonData = gson.toJson(chatData);
+	        mcc.set("Chat_id_" + chat_id, 3600, jsonData);
 
 	//		session.close();
 
@@ -74,10 +139,10 @@ public class ChatDaoImpl {
 		} finally {
 //		session.getTransaction().commit(); session.close();
 		}
-
+		
+		
 		return ret;
 	}
-
 
 	public static Integer ChatStore() {
 		Session session = HibernateUtil.buildSessionFactory();
@@ -122,6 +187,99 @@ public class ChatDaoImpl {
 		return ret;
 	}
 	
+	public static MemcachedClient initializeCacheClient() {
+		try {
+			Constant.log("Trying Connection to Memcache server", 0);
+			mcc = new MemcachedClient(
+					new ConnectionFactoryBuilder().setDaemon(true).setFailureMode(FailureMode.Retry).build(),
+					AddrUtil.getAddresses(Constant.ADDRESS));
+			Constant.log("Connection to Memcache server Sucessful", 0);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Constant.log("Connection to Memcache server UN-Sucessful", 3);
+		}
+		return mcc;
+	}
+
+	public static List findChatInCache(int chat_id) {
+		String cacheString = null;
+
+		// This is the ADDRESS OF MEMCACHE
+		// TODO: Move to a Config Entry in Web.xml
+		if (mcc == null) {
+			initializeCacheClient();
+		}
+		Constant.log("Getting chat_id from MemCache", 0);
+		
+		 cacheString = (String) mcc.get("Chat_id_" + chat_id);
+	        System.out.println("Cache String: " + cacheString); // 
+	        HashMap<String, Object> chatData = null;
+	        if (cacheString != null) {
+	            chatData = new Gson().fromJson(cacheString, new TypeToken<HashMap<String, Object>>() {}.getType());
+	            Constant.log("Found In MemCache:" + cacheString, 0);
+	        } else {
+	            chatData = new HashMap<String, Object>();
+	        }
+	        
+	     // Extract messages from chat data and render them
+		     List<String> allMessages = new ArrayList<String>();
+		        if (chatData != null && chatData.containsKey("messages")) {
+		            List<Map<String, Object>> messages1 = (List<Map<String, Object>>) chatData.get("messages");
+		            for (Map<String, Object> message : messages1) {
+		                String fromId = message.get("from_id").toString();
+		                String toId = message.get("to_id").toString();
+		                String time = message.get("time").toString();
+		                String enmsg = message.get("message").toString();
+		                
+		                final String secretKey = Constant.SECRETE;
+		    			Encryption encrypt = new Encryption();
+		    		
+		    			String msg = encrypt.decrypt(enmsg, secretKey);
+		                
+		                String renderedMsg ="Time " +  "[" + time + "] " + "From: " + fromId + " To: " +  toId + " Message:" +  msg;
+		                allMessages.add(renderedMsg);
+		            }
+		        }
+		        System.out.println(allMessages);
+	   
+	        
+	        
+		return allMessages;
+	}
+	
+	public static String Chat_ID_Search(Integer chat_id)
+	{
+	
+		Constant.log("Got Req for Chat_ID: "+chat_id, 1);
+		List<String> allMessages = findChatInCache(chat_id);	
+		
+		
+		String jsondata = null;
+		if(allMessages.size() == 0 ){
+			//Chat Not Found in MemCache
+			Constant.log("Got Null From MemCache on the Chat:"+chat_id, 1);
+		List chat=Chat_Search(chat_id);
+		
+		Gson gson = new GsonBuilder().serializeNulls().create();	
+		jsondata = gson.toJson(chat);
+	//	mcc.add("Chat_id"+"_"+chat_id,360000 ,jsondata).getStatus();
+			
+		}
+		
+		else
+		{
+			Constant.log("Found Chat in Memcache and serving from there", 1);
+			jsondata = new Gson().toJson(allMessages);
+			
+			
+		}
+		
+		return jsondata ;
+	}
+	
+	
+	
 	public static List Chat_Search(Integer chat_id) {
 		Session session = HibernateUtil.buildSessionFactory();
 
@@ -147,7 +305,12 @@ public class ChatDaoImpl {
 			String to_first = (String) objects[5];
 			String to_last = (String) objects[6];
 			
-			String message = (String) objects[7];
+			String demsg = (String) objects[7];
+			
+			final String secretKey = Constant.SECRETE;
+			Encryption encrypt = new Encryption();
+		
+			String message = encrypt.decrypt(demsg, secretKey);
 			Timestamp time=(Timestamp) objects[8];
 			Integer From_id=(Integer) objects[9];
 			
