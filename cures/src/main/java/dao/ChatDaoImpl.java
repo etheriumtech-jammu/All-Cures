@@ -456,6 +456,7 @@ public class ChatDaoImpl {
 			System.out.println("NEW CHAT");
 			Date d1 = new Date();
 			int ret=0;
+			int res=0;
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			String Date1 = dateFormat.format(d1);
 			Query query2 = session.createNativeQuery("insert into dp_chat(from_id,to_id,date) values("
