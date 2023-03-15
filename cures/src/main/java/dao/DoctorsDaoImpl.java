@@ -219,11 +219,7 @@ public class DoctorsDaoImpl {
 
 	public String findDocInCache(int rowno) {
 		String cacheString = null;
-		if (rowno == 945)
-		{
-		mcc.delete(Constant.ROWNO + "_" + rowno);
-		Constant.log("Doctor is removed" , 1);
-		}
+		
 		// This is the ADDRESS OF MEMCACHE
 		// TODO: Move to a Config Entry in Web.xml
 		if (mcc == null) {
