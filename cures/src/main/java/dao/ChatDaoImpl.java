@@ -413,6 +413,7 @@ public class ChatDaoImpl {
 	public static List ChatStored(Integer from_id, Integer to_id) {
 		Session session = HibernateUtil.buildSessionFactory();
 //		session.beginTransaction();
+		String result=null;
 		List hmFinal = new ArrayList();
 
 		// System.out.println(session.isOpen());
