@@ -111,6 +111,16 @@ public class Doctors implements Serializable {
 	private Integer countries_code;
 	private Integer hospital_affliated_code;
 	private Long rowno;
+	
+	private Integer subscription;
+
+	public Integer getSubscription() {
+		return subscription;
+	}
+
+	public void setSubscription(Integer subscription) {
+		this.subscription = subscription;
+	}
 
 	private String website_url;
 
