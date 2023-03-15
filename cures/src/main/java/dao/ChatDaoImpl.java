@@ -470,7 +470,7 @@ public class ChatDaoImpl {
 			    session.getTransaction().rollback();
 			    }
 		Query query = session.createNativeQuery(
-					"Select chat_id  from allcures1.dp_chat where (from_id=" + from_id + " and to_id=" + to_id + ");");
+					"Select chat_id  from dp_chat where (from_id=" + from_id + " and to_id=" + to_id + ");");
 			
 			try {
 				res = (int) query.getSingleResult();
