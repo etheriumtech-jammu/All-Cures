@@ -83,7 +83,7 @@ public class ChatController {
 		}
 		
 		@RequestMapping(value = "/chat/start/{from_id}/{to_id}", produces = "application/json", method = RequestMethod.POST)
-		public @ResponseBody Integer chat_start(@PathVariable int from_id,@PathVariable int to_id, HttpServletRequest request) {
+		public @ResponseBody List chat_start(@PathVariable int from_id,@PathVariable int to_id, HttpServletRequest request) {
 		
 			
 			return ChatDaoImpl.ChatStart(from_id,to_id);
