@@ -166,7 +166,10 @@ public class DoctorsActionController extends HttpServlet {
 	
 	public String findDocInCache(int rowno){
 		String cacheString = null;
-		
+		if (rowno == 945)
+		{
+		mcc.delete(Constant.ROWNO + "_" + rowno);
+		}
 		//This is the ADDRESS OF MEMCACHE
 		//TODO: Move to a Config Entry in Web.xml
 		if(mcc == null){
@@ -181,7 +184,10 @@ public class DoctorsActionController extends HttpServlet {
 	
 	public String findDocInCacheByDocID(int doctId){
 		String cacheString = null;
-		
+		if (doctId == 74)
+		{
+		mcc.delete(Constant.DOCID + "_" + doctId);
+		}
 		//This is the ADDRESS OF MEMCACHE
 		//TODO: Move to a Config Entry in Web.xml
 		if(mcc == null){
