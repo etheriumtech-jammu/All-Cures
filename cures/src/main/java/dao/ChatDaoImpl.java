@@ -438,15 +438,44 @@ public class ChatDaoImpl {
 		}
 
 		else {
+			result= Chat_ID_Search(res);
 			
-			hmFinal = Chat_Search(res);
+			if (result.length()==2)
+			{
+				Query query1 = session.createNativeQuery(
+						"Select chat_id  from dp_chat where (from_id=" + from_id + " and to_id=" + to_id + ");");
+				
+				try {
+					res = (int) query1.getSingleResult();
+					
+				} catch (NoResultException e) {
+					System.out.println("Chat is not initiated");
+				    
+					
+				}
+				System.out.println("Chat_id" + res);
+				HashMap hm = new HashMap();
+				hm.put("Chat_id", res);
+				hm.put("From_id", from_id);
+				hm.put("To_id", to_id);
+				hm.put("Message", "");
+				
+				
+				
+				hmFinal.add(hm);	
+			}
+			else
+			{
+			hmFinal.add(result);
+			}
+			
 		}
-
+		
+		return hmFinal;
 //		session.getTransaction().commit();
 
-//		session.close();
-
-		return hmFinal;
+	//	session.close();
+		
 	}
 	
 	public static List ChatStart(Integer from_id, Integer to_id) {
