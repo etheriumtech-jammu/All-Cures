@@ -348,6 +348,7 @@ public class DoctorsDaoImpl {
 		if (rowno == 945)
 		{
 		mcc.delete(Constant.ROWNO + "_" + rowno);
+		Constant.log("Doctor is removed" , 1);
 		}
 		// creating session object
 		//Session session = factory;
