@@ -345,7 +345,10 @@ public class DoctorsDaoImpl {
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
 		Constant.log("In DoctorsDAO, Getting Doctors Info For:" + rowno, 1);
-
+		if (rowno == 945)
+		{
+		mcc.delete(Constant.ROWNO + "_" + rowno);
+		}
 		// creating session object
 		//Session session = factory;
 
