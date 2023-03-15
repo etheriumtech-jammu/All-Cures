@@ -361,7 +361,7 @@ public class DoctorsDaoImpl {
 						+ "specialties.spl_name, doctors.other_spls, doctors.address1, doctors.address2, city.cityname, "
 						+ "doctors.over_allrating, doctors.email, doctors.waiting_time,  states.statename , countries.countryname, "
 						+ "doctors.primary_spl, doctors.sub_spls, doctors.about, doctors.city, doctors.state, doctors.country_code,doctors.hospital_affliated as hospital_affliated_code, "
-						+ "doctors.rowno, doctors.website_url "
+						+ "doctors.rowno, doctors.website_url,doctors.subscription  "
 						+ "FROM doctors , hospital , specialties, city, states, countries "
 						+ "WHERE  doctors.hospital_affliated = hospital.hospitalid  and "
 						+ "doctors.primary_spl = specialties.splid and doctors.city = city.citycode and doctors.state = states.codeid and "
@@ -416,6 +416,7 @@ public class DoctorsDaoImpl {
 				doc.setHospital_affliated_code(obj[30] != null ? (Integer) obj[30] : 0);
 				doc.setRowno((long) (obj[31] != null ? (Integer) obj[31] : 0));
 				doc.setWebsite_url((String) (obj[32]));
+				doc.setSubscription(obj[33] != null ? (Integer) obj[33] : 0);
 			}
 			Constant.log("--Returning from DoctorsDao, Doc Object for ID:" + doc.getDocid() +" rowno:" + doc.getRowno(), 1);
 		}
@@ -443,7 +444,7 @@ public class DoctorsDaoImpl {
 						+ "specialties.spl_name, doctors.other_spls, doctors.address1, doctors.address2, city.cityname, "
 						+ "doctors.over_allrating, doctors.email, doctors.waiting_time,  states.statename , countries.countryname, "
 						+ "doctors.primary_spl, doctors.sub_spls, doctors.about, doctors.city, doctors.state, doctors.country_code,doctors.hospital_affliated as hospital_affliated_code, "
-						+ "doctors.rowno, doctors.website_url "
+						+ "doctors.rowno, doctors.website_url,doctors.subscription  "
 						+ "FROM doctors , hospital , specialties, city, states, countries "
 						+ "WHERE  doctors.hospital_affliated = hospital.hospitalid  and "
 						+ "doctors.primary_spl = specialties.splid and doctors.city = city.citycode and doctors.state = states.codeid and "
@@ -498,6 +499,7 @@ public class DoctorsDaoImpl {
 				doc.setHospital_affliated_code(obj[30] != null ? (Integer) obj[30] : 0);
 				doc.setRowno((long) (obj[31] != null ? (Integer) obj[31] : 0));
 				doc.setWebsite_url((String) (obj[32]));
+				doc.setSubscription(obj[33] != null ? (Integer) obj[33] : 0);
 			}
 			Constant.log("--Returning from DoctorsDao, Doc Object for ID:" + doc.getDocid() +" rowno:" + doc.getRowno(), 1);
 		}
