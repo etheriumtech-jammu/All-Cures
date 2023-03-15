@@ -449,7 +449,7 @@ public class ChatDaoImpl {
 		return hmFinal;
 	}
 	
-	public static Integer ChatStart(Integer from_id, Integer to_id) {
+	public static List ChatStart(Integer from_id, Integer to_id) {
 		Session session = HibernateUtil.buildSessionFactory();
 		session.beginTransaction();
 		
@@ -468,10 +468,35 @@ public class ChatDaoImpl {
 			catch (Exception e) {
 			    session.getTransaction().rollback();
 			    }
+		Query query = session.createNativeQuery(
+					"Select chat_id  from allcures1.dp_chat where (from_id=" + from_id + " and to_id=" + to_id + ");");
+			
+			try {
+				res = (int) query.getSingleResult();
+				
+			} catch (NoResultException e) {
+				System.out.println("Chat is not initiated");
+			    
+				
+			}
+				
+			// hm.put("Date", date1);
+			List hmFinal = new ArrayList();
+			HashMap hm = new HashMap();
+			hm.put("Chat_id", res);
+			hm.put("From_id", from_id);
+			hm.put("To_id", to_id);
+			hm.put("Message", "");
+			
+			
+			
+			hmFinal.add(hm);
+			
 	//		session.getTransaction().commit();
 
 	//		session.close();
-			return ret;
+			return hmFinal;
+			
 }
 	
 	public static List Chat_List(Integer user_id) {
