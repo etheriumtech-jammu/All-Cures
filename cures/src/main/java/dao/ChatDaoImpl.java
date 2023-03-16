@@ -531,33 +531,27 @@ public class ChatDaoImpl {
 }
 	
 	public static List Chat_List(Integer user_id) {
-		
+		String message = null;
 		Session session = HibernateUtil.buildSessionFactory();
 		
 		Query query = session.createNativeQuery(
-				"SELECT 	reg.first_name,reg.last_name, reg.registration_type , reg.rowno, reg.registration_id as user,\r\n"
-				+ "	 MAX(h.time) AS last_time, \r\n"
-				+ "       h.message AS last_message\r\n"
-				+ "       \r\n"
+				"SELECT reg.first_name, reg.last_name, reg.registration_type, reg.rowno, reg.registration_id AS user,\r\n"
+				+ "       MAX(h.time) AS last_time, h.message AS last_message,\r\n"
+				+ "       c.chat_id, c.from_id, c.to_id\r\n"
 				+ "FROM dp_chat_history AS h\r\n"
-				+ "INNER JOIN (\r\n"
-				+ "    SELECT chat_id,to_id as user, MAX(time) AS last_time\r\n"
-				+ "    FROM dp_chat_history\r\n"
-				+ "    WHERE (from_id = " + user_id + " OR to_id = " + user_id + ")\r\n"
-				+ "    GROUP BY chat_id\r\n"
-				+ ") AS m\r\n"
-				+ "\r\n"
-				+ "INNER JOIN (\r\n"
-				+ " Select r.first_name,r.last_name, r.registration_type ,r.registration_id, r.rowno FROM registration as r\r\n"
-				+ "   \r\n"
-				+ ") AS reg\r\n"
-				+ "\r\n"
-				+ "\r\n"
-				+ "\r\n"
-				+ "ON h.chat_id = m.chat_id AND h.time = m.last_time\r\n"
-				+ "WHERE (h.from_id = " + user_id + " OR h.to_id = " + user_id + ") AND reg.registration_id=m.user\r\n"
-				+ "GROUP BY h.chat_id\r\n"
+				+ "RIGHT JOIN (\r\n"
+				+ "    SELECT chat_id, from_id, to_id\r\n"
+				+ "    FROM dp_chat\r\n"
+				+ "    WHERE (from_id =" + user_id + " OR to_id =" + user_id + ")\r\n"
+				+ ") AS c ON h.chat_id = c.chat_id\r\n"
+				+ "LEFT JOIN (\r\n"
+				+ "    SELECT r.first_name, r.last_name, r.registration_type, r.registration_id, r.rowno\r\n"
+				+ "    FROM registration AS r\r\n"
+				+ ") AS reg ON reg.registration_id = c.to_id\r\n"
+				+ "WHERE (h.from_id = " + user_id + " OR h.to_id = " + user_id + " OR h.chat_id IS NULL)\r\n"
+				+ "GROUP BY c.chat_id\r\n"
 				+ "ORDER BY last_time DESC;\r\n"
+				+ "\r\n"
 				+ "");
 		
 		List<Object[]> results = (List<Object[]>) query.getResultList();
@@ -578,12 +572,13 @@ public class ChatDaoImpl {
 			Timestamp time=(Timestamp) objects[5];
 			
 			String demsg = (String) objects[6];
-			
+			if(demsg!=null) {
 			final String secretKey = Constant.SECRETE;
 			Encryption encrypt = new Encryption();
-		
-			String message = encrypt.decrypt(demsg, secretKey);
+			System.out.println(demsg);
 			
+			message = encrypt.decrypt(demsg, secretKey);
+			}
 			
 			hm.put("First_name", first_name);
 			hm.put("Last_name",last_name);
