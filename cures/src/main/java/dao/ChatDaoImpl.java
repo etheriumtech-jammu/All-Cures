@@ -535,22 +535,23 @@ public class ChatDaoImpl {
 		Session session = HibernateUtil.buildSessionFactory();
 		
 		Query query = session.createNativeQuery(
-				"SELECT reg.first_name, reg.last_name, reg.registration_type, reg.rowno, reg.registration_id AS user,\r\n"
-				+ "       MAX(h.time) AS last_time, h.message AS last_message,\r\n"
-				+ "       c.chat_id, c.from_id, c.to_id\r\n"
-				+ "FROM dp_chat_history AS h\r\n"
-				+ "RIGHT JOIN (\r\n"
-				+ "    SELECT chat_id, from_id, to_id\r\n"
-				+ "    FROM dp_chat\r\n"
-				+ "    WHERE (from_id =" + user_id + " OR to_id =" + user_id + ")\r\n"
-				+ ") AS c ON h.chat_id = c.chat_id\r\n"
-				+ "LEFT JOIN (\r\n"
-				+ "    SELECT r.first_name, r.last_name, r.registration_type, r.registration_id, r.rowno\r\n"
-				+ "    FROM registration AS r\r\n"
-				+ ") AS reg ON reg.registration_id = c.to_id\r\n"
-				+ "WHERE (h.from_id = " + user_id + " OR h.to_id = " + user_id + " OR h.chat_id IS NULL)\r\n"
-				+ "GROUP BY c.chat_id\r\n"
-				+ "ORDER BY last_time DESC;\r\n"
+				"SELECT   r.first_name, r.last_name, r.rowno, r.registration_id , \r\n"
+				+ "   MAX(h.time) AS last_message_time,  h.message AS last_message \r\n"
+				+ "FROM \r\n"
+				+ "    allcures1.dp_chat c\r\n"
+				+ "    LEFT JOIN allcures1.dp_chat_history h ON c.chat_id = h.chat_id\r\n"
+				+ "    \r\n"
+				+ "    LEFT JOIN \r\n"
+				+ "     allcures1.registration AS r\r\n"
+				+ "				 ON r.registration_id = c.to_id\r\n"
+				+ "    \r\n"
+				+ "WHERE \r\n"
+				+ "    c.from_id = " + user_id + " OR c.to_id = " + user_id + " \r\n"
+				+ "GROUP BY \r\n"
+				+ "    c.chat_id\r\n"
+				+ "ORDER BY \r\n"
+				+ "    last_message_time;\r\n"
+				+ "\r\n"
 				+ "\r\n"
 				+ "");
 		
@@ -565,13 +566,13 @@ public class ChatDaoImpl {
 			String last_name = (String) objects[1];
 			
 	
-			Integer row_no = (Integer) objects[3];
+			Integer row_no = (Integer) objects[2];
 			
-			Integer user=(Integer) objects[4];
+			Integer user=(Integer) objects[3];
 					
-			Timestamp time=(Timestamp) objects[5];
+			Timestamp time=(Timestamp) objects[4];
 			
-			String demsg = (String) objects[6];
+			String demsg = (String) objects[5];
 			if(demsg!=null) {
 			final String secretKey = Constant.SECRETE;
 			Encryption encrypt = new Encryption();
@@ -592,6 +593,7 @@ public class ChatDaoImpl {
 		}
 		
 		return hmFinal;
+
 
 	}
 
