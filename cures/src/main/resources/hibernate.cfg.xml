@@ -8,7 +8,7 @@
 		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/allcures_schema?autoReconnect=true&amp;useSSL=false</property>
 		<property name="hibernate.connection.username">root</property>
 		
-		<property name="hibernate.connection.password">Arnav@1996</property>
+		<property name="hibernate.connection.password">Root@123</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
 		<property name="show_sql">false</property>
 		<property name="format_sql">false</property>
@@ -62,6 +62,9 @@
 		<mapping resource="model/Disclaimer.xml" class="model.Disclaimer"></mapping>
 		<mapping resource="model/Languages.xml" class="model.Languages"></mapping>
 		<mapping resource="model/Doctorsrating.hbm.xml" class="model.Doctorsrating"></mapping>
+	    	<mapping class="model.IP_Details"/>
+		<mapping class="model.Chat"/>
+
 		
 		
 		
