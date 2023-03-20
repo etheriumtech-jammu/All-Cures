@@ -2,7 +2,7 @@ package util;
 
 public class Constant{
 	public static final String ADDRESS ="127.0.0.1:11211";
-	public static final String SolrServer = "http://localhost:8983/solr/doctors";
+	public static final String SolrServer = "http://localhost:8983/solr/new_core";
 	public static final String DEFAULT_POSTLOGIN_PAGE = "/cures";
 	public static final String LOGIN_FAIL_MSG = "No user found with that Email/Pwd Combination";
 	public static final String CITYNAME ="Cityname";
@@ -102,7 +102,7 @@ public class Constant{
 	public static final String STATES="states";
 	public static final String AUTH="Incorrect password";
 	public static final String LATITUDELONGITUDE ="latlon";
-	public static final String DefaultCookieDomain = "192.168.29.228";
+	public static final String DefaultCookieDomain = "all-cures.com";
 	public static final String DefaultSessionCookieName = "acSession";
 	public static final String DefaultPermCookieName = "acPerm";
 	public static final String DefaultCookiePath = "/";
