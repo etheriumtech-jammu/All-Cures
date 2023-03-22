@@ -40,6 +40,7 @@ import net.spy.memcached.AddrUtil;
 import net.spy.memcached.ConnectionFactoryBuilder;
 import net.spy.memcached.FailureMode;
 import net.spy.memcached.MemcachedClient;
+import util.ArticleUtils;
 import util.Constant;
 import util.Encryption;
 import util.HibernateUtil;
@@ -571,13 +572,13 @@ public class ChatDaoImpl {
 			String last_name = (String) objects[1];
 			
 	
-			Integer row_no = (Integer) objects[2];
+			Integer row_no = (Integer) objects[3];
 			
-			Integer user=(Integer) objects[3];
+			Integer user=(Integer) objects[4];
 					
-			Timestamp time=(Timestamp) objects[4];
+			Timestamp time=(Timestamp) objects[5];
 			
-			String demsg = (String) objects[5];
+			String demsg = (String) objects[6];
 			if(demsg!=null) {
 			final String secretKey = Constant.SECRETE;
 			Encryption encrypt = new Encryption();
