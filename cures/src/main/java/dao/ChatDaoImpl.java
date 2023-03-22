@@ -596,10 +596,22 @@ public class ChatDaoImpl {
 			hmFinal.add(hm);
 			
 		}
-		
+		String curesProperties = "cures.properties";
+		Properties prop = null;
+		try {
+			prop = new ArticleUtils().readPropertiesFile(curesProperties);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String cures_articleimages = prop.getProperty("cures_articleimages");
+		System.out.println(cures_articleimages);
+		String path = System.getProperty( "catalina.base" ) + "/webapps/"+cures_articleimages;
+
+		System.out.println(path);
+
 		return hmFinal;
-
-
+		
 	}
 
 	
