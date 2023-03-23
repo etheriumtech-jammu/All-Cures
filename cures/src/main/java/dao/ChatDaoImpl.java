@@ -541,10 +541,15 @@ public class ChatDaoImpl {
 						+ "       h.chat_id, h.from_id, h.to_id\r\n"
 						+ "FROM dp_chat_history AS h\r\n"
 						+ "INNER JOIN (\r\n"
-						+ "    SELECT chat_id,to_id as user, MAX(time) AS last_time\r\n"
-						+ "    FROM dp_chat_history\r\n"
-						+ "    WHERE (from_id = " + user_id + " OR to_id = " + user_id + ")\r\n"
-						+ "    GROUP BY chat_id\r\n"
+						+ "    SELECT DISTINCT chat_id,  MAX(time) AS last_time,\r\n"
+						+ "       CASE \r\n"
+						+ "         WHEN from_id = " + user_id + " THEN to_id \r\n"
+						+ "         ELSE from_id \r\n"
+						+ "       END AS user \r\n"
+						+ "FROM dp_chat_history \r\n"
+						+ "WHERE from_id = " + user_id + " OR to_id = " + user_id + "\r\n"
+						+ "GROUP BY chat_id\r\n"
+						         
 						+ ") AS m\r\n"
 						+ "\r\n"
 						+ "INNER JOIN (\r\n"
@@ -597,19 +602,7 @@ public class ChatDaoImpl {
 			hmFinal.add(hm);
 			
 		}
-		String curesProperties = "cures.properties";
-		Properties prop = null;
-		try {
-			prop = new ArticleUtils().readPropertiesFile(curesProperties);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String cures_articleimages = prop.getProperty("cures_articleimages");
-		System.out.println(cures_articleimages);
-		String path = System.getProperty( "catalina.base" ) + "/webapps/"+cures_articleimages;
-
-		System.out.println(path);
+		
 
 		return hmFinal;
 		
