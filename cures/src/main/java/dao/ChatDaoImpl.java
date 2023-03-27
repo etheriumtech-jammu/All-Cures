@@ -15,6 +15,10 @@ import java.text.SimpleDateFormat;
 import java.util.Map;
 import java.util.Properties;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 import javax.persistence.NoResultException;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
@@ -58,7 +62,10 @@ public class ChatDaoImpl {
 		session.beginTransaction();
 		System.out.println(chat_id);
 		System.out.println(session.isOpen());
-		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		ZonedDateTime now = ZonedDateTime.now();
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+	        String timestamp= now.format(formatter);
+//		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		chatMap.put("time",timestamp);
 		
 		
@@ -228,7 +235,8 @@ public class ChatDaoImpl {
 	        }
 	        
 	     // Extract messages from chat data and render them
-		     List<String> allMessages = new ArrayList<String>();
+		
+		 List allMessages = new ArrayList();
 		        if (chatData != null && chatData.containsKey("messages")) {
 		            List<Map<String, Object>> messages1 = (List<Map<String, Object>>) chatData.get("messages");
 		            for (Map<String, Object> message : messages1) {
@@ -241,9 +249,14 @@ public class ChatDaoImpl {
 		    			Encryption encrypt = new Encryption();
 		    		
 		    			String msg = encrypt.decrypt(enmsg, secretKey);
-		                
-		                String renderedMsg ="Time " +  "[" + time + "] " + "From: " + fromId + " To: " +  toId + " Message:" +  msg;
-		                allMessages.add(renderedMsg);
+		                HashMap<String, Object> hm = new HashMap<>(); 
+		    			hm.put("Chat_id",chat_id);
+		    			hm.put("Message",msg);
+		    			hm.put("From_id",fromId);
+		    			hm.put("To_id", toId);
+		    		 	hm.put("Time", time);
+		    			
+		                 allMessages.add(hm);
 		            }
 		        }
 		        System.out.println(allMessages);
@@ -303,12 +316,6 @@ public class ChatDaoImpl {
 			Integer Chat_id = (Integer) objects[0];
 			Integer To_id=(Integer) objects[1];
 
-			String from_first = (String) objects[2];
-			String from_last = (String) objects[3];
-			Integer from_reg_type=(Integer) objects[4];
-			
-			String to_first = (String) objects[5];
-			String to_last = (String) objects[6];
 			
 			String demsg = (String) objects[7];
 			
@@ -320,12 +327,11 @@ public class ChatDaoImpl {
 			Integer From_id=(Integer) objects[9];
 			
 			hm.put("Chat_id", Chat_id);
-			hm.put("From", from_first + " " + from_last);
-			hm.put("To", to_first + " " + to_last);
+			
 			hm.put("Message", message);
 			hm.put("Time", time);
 			hm.put("From_id", From_id);
-			hm.put("From_reg_type", from_reg_type);
+			
 			hm.put("To_id", To_id);
 			
 			hmFinal.add(hm);
