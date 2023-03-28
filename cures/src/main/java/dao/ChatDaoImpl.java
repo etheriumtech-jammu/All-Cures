@@ -81,8 +81,6 @@ public class ChatDaoImpl {
 
 				if (chatDetail.getValue() instanceof Integer) {
 					insertStr_values += (Integer) (chatDetail.getValue()) + ", ";
-				} else if (chatDetail.getValue() instanceof Timestamp) {
-					insertStr_values += "'" + (Timestamp) (chatDetail.getValue()) + "' , ";
 				}else {
 					insertStr_values += "'" + (String) (chatDetail.getValue()) + "' , ";
 				}
@@ -323,7 +321,7 @@ public class ChatDaoImpl {
 			Encryption encrypt = new Encryption();
 		
 			String message = encrypt.decrypt(demsg, secretKey);
-			Timestamp time=(Timestamp) objects[8];
+			String time=(String) objects[8];
 			Integer From_id=(Integer) objects[9];
 			
 			hm.put("Chat_id", Chat_id);
