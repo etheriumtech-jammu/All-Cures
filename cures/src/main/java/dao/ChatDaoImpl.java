@@ -585,7 +585,7 @@ public class ChatDaoImpl {
 			
 			Integer user=(Integer) objects[4];
 					
-			Timestamp time=(Timestamp) objects[5];
+			String time=(String) objects[5];
 			
 			String demsg = (String) objects[6];
 			if(demsg!=null) {
