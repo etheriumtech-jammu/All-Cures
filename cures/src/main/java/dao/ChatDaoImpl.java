@@ -540,7 +540,7 @@ public class ChatDaoImpl {
 		Session session = HibernateUtil.buildSessionFactory();
 		
 		Query query = session.createNativeQuery(
-				"SELECT reg.first_name, reg.last_name, reg.registration_type, reg.rowno, reg.registration_id AS user,\r\n"
+				"SELECT reg.first_name, reg.last_name, reg.registration_type, (Select d.rowno FROM doctors as d where d.docid=m.user ), reg.registration_id AS user,\r\n"
 						+ "       MAX(h.time) AS last_time, h.message AS last_message,\r\n"
 						+ "       h.chat_id, h.from_id, h.to_id\r\n"
 						+ "FROM dp_chat_history AS h\r\n"
@@ -581,7 +581,7 @@ public class ChatDaoImpl {
 			String last_name = (String) objects[1];
 			
 	
-			Integer row_no = (Integer) objects[3];
+			BigInteger row_no = (BigInteger) objects[3];
 			
 			Integer user=(Integer) objects[4];
 					
