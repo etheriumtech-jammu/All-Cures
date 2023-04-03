@@ -49,6 +49,7 @@ import util.Constant;
 import util.Encryption;
 import util.HibernateUtil;
 
+
 public class ChatDaoImpl {
 
 	public static MemcachedClient mcc = null;
@@ -264,34 +265,36 @@ public class ChatDaoImpl {
 		return allMessages;
 	}
 	
-	public static String Chat_ID_Search(Integer chat_id)
+	public static List Chat_ID_Search(Integer chat_id)
 	{
 	
-		Constant.log("Got Req for Chat_ID: "+chat_id, 1);
-		List<String> allMessages = findChatInCache(chat_id);	
-		
-		
+		Constant.log("Got Req for Chat_ID: " + chat_id, 1);
+		List allMessages = findChatInCache(chat_id);
+
+		System.out.println(allMessages);
 		String jsondata = null;
-		if(allMessages.size() == 0 ){
-			//Chat Not Found in MemCache
-			Constant.log("Got Null From MemCache on the Chat:"+chat_id, 1);
-		List chat=Chat_Search(chat_id);
-		
-		Gson gson = new GsonBuilder().serializeNulls().create();	
-		jsondata = gson.toJson(chat);
-	//	mcc.add("Chat_id"+"_"+chat_id,360000 ,jsondata).getStatus();
+	if (allMessages.size() == 0) {
+			// Chat Not Found in MemCache
+			Constant.log("Got Null From MemCache on the Chat:" + chat_id, 1);
+			List chat = Chat_Search(chat_id);
 			
+//			Gson gson = new GsonBuilder().serializeNulls().create();
+//			jsondata = gson.toJson(chat);
+	//		return chat;
+			
+	//		jsondata = new Gson().toJson(chat);
+			 mcc.add("Chat_id"+"_"+chat_id,360000 ,chat).getStatus();
+			 return chat;
 		}
-		
-		else
-		{
+
+		else {
+
 			Constant.log("Found Chat in Memcache and serving from there", 1);
-			jsondata = new Gson().toJson(allMessages);
-			
-			
-		}
-		
-		return jsondata ;
+	//		jsondata = new Gson().toJson(allMessages);
+			return allMessages;
+
+	}
+	
 	}
 	
 	
@@ -418,7 +421,7 @@ public class ChatDaoImpl {
 	public static List ChatStored(Integer from_id, Integer to_id) {
 		Session session = HibernateUtil.buildSessionFactory();
 //		session.beginTransaction();
-		String result=null;
+		List result=null;
 		List hmFinal = new ArrayList();
 
 		// System.out.println(session.isOpen());
@@ -446,7 +449,7 @@ public class ChatDaoImpl {
 		else {
 			result= Chat_ID_Search(res);
 			
-			if (result.length()==2)
+			if (result.size() == 0) {
 			{
 				Query query1 = session.createNativeQuery(
 						"Select chat_id  from dp_chat where (from_id=" + from_id + " and to_id=" + to_id + ");");
