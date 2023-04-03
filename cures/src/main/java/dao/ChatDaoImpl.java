@@ -283,7 +283,7 @@ public class ChatDaoImpl {
 	//		return chat;
 			
 	//		jsondata = new Gson().toJson(chat);
-			 mcc.add("Chat_id"+"_"+chat_id,360000 ,chat).getStatus();
+	//		 mcc.add("Chat_id"+"_"+chat_id,360000 ,chat).getStatus();
 			 return chat;
 		}
 
@@ -421,7 +421,7 @@ public class ChatDaoImpl {
 	public static List ChatStored(Integer from_id, Integer to_id) {
 		Session session = HibernateUtil.buildSessionFactory();
 //		session.beginTransaction();
-		List result=null;
+		List result = new ArrayList();
 		List hmFinal = new ArrayList();
 
 		// System.out.println(session.isOpen());
@@ -443,7 +443,7 @@ public class ChatDaoImpl {
 			hm.put("Chat_id", null);
 			
 			hmFinal.add(hm);
-			
+			return hmFinal;
 		}
 
 		else {
@@ -471,16 +471,19 @@ public class ChatDaoImpl {
 				
 				
 				
-				hmFinal.add(hm);	
+				hmFinal.add(hm);
+				return hmFinal;
 			}
 			else
 			{
-			hmFinal.add(result);
+			System.out.println(result);
+				
+				return result;
 			}
 			
 		}
 		
-		return hmFinal;
+		
 //		session.getTransaction().commit();
 
 	//	session.close();
