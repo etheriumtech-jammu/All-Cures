@@ -49,7 +49,7 @@ public class ChatController {
 		}
 		
 		@RequestMapping(value = "/chat/search/{chat_id}", produces = "application/json", method = RequestMethod.GET)
-		public @ResponseBody String chat_search(@PathVariable int chat_id) {
+		public @ResponseBody List chat_search(@PathVariable int chat_id) {
 		
 			return ChatDaoImpl.Chat_ID_Search(chat_id);
 		
