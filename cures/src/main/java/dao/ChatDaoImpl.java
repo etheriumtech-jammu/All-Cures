@@ -449,7 +449,7 @@ public class ChatDaoImpl {
 		else {
 			result= Chat_ID_Search(res);
 			
-			if (result.size() == 0) {
+			if (result.size() == 0) 
 			{
 				Query query1 = session.createNativeQuery(
 						"Select chat_id  from dp_chat where (from_id=" + from_id + " and to_id=" + to_id + ");");
