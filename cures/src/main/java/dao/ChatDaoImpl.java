@@ -318,7 +318,7 @@ public class ChatDaoImpl {
 			HashMap hm = new HashMap();
 			
 			Integer Chat_id = (Integer) objects[0];
-			Integer To_id=(Integer) objects[1];
+			String To_id = objects[1].toString();
 
 			
 			String demsg = (String) objects[7];
@@ -328,7 +328,7 @@ public class ChatDaoImpl {
 		
 			String message = encrypt.decrypt(demsg, secretKey);
 			String time=(String) objects[8];
-			Integer From_id=(Integer) objects[9];
+			String From_id = objects[9].toString();
 			
 			hm.put("message", demsg);
 			hm.put("time", time);
