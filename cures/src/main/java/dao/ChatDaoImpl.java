@@ -98,50 +98,8 @@ public class ChatDaoImpl {
 			// needs other condition too but unable to find correct column
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
-
-			 // Store the data in Memcache along with the timestamp
-	        if(mcc == null) {
-	            initializeCacheClient();
-	        }
-	        
-	 //       mcc.delete("Chat_id" + "_" + chat_id);
-	 //      // Retrieve the existing chat data from memcached
-	        String cacheString = (String) mcc.get("Chat_id_" + chat_id);
-	        System.out.println("Cache String: " + cacheString); // 
-	        HashMap<String, Object> chatData = null;
-	        if (cacheString != null) {
-	            chatData = new Gson().fromJson(cacheString, new TypeToken<HashMap<String, Object>>() {}.getType());
-	        } else {
-	            chatData = new HashMap<String, Object>();
-	        }
-	        
-	        
-	        
-	        // Get the existing message list or create a new one if it doesn't exist
-	     // Get the existing message list or create a new one if it doesn't exist
-	        Object messagesObj = chatData.get("messages");
-	        ArrayList<HashMap<String, Object>> messages = new ArrayList<>();
-	        if (messagesObj != null) {
-	            // Check if the type is ArrayList or HashMap
-	            if (messagesObj instanceof ArrayList) {
-	                // If it is an ArrayList, cast it and use it as is
-	                messages = (ArrayList<HashMap<String, Object>>) messagesObj;
-	            } else if (messagesObj instanceof HashMap) {
-	                // If it is a HashMap, create an ArrayList and add the existing message
-	                HashMap<String, Object> messageMap = (HashMap<String, Object>) messagesObj;
-	                messages.add(messageMap);
-	            }
-	        }
-
-	        // Append the new message to the existing messages
-	        messages.add(chatMap);
-	        chatData.put("messages", messages);
-
-	        // Add the updated chat data to memcached
-	        Gson gson = new GsonBuilder().create();
-	        String jsonData = gson.toJson(chatData);
-	        mcc.set("Chat_id_" + chat_id, 3600, jsonData);
-		System.out.println("Added to memcached");
+		//calling method to add in memcached
+		Add_memcached( chat_id,  chatMap);
 	//		session.close();
 		
 		} catch (Exception e) {
@@ -154,7 +112,52 @@ public class ChatDaoImpl {
 		
 		return ret;
 	}
+	
+	public static void Add_memcached(Integer chat_id, HashMap<String, Object> chatMap) {
 
+		// Store the data in Memcache along with the timestamp
+		if (mcc == null) {
+			initializeCacheClient();
+		}
+
+		// mcc.delete("Chat_id" + "_" + chat_id);
+		// // Retrieve the existing chat data from memcached
+		String cacheString = (String) mcc.get("Chat_id_" + chat_id);
+		System.out.println("Cache String: " + cacheString); //
+		HashMap<String, Object> chatData = null;
+		if (cacheString != null) {
+			chatData = new Gson().fromJson(cacheString, new TypeToken<HashMap<String, Object>>() {
+			}.getType());
+		} else {
+			chatData = new HashMap<String, Object>();
+		}
+
+		// Get the existing message list or create a new one if it doesn't exist
+		// Get the existing message list or create a new one if it doesn't exist
+		Object messagesObj = chatData.get("messages");
+		ArrayList<HashMap<String, Object>> messages = new ArrayList<>();
+		if (messagesObj != null) {
+			// Check if the type is ArrayList or HashMap
+			if (messagesObj instanceof ArrayList) {
+				// If it is an ArrayList, cast it and use it as is
+				messages = (ArrayList<HashMap<String, Object>>) messagesObj;
+			} else if (messagesObj instanceof HashMap) {
+				// If it is a HashMap, create an ArrayList and add the existing message
+				HashMap<String, Object> messageMap = (HashMap<String, Object>) messagesObj;
+				messages.add(messageMap);
+			}
+		}
+
+		// Append the new message to the existing messages
+		messages.add(chatMap);
+		chatData.put("messages", messages);
+
+		// Add the updated chat data to memcached
+		Gson gson = new GsonBuilder().create();
+		String jsonData = gson.toJson(chatData);
+		mcc.set("Chat_id_" + chat_id, 3600, jsonData);
+		System.out.println("Added to memcached");
+	}
 	public static Integer ChatStore() {
 		Session session = HibernateUtil.buildSessionFactory();
 		// System.out.println(session.isOpen());
@@ -327,15 +330,17 @@ public class ChatDaoImpl {
 			String time=(String) objects[8];
 			Integer From_id=(Integer) objects[9];
 			
+			hm.put("message", demsg);
+			hm.put("time", time);
+			hm.put("from_id", From_id);
+			hm.put("to_id", To_id);
+			
+			//calling method to add in memcached
+			Add_memcached(Chat_id, hm);
+			hm.replace("message", message);
 			hm.put("Chat_id", Chat_id);
-			
-			hm.put("Message", message);
-			hm.put("Time", time);
-			hm.put("From_id", From_id);
-			
-			hm.put("To_id", To_id);
-			
 			hmFinal.add(hm);
+			
 			
 		}
 
