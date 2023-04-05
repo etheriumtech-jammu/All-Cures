@@ -138,8 +138,8 @@ public class SocketIOServer1 extends WebSocketServer {
 		hm.put("to_id", recipientId);
 		hm.put("message", enmsg);
 		
-		System.out.println("Send" +send_id);
-		System.out.println("Recipient" +rec_id);
+		System.out.println("Send_ID" +send_id);
+		System.out.println("Recipient_ID" +rec_id);
 	
 		
 
