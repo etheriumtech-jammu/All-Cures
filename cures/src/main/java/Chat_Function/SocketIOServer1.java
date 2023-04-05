@@ -134,8 +134,8 @@ public class SocketIOServer1 extends WebSocketServer {
 		
 		// Store the message in the database
 		HashMap hm = new HashMap();
-		hm.put("from_id", send_id);
-		hm.put("to_id", rec_id);
+		hm.put("from_id", sendId);
+		hm.put("to_id", recipientId);
 		hm.put("message", enmsg);
 		
 		System.out.println("Send" +send_id);
