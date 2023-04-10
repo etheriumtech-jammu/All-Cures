@@ -94,7 +94,7 @@ public class SocketIOServer1 extends WebSocketServer {
 		if (message.contains("Room_No") == true) {
 			JSONObject json = new JSONObject(message);
 			String roomName = json.getString("Room_No");
-			System.out.println(roomName);
+			System.out.println("Chat_Room is " + roomName);
 			 // Add the client to the chat room
 			if (!rooms.containsKey(roomName)) {
 				rooms.put(roomName, new CopyOnWriteArraySet<>());
