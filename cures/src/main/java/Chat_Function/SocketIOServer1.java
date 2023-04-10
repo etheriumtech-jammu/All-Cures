@@ -16,7 +16,7 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.handshake.ServerHandshake;
 import org.java_websocket.server.WebSocketServer;
-
+import org.json.JSONObject;
 import util.Constant;
 import util.Encryption;
 
@@ -89,12 +89,26 @@ public class SocketIOServer1 extends WebSocketServer {
 
 	  @Override
 	  public void onMessage(WebSocket conn, String message) {
-		  	System.out.println("Received message is" + message);
-		  WebSocket sender = conn;
-		
-		  if(message.equals("exit"))
-		{
-			try {
+		  System.out.println("Received message is" + message);
+
+		if (message.contains("Room_No") == true) {
+			JSONObject json = new JSONObject(message);
+			String roomName = json.getString("Room_No");
+			System.out.println(roomName);
+			 // Add the client to the chat room
+			if (!rooms.containsKey(roomName)) {
+				rooms.put(roomName, new CopyOnWriteArraySet<>());
+			}
+			rooms.get(roomName).add(conn);
+			clients.put(conn, roomName);
+
+		}
+
+		else {
+			WebSocket sender = conn;
+
+			if (message.equals("exit")) {
+				try {
 				    this.stop();
 				} catch (IOException e) {
 				    // Handle the exception here
@@ -104,64 +118,51 @@ public class SocketIOServer1 extends WebSocketServer {
     				// Handle the InterruptedException here
 				e.printStackTrace();	
 			}
+			}
+
+			// Find the separator index of the recipient ID
+			int separatorIndex = message.indexOf(":");
+			// Extract the recipient ID, sender ID, room name, and message from the message
+			// string
+			String sendId = message.substring(0, separatorIndex);
+			int separatorIndex1 = message.indexOf(":", separatorIndex + 1);
+			int separatorIndex2 = message.indexOf(":", separatorIndex1 + 1);
+			int separatorIndex3 = message.indexOf(":", separatorIndex2 + 1);
+			String recipientId = message.substring(separatorIndex + 1, separatorIndex1);
+			String roomName = message.substring(separatorIndex1 + 1, separatorIndex2);
+			Integer chat_id = Integer.parseInt(roomName);
+			String message1 = message.substring(separatorIndex2 + 1);
+			String enmsg = null;
+			final String secretKey = Constant.SECRETE;
+			Encryption encrypt = new Encryption();
+
+			enmsg = encrypt.encrypt(message1, secretKey);
+			System.out.println(roomName);
+
+			System.out.println("Encrypted Message:" + enmsg);
+
+			// Store the message in the database
+			HashMap hm = new HashMap();
+			hm.put("from_id", sendId);
+			hm.put("to_id", recipientId);
+			hm.put("message", enmsg);
+
+			System.out.println("Send_ID" + sendId);
+			System.out.println("Recipient_ID" + recipientId);
+
+			Integer result = ChatDaoImpl.Chat_Store(chat_id, hm);
+			// broadcast the message to all clients in the room
+
+			// broadcast(roomName, message1);
+			if (rooms.containsKey(roomName)) {
+				for (WebSocket client : rooms.get(roomName)) {
+					if (client != sender) {
+						client.send(message);
+					}
+				}
+			}
+
 		}
-		// Find the separator index of the recipient ID
-	    int separatorIndex = message.indexOf(":");
-	    
-	   
-	    
-	    
-	    // Extract the recipient ID, sender ID, room name, and message from the message string
-	    String sendId = message.substring(0, separatorIndex);
-	    int separatorIndex1 = message.indexOf(":",separatorIndex +1);
-	    int separatorIndex2 = message.indexOf(":",separatorIndex1 +1);
-	    int separatorIndex3 = message.indexOf(":",separatorIndex2 +1);
-	    String recipientId = message.substring(separatorIndex + 1 , separatorIndex1);
-	    String roomName = message.substring(separatorIndex1 + 1 , separatorIndex2);
-		Integer chat_id=    Integer.parseInt(roomName);
-		Integer rec_id=Integer.parseInt(recipientId);
-		Integer send_id=Integer.parseInt(sendId);
-		String message1= message.substring(separatorIndex2 + 1);
-		String enmsg =  null;
-		final String secretKey = Constant.SECRETE;
-		Encryption encrypt = new Encryption();
-
-		enmsg = encrypt.encrypt(message1, secretKey);
-		System.out.println(roomName);
-		  
-		  System.out.println("Encrypted Message:" + enmsg);
-		  
-		
-		// Store the message in the database
-		HashMap hm = new HashMap();
-		hm.put("from_id", sendId);
-		hm.put("to_id", recipientId);
-		hm.put("message", enmsg);
-		
-		System.out.println("Send_ID" +send_id);
-		System.out.println("Recipient_ID" +rec_id);
-	
-		
-
-			Integer result=	ChatDaoImpl.Chat_Store(chat_id,hm);
-			 // Add the client to the chat room and broadcast the message to all clients in the room
-		    if (!rooms.containsKey(roomName)) {
-		        rooms.put(roomName, new CopyOnWriteArraySet<>());
-		    }
-		    rooms.get(roomName).add(conn);
-		    clients.put(conn, roomName);
-
-	//	    broadcast(roomName, message1);
-		   if (!rooms.containsKey(roomName)) {
-		        
-		    }
-		    for (WebSocket client : rooms.get(roomName)) {
-		    	if (client != sender) {
-		            client.send(message);
-		        }
-		    
-		     
-		    }
 		    
 		  
 	 }
