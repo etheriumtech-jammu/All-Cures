@@ -678,6 +678,7 @@ public class ArticleDaoImpl {
 				+ " , `article`.`medicine_type` \r\n"
 				+ " FROM `article` \r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
+				+ "where `article`.`type` = '[2]'"
 				+  search_str + orderby_str
 				+ limit_str + offset_str + " ;");
 		// needs other condition too but unable to find correct column
