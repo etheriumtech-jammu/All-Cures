@@ -40,7 +40,7 @@ public class DeltaSiteMapGen {
 
 	public static void main(String args[]) throws IOException, ParserConfigurationException, SAXException {
 		FileReader file_reader = new FileReader(
-				"/home/etheriumtechnologies/Production/installers/gitJava/Java-All-Cures/cures/src/main/resources/whatsapi.properties");
+				"/home/etheriumtechnologies/Production/installers/gitJava/All-Cures/cures/src/main/resources/whatsapi.properties");
 
 		Properties p = new Properties();
 		p.load(file_reader);
