@@ -323,7 +323,7 @@ public class DoctorsDaoImpl {
 			Object[] obj = (Object[]) itr.next();
 
 			{
-				Constant.log((Constant.PREFIX + obj[0]), 1);
+			//	Constant.log((Constant.PREFIX + obj[0]), 1);
 				Constant.log((Constant.FIRST_NAME + obj[1]), 1);
 				Constant.log((Constant.MIDDLE_NAME + obj[2]), 1);
 				Constant.log((Constant.LAST_NAME + obj[3]), 1);
