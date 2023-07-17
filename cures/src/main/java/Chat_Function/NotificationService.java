@@ -17,11 +17,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class NotificationService {
-	public static void sendNotification(List<String> recipientTokens, String title, String body) throws FirebaseMessagingException, IOException {
+	public static void sendNotification(List<String> recipientTokens, String title, String body, String action) throws FirebaseMessagingException, IOException {
 		
 		
 		MulticastMessage message = ( MulticastMessage.builder()).setNotification(Notification.builder().setTitle(title).setBody(body).build())
 			    .addAllTokens(recipientTokens)
+			    .putData("action", action)
 			    .build();
 		  boolean isInitialized = FirebaseApp.getApps().size() > 0;
 	        if(!isInitialized)
