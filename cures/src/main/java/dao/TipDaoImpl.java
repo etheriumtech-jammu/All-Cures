@@ -51,9 +51,10 @@ public class TipDaoImpl {
 			System.out.println("inserted new entry to tip table for tip_title =  " + tip_title);
 			System.out.println("Sending Notification...");
 			String title="Tip of the Day";
-			String action="Tip";
+			String action="tip";
+			String id="";
 			List<String> recipientTokens = FCMDao.getTokens();
-			NotificationService.sendNotification(recipientTokens,title,  tip_title,action);
+			NotificationService.sendNotification(recipientTokens,title,  tip_title,action,id);
 			System.out.println(" Notification Sent");
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
