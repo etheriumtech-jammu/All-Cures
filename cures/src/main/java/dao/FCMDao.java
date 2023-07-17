@@ -22,7 +22,8 @@ public class FCMDao {
 		String title = (String) TipMap.get("title");
 	   	 String body=(String) TipMap.get("body");
 		String action=(String) TipMap.get("action");
-		NotificationService.sendNotification(recipientTokens, title, body,action);
+		String id="";
+		NotificationService.sendNotification(recipientTokens, title, body,action,id);
 		System.out.println("Message Sent");
 	}
 
