@@ -1282,7 +1282,8 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 		//				System.out.println("Subscription WhatsApp Message sent.");
 					}
 				}
-
+				if ((int) articleMap.get("pubstatus_id") == 3)
+				{
 				String title="New Article";
 				String action="article";
 				String article_title=(String) articleMap.get("title");
@@ -1290,6 +1291,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 				String id=Integer.toString(article_id);
 				NotificationService.sendNotification(recipientTokens,title,  article_title,action,id);
 				System.out.println("Notification Sent");
+				}
 //				EmailDTO emaildto = new EmailDTO();
 //				emaildto.setSubject("Article updated ");
 //				emaildto.setEmailtext("Hi aritcleid=" + article_id);
