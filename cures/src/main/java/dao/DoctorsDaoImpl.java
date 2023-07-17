@@ -328,10 +328,17 @@ public class DoctorsDaoImpl {
 				Constant.log((Constant.MIDDLE_NAME + obj[2]), 1);
 				Constant.log((Constant.LAST_NAME + obj[3]), 1);
 				if (obj[2] == null) {
-					docname = obj[0] + " " + obj[1] + " " + obj[3];
-				} else {
-					docname = obj[0] + " " + obj[1] + " " + obj[2] + " " + obj[3];
+					if(obj[3]== null)
+						docname = obj[0] + " " + obj[1] ;
+					else
+					docname = obj[0] + " " + obj[1] + " " + obj[3];	
+				} else{
+					if(obj[3]== null)
+					docname = obj[0] + " " + obj[1] + " " + obj[2];
+					else
+					docname = obj[0] + " " + obj[1] + " " + obj[2] + " " + obj[3];	
 				}
+				
 				docList.add(docname);
 			}
 		}
