@@ -10,7 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
-
+import Chat_Function.NotificationService;
 import util.HibernateUtil;
 
 @Component
