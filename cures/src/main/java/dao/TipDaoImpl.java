@@ -49,10 +49,12 @@ public class TipDaoImpl {
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
 			System.out.println("inserted new entry to tip table for tip_title =  " + tip_title);
+			System.out.println("Sending Notification...");
 			TipMap.put("title", "Tip of the Day");
 			TipMap.put("body", tip_title);
 			TipMap.put("action", "tip");
 			FCMDao.Tip_Send(TipMap);
+			System.out.println(" Notification Sent");
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
 		} finally {
