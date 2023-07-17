@@ -17,7 +17,7 @@ import util.HibernateUtil;
 public class TipDaoImpl {
 
 		public static int addTipDetails(int user_id,HashMap promoMap) {
-
+		HashMap<String, Object> TipMap = null;		
 		Session session = HibernateUtil.buildSessionFactory();
 
 		session.beginTransaction();
@@ -49,7 +49,10 @@ public class TipDaoImpl {
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
 			System.out.println("inserted new entry to tip table for tip_title =  " + tip_title);
-
+			TipMap.put("title", "Tip of the Day");
+			TipMap.put("body", tip_title);
+			TipMap.put("action", "tip");
+			FCMDao.Tip_Send(TipMap);
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
 		} finally {
