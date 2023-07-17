@@ -17,7 +17,7 @@ import util.HibernateUtil;
 public class TipDaoImpl {
 
 		public static int addTipDetails(int user_id,HashMap promoMap) {
-		HashMap<String, Object> TipMap = null;		
+			
 		Session session = HibernateUtil.buildSessionFactory();
 
 		session.beginTransaction();
@@ -50,10 +50,10 @@ public class TipDaoImpl {
 			session.getTransaction().commit();
 			System.out.println("inserted new entry to tip table for tip_title =  " + tip_title);
 			System.out.println("Sending Notification...");
-			TipMap.put("title", "Tip of the Day");
-			TipMap.put("body", tip_title);
-			TipMap.put("action", "tip");
-			FCMDao.Tip_Send(TipMap);
+			String title="Tip of the Day";
+			String action="Tip";
+			List<String> recipientTokens = FCMDao.getTokens();
+			NotificationService.sendNotification(recipientTokens,title,  tip_title,action);
 			System.out.println(" Notification Sent");
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
