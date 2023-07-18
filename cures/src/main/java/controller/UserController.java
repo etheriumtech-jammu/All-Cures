@@ -100,7 +100,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/subscribe/{mobile}", produces = "application/json", method = RequestMethod.POST)
-	public @ResponseBody int subscribe(@PathVariable long mobile, @RequestBody HashMap ns_map) {
+	public @ResponseBody String subscribe(@PathVariable long mobile, @RequestBody HashMap ns_map) {
 
 		Constant.log("????????????????????????::::::::::::::" + mobile, 0);
 
