@@ -196,7 +196,12 @@ public class SearchDaoImpl {
 		String[] dname = docdetails.split(" ");
 		System.out.println("length" + dname.length);
 		if (dname[0].contains("Dr")) {
-			if (dname.length <= 3) {
+			if (dname.length == 2)
+			{ 
+				query.add("q", "docname_first:" + dname[1]) ;
+			}
+			
+			else if (dname.length <= 3) {
 				query.add("q", "docname_first:" + dname[1] + Constant.OR + "docname_last:" + dname[2]);
 			} else {
 				query.add("q", "docname_first:" + dname[1] + Constant.OR + "docname_middle:" + dname[2] + Constant.OR
