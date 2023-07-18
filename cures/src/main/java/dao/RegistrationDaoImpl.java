@@ -471,7 +471,12 @@ public class RegistrationDaoImpl {
 	public static int subscribe(long mobile, HashMap ns_map) {
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
-
+		int result=checkSubscription(mobile,(String)ns_map.get("country_code"));
+		if(result == 1 )
+		{
+		return("Already subscribed");
+		}
+		else {
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
@@ -519,10 +524,12 @@ public class RegistrationDaoImpl {
 //			session.getTransaction().commit();   //session.close();
 		}
 		// session.getTransaction().commit();   //session.close();
-
-		return ret;
+		
+		return "Subscribed";
+		}
 	}
 
+	
 	public static int updatesubscribe(long mobile, HashMap ns_map) {
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
@@ -684,6 +691,24 @@ public class RegistrationDaoImpl {
 		}
 //		session.getTransaction().commit();   //session.close();
 		return (ArrayList) hmFinal;
+	}
+
+	public static int checkSubscription(long mobile, String country_code) {
+		Session session = HibernateUtil.buildSessionFactory();
+		int res =0;
+		
+		Query query = session.createNativeQuery(
+				"Select active  from newsletter where mobile=" + mobile + " and country_code=" + country_code + " ;");
+
+		try {
+		 res = (int) query.getSingleResult();
+			return res;
+
+		} catch (NoResultException e) {
+			return res;
+
+		}
+	
 	}
 
 }
