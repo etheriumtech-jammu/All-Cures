@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import javax.persistence.NoResultException;
 import controller.UserController;
 import model.EmailDTO;
 import model.Registration;
@@ -468,7 +468,7 @@ public class RegistrationDaoImpl {
 		return ret;
 	}
 
-	public static int subscribe(long mobile, HashMap ns_map) {
+	public static String subscribe(long mobile, HashMap ns_map) {
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
 		int result=checkSubscription(mobile,(String)ns_map.get("country_code"));
