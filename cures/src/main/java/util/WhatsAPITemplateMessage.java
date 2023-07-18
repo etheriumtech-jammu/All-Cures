@@ -209,7 +209,7 @@ public class WhatsAPITemplateMessage {
 
 	public static void POSTRequestTrackEventsByTip(String title)
 			throws SQLException, IOException {
-		String templateName="tip";
+		String templateName="Tip";
 //		ArrayList NSData = new WAPICommon().fetchDatabaseResultsForNewsletterByTip();
 //		for (int i = 0; i < NSData.size(); i++) {
 		for (int i = 0; i < 1; i++) {
