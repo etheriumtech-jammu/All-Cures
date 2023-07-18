@@ -206,4 +206,77 @@ public class WhatsAPITemplateMessage {
 		}
 
 	}
+
+	public static void POSTRequestTrackEventsByTip(String title)
+			throws SQLException, IOException {
+		String templateName="tip";
+//		ArrayList NSData = new WAPICommon().fetchDatabaseResultsForNewsletterByTip();
+//		for (int i = 0; i < NSData.size(); i++) {
+		for (int i = 0; i < 1; i++) {
+			String[] params = new String[10];
+			params[0] = templateName;
+	//	params[1]	 = (String) ((HashMap) NSData.get(i)).get("mobile");
+			params[1]="7006268978";
+	//	params[2] = "+" + (Integer) ((HashMap) NSData.get(i)).get("country_code");
+			params[2]="+91";
+		params[3]=title;
+		WhatsAPITemplateMessage.runInterakt(params);
+		}
+		
+		
+		
+	}
+	
+	public static void runInterakt(String[] params) throws IOException
+	{
+		String template_name = params[0];// dynamic_disease_template_kb
+		// String countryCode = params[2];
+		String mobile = params[1];
+		
+		String countryCode = params[2];
+		String title=params[3];
+		String fileProperties = "whatsapi.properties";
+		Properties prop = new WAPICommon().readPropertiesFile(fileProperties);
+		
+		final String POST_PARAMS = "{\"countryCode\": \"" + countryCode + "\", \"phoneNumber\": \"" + mobile + "\","
+				+ " \"type\": \"Template\"," + " \"template\": {\"name\": \"" + template_name
+				+ "\",\"languageCode\": \"en\","
+				+ " \"bodyValues\": [ \"" + title + "\"]"
+				+ "}}";
+		System.out.println(POST_PARAMS);
+//		URL obj = new URL("https://api.interakt.ai/v1/public/track/events/");
+		URL obj = new URL(prop.getProperty("URL_API_TEMPLATES"));
+		HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
+		postConnection.setRequestMethod("POST");
+		postConnection.setRequestProperty("Authorization", "Basic " + prop.getProperty("Authorization_Key"));
+		postConnection.setRequestProperty("Content-Type", "application/json");
+
+		postConnection.setDoOutput(true);
+		OutputStream os = postConnection.getOutputStream();
+		os.write(POST_PARAMS.getBytes());
+		os.flush();
+		os.close();
+
+		int responseCode = postConnection.getResponseCode();
+		System.out.println("POST Response Code :  " + responseCode);
+		System.out.println("POST Response Message : " + postConnection.getResponseMessage());
+
+		if (responseCode == HttpURLConnection.HTTP_CREATED || responseCode == HttpURLConnection.HTTP_ACCEPTED) { // success
+			BufferedReader in = new BufferedReader(new InputStreamReader(postConnection.getInputStream()));
+			String inputLine;
+			StringBuffer response = new StringBuffer();
+
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+
+			// print result
+			System.out.println(response.toString());
+		} else {
+			System.out.println("POST NOT WORKED");
+		}
+	}
+
+	
 }
