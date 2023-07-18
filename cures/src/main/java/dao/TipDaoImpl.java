@@ -12,6 +12,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
 import Chat_Function.NotificationService;
 import util.HibernateUtil;
+import util.WhatsAPITemplateMessage;
 
 @Component
 public class TipDaoImpl {
@@ -53,6 +54,15 @@ public class TipDaoImpl {
 			String title="Tip of the Day";
 			String action="tip";
 			String id="";
+			try {
+				WhatsAPITemplateMessage.POSTRequestTrackEventsByTip(tip_title);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			List<String> recipientTokens = FCMDao.getTokens();
 			NotificationService.sendNotification(recipientTokens,title,  tip_title,action,id);
 			System.out.println(" Notification Sent");
