@@ -64,7 +64,7 @@ public class TipDaoImpl {
 				e.printStackTrace();
 			}
 			List<String> recipientTokens = FCMDao.getTokens();
-			NotificationService.sendNotification(recipientTokens,title,  tip_title,action,id);
+		//	NotificationService.sendNotification(recipientTokens,title,  tip_title,action,id);
 			System.out.println(" Notification Sent");
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
