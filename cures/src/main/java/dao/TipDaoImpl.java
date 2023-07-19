@@ -18,19 +18,19 @@ import util.WhatsAPITemplateMessage;
 @Component
 public class TipDaoImpl {
 
-		public static int addTipDetails(int user_id,HashMap promoMap) {
-			
+		public static int addTipDetails(int user_id,HashMap promoMap) throws FirebaseMessagingException, IOException {
+				
 		Session session = HibernateUtil.buildSessionFactory();
 
 		session.beginTransaction();
 
 		String tip_title = (String) promoMap.get("tip_title");
-		
+		int ret = 0;
 		String tip_date = null;
 		int tip_status = 1;
 		String tip_updatedtime = null;
-
-		
+		Integer article_id=(Integer) promoMap.get("article_id");
+		Integer pubstatus_id=0;
 		java.util.Date date=new java.util.Date();
 		java.sql.Timestamp sqlDate=new java.sql.Timestamp(date.getTime());
 		tip_date = sqlDate.toString();
@@ -42,38 +42,56 @@ public class TipDaoImpl {
 		tip_updatedtime = sqlDate.toString();
 		System.out.println("tip_updatedtime>>>>>"+tip_updatedtime);
 		
+		Query query1= session.createNativeQuery("Select title,pubstatus_id from article where article_id = " + article_id);
+		List<Object[]> results = (List<Object[]>) query1.getResultList();
+		
+		List hmFinal = new ArrayList();
+		for (Object[] objects : results) {
+			LinkedHashMap<String, Object> hm = new LinkedHashMap<>();
+			// add linkedhashmap to preserve the order
+			String title = (String) objects[0];
+
+			 pubstatus_id = (Integer) objects[1];
+
+		}
+		
+		if (pubstatus_id ==3)
+		{
           Query query = session
 				.createNativeQuery("INSERT INTO `tip`" + " (`tip_title`,"
-						+ " `tip_date`,"+"`user_id`,"+"`tip_status`,"+"`tip_updatedtime`)"
-						+ " VALUES" + " ('" + tip_title + "',    " + "     '" + tip_date + "', " + " '"+ user_id +"', " + " '"+tip_status+"', " + " '"+tip_updatedtime+"');" + "");
-		int ret = 0;
+						+ " `tip_date`,"+"`user_id`,"+"`tip_status`,"+"`tip_updatedtime` , "+"`artticle_id`)"
+						+ " VALUES" + " ('" + tip_title + "',    " + "     '" + tip_date + "', " + " '"+ user_id +"', " + " '"+tip_status+"', " + " '"+tip_updatedtime+"' , " + " '"+article_id+"' );" + "");
+		
 		try {
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
 			System.out.println("inserted new entry to tip table for tip_title =  " + tip_title);
-			System.out.println("Sending Notification...");
-			String title="Tip of the Day";
-			String action="tip";
-			String id="";
-			try {
-				WhatsAPITemplateMessage.POSTRequestTrackEventsByTip(tip_title);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			List<String> recipientTokens = FCMDao.getTokens();
-		//	NotificationService.sendNotification(recipientTokens,title,  tip_title,action,id);
-			System.out.println(" Notification Sent");
+			
+			
+			
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
 		} finally {
 		
 		}
-
+		try {
+			WhatsAPITemplateMessage.POSTRequestTrackEventsByTip(tip_title);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		TipNotification(tip_title);
+		}
+		
+		else
+		{
+			System.out.println("Article is not published");
+		}
 		return ret;
+		
 	}
 	
 		public static ArrayList getAllTipDetails() {
