@@ -58,8 +58,8 @@ public class TipDaoImpl {
 
 		}
 		
-		if (pubstatus_id ==3)
-		{
+	//	if (pubstatus_id ==3)
+	//	{
           Query query = session
 				.createNativeQuery("INSERT INTO `tip`" + " (`tip_title`,"
 						+ " `tip_date`,"+"`user_id`,"+"`tip_status`,"+"`tip_updatedtime` , "+"`artticle_id`)"
@@ -87,12 +87,13 @@ public class TipDaoImpl {
 			e.printStackTrace();
 		}
 		TipNotification(tip_title);
-		}
+	/*	}
 		
 		else
 		{
 			System.out.println("Article is not published");
 		}
+	*/
 		return ret;
 		
 	}
