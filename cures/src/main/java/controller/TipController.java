@@ -3,7 +3,7 @@ package controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.io.IOException;
 import org.hibernate.query.Query;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import com.google.firebase.messaging.FirebaseMessagingException;
 
 import com.razorpay.Order;
 import com.razorpay.*;
@@ -30,7 +31,7 @@ public class TipController {
 	private TipDaoImpl tipDaoImpl;
 	
 	@RequestMapping(value = "/create/user_id/{user_id}", produces = "application/json", method = RequestMethod.POST)
-	public @ResponseBody int addTipDetails(@PathVariable int user_id,@RequestBody HashMap promoMasterMap) {
+	public @ResponseBody int addTipDetails(@PathVariable int user_id,@RequestBody HashMap promoMasterMap) throws FirebaseMessagingException, IOException{
 		return tipDaoImpl.addTipDetails(user_id,promoMasterMap);
 	}
 	
