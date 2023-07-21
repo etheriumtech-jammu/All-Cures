@@ -87,16 +87,17 @@ public class TipDaoImpl {
 			e.printStackTrace();
 		}
 		TipNotification(tip_title);
-	/*	}
+		}
 		
 		else
 		{
 			System.out.println("Article is not published");
 		}
-	*/
+	
 		return ret;
 		
 	}
+		
 	
 		public static ArrayList getAllTipDetails() {
 
