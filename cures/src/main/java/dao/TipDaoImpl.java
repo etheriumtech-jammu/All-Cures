@@ -25,8 +25,7 @@ public class TipDaoImpl {
 				
 		Session session = HibernateUtil.buildSessionFactory();
 
-		session.beginTransaction();
-
+		
 		String tip_title = (String) promoMap.get("tip_title");
 		int ret = 0;
 		String tip_date = null;
@@ -57,9 +56,10 @@ public class TipDaoImpl {
 			 pubstatus_id = (Integer) objects[1];
 
 		}
-		
-	//	if (pubstatus_id ==3)
-	//	{
+		session.beginTransaction();
+
+		if (pubstatus_id ==3)
+		{
           Query query = session
 				.createNativeQuery("INSERT INTO `tip`" + " (`tip_title`,"
 						+ " `tip_date`,"+"`user_id`,"+"`tip_status`,"+"`tip_updatedtime` , "+"`artticle_id`)"
