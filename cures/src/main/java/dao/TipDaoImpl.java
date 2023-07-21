@@ -91,6 +91,7 @@ public class TipDaoImpl {
 		
 		else
 		{
+			ret=-1;
 			System.out.println("Article is not published");
 		}
 	
