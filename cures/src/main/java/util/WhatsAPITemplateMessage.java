@@ -232,7 +232,7 @@ public class WhatsAPITemplateMessage {
 		String template_name = params[0];// dynamic_disease_template_kb
 		// String countryCode = params[2];
 		String mobile = params[1];
-		
+		String header1_imgpath="https://uat.all-cures.com/tip Final.jpeg";
 		String countryCode = params[2];
 		String title=params[3];
 		String fileProperties = "whatsapi.properties";
@@ -240,7 +240,7 @@ public class WhatsAPITemplateMessage {
 		
 		final String POST_PARAMS = "{\"countryCode\": \"" + countryCode + "\", \"phoneNumber\": \"" + mobile + "\","
 				+ " \"type\": \"Template\"," + " \"template\": {\"name\": \"" + template_name
-				+ "\",\"languageCode\": \"en\","
+				+ "\",\"languageCode\": \"en\"," + " \"headerValues\": [\"" + header1_imgpath + "\"],"
 				+ " \"bodyValues\": [ \"" + title + "\"]"
 				+ "}}";
 		System.out.println(POST_PARAMS);
