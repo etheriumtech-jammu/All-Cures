@@ -209,7 +209,7 @@ public class WhatsAPITemplateMessage {
 
 	public static void POSTRequestTrackEventsByTip(String title)
 			throws SQLException, IOException {
-		String templateName="TipOfDay";
+		String templateName="25feballcures";
 //		ArrayList NSData = new WAPICommon().fetchDatabaseResultsForNewsletterByTip();
 //		for (int i = 0; i < NSData.size(); i++) {
 		for (int i = 0; i < 1; i++) {
@@ -235,13 +235,16 @@ public class WhatsAPITemplateMessage {
 		String header1_imgpath="https://uat.all-cures.com/tip Final.jpeg";
 		String countryCode = params[2];
 		String title=params[3];
+		String title2="second";
+		String title3="third";
+		System.out.println(title3);
 		String fileProperties = "whatsapi.properties";
 		Properties prop = new WAPICommon().readPropertiesFile(fileProperties);
 		
 		final String POST_PARAMS = "{\"countryCode\": \"" + countryCode + "\", \"phoneNumber\": \"" + mobile + "\","
 				+ " \"type\": \"Template\"," + " \"template\": {\"name\": \"" + template_name
 				+ "\",\"languageCode\": \"en\"," + " \"headerValues\": [\"" + header1_imgpath + "\"],"
-				+ " \"bodyValues\": [ \"" + title + "\"]"
+				+ " \"bodyValues\": [ \"" + title + "\", \"" + title2 + "\", \"" + title3 + "\"]"
 				+ "}}";
 		System.out.println(POST_PARAMS);
 //		URL obj = new URL("https://api.interakt.ai/v1/public/track/events/");
