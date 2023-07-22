@@ -236,7 +236,7 @@ public class WhatsAPITemplateMessage {
 		String countryCode = params[2];
 		String title=params[3];
 		
-		System.out.println(title3);
+		
 		String fileProperties = "whatsapi.properties";
 		Properties prop = new WAPICommon().readPropertiesFile(fileProperties);
 		
