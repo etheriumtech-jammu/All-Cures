@@ -209,7 +209,7 @@ public class WhatsAPITemplateMessage {
 
 	public static void POSTRequestTrackEventsByTip(String title)
 			throws SQLException, IOException {
-		String templateName="TipOfTheDay";
+		String templateName="tipoftheday";
 //		ArrayList NSData = new WAPICommon().fetchDatabaseResultsForNewsletterByTip();
 //		for (int i = 0; i < NSData.size(); i++) {
 		for (int i = 0; i < 1; i++) {
@@ -245,6 +245,8 @@ public class WhatsAPITemplateMessage {
 				+ "\",\"languageCode\": \"en\"," + " \"headerValues\": [\"" + header1_imgpath + "\"],"
 				+ " \"bodyValues\": [ \"" + title + "\"]"
 				+ "}}";
+		
+		
 		System.out.println(POST_PARAMS);
 //		URL obj = new URL("https://api.interakt.ai/v1/public/track/events/");
 		URL obj = new URL(prop.getProperty("URL_API_TEMPLATES"));
