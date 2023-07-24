@@ -209,7 +209,7 @@ public class WhatsAPITemplateMessage {
 
 	public static void POSTRequestTrackEventsByTip(String title)
 			throws SQLException, IOException {
-		String templateName="tipoftheday";
+		String templateName="tipoftheday_j6";
 //		ArrayList NSData = new WAPICommon().fetchDatabaseResultsForNewsletterByTip();
 //		for (int i = 0; i < NSData.size(); i++) {
 		for (int i = 0; i < 1; i++) {
@@ -240,13 +240,13 @@ public class WhatsAPITemplateMessage {
 		String fileProperties = "whatsapi.properties";
 		Properties prop = new WAPICommon().readPropertiesFile(fileProperties);
 		
-/*		final String POST_PARAMS = "{\"countryCode\": \"" + countryCode + "\", \"phoneNumber\": \"" + mobile + "\","
+		final String POST_PARAMS = "{\"countryCode\": \"" + countryCode + "\", \"phoneNumber\": \"" + mobile + "\","
 				+ " \"type\": \"Template\"," + " \"template\": {\"name\": \"" + template_name
 				+ "\",\"languageCode\": \"en\"," + " \"headerValues\": [\"" + header1_imgpath + "\"],"
 				+ " \"bodyValues\": [ \"" + title + "\"]"
 				+ "}}";
-*/
-		final String POST_PARAMS ="{     \"countryCode\": \"+91\",     \"phoneNumber\": \"7006268978\",     \"type\": \"Template\",     \"template\": {         \"name\": \"tipoftheday_j6\",         \"languageCode\": \"en\",         \"headerValues\": [\"https://uat.all-cures.com/tip Final.jpeg\"],         \"bodyValues\": [\"An apple a day keeps the doctor away.\"]     } }";
+
+	//	final String POST_PARAMS ="{     \"countryCode\": \"+91\",     \"phoneNumber\": \"7006268978\",     \"type\": \"Template\",     \"template\": {         \"name\": \"tipoftheday_j6\",         \"languageCode\": \"en\",         \"headerValues\": [\"https://uat.all-cures.com/tip Final.jpeg\"],         \"bodyValues\": [\"An apple a day keeps the doctor away.\"]     } }";
 		
 		
 		System.out.println(POST_PARAMS);
