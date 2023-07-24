@@ -246,7 +246,7 @@ public class WhatsAPITemplateMessage {
 				+ " \"bodyValues\": [ \"" + title + "\"]"
 				+ "}}";
 */
-		final String POST_PARAMS ="{     \"countryCode\": \"+91\",     \"phoneNumber\": \"7006268978\",     \"type\": \"Template\",     \"template\": {         \"name\": \"tipoftheday\",         \"languageCode\": \"en\",         \"headerValues\": [\"https://uat.all-cures.com/tip Final.jpeg\"],         \"bodyValues\": [\"An apple a day keeps the doctor away.\"]     } }";
+		final String POST_PARAMS ="{     \"countryCode\": \"+91\",     \"phoneNumber\": \"7006268978\",     \"type\": \"Template\",     \"template\": {         \"name\": \"tipoftheday_j6\",         \"languageCode\": \"en\",         \"headerValues\": [\"https://uat.all-cures.com/tip Final.jpeg\"],         \"bodyValues\": [\"An apple a day keeps the doctor away.\"]     } }";
 		
 		
 		System.out.println(POST_PARAMS);
