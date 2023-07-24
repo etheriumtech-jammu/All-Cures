@@ -16,7 +16,7 @@ import org.hibernate.query.Query;
 
 import util.HibernateUtil;
 
-@WebServlet("/viewArticle")
+@WebServlet("/view/article")
 public class RedirectTip extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
