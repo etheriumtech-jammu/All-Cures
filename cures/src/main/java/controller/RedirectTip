@@ -4,11 +4,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.view.RedirectView;
 
-@Controller
+@RestController
+@RequestMapping(path = "/view")
 public class RedirectTip {
 
-    @GetMapping("/redirect")
-    public RedirectView redirectToExample() {
+    @RequestMapping(value = "/article", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody  RedirectView redirectToExample() {
         String redirectURL = "https://www.example.com";
         System.out.println("testing");
         return new RedirectView(redirectURL);
