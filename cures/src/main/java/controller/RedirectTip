@@ -23,7 +23,7 @@ public class RedirectTip extends HttpServlet {
         
     	Integer id = null;
     	String title = null;
-    	Session session = HibernateUtil.buildSessionFactory();
+/*    	Session session = HibernateUtil.buildSessionFactory();
     	Query query1= session.createNativeQuery("SELECT tip.article_id,article.title\r\n"
     			+ "FROM  tip inner join article where tip.article_id=article.article_id\r\n"
     			+ "ORDER BY tip_updatedtime DESC\r\n"
@@ -41,7 +41,9 @@ public class RedirectTip extends HttpServlet {
     	System.out.println(id+title);
     	// Set the desired URL to redirect to
     	String redirectURL="https://all-cures.com/cure/" + id + "-" + title;
-        
+   */
+
+String redirectURL="https://www.example.com";
 
         // Perform the redirection
         response.sendRedirect(redirectURL);
