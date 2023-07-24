@@ -169,6 +169,18 @@
 		<servlet-name>DoctorsActionController</servlet-name>
 		<url-pattern>/DoctorsActionController</url-pattern>
 	</servlet-mapping>
+
+
+	<servlet>
+        <servlet-name>RedirectTip</servlet-name>
+        <servlet-class>controller.RedirectTip</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>RedirectTip</servlet-name>
+        <url-pattern>/redirect</url-pattern> <!-- The URL to trigger the redirection -->
+    </servlet-mapping>
+	
 	<servlet-mapping>
 		<servlet-name>IntegratedActionController</servlet-name>
 		<url-pattern>/IntegratedActionController</url-pattern>
