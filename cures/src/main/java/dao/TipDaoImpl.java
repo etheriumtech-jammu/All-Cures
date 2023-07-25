@@ -262,7 +262,7 @@ public static ArrayList getTipDetailsById(int tip_id) {
 
 	public static void TipNotification(String tip_title) throws FirebaseMessagingException, IOException
 		{
-			String title="Tip of the Day";
+			String title="Did You Know:";
 			String action="Tip";
 			String id="";
 			List<String> recipientTokens = FCMDao.getTokens();
