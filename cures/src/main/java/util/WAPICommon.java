@@ -238,10 +238,10 @@ public class WAPICommon {
 			while (rs.next()) {
 				HashMap<String, Object> hmRow = new HashMap<String, Object>();
 				hmRow.put("user_id", rs.getInt(1));	
-				hmRow.put("mobile", ""+rs.getString(5));
-				hmRow.put("active", rs.getInt(7));
-				hmRow.put("country_code", rs.getInt(9));
-				hmRow.put("count", rs.getInt(10));
+				hmRow.put("mobile", ""+rs.getString(2));
+				hmRow.put("active", rs.getInt(3));
+				hmRow.put("country_code", rs.getInt(4));
+				hmRow.put("count", rs.getInt(5));
 				hmFinal.add(hmRow);
 				System.out.println(hmFinal);
 			}
