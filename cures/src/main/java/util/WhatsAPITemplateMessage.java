@@ -210,24 +210,24 @@ public class WhatsAPITemplateMessage {
 	public static void POSTRequestTrackEventsByTip(String title)
 			throws SQLException, IOException {
 		String templateName="tipoftheday_j6";
-//		ArrayList NSData = new WAPICommon().fetchDatabaseResultsForNewsletterByTip();
-//		for (int i = 0; i < NSData.size(); i++) {
+		ArrayList NSData = new WAPICommon().fetchDatabaseResultsForNewsletterByTip();
+		for (int i = 0; i < NSData.size(); i++) {
 		for (int i = 0; i < 1; i++) {
 			String[] params = new String[10];
 			params[0] = templateName;
-	//	params[1]	 = (String) ((HashMap) NSData.get(i)).get("mobile");
-			params[1]="7006268978";
-	//	params[2] = "+" + (Integer) ((HashMap) NSData.get(i)).get("country_code");
-			params[2]="+91";
+		params[1]	 = (String) ((HashMap) NSData.get(i)).get("mobile");
+		
+		params[2] = "+" + (Integer) ((HashMap) NSData.get(i)).get("country_code");
+		System.out.println(params[1]+params[2]);
 		params[3]=title;
-		WhatsAPITemplateMessage.runInterakt(params);
+	//	WhatsAPITemplateMessage.runInterakt(params);
 		}
 		
 		
 		
 	}
 	
-	public static void runInterakt(String[] params) throws IOException
+/*	public static void runInterakt(String[] params) throws IOException
 	{
 		String template_name = params[0];// dynamic_disease_template_kb
 		// String countryCode = params[2];
@@ -284,5 +284,5 @@ public class WhatsAPITemplateMessage {
 		}
 	}
 
-	
+*/	
 }
