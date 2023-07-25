@@ -208,4 +208,54 @@ public class WAPICommon {
 		}
 		return hmFinal;
 	}
+
+public static ArrayList fetchDatabaseResultsForNewsletterByTip() throws SQLException {
+		
+		
+	String 	whereStr = " active=1 and mobile!=0 ";
+
+		Connection con = null;
+		ResultSet rs = null;
+		Statement stmt = null;
+		ArrayList hmFinal = new ArrayList();
+		try {
+			String fileProperties = "whatsapi.properties";
+			Properties prop = new WAPICommon().readPropertiesFile(fileProperties);
+			System.out.println("DB_DBNAME : " + prop.getProperty("DB_DBNAME"));
+			Class.forName("com.mysql.jdbc.Driver");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + prop.getProperty("DB_DBNAME")+"?useSSL=false",
+					prop.getProperty("DB_USER"), prop.getProperty("DB_PASS"));
+			// here allcures_schema is database name, next is username and password
+			stmt = con.createStatement();
+			String query = 
+					"select user_id, CONCAT(\"\",mobile),  active, country_code, count(*) as count from newsletter "
+					+ " where " + whereStr 
+					+ " group by country_code, mobile " //,nl_sub_type ,nl_subscription_disease_id, nl_subscription_cures_id "
+					+ " order by country_code, mobile " ; //,nl_sub_type ,nl_subscription_disease_id, nl_subscription_cures_id";
+			
+			System.out.println(" SQL for fetchDatabaseResultsForNewsletterByTip "+query);
+			rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				HashMap<String, Object> hmRow = new HashMap<String, Object>();
+				hmRow.put("user_id", rs.getInt(1));	
+				hmRow.put("mobile", ""+rs.getString(2));
+				hmRow.put("active", rs.getInt(3));
+				hmRow.put("country_code", rs.getInt(4));
+				hmRow.put("count", rs.getInt(5));
+				hmFinal.add(hmRow);
+				System.out.println(hmFinal);
+			}
+//			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+			stmt.close();
+			rs.close();
+			con.close();
+		}finally {
+			try{if (null !=stmt) stmt.close();}catch(Exception ex) {System.out.println("exception in stmp close"+ex.getMessage());}
+			try{if (null !=rs) rs.close();}catch(Exception ex) {System.out.println("exception in rs close"+ex.getMessage());}
+			try{if (null !=con) con.close();}catch(Exception ex) {System.out.println("exception in con close"+ex.getMessage());}
+		}
+		return hmFinal;
+	}
 }
