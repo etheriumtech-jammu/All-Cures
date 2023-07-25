@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 import javax.net.ssl.HttpsURLConnection;
+import util.WAPICommon;
 public class WhatsAPITemplateMessage {
 
 	public static void main(String[] args) throws IOException, SQLException {
@@ -209,12 +210,12 @@ public class WhatsAPITemplateMessage {
 
 	public static void POSTRequestTrackEventsByTip(String title)
 			throws SQLException, IOException {
-		String templateName="tipoftheday_j6";
+//		String templateName="tipoftheday_j6";
 		ArrayList NSData = new WAPICommon().fetchDatabaseResultsForNewsletterByTip();
 		for (int i = 0; i < NSData.size(); i++) {
-		for (int i = 0; i < 1; i++) {
+//		for (int i = 0; i < 1; i++) {
 			String[] params = new String[10];
-			params[0] = templateName;
+		//	params[0] = templateName;
 		params[1]	 = (String) ((HashMap) NSData.get(i)).get("mobile");
 		
 		params[2] = "+" + (Integer) ((HashMap) NSData.get(i)).get("country_code");
