@@ -55,12 +55,7 @@ public class TipController {
 		return tipDaoImpl.getTipDetailsById(tip_id);
 	}
 
-	@RequestMapping(value = "/view/article", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody  RedirectView redirectToExample() {
-        String redirectURL = "https://www.example.com";
-        System.out.println("testing");
-        return new RedirectView(redirectURL);
-    }
+	
 
 
 }
