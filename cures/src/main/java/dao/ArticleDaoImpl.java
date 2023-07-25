@@ -28,7 +28,7 @@ import util.ArticleUtils;
 import util.Constant;
 import util.HibernateUtil;
 import util.WhatsAPITemplateMessage;
-
+import Chat_Function.NotificationService;
 //1	active
 //7	WorkInProgress
 //@Component makes sure it is picked up by the ComponentScan (if it is in the right package). This allows @Autowired to work in other classes for instances of this class
@@ -1281,6 +1281,16 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 						WhatsAPITemplateMessage.POSTRequestTrackEventsByArticleId(art.getTitle()+"?whatsapp", article_id, type, art.getDisease_condition_id(), article_location_relative_full, author_medicine_type, disease_name);
 						System.out.println("Subscription WhatsApp Message sent.");
 					}
+				}
+				if ((int) articleMap.get("pubstatus_id") == 3)
+				{
+				String title="New Article";
+				String action="article";
+				String article_title=(String) articleMap.get("title");
+				List<String> recipientTokens = FCMDao.getTokens();
+				String id=Integer.toString(article_id);
+				NotificationService.sendNotification(recipientTokens,title,  article_title,action,id);
+				System.out.println("Notification Sent");
 				}
 //				EmailDTO emaildto = new EmailDTO();
 //				emaildto.setSubject("Article updated ");
