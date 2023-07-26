@@ -77,7 +77,7 @@ public class TipDaoImpl {
 		} finally {
 		
 		}
-	/*	try {
+		try {
 			WhatsAPITemplateMessage.POSTRequestTrackEventsByTip(tip_title);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -86,7 +86,7 @@ public class TipDaoImpl {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	*/
+	
 		TipNotification(tip_title);
 		}
 		
