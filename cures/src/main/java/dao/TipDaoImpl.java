@@ -77,6 +77,7 @@ public class TipDaoImpl {
 		} finally {
 		
 		}
+		TipNotification(tip_title);
 		try {
 			WhatsAPITemplateMessage.POSTRequestTrackEventsByTip(tip_title);
 		} catch (SQLException e) {
@@ -87,7 +88,7 @@ public class TipDaoImpl {
 			e.printStackTrace();
 		}
 	
-		TipNotification(tip_title);
+		
 		}
 		
 		else
