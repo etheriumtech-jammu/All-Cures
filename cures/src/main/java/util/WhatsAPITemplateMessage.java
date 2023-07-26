@@ -222,6 +222,12 @@ public class WhatsAPITemplateMessage {
 		System.out.println(params[2]+params[1]);
 		params[3]=title;
 	//	WhatsAPITemplateMessage.runInterakt(params);
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		}
 		
 		
