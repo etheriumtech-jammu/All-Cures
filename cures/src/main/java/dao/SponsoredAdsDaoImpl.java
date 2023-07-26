@@ -17,7 +17,7 @@ public class SponsoredAdsDaoImpl {
 		Session session = HibernateUtil.buildSessionFactory();
 
 		Query query = session.createNativeQuery(
-				"Select * from companies\r\n" + "\r\n" + "");
+				"Select * from Companies\r\n" + "\r\n" + "");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println(results.size());
 		List hmFinal = new ArrayList();
@@ -60,7 +60,7 @@ public class SponsoredAdsDaoImpl {
 		Session session = HibernateUtil.buildSessionFactory();
 
 		Query query = session.createNativeQuery(
-				"Select * from campaign\r\n" + "\r\n" + "");
+				"Select * from Campaign\r\n" + "\r\n" + "");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println(results.size());
 		List hmFinal = new ArrayList();
@@ -102,7 +102,7 @@ public class SponsoredAdsDaoImpl {
 		Session session = HibernateUtil.buildSessionFactory();
 
 		Query query = session.createNativeQuery(
-				"Select * from campaignads\r\n" + "\r\n" + "");
+				"Select * from CampaignAds\r\n" + "\r\n" + "");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println(results.size());
 		List hmFinal = new ArrayList();
