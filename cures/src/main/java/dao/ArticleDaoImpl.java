@@ -1277,21 +1277,19 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 //			        	author_medicine_type += "   "+art.getContent();
 //			        }
 					if (articleMap.containsKey("update_subscribers") && (Boolean) articleMap.get("update_subscribers")) {
+						String title="New Article";
+						String action="article";
+						String article_title=(String) articleMap.get("title");
+						List<String> recipientTokens = FCMDao.getTokens();
+						String id=Integer.toString(article_id);
+						NotificationService.sendNotification(recipientTokens,title,  article_title,action,id);
+						System.out.println("Notification Sent");
 	//					WhatsAPITrackEvents.POSTRequestTrackEventsByArticleId(article_id);
 						WhatsAPITemplateMessage.POSTRequestTrackEventsByArticleId(art.getTitle()+"?whatsapp", article_id, type, art.getDisease_condition_id(), article_location_relative_full, author_medicine_type, disease_name);
 						System.out.println("Subscription WhatsApp Message sent.");
 					}
 				}
-				if ((int) articleMap.get("pubstatus_id") == 3)
-				{
-				String title="New Article";
-				String action="article";
-				String article_title=(String) articleMap.get("title");
-				List<String> recipientTokens = FCMDao.getTokens();
-				String id=Integer.toString(article_id);
-				NotificationService.sendNotification(recipientTokens,title,  article_title,action,id);
-				System.out.println("Notification Sent");
-				}
+				
 //				EmailDTO emaildto = new EmailDTO();
 //				emaildto.setSubject("Article updated ");
 //				emaildto.setEmailtext("Hi aritcleid=" + article_id);
