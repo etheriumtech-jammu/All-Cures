@@ -346,5 +346,64 @@ public class SponsoredAdsDaoImpl {
 	
 	return ret;
 	}
+
+	public static int deleteCampaignId(int CampaignID) {
+		
+		Session session = HibernateUtil.buildSessionFactory();
+
+		// creating session object
+		//Session session = factory;
+		// creating transaction object
+		session.beginTransaction();
+		 Date date= Date.valueOf(LocalDate.now());
+		 String updatestr = " status = 0 , ";
+		 updatestr+="LastUpdateddate='"  + date +  "'  ";
+		 System.out.println(updatestr);
+			Query query = session.createNativeQuery(
+					"UPDATE `Campaign`\r\n" + "SET\r\n" + updatestr + "WHERE `CampaignID` = " + CampaignID + ";");
+			int ret = 0;
+			try {
+			ret = query.executeUpdate();
+			session.getTransaction().commit();
+			System.out.println("deleted entry for CampaignID =  " + CampaignID);
+		
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return ret;
+		 
+		 
+	}
 	
+public static int deleteCompanyId(int CompanyID) {
+		
+		Session session = HibernateUtil.buildSessionFactory();
+
+		// creating session object
+		//Session session = factory;
+		// creating transaction object
+		session.beginTransaction();
+		 Date date= Date.valueOf(LocalDate.now());
+		 String updatestr = " status = 0 , ";
+		 updatestr+="LastUpdateddate='"  + date +  "'  ";
+		 System.out.println(updatestr);
+			Query query = session.createNativeQuery(
+					"UPDATE `Companies`\r\n" + "SET\r\n" + updatestr + "WHERE `CompanyID` = " + CompanyID + ";");
+			int ret = 0;
+			try {
+			ret = query.executeUpdate();
+			session.getTransaction().commit();
+			System.out.println("deleted entry for CompanyID =  " + CompanyID);
+		
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return ret;
+		 
+		 
+	}
 }
