@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import dao.ChatDaoImpl;
 import dao.SponsoredAdsDaoImpl;
 @RestController
 @RequestMapping(path = "/sponsored")
@@ -34,5 +35,28 @@ public class SponsoredAdsController {
 		return SponsoredAdsDaoImpl.CampaignsAds();
 	}
 
+	@RequestMapping(value = "/update/company/{CompanyID}", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody int updateCompany(@PathVariable int CompanyID, @RequestBody HashMap companyMap, HttpServletRequest request) {
+	
+	return SponsoredAdsDaoImpl.updateCompanyId(CompanyID, companyMap);
+	
+	
+	}
+	
+	@RequestMapping(value = "/update/campaign/{CampaignID}", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody int updateCampaign(@PathVariable int CampaignID, @RequestBody HashMap campaignMap, HttpServletRequest request) {
+	
+	return SponsoredAdsDaoImpl.updateCampaignId(CampaignID, campaignMap);
+	
+	
+	}
+	
+	@RequestMapping(value = "/update/ad/{AdID}", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody int updateCampaignAds(@PathVariable int AdID, @RequestBody HashMap campaignAdsMap, HttpServletRequest request) {
+	
+	return SponsoredAdsDaoImpl.updateCampaignAdsId(AdID, campaignAdsMap);
+	
+	
+	}
 	
 }
