@@ -58,5 +58,21 @@ public class SponsoredAdsController {
 	
 	
 	}
+
+	@RequestMapping(value = "/delete/campaign/{CampaignID}", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody int deleteCampaign(@PathVariable int CampaignID,  HttpServletRequest request) {
+	
+	return SponsoredAdsDaoImpl.deleteCampaignId(CampaignID);
+	
+	
+	}
+	
+	@RequestMapping(value = "/delete/company/{CompanyID}", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody int deleteCompany(@PathVariable int CompanyID,  HttpServletRequest request) {
+	
+	return SponsoredAdsDaoImpl.deleteCompanyId(CompanyID);
+	
+	
+	}
 	
 }
