@@ -211,15 +211,15 @@ public class WhatsAPITemplateMessage {
 	public static void POSTRequestTrackEventsByTip(String title)
 			throws SQLException, IOException {
 		String templateName="tipoftheday_j6";
-//		ArrayList NSData = new WAPICommon().fetchDatabaseResultsForNewsletterByTip();
-//		for (int i = 0; i < NSData.size(); i++) {
-		for (int i = 0; i < 5; i++) {
+		ArrayList NSData = new WAPICommon().fetchDatabaseResultsForNewsletterByTip();
+		for (int i = 0; i < NSData.size(); i++) {
+
 			String[] params = new String[10];
 		params[0] = templateName;
-//		params[1]	 = (String) ((HashMap) NSData.get(i)).get("mobile");
-		params[1]="7006268978";
-//		params[2] = "+" + (Integer) ((HashMap) NSData.get(i)).get("country_code");
-		params[2]="91";
+		params[1]	 = (String) ((HashMap) NSData.get(i)).get("mobile");
+		
+		params[2] = "+" + (Integer) ((HashMap) NSData.get(i)).get("country_code");
+		
 		params[3]=title;
 		WhatsAPITemplateMessage.runInterakt(params);
 		try {
