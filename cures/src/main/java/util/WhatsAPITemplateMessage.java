@@ -223,7 +223,7 @@ public class WhatsAPITemplateMessage {
 		params[3]=title;
 		WhatsAPITemplateMessage.runInterakt(params);
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
