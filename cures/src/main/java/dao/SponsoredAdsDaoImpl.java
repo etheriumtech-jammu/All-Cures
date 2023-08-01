@@ -127,9 +127,6 @@ public class SponsoredAdsDaoImpl {
 		Session session = HibernateUtil.buildSessionFactory();
 
 		session.beginTransaction();
-		Date date= Date.valueOf(LocalDate.now());
-		AdMap.put("CreateDate", date);
-		
 		int ret = 0;
 		String insertStr = "INSERT into CampaignAds (";
 		
