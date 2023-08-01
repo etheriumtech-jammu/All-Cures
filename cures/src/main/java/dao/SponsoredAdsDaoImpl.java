@@ -588,7 +588,7 @@ public class SponsoredAdsDaoImpl {
 			updatestr += "`Email` = '" + companyMap.get("Email") + "',\r\n";
 		}
 		if (companyMap.containsKey("Phone")) {
-			updatestr += "`type` = '" + companyMap.get("type") + "',\r\n";
+			updatestr += "`Phone` = '" + companyMap.get("Phone") + "',\r\n";
 		}
 		
 		if (companyMap.containsKey("Status")) {
@@ -599,6 +599,7 @@ public class SponsoredAdsDaoImpl {
 		Query query = session.createNativeQuery(
 				"UPDATE `Companies`\r\n" + "SET\r\n" + updatestr + "WHERE `CompanyID` = " + CompanyID + ";");
 		int ret = 0;
+		
 		try {
 		ret = query.executeUpdate();
 		session.getTransaction().commit();
