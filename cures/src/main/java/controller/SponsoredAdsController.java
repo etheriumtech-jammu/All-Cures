@@ -17,16 +17,46 @@ import dao.SponsoredAdsDaoImpl;
 @RequestMapping(path = "/sponsored")
 public class SponsoredAdsController {
 
+	@RequestMapping(value = "/create/company", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody Integer addcompanies(@RequestBody HashMap Company_Map,HttpServletRequest request ) throws Exception {
+
+		return SponsoredAdsDaoImpl.InsertCompaniesDetails(Company_Map);
+	}
+
+	@RequestMapping(value = "/create/campaign", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody Integer addcampaign(@RequestBody HashMap Campaign_Map, HttpServletRequest request ) throws Exception {
+
+		return SponsoredAdsDaoImpl.InsertCampaignDetails(Campaign_Map);
+	}
+	
+	@RequestMapping(value = "/create/ad", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody Integer addcampaignsads(@RequestBody HashMap AdMap,HttpServletRequest request ) throws Exception {
+
+		return SponsoredAdsDaoImpl.InsertAdDetails(AdMap);
+	}
+	
 	@RequestMapping(value = "/all/companies", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List allcompanies(HttpServletRequest request) throws Exception {
 
 		return SponsoredAdsDaoImpl.CompaniesDetails();
 	}
 
+	@RequestMapping(value = "/company/{CompanyID}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List companiesID(HttpServletRequest request, @PathVariable int CompanyID ) throws Exception {
+
+		return SponsoredAdsDaoImpl.CompaniesDetailsByID(CompanyID);
+	}
+	
 	@RequestMapping(value = "/all/campaigns", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List allcampaigns(HttpServletRequest request) throws Exception {
 
 		return SponsoredAdsDaoImpl.CampaignsDetails();
+	}
+
+	@RequestMapping(value = "/campaign/{CampaignID}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List allcampaigns(HttpServletRequest request,@PathVariable int CampaignID ) throws Exception {
+
+		return SponsoredAdsDaoImpl.CampaignsDetailsByID(CampaignID);
 	}
 	
 	@RequestMapping(value = "/get/all/ads", produces = "application/json", method = RequestMethod.GET)
@@ -35,6 +65,12 @@ public class SponsoredAdsController {
 		return SponsoredAdsDaoImpl.CampaignsAds();
 	}
 
+	@RequestMapping(value = "/get/ads/{AdID}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List campaignsadsID(HttpServletRequest request, @PathVariable int AdID) throws Exception {
+
+		return SponsoredAdsDaoImpl.CampaignsAdsByID(AdID);
+	}
+	
 	@RequestMapping(value = "/update/company/{CompanyID}", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody int updateCompany(@PathVariable int CompanyID, @RequestBody HashMap companyMap, HttpServletRequest request) {
 	
