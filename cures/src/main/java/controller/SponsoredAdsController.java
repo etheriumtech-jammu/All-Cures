@@ -112,7 +112,7 @@ public class SponsoredAdsController {
 	
 	}
 	
-	@RequestMapping(value = "/delete/campaign/{CampaignID}", produces = "application/json", method = RequestMethod.PUT)
+	@RequestMapping(value = "/delete/campaign/{CampaignID}", produces = "application/json", method = RequestMethod.DELETE)
 	public @ResponseBody int deleteCampaign(@PathVariable int CampaignID,  HttpServletRequest request) {
 	
 	return SponsoredAdsDaoImpl.deleteCampaignId(CampaignID);
@@ -120,7 +120,7 @@ public class SponsoredAdsController {
 	
 	}
 	
-	@RequestMapping(value = "/delete/company/{CompanyID}", produces = "application/json", method = RequestMethod.PUT)
+	@RequestMapping(value = "/delete/company/{CompanyID}", produces = "application/json", method = RequestMethod.DELETE)
 	public @ResponseBody int deleteCompany(@PathVariable int CompanyID,  HttpServletRequest request) {
 	
 	return SponsoredAdsDaoImpl.deleteCompanyId(CompanyID);
