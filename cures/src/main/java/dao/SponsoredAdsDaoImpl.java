@@ -172,6 +172,60 @@ public class SponsoredAdsDaoImpl {
 
 		return ret;
 	}
+
+	public static Integer InsertAdStats( HashMap<String, Object> StatsMap) {
+
+		Session session = HibernateUtil.buildSessionFactory();
+
+		session.beginTransaction();
+		Date date= Date.valueOf(LocalDate.now());
+		StatsMap.put("CreateDate", date);
+		
+		int ret = 0;
+		String insertStr = "INSERT into AdsStats (" ;
+		
+		String insertStr_values = "(" ;
+		try {
+			// Iterating HashMap through for loop
+			for (Map.Entry<String, Object> statsDetail : StatsMap.entrySet()) {
+
+				insertStr += statsDetail.getKey() + ", ";
+
+				if (statsDetail.getValue() instanceof Integer) {
+					insertStr_values += (Integer) (statsDetail.getValue()) + ", ";
+				} else if(statsDetail.getValue() instanceof Date ) {
+					insertStr_values += "'" + (Date) (statsDetail.getValue()) + "' , ";
+				}
+				else
+				{
+					insertStr_values += "'" + (String) (statsDetail.getValue()) + "' , ";
+				}
+				
+
+			}
+
+			insertStr = insertStr.substring(0, insertStr.lastIndexOf(","));
+			insertStr_values = insertStr_values.substring(0, insertStr_values.lastIndexOf(","));
+			String completInsertStr = insertStr + ")" + " values " + insertStr_values + " );";
+			System.out.println(completInsertStr);
+
+			Query query = session.createNativeQuery(completInsertStr);
+			
+			// needs other condition too but unable to find correct column
+			ret = query.executeUpdate();
+			session.getTransaction().commit();
+			System.out.println("Statsmap " + StatsMap);
+			
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			session.getTransaction().rollback();
+		} finally {
+//		session.getTransaction().commit(); session.close();
+		}
+
+		return ret;
+	}
 	public static List CompaniesDetails() {
 
 		Session session = HibernateUtil.buildSessionFactory();
@@ -465,6 +519,48 @@ public class SponsoredAdsDaoImpl {
 		return hmFinal;
 
 	}
+
+	public static List AdsStatsByID(int StatsID) {
+
+		Session session = HibernateUtil.buildSessionFactory();
+
+		Query query = session.createNativeQuery(
+				"Select *  from AdsStats where StatsID =" + StatsID + ";");
+		List<Object[]> results = (List<Object[]>) query.getResultList();
+		System.out.println(results.size());
+		List hmFinal = new ArrayList();
+		for (Object[] objects : results) {
+			LinkedHashMap<String, Object> hm = new LinkedHashMap<>();
+			// add linkedhashmap to preserve the order
+			
+
+			Integer AdID = (Integer) objects[0];
+
+			Integer SlotTypeID = (Integer) objects[1];
+
+			Integer Impressions = (Integer) objects[2];
+
+			Integer Clicks = (Integer) objects[3];
+
+			Date CreateDate= (Date) objects[4];
+			Date LastUpdatedDate= (Date) objects[5];
+			
+			Integer AdTargetID= (Integer) objects[6];
+			
+			hm.put("AdID", AdID);
+			hm.put("SlotTypeID", SlotTypeID);
+			hm.put("Impressions", Impressions);
+			hm.put("Clicks", Clicks);
+			hm.put("AdTargetID", AdTargetID);
+			hm.put("CreateDate", CreateDate);
+			hm.put("LastUpdatedDate", LastUpdatedDate);
+			hmFinal.add(hm);
+
+		}
+
+		return hmFinal;
+
+	}
 	public static int updateCompanyId(int CompanyID, HashMap companyMap) {
 
 		// creating seession factory object
@@ -646,6 +742,52 @@ public class SponsoredAdsDaoImpl {
 	return ret;
 	}
 
+	public static int updateAdsStatsId(int StatsID, HashMap StatsMap) {
+
+		// creating seession factory object
+		Session session = HibernateUtil.buildSessionFactory();
+
+		// creating session object
+		//Session session = factory;
+		// creating transaction object
+		session.beginTransaction();
+		 Date date= Date.valueOf(LocalDate.now());
+		String updatestr = "";
+		if (StatsMap.containsKey("AdID")) {
+			updatestr += "`AdID` = '" + StatsMap.get("AdID") + "',\r\n";
+		
+		}
+		
+		if (StatsMap.containsKey("SlotTypeID")) {
+			updatestr += "`SlotTypeID` = '" + StatsMap.get("SlotTypeID") + "',\r\n";
+		}
+		if (StatsMap.containsKey("Impressions")) {
+			updatestr += "`Impressions` = '" + StatsMap.get("Impressions") + "',\r\n";
+		}
+		if (StatsMap.containsKey("Clicks")) {
+			updatestr += "`Clicks` = '" + StatsMap.get("Clicks") + "',\r\n";
+		}
+		
+		if (StatsMap.containsKey("AdTargetID")) {
+			updatestr += "`AdTargetID` = '" + StatsMap.get("AdTargetID") + "',\r\n";
+		}
+		updatestr+="LastUpdateddate='"  + date +  "'  ";
+		System.out.println();
+		Query query = session.createNativeQuery(
+				"UPDATE `AdsStats`\r\n" + "SET\r\n" + updatestr + "WHERE `StatsID` = " + StatsID + ";");
+		int ret = 0;
+		try {
+		ret = query.executeUpdate();
+		session.getTransaction().commit();
+		System.out.println("updated  table for StatsID =  " + StatsID);
+	
+	}catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	return ret;
+	}
 	public static int deleteCampaignId(int CampaignID) {
 		
 		Session session = HibernateUtil.buildSessionFactory();
