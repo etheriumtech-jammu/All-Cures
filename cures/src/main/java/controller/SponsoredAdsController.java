@@ -34,7 +34,12 @@ public class SponsoredAdsController {
 
 		return SponsoredAdsDaoImpl.InsertAdDetails(AdMap);
 	}
-	
+
+	@RequestMapping(value = "/add/stats", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody Integer addstats(@RequestBody HashMap StatsMap,HttpServletRequest request ) throws Exception {
+
+		return SponsoredAdsDaoImpl.InsertAdStats(StatsMap);
+	}
 	@RequestMapping(value = "/all/companies", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List allcompanies(HttpServletRequest request) throws Exception {
 
@@ -70,7 +75,12 @@ public class SponsoredAdsController {
 
 		return SponsoredAdsDaoImpl.CampaignsAdsByID(AdID);
 	}
-	
+
+	@RequestMapping(value = "/get/stats/{StatsID}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List statsID(HttpServletRequest request, @PathVariable int StatsID) throws Exception {
+
+		return SponsoredAdsDaoImpl.AdsStatsByID(StatsID);
+	}
 	@RequestMapping(value = "/update/company/{CompanyID}", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody int updateCompany(@PathVariable int CompanyID, @RequestBody HashMap companyMap, HttpServletRequest request) {
 	
@@ -95,6 +105,13 @@ public class SponsoredAdsController {
 	
 	}
 
+	@RequestMapping(value = "/update/adstats/{StatsID}", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody int updateAdsStats(@PathVariable int StatsID, @RequestBody HashMap StatsMap, HttpServletRequest request) {
+	
+	return SponsoredAdsDaoImpl.updateAdsStatsId(StatsID, StatsMap);
+	
+	}
+	
 	@RequestMapping(value = "/delete/campaign/{CampaignID}", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody int deleteCampaign(@PathVariable int CampaignID,  HttpServletRequest request) {
 	
