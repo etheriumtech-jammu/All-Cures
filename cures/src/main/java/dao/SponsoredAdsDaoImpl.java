@@ -250,7 +250,7 @@ public class SponsoredAdsDaoImpl {
 			String Phone = (String) objects[5];
 			Date CreateDate= (Date) objects[6];
 			Date LastUpdatedDate= (Date) objects[7];
-			
+			Integer Status = (Integer) objects[8];
 			hm.put("CompanyID", CompanyID);
 			hm.put("CompanyName", CompanyName);
 			hm.put("CompanyWebsite", CompanyWebsite);
@@ -259,7 +259,7 @@ public class SponsoredAdsDaoImpl {
 			hm.put("Phone", Phone);
 			hm.put("CreateDate", CreateDate);
 			hm.put("LastUpdatedDate", LastUpdatedDate);
-			
+			hm.put("Status", Status);
 
 			hmFinal.add(hm);
 
@@ -290,6 +290,7 @@ public class SponsoredAdsDaoImpl {
 			String Phone = (String) objects[5];
 			Date CreateDate= (Date) objects[6];
 			Date LastUpdatedDate= (Date) objects[7];
+			Integer Status = (Integer) objects[8];
 			
 			
 			hm.put("CompanyName", CompanyName);
@@ -299,7 +300,7 @@ public class SponsoredAdsDaoImpl {
 			hm.put("Phone", Phone);
 			hm.put("CreateDate", CreateDate);
 			hm.put("LastUpdatedDate", LastUpdatedDate);
-			
+			hm.put("Status", Status);
 			hmFinal.add(hm);
 
 		}
@@ -331,7 +332,7 @@ public class SponsoredAdsDaoImpl {
 			
 			Date CreateDate= (Date) objects[5];
 			Date LastUpdatedDate= (Date) objects[6];
-			
+			Integer Status = (Integer) objects[7];
 			hm.put("CampaignID", CampaignID);
 			hm.put("CompanyID", CompanyID);
 			hm.put("CampaignName", CampaignName);
@@ -339,7 +340,7 @@ public class SponsoredAdsDaoImpl {
 			hm.put("EndDate", EndDate);
 			hm.put("CreateDate", CreateDate);
 			hm.put("LastUpdatedDate", LastUpdatedDate);
-			
+			hm.put("Status", Status);
 
 			hmFinal.add(hm);
 
@@ -372,14 +373,14 @@ public class SponsoredAdsDaoImpl {
 			
 			Date CreateDate= (Date) objects[5];
 			Date LastUpdatedDate= (Date) objects[6];
-			
+			Integer Status = (Integer) objects[7];
 			hm.put("CompanyID", CompanyID);
 			hm.put("CampaignName", CampaignName);
 			hm.put("StartDate", StartDate);
 			hm.put("EndDate", EndDate);
 			hm.put("CreateDate", CreateDate);
 			hm.put("LastUpdatedDate", LastUpdatedDate);
-			
+			hm.put("Status", Status);
 			hmFinal.add(hm);
 
 		}
