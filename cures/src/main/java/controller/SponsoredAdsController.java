@@ -81,7 +81,7 @@ public class SponsoredAdsController {
 
 		return SponsoredAdsDaoImpl.AdsStatsByID(StatsID);
 	}
-	@RequestMapping(value = "/update/company/{CompanyID}", produces = "application/json", method = RequestMethod.POST)
+	@RequestMapping(value = "/update/company/{CompanyID}", produces = "application/json", method = RequestMethod.PUT)
 	public @ResponseBody int updateCompany(@PathVariable int CompanyID, @RequestBody HashMap companyMap, HttpServletRequest request) {
 	
 	return SponsoredAdsDaoImpl.updateCompanyId(CompanyID, companyMap);
@@ -89,7 +89,7 @@ public class SponsoredAdsController {
 	
 	}
 	
-	@RequestMapping(value = "/update/campaign/{CampaignID}", produces = "application/json", method = RequestMethod.POST)
+	@RequestMapping(value = "/update/campaign/{CampaignID}", produces = "application/json", method = RequestMethod.PUT)
 	public @ResponseBody int updateCampaign(@PathVariable int CampaignID, @RequestBody HashMap campaignMap, HttpServletRequest request) {
 	
 	return SponsoredAdsDaoImpl.updateCampaignId(CampaignID, campaignMap);
@@ -97,7 +97,7 @@ public class SponsoredAdsController {
 	
 	}
 	
-	@RequestMapping(value = "/update/ad/{AdID}", produces = "application/json", method = RequestMethod.POST)
+	@RequestMapping(value = "/update/ad/{AdID}", produces = "application/json", method = RequestMethod.PUT)
 	public @ResponseBody int updateCampaignAds(@PathVariable int AdID, @RequestBody HashMap campaignAdsMap, HttpServletRequest request) {
 	
 	return SponsoredAdsDaoImpl.updateCampaignAdsId(AdID, campaignAdsMap);
@@ -105,14 +105,14 @@ public class SponsoredAdsController {
 	
 	}
 
-	@RequestMapping(value = "/update/adstats/{StatsID}", produces = "application/json", method = RequestMethod.POST)
+	@RequestMapping(value = "/update/adstats/{StatsID}", produces = "application/json", method = RequestMethod.PUT)
 	public @ResponseBody int updateAdsStats(@PathVariable int StatsID, @RequestBody HashMap StatsMap, HttpServletRequest request) {
 	
 	return SponsoredAdsDaoImpl.updateAdsStatsId(StatsID, StatsMap);
 	
 	}
 	
-	@RequestMapping(value = "/delete/campaign/{CampaignID}", produces = "application/json", method = RequestMethod.POST)
+	@RequestMapping(value = "/delete/campaign/{CampaignID}", produces = "application/json", method = RequestMethod.PUT)
 	public @ResponseBody int deleteCampaign(@PathVariable int CampaignID,  HttpServletRequest request) {
 	
 	return SponsoredAdsDaoImpl.deleteCampaignId(CampaignID);
@@ -120,7 +120,7 @@ public class SponsoredAdsController {
 	
 	}
 	
-	@RequestMapping(value = "/delete/company/{CompanyID}", produces = "application/json", method = RequestMethod.POST)
+	@RequestMapping(value = "/delete/company/{CompanyID}", produces = "application/json", method = RequestMethod.PUT)
 	public @ResponseBody int deleteCompany(@PathVariable int CompanyID,  HttpServletRequest request) {
 	
 	return SponsoredAdsDaoImpl.deleteCompanyId(CompanyID);
