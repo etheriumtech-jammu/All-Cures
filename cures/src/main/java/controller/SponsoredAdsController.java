@@ -127,5 +127,36 @@ public class SponsoredAdsController {
 	
 	
 	}
+
+	@RequestMapping(value = "/list/companies", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List listcompanies(HttpServletRequest request) throws Exception {
+
+		return SponsoredAdsDaoImpl.ListCompanies();
+	}
+	
+	@RequestMapping(value = "/list/campaigns", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List listcampaigns(HttpServletRequest request) throws Exception {
+
+		return SponsoredAdsDaoImpl.ListCampaigns();
+	}
+	
+
+	@RequestMapping(value = "/list/adsslotstypes", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List listadsslots(HttpServletRequest request) throws Exception {
+
+		return SponsoredAdsDaoImpl.ListAdsSlotsTypes();
+	}
+	
+	@RequestMapping(value = "/list/adstargettypes", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List listadstarget(HttpServletRequest request) throws Exception {
+
+		return SponsoredAdsDaoImpl.ListAdsTargetTypes();
+	}
+	
+	@RequestMapping(value = "/list/adstypes", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List listadstypes(HttpServletRequest request) throws Exception {
+
+		return SponsoredAdsDaoImpl.ListAdsTypes();
+	}
 	
 }
