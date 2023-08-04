@@ -849,4 +849,119 @@ public static int deleteCompanyId(int CompanyID) {
 		 
 		 
 	}
+
+	public static List ListCompanies() {
+
+	Session session = HibernateUtil.buildSessionFactory();
+
+	Query query = session.createNativeQuery(
+			"Select CompanyID, CompanyName from companies where Status = 1 ;");
+	List<Object[]> results = (List<Object[]>) query.getResultList();
+	System.out.println(results.size());
+
+	List<Object[]> arrayDataList = new ArrayList<>();
+	for (Object[] objects : results) {
+	    Integer CompanyID = (Integer) objects[0];
+	    String CompanyName = (String) objects[1];
+
+	    Object[] dataArray = new Object[]{CompanyID, CompanyName};
+	    arrayDataList.add(dataArray);
+
+	}
+
+	return arrayDataList;
+
+	}
+
+public static List ListCampaigns() {
+
+	Session session = HibernateUtil.buildSessionFactory();
+
+	Query query = session.createNativeQuery(
+			"Select CampaignID, CampaignName from campaign where Status = 1 ;");
+	List<Object[]> results = (List<Object[]>) query.getResultList();
+	System.out.println(results.size());
+
+	List<Object[]> arrayDataList = new ArrayList<>();
+	for (Object[] objects : results) {
+	    Integer CampaignID = (Integer) objects[0];
+	    String CampaignName = (String) objects[1];
+
+	    Object[] dataArray = new Object[]{CampaignID, CampaignName};
+	    arrayDataList.add(dataArray);
+
+	}
+
+	return arrayDataList;
+
+	}
+	public static List ListAdsSlotsTypes() {
+
+	Session session = HibernateUtil.buildSessionFactory();
+
+	Query query = session.createNativeQuery(
+			"Select SlotTypeId, SlotTypeName from allcures1.adsslotstypes where TotalAvailableSlots-AllotedSlots>0;");
+	List<Object[]> results = (List<Object[]>) query.getResultList();
+	System.out.println(results.size());
+
+	List<Object[]> arrayDataList = new ArrayList<>();
+	for (Object[] objects : results) {
+	    Integer SlotTypeId = (Integer) objects[0];
+	    String SlotTypeName = (String) objects[1];
+
+	    Object[] dataArray = new Object[]{SlotTypeId, SlotTypeName};
+	    arrayDataList.add(dataArray);
+
+	}
+
+	return arrayDataList;
+
+	}
+	
+	
+	public static List ListAdsTargetTypes() {
+
+		Session session = HibernateUtil.buildSessionFactory();
+
+		Query query = session.createNativeQuery(
+				"Select AdTargetID, AdTargetName from adstargettypes;");
+		List<Object[]> results = (List<Object[]>) query.getResultList();
+		System.out.println(results.size());
+
+		List<Object[]> arrayDataList = new ArrayList<>();
+		for (Object[] objects : results) {
+		    Integer AdTargetID = (Integer) objects[0];
+		    String AdTargetName = (String) objects[1];
+
+		    Object[] dataArray = new Object[]{AdTargetID, AdTargetName};
+		    arrayDataList.add(dataArray);
+
+		}
+
+		return arrayDataList;
+
+		}
+		
+	public static List ListAdsTypes() {
+
+		Session session = HibernateUtil.buildSessionFactory();
+
+		Query query = session.createNativeQuery(
+				"Select AdTypeID,AdTypeName from adstypes where Status = 1 ;");
+		List<Object[]> results = (List<Object[]>) query.getResultList();
+		System.out.println(results.size());
+
+		List<Object[]> arrayDataList = new ArrayList<>();
+		for (Object[] objects : results) {
+		    Integer AdTypeID = (Integer) objects[0];
+		    String AdTypeName = (String) objects[1];
+
+		    Object[] dataArray = new Object[]{AdTypeID, AdTypeName};
+		    arrayDataList.add(dataArray);
+
+		}
+
+		return arrayDataList;
+
+		}
 }
