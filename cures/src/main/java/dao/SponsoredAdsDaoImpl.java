@@ -855,7 +855,7 @@ public static int deleteCompanyId(int CompanyID) {
 	Session session = HibernateUtil.buildSessionFactory();
 
 	Query query = session.createNativeQuery(
-			"Select CompanyID, CompanyName from companies where Status = 1 ;");
+			"Select CompanyID, CompanyName from Companies where Status = 1 ;");
 	List<Object[]> results = (List<Object[]>) query.getResultList();
 	System.out.println(results.size());
 
@@ -878,7 +878,7 @@ public static List ListCampaigns() {
 	Session session = HibernateUtil.buildSessionFactory();
 
 	Query query = session.createNativeQuery(
-			"Select CampaignID, CampaignName from campaign where Status = 1 ;");
+			"Select CampaignID, CampaignName from Campaign where Status = 1 ;");
 	List<Object[]> results = (List<Object[]>) query.getResultList();
 	System.out.println(results.size());
 
@@ -900,7 +900,7 @@ public static List ListCampaigns() {
 	Session session = HibernateUtil.buildSessionFactory();
 
 	Query query = session.createNativeQuery(
-			"Select SlotTypeId, SlotTypeName from allcures1.adsslotstypes where TotalAvailableSlots-AllotedSlots>0;");
+			"Select SlotTypeId, SlotTypeName from AdsSlotsTypes where TotalAvailableSlots-AllotedSlots>0;");
 	List<Object[]> results = (List<Object[]>) query.getResultList();
 	System.out.println(results.size());
 
@@ -924,7 +924,7 @@ public static List ListCampaigns() {
 		Session session = HibernateUtil.buildSessionFactory();
 
 		Query query = session.createNativeQuery(
-				"Select AdTargetID, AdTargetName from adstargettypes;");
+				"Select AdTargetID, AdTargetName from AdsTargetTypes;");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println(results.size());
 
@@ -947,7 +947,7 @@ public static List ListCampaigns() {
 		Session session = HibernateUtil.buildSessionFactory();
 
 		Query query = session.createNativeQuery(
-				"Select AdTypeID,AdTypeName from adstypes where Status = 1 ;");
+				"Select AdTypeID,AdTypeName from AdsTypes where Status = 1 ;");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println(results.size());
 
