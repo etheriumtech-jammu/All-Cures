@@ -126,7 +126,7 @@ public class SponsoredAdsDaoImpl {
 		return ret;
 	}
 
-	public static Integer InsertAdDetails( HashMap<String, Object> AdMap) {
+	public static Integer InsertAdDetails( HashMap<String, Object> AdMap ,CommonsMultipartFile image) {
 
 		Session session = HibernateUtil.buildSessionFactory();
 
