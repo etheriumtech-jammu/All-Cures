@@ -15,6 +15,7 @@ import javax.persistence.NoResultException;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import util.HibernateUtil;
+import org.hibernate.Transaction;
 
 public class SponsoredAdsDaoImpl {
 
@@ -199,6 +200,7 @@ public class SponsoredAdsDaoImpl {
         String renamedFilename = "Ad_" + res + "." + FilenameUtils.getExtension(filename);
 
 		System.out.println(path + "/" + renamedFilename);
+		String finalPath=path + "/" + renamedFilename;
 		try {
 			byte barr[] = image.getBytes();
 
