@@ -30,11 +30,13 @@ public class SponsoredAdsController {
 	}
 	
 	@RequestMapping(value = "/create/ad", produces = "application/json", method = RequestMethod.POST)
-	public @ResponseBody Integer addcampaignsads(@RequestBody HashMap AdMap,HttpServletRequest request ) throws Exception {
-
-		return SponsoredAdsDaoImpl.InsertAdDetails(AdMap);
+	public @ResponseBody Integer addcampaignsads(@RequestParam("image") CommonsMultipartFile image,
+            @RequestParam("AdMap") String adMapJson,
+            HttpServletRequest request) throws Exception {
+		ObjectMapper objectMapper = new ObjectMapper();
+		HashMap<String, Object> AdMap = objectMapper.readValue(adMapJson, new TypeReference<HashMap<String, Object>>() {});
+		return SponsoredAdsDaoImpl.InsertAdDetails(AdMap, image);
 	}
-
 	@RequestMapping(value = "/add/stats", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody Integer addstats(@RequestBody HashMap StatsMap,HttpServletRequest request ) throws Exception {
 
