@@ -9,7 +9,11 @@ import java.util.List;
 import java.util.Map;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.apache.commons.io.FilenameUtils;
+import javax.persistence.NoResultException;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 import util.HibernateUtil;
 
 public class SponsoredAdsDaoImpl {
