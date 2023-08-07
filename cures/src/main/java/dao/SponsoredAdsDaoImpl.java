@@ -392,7 +392,14 @@ public class SponsoredAdsDaoImpl {
 		Session session = HibernateUtil.buildSessionFactory();
 
 		Query query = session.createNativeQuery(
-				"Select * from CampaignAds\r\n" + "\r\n" + "");
+				 "SELECT ca.AdID, ca.CampaignID, cam.CampaignName, ca.DiseaseCondition, dc.dc_desc, ca.AdTypeID, at.AdTypeName,\r\n"
+				 + "       ca.AdTitle, ca.AdDescription, ca.AdCount, ca.AdDelivered, ca.ImageLocation, ca.ImageAltText,\r\n"
+				 + "       ca.StartDate, ca.EndDate, ca.CreateDate, ca.LastUpdatedDate, ca.ReviewStatus, ca.PaymentStatus\r\n"
+				 + "FROM CampaignAds ca\r\n"
+				 + "JOIN disease_condition dc ON ca.DiseaseCondition = dc.dc_id\r\n"
+				 + "JOIN Campaign cam ON cam.CampaignID = ca.CampaignID\r\n"
+				 + "JOIN AdsTypes at ON ca.AdTypeID = at.AdTypeID;\r\n"
+				 + "");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println(results.size());
 		List hmFinal = new ArrayList();
@@ -400,39 +407,43 @@ public class SponsoredAdsDaoImpl {
 			LinkedHashMap<String, Object> hm = new LinkedHashMap<>();
 			// add linkedhashmap to preserve the order
 			Integer AdID= (Integer) objects[0];
-
-			Integer CampaignID = (Integer) objects[1];
-
-			Integer DiseaseCondition = (Integer) objects[2];
-
-			Integer AdTypeID = (Integer) objects[3];
-
-			String AdTitle = (String) objects[4];
+			Integer CampaignID=(Integer) objects[1];
+			String CampaignName = (String) objects[2];
+			Integer DiseaseConditionID=(Integer) objects[3];
 			
-			String AdDescription= (String) objects[5];
+			String DiseaseConditionName = (String) objects[4];
 
-			Integer AdCount = (Integer) objects[6];
+			Integer AdTypeID = (Integer) objects[5];
+			String AdTypeName=(String)objects[6];
+			String AdTitle = (String) objects[7];
+			
+			String AdDescription= (String) objects[8];
 
-			Integer AdDelivered = (Integer) objects[7];
+			Integer AdCount = (Integer) objects[9];
 
-			String ImageLocation = (String) objects[8];
+			Integer AdDelivered = (Integer) objects[10];
 
-			String ImageAltText= (String) objects[9];
-			Date StartDate = (Date) objects[10];
+			String ImageLocation = (String) objects[11];
 
-			Date EndDate = (Date) objects[11];
+			String ImageAltText= (String) objects[12];
+			Date StartDate = (Date) objects[13];
+
+			Date EndDate = (Date) objects[14];
 				
-			Date CreateDate= (Date) objects[12];
-			Date LastUpdatedDate= (Date) objects[13];
+			Date CreateDate= (Date) objects[15];
+			Date LastUpdatedDate= (Date) objects[16];
 			
-			Integer ReviewStatus= (Integer) objects[14];
+			Integer ReviewStatus= (Integer) objects[17];
 
-			Integer PaymentStatus= (Integer) objects[15];
+			Integer PaymentStatus= (Integer) objects[18];
 
 			hm.put("AdID", AdID);
 			hm.put("CampaignID", CampaignID);
-			hm.put("DiseaseCondition", DiseaseCondition);
+			hm.put("CampaignName", CampaignName);
+			hm.put("DiseaseConditionID", DiseaseConditionID);
+			hm.put("DiseaseConditionName", DiseaseConditionName);
 			hm.put("AdTypeID", AdTypeID);
+			hm.put("AdTypeName", AdTypeName);
 			hm.put("AdTitle", AdTitle);
 			hm.put("AdDescription", AdDescription);
 			hm.put("AdCount", AdCount);
@@ -445,6 +456,7 @@ public class SponsoredAdsDaoImpl {
 			hm.put("LastUpdatedDate", LastUpdatedDate);
 			hm.put("ReviewStatus", ReviewStatus);
 			hm.put("PaymentStatus", PaymentStatus);
+
 
 			hmFinal.add(hm);
 
@@ -459,7 +471,14 @@ public class SponsoredAdsDaoImpl {
 		Session session = HibernateUtil.buildSessionFactory();
 
 		Query query = session.createNativeQuery(
-				"Select *  from CampaignAds where AdID =" + AdID + ";");
+				"SELECT ca.CampaignID, cam.CampaignName, ca.DiseaseCondition, dc.dc_desc, ca.AdTypeID, at.AdTypeName,\r\n"
+				+ "       ca.AdTitle, ca.AdDescription, ca.AdCount, ca.AdDelivered, ca.ImageLocation, ca.ImageAltText,\r\n"
+				+ "       ca.StartDate, ca.EndDate, ca.CreateDate, ca.LastUpdatedDate, ca.ReviewStatus, ca.PaymentStatus\r\n"
+				+ "FROM CampaignAds ca\r\n"
+				+ "JOIN disease_condition dc ON ca.DiseaseCondition = dc.dc_id\r\n"
+				+ "JOIN Campaign cam ON cam.CampaignID = ca.CampaignID\r\n"
+				+ "JOIN AdsTypes at ON ca.AdTypeID = at.AdTypeID\r\n"
+				+ "where AdID =" + AdID + ";");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println(results.size());
 		List hmFinal = new ArrayList();
@@ -467,39 +486,42 @@ public class SponsoredAdsDaoImpl {
 			LinkedHashMap<String, Object> hm = new LinkedHashMap<>();
 			// add linkedhashmap to preserve the order
 			
-
-			Integer CampaignID = (Integer) objects[1];
-
-			Integer DiseaseCondition = (Integer) objects[2];
-
-			Integer AdTypeID = (Integer) objects[3];
-
-			String AdTitle = (String) objects[4];
+			Integer CampaignID=(Integer) objects[0];
+			String CampaignName = (String) objects[1];
+			Integer DiseaseConditionID=(Integer) objects[2];
 			
-			String AdDescription= (String) objects[5];
+			String DiseaseConditionName = (String) objects[3];
 
-			Integer AdCount = (Integer) objects[6];
+			Integer AdTypeID = (Integer) objects[4];
+			String AdTypeName=(String)objects[5];
+			String AdTitle = (String) objects[6];
+			
+			String AdDescription= (String) objects[7];
 
-			Integer AdDelivered = (Integer) objects[7];
+			Integer AdCount = (Integer) objects[8];
 
-			String ImageLocation = (String) objects[8];
+			Integer AdDelivered = (Integer) objects[9];
 
-			String ImageAltText= (String) objects[9];
-			Date StartDate = (Date) objects[10];
+			String ImageLocation = (String) objects[10];
 
-			Date EndDate = (Date) objects[11];
+			String ImageAltText= (String) objects[11];
+			Date StartDate = (Date) objects[12];
+
+			Date EndDate = (Date) objects[13];
 				
-			Date CreateDate= (Date) objects[12];
-			Date LastUpdatedDate= (Date) objects[13];
+			Date CreateDate= (Date) objects[14];
+			Date LastUpdatedDate= (Date) objects[15];
 			
-			Integer ReviewStatus= (Integer) objects[14];
+			Integer ReviewStatus= (Integer) objects[16];
 
-			Integer PaymentStatus= (Integer) objects[15];
+			Integer PaymentStatus= (Integer) objects[17];
 
-			
 			hm.put("CampaignID", CampaignID);
-			hm.put("DiseaseCondition", DiseaseCondition);
+			hm.put("CampaignName", CampaignName);
+			hm.put("DiseaseConditionID", DiseaseConditionID);
+			hm.put("DiseaseConditionName", DiseaseConditionName);
 			hm.put("AdTypeID", AdTypeID);
+			hm.put("AdTypeName", AdTypeName);
 			hm.put("AdTitle", AdTitle);
 			hm.put("AdDescription", AdDescription);
 			hm.put("AdCount", AdCount);
@@ -512,6 +534,7 @@ public class SponsoredAdsDaoImpl {
 			hm.put("LastUpdatedDate", LastUpdatedDate);
 			hm.put("ReviewStatus", ReviewStatus);
 			hm.put("PaymentStatus", PaymentStatus);
+
 
 			hmFinal.add(hm);
 
