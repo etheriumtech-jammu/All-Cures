@@ -212,18 +212,29 @@ public class SponsoredAdsDaoImpl {
 		}
 		
 		Query query1 = session.createNativeQuery(
-				"Update CampaignAds set ImageLocation=" + path + "/" + renamedFilename + " where AdID=" + res + ";");
+				  "Update CampaignAds set ImageLocation='" + finalPath + "' where AdID=" + res);
 		int ret = 0;
+		Transaction transaction= null;
 		try {
-		ret = query1.executeUpdate();
-		session.getTransaction().commit();
-		}catch(Exception e)
-		{
-		e.printStackTrace();
-		}
+		    transaction = session.beginTransaction();
+
+		    ret = query1.executeUpdate();
+
+		    transaction.commit();
+		} catch (Exception e) {
+		    if (transaction != null && transaction.isActive()) {
+		        transaction.rollback();
+		    }
+		    e.printStackTrace();
+		} 
 		HashMap hm = new HashMap();
-		hm.put("success", 1);
-		
+		if(ret==1)
+		{
+			hm.put("success", 1);
+		}
+		else {
+			hm.put("fail", 0);
+		}
 		return hm;
 	}
 		
