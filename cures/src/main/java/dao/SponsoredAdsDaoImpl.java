@@ -170,7 +170,6 @@ public class SponsoredAdsDaoImpl {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			session.getTransaction().rollback();
 		} finally {
 //		session.getTransaction().commit(); session.close();
 		}
@@ -184,11 +183,8 @@ public class SponsoredAdsDaoImpl {
 		Query query = session.createNativeQuery(
 				"SELECT max(ADId) FROM CampaignAds;");
 		int res=0;
-		
-
 		try {
 			res = (int) query.getSingleResult();
-			
 			System.out.println(res);
 		} catch (NoResultException e) {
 			System.out.println("No Entry");
@@ -223,8 +219,7 @@ public class SponsoredAdsDaoImpl {
 		session.getTransaction().commit();
 		}catch(Exception e)
 		{
-			session.getTransaction().rollback();
-			
+		e.printStackTrace();
 		}
 		HashMap hm = new HashMap();
 		hm.put("success", 1);
