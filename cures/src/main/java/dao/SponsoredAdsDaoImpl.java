@@ -161,7 +161,8 @@ public class SponsoredAdsDaoImpl {
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
 			System.out.println("Admap " + AdMap);
-			
+			HashMap hm2=uploadFile(image);
+			System.out.println(hm2);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -173,6 +174,61 @@ public class SponsoredAdsDaoImpl {
 		return ret;
 	}
 
+	public static HashMap uploadFile( CommonsMultipartFile image) {
+		
+		Session session = HibernateUtil.buildSessionFactory();
+		Query query = session.createNativeQuery(
+				"SELECT max(ADId) FROM CampaignAds;");
+		int res=0;
+		
+
+		try {
+			res = (int) query.getSingleResult();
+			
+			System.out.println(res);
+		} catch (NoResultException e) {
+			System.out.println("No Entry");
+
+		}
+		String path = System.getProperty( "catalina.base" ) + "/webapps/"+ "cures_adsimages";
+		System.out.println(path);
+		// path = path+"/uitest";
+		String filename = image.getOriginalFilename();
+		
+		// Rename the file to the new file name
+        String renamedFilename = "Ad_" + res + "." + FilenameUtils.getExtension(filename);
+
+		System.out.println(path + "/" + renamedFilename);
+		try {
+			byte barr[] = image.getBytes();
+
+			BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(path + "/" + renamedFilename));
+			bout.write(barr);
+			bout.flush();
+			bout.close();
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		Query query1 = session.createNativeQuery(
+				"Update CampaignAds set ImageLocation=" + path + "/" + renamedFilename + " where AdID=" + res + ";");
+		int ret = 0;
+		try {
+		ret = query1.executeUpdate();
+		session.getTransaction().commit();
+		}catch(Exception e)
+		{
+			session.getTransaction().rollback();
+			
+		}
+		HashMap hm = new HashMap();
+		hm.put("success", 1);
+		
+		return hm;
+	}
+		
+		
 	public static Integer InsertAdStats( HashMap<String, Object> StatsMap) {
 
 		Session session = HibernateUtil.buildSessionFactory();
