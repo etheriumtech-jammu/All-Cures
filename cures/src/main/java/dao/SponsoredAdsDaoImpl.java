@@ -191,7 +191,7 @@ public class SponsoredAdsDaoImpl {
 			System.out.println("No Entry");
 
 		}
-		String path = System.getProperty( "catalina.base" ) + "/webapps/"+ "cures_articleimages"+ "cures_adsimages";
+		String path = System.getProperty( "catalina.base" ) + "/webapps/"+ "cures_articleimages/"+ "cures_adsimages";
 		System.out.println(path);
 		// path = path+"/uitest";
 		String filename = image.getOriginalFilename();
