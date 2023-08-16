@@ -4,9 +4,11 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -14,11 +16,20 @@ import org.apache.commons.io.FilenameUtils;
 import javax.persistence.NoResultException;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
-import util.HibernateUtil;
+import java.io.IOException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import net.spy.memcached.AddrUtil;
+import net.spy.memcached.ConnectionFactoryBuilder;
+import net.spy.memcached.FailureMode;
+import net.spy.memcached.MemcachedClient;
 import org.hibernate.Transaction;
-
+import util.Constant;
+import util.HibernateUtil;
+import util.DailyTaskScheduler;
 public class SponsoredAdsDaoImpl {
 
+	public static Set<String> keySet = new HashSet<>();
+	public static MemcachedClient mcc = null;
 	public static Integer InsertCompaniesDetails( HashMap<String, Object> companyMap) {
 
 		Session session = HibernateUtil.buildSessionFactory();
@@ -1055,4 +1066,55 @@ public static List ListCampaigns() {
 		return arrayDataList;
 
 		}
+	public static String AdsURL( Map<LocalDate, Integer> requestCountMap ) throws JsonProcessingException {
+		String URL=null;
+		LocalDate currentDate = LocalDate.now();
+		int count = requestCountMap.getOrDefault(currentDate, 0);
+		System.out.println("Index" + count);
+		 if (mcc == null) {
+	 			initializeCacheClient();
+	 		}
+		boolean flag = false;
+		String key=String.valueOf(count);
+		boolean val=mcc.getAvailableServers().isEmpty();
+		 System.out.println("Memcached status:" + val);
+		 if(val)
+		 {
+			 System.out.println("Memcached Restarted");
+			 DailyTaskScheduler.performDailyCalculationsAndCacheUpdate();
+			 DailyTaskScheduler.DisplayPattern();
+			 flag =true;
+			 
+		 }
+		 
+		 if(val== false || flag == true)
+		 {
+			 
+			 URL = (String) mcc.get(key);
+			// Update the map with the new count
+		        requestCountMap.put(currentDate,requestCountMap.getOrDefault(currentDate, 0) + 1);
+			 if(URL == null)
+			 {
+				URL="All Ads are Served"; 
+			 }
+		 }
+		  return URL;
+		
+		
+	}
+	
+	public static MemcachedClient initializeCacheClient() {
+		try {
+			Constant.log("Trying Connection to Memcache server", 0);
+			mcc = new MemcachedClient(
+					new ConnectionFactoryBuilder().setDaemon(true).setFailureMode(FailureMode.Retry).build(),
+					AddrUtil.getAddresses(Constant.ADDRESS));
+			Constant.log("Connection to Memcache server Sucessful", 0);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Constant.log("Connection to Memcache server UN-Sucessful", 3);
+		}
+		return mcc;
+	}
 }
