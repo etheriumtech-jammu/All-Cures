@@ -200,7 +200,7 @@ public class DailyTaskScheduler {
  	     	    		 count=AdCount.get(key);
  	     	    	 }
  	     	    		 for (int i = 0; i < count; i++) {
- 	     	    			ads.add(key);
+ 	     	    			ads.add(key1);
  	     	    		 }
  	     	       }
  	     	       else {
