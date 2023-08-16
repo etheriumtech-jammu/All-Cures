@@ -1,10 +1,12 @@
 package controller;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.servlet.http.HttpServletRequest;
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,6 +23,8 @@ import dao.SponsoredAdsDaoImpl;
 @RequestMapping(path = "/sponsored")
 public class SponsoredAdsController {
 
+	private Map<LocalDate, Integer> requestCountMap = new ConcurrentHashMap<>();
+    	private LocalDate lastRequestDate = null;
 	@RequestMapping(value = "/create/company", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody Integer addcompanies(@RequestBody HashMap Company_Map,HttpServletRequest request ) throws Exception {
 
