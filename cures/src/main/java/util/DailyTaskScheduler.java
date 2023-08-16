@@ -197,11 +197,11 @@ public class DailyTaskScheduler {
  	     	       if(AdCount.size() ==1)
  	     	       {
  	     	    	 for (String key1 : keyList) {
- 	     	    		 count=AdCount.get(key);
- 	     	    	 }
+ 	     	    		 count=AdCount.get(key1);
+ 	     	    	 
  	     	    		 for (int i = 0; i < count; i++) {
  	     	    			ads.add(key1);
- 	     	    		 }
+ 	     	    		 }}
  	     	       }
  	     	       else {
  	     	    	 LinkedHashMap<String, Double> Result= SimplifiedRatioCalculator.CalculateRatio(AdCount);
