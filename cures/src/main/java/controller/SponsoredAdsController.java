@@ -164,5 +164,25 @@ public class SponsoredAdsController {
 
 		return SponsoredAdsDaoImpl.ListAdsTypes();
 	}
+
+	@RequestMapping(value = "/list/ads/url", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody String listadsURL(HttpServletRequest request) throws Exception {
+		LocalDate currentDate = LocalDate.now();
+
+        // Reset the request counter if a new day has started
+        if (lastRequestDate == null || !lastRequestDate.equals(currentDate)) {
+            requestCountMap.clear();
+            lastRequestDate = currentDate;
+        }
+
+       System.out.println("Count : " + requestCountMap.getOrDefault(currentDate, 0));
+    
+       String Res= SponsoredAdsDaoImpl.AdsURL(requestCountMap);
+       request.setAttribute("customData", Res );
+		return Res;
+		
+		
+	}
+	
 	
 }
