@@ -1090,7 +1090,7 @@ public static List ListCampaigns() {
 		 if(val== false || flag == true)
 		 {
 			 
-			 URL = (String) mcc.get(key);
+			 URL ="https://uat.all-cures.com:444" + (String) mcc.get(key);
 			// Update the map with the new count
 		        requestCountMap.put(currentDate,requestCountMap.getOrDefault(currentDate, 0) + 1);
 			 if(URL == null)
