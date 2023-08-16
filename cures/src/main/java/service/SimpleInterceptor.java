@@ -54,7 +54,7 @@ public class SimpleInterceptor implements HandlerInterceptor {
     	session.beginTransaction();
     	int res=0;
 	String substring = "444";
-	String[] image = input.split(substring, 2); 
+	String[] image = URL.split(substring, 2); 
 	
     	Integer AdID = null;
     	Query query1 = session.createNativeQuery(
