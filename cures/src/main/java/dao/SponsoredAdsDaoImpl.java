@@ -1093,7 +1093,7 @@ public static List ListCampaigns() {
 			 URL ="https://uat.all-cures.com:444" + (String) mcc.get(key);
 			// Update the map with the new count
 		        requestCountMap.put(currentDate,requestCountMap.getOrDefault(currentDate, 0) + 1);
-			 if(URL == null)
+			 if( (String) mcc.get(key)==null)
 			 {
 				URL="All Ads are Served"; 
 			 }
