@@ -162,7 +162,7 @@ public class DailyTaskScheduler {
 	}   
     public static void DisplayPattern() throws JsonProcessingException
     {
-    	
+    	int count =0;
     	 LinkedHashMap<String, Integer> AdCount = new LinkedHashMap<>();
     	 LinkedHashMap<String, String> AdURL = new LinkedHashMap<>();
     	
@@ -192,24 +192,37 @@ public class DailyTaskScheduler {
  	                      AdURL.put(key,storedImageLocation );
 
  	                    }
+ 	                 List<String> ads = new ArrayList<>();
+ 	                
+ 	     	       if(AdCount.size() ==1)
+ 	     	       {
+ 	     	    	 for (String key1 : keyList) {
+ 	     	    		 count=AdCount.get(key);
+ 	     	    	 }
+ 	     	    		 for (int i = 0; i < count; i++) {
+ 	     	    			ads.add(key);
+ 	     	    		 }
+ 	     	       }
+ 	     	       else {
+ 	     	    	 LinkedHashMap<String, Double> Result= SimplifiedRatioCalculator.CalculateRatio(AdCount);
+
+ 	  	           System.out.println("Size:"+AdCount.size());  
+ 	  	            ads =DynamicAdPattern.generateAds(Result);
+ 	  	  
+ 	     	       }
+ 	    	        
+ 	          
+ 	           System.out.println("ADS:"+ads);
+ 	           System.out.println(rotationCount1);
+ 	          displayRotatedAds(ads, rotationCount1,AdCount,AdURL);
  	                } else {
  	                    System.out.println("Ad not found in Memcached.");
  	                }
  	            }
  	        } else {
  	            System.out.println("No keys found in the list.");
- 	        }
-
-        LinkedHashMap<String, Double> Result= SimplifiedRatioCalculator.CalculateRatio(AdCount);
-//        System.out.println(Result);
-        
-        List<String> ads =DynamicAdPattern.generateAds(Result);
-        System.out.println("ADS:"+ads);
-        System.out.println(rotationCount1);
-       displayRotatedAds(ads, rotationCount1,AdCount,AdURL);
- 
-    }
-  
+ 	        } 
+    } 
     @SuppressWarnings("unchecked")
 	static void displayRotatedAds(List<String> ads, int rotationCount, Map<String, Integer> brandSkipCounts,LinkedHashMap<String, String> AdURL) throws JsonProcessingException {
         int totalAds = ads.size();
