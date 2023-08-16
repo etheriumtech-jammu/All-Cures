@@ -70,7 +70,7 @@ public class SimpleInterceptor implements HandlerInterceptor {
 		if (AdID == null)
 		{
 			Query query = session.createNativeQuery(
-	    			"INSERT INTO AdsStats (AdID, Impressions) SELECT c.AdID, 1 FROM CampaignAds c WHERE c.ImageLocation = '" + URL + "';");
+	    			"INSERT INTO AdsStats (AdID, Impressions) SELECT c.AdID, 1 FROM CampaignAds c WHERE c.ImageLocation = '" + image[1] + "';");
 	    		System.out.println(query);
 	    	try {
 				int ret = query.executeUpdate();
@@ -89,13 +89,13 @@ public class SimpleInterceptor implements HandlerInterceptor {
 	    			"UPDATE AdsStats\r\n"
 	    			+ "JOIN CampaignAds ON AdsStats.AdID = CampaignAds.AdID\r\n"
 	    			+ "SET AdsStats.Impressions =AdsStats.Impressions + 1\r\n"
-	    			+ "WHERE CampaignAds.ImageLocation = '" + URL + "';");
+	    			+ "WHERE CampaignAds.ImageLocation = '" + image[1] + "';");
 	    		
 	    	try {
 				int ret = query.executeUpdate();
 				System.out.println(ret);
 				session.getTransaction().commit();
-				System.out.println(" entry for URL =  " + URL);
+				System.out.println(" entry for URL =  " + image[1]);
 			
 			}catch (Exception e) {
 				// TODO Auto-generated catch block
