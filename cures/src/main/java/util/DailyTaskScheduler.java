@@ -55,7 +55,7 @@ public class DailyTaskScheduler {
     	  int adCountPerDay=0;
 		Query query = session.createNativeQuery(
 				"SELECT AdID,ImageLocation, StartDate, EndDate,(AdCount-AdDelivered)\r\n"
-				+ "FROM campaignads\r\n"
+				+ "FROM CampaignAds\r\n"
 				+ "WHERE CURDATE() BETWEEN StartDate AND EndDate and ReviewStatus=1");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 
