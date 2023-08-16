@@ -55,7 +55,7 @@ public class SimpleInterceptor implements HandlerInterceptor {
     	int res=0;
 	String substring = "444";
 	String[] image = URL.split(substring, 2); 
-	
+	System.out.println(image[1]);
     	Integer AdID = null;
     	Query query1 = session.createNativeQuery(
 				"Select stats.AdID ID1, c.AdID  ID2 from AdsStats stats inner join CampaignAds  c where  stats.AdID=c.AdID and c.ImageLocation= '" + image[1] + "';");
@@ -64,7 +64,7 @@ public class SimpleInterceptor implements HandlerInterceptor {
 		for (Object[] objects : results) {
 		
 			AdID = (Integer) objects[0];
-	
+			System.out.println(AdID);
 		}
 		
 		if (AdID == null)
