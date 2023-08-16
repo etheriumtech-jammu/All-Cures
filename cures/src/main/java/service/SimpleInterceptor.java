@@ -53,9 +53,12 @@ public class SimpleInterceptor implements HandlerInterceptor {
     	Session session = HibernateUtil.buildSessionFactory();
     	session.beginTransaction();
     	int res=0;
+	String substring = "444";
+	String[] image = input.split(substring, 2); 
+	
     	Integer AdID = null;
     	Query query1 = session.createNativeQuery(
-				"Select stats.AdID ID1, c.AdID  ID2 from AdsStats stats inner join CampaignAds  c where  stats.AdID=c.AdID and c.ImageLocation= '" + URL + "';");
+				"Select stats.AdID ID1, c.AdID  ID2 from AdsStats stats inner join CampaignAds  c where  stats.AdID=c.AdID and c.ImageLocation= '" + image[1] + "';");
     	List<Object[]> results = (List<Object[]>) query1.getResultList();
 		
 		for (Object[] objects : results) {
