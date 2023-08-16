@@ -54,7 +54,7 @@ public class DailyTaskScheduler {
     	Session session = HibernateUtil.buildSessionFactory();
     	  int adCountPerDay=0;
 		Query query = session.createNativeQuery(
-				"SELECT AdID,ImageLocation, StartDate, EndDate,(AdCount-AdDelivered)\r\n"
+				"SELECT AdID,ImageLocation, StartDate, EndDate,AdCount,(AdCount-AdDelivered)\r\n"
 				+ "FROM CampaignAds\r\n"
 				+ "WHERE CURDATE() BETWEEN StartDate AND EndDate and ReviewStatus=1");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
@@ -67,7 +67,9 @@ public class DailyTaskScheduler {
 		    String ImageLocation = (String) objects[1];
 		    Date StartDate=(Date)objects[2];
 		    Date EndDate=(Date)objects[3];
-		   BigInteger AdCount=(BigInteger) objects[4];
+		   Integer Count = (Integer) objects[4];
+		   BigInteger AdCount=(BigInteger) objects[5] != null ? (BigInteger) objects[5] : new BigInteger(Count.toString());
+		   
 		    Object[] dataArray = new Object[]{AdID, ImageLocation,StartDate,EndDate,AdCount};
 		    arrayDataList.add(dataArray);
 		    adCountPerDay = calculateAdCountPerDay(arrayDataList);
