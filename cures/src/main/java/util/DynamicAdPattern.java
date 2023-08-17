@@ -16,20 +16,20 @@ public class DynamicAdPattern {
     static List<String> generateAds(LinkedHashMap<String, Double> AdRatios) {
     	int rotationCount=10;
         List<String> ads = new ArrayList<>();
-        int totalAds = calculateTotalAds(AdRatios, rotationCount);
+  //      int totalAds = calculateTotalAds(AdRatios, rotationCount);
         Map<String, Integer> AdCounts = new HashMap<>();
         
         for (Map.Entry<String, Double> entry : AdRatios.entrySet()) {
             AdCounts.put(entry.getKey(), 0);
         }
         
-        System.out.println(totalAds);
+//        System.out.println(totalAds);
         for (Map.Entry<String, Double> entry : AdRatios.entrySet()) {
         	
             String Ad = entry.getKey();
    
             double ratio = entry.getValue();
-            int adCount = calculateAdCount(ratio, totalAds);
+            int adCount = calculateAdCount(ratio, rotationCount);
             int currentAdCount =AdCounts.get(Ad);
                      
             System.out.println(adCount);
