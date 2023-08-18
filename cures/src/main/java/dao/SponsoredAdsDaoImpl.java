@@ -1066,16 +1066,24 @@ public static List ListCampaigns() {
 		return arrayDataList;
 
 		}
-	public static String AdsURL( Map<LocalDate, Integer> requestCountMap ) throws JsonProcessingException {
+	public static String AdsURL( Map<LocalDate, Integer> requestCountMap, Integer AdType ) throws JsonProcessingException {
 		String URL=null;
 		LocalDate currentDate = LocalDate.now();
 		int count = requestCountMap.getOrDefault(currentDate, 0);
+		String key=null;
 		System.out.println("Index" + count);
 		 if (mcc == null) {
 	 			initializeCacheClient();
 	 		}
+		if(AdType ==1)
+		{
+			key="Banner"+String.valueOf(count);
+		}
+		else
+		{
+			key="Left"+String.valueOf(count);
+		}
 		boolean flag = false;
-		String key=String.valueOf(count);
 		boolean val=mcc.getAvailableServers().isEmpty();
 		 System.out.println("Memcached status:" + val);
 		 if(val)
