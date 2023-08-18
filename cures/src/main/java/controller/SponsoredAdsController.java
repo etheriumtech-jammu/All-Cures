@@ -23,7 +23,9 @@ import dao.SponsoredAdsDaoImpl;
 @RequestMapping(path = "/sponsored")
 public class SponsoredAdsController {
 
-	private Map<LocalDate, Integer> requestCountMap = new ConcurrentHashMap<>();
+	 // A map to store request counters for each date
+    private Map<LocalDate, Integer> BannerCountMap = new ConcurrentHashMap<>();
+    private Map<LocalDate, Integer> LeftCountMap = new ConcurrentHashMap<>();
     	private LocalDate lastRequestDate = null;
 	@RequestMapping(value = "/create/company", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody Integer addcompanies(@RequestBody HashMap Company_Map,HttpServletRequest request ) throws Exception {
@@ -169,22 +171,35 @@ public class SponsoredAdsController {
 		return SponsoredAdsDaoImpl.ListAdsTypes();
 	}
 
-	@RequestMapping(value = "/list/ads/url", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody String listadsURL(HttpServletRequest request) throws Exception {
+	@RequestMapping(value = "/list/ads/url/{AdType}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody String listadsURL(@PathVariable int AdType,HttpServletRequest request) throws Exception {
 		LocalDate currentDate = LocalDate.now();
+		String Res=null;
+		if(AdType ==1)
+		{
+			  // Reset the request counter if a new day has started
+	        if (lastRequestDate == null || !lastRequestDate.equals(currentDate)) {
+	            BannerCountMap.clear();
+	            lastRequestDate = currentDate;
+	        }
 
-        // Reset the request counter if a new day has started
-        if (lastRequestDate == null || !lastRequestDate.equals(currentDate)) {
-            requestCountMap.clear();
-            lastRequestDate = currentDate;
-        }
-
-       System.out.println("Count : " + requestCountMap.getOrDefault(currentDate, 0));
-    
-       String Res= SponsoredAdsDaoImpl.AdsURL(requestCountMap);
-       request.setAttribute("customData", Res );
+	       System.out.println("Count : " + BannerCountMap.getOrDefault(currentDate, 0));
+	       Res= SponsoredAdsDaoImpl.AdsURL(BannerCountMap,AdType);
+	       request.setAttribute("customData", Res );
+		}
+		if(AdType ==2)
+		{
+			  // Reset the request counter if a new day has started
+	        if (lastRequestDate == null || !lastRequestDate.equals(currentDate)) {
+	            LeftCountMap.clear();
+	            lastRequestDate = currentDate;
+	        }
+	       System.out.println("Count : " + LeftCountMap.getOrDefault(currentDate, 0));
+	       Res= SponsoredAdsDaoImpl.AdsURL(LeftCountMap,AdType);
+	       request.setAttribute("customData", Res );
+		}
+      
 		return Res;
-		
 		
 	}
 	
