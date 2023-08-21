@@ -64,6 +64,7 @@ public class SimpleInterceptor implements HandlerInterceptor {
 		for (Object[] objects : results) {
 		
 			AdID = (Integer) objects[0];
+			CampaignAdID=(Integer) objects[1];
 			System.out.println(AdID);
 		}
 		
@@ -77,6 +78,7 @@ public class SimpleInterceptor implements HandlerInterceptor {
 				System.out.println(ret);
 				session.getTransaction().commit();
 				System.out.println(" entry for URL =  " + URL);
+				update(CampaignAdID);
 			
 			}catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -96,6 +98,7 @@ public class SimpleInterceptor implements HandlerInterceptor {
 				System.out.println(ret);
 				session.getTransaction().commit();
 				System.out.println(" entry for URL =  " + image[1]);
+				update(CampaignAdID);
 			
 			}catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -103,5 +106,20 @@ public class SimpleInterceptor implements HandlerInterceptor {
 			}
 		}
     	
+    }
+	public void update(Integer CampaignAdID)
+    {
+    	Session session1 = HibernateUtil.buildSessionFactory();
+    	session1.beginTransaction();
+    	Query query = session1.createNativeQuery(
+   			"Update allcures1.campaignads set AdDelivered=AdDelivered + 1 where AdID= " + CampaignAdID + ";");
+    	try {
+			int ret = query.executeUpdate();
+			System.out.println(ret);
+			session1.getTransaction().commit();
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 }
