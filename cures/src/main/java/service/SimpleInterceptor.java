@@ -114,7 +114,7 @@ public class SimpleInterceptor implements HandlerInterceptor {
     	Session session1 = HibernateUtil.buildSessionFactory();
     	session1.beginTransaction();
     	Query query = session1.createNativeQuery(
-   			"Update allcures1.campaignads set AdDelivered=AdDelivered + 1 where AdID= " + CampaignAdID + ";");
+   			"Update campaignads set AdDelivered=AdDelivered + 1 where AdID= " + CampaignAdID + ";");
     	try {
 			int ret = query.executeUpdate();
 			System.out.println(ret);
