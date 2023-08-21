@@ -3,6 +3,7 @@ package service;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
