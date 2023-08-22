@@ -35,12 +35,12 @@ public class DynamicAdPattern {
             for (int i = 0; i < adCount; i++) {
             	  currentAdCount=AdCounts.get(Ad); 	  
    //        	ads.add(Ad + " Ad " + (i + 1));
-           	System.out.println(ads);
+   //        	System.out.println(ads);
            	  ads.add(Ad);
             	AdCounts.put(Ad, currentAdCount + 1);
             }
         }
-        System.out.println(ads);
+//        System.out.println(ads);
         return ads;
     }
 
@@ -49,13 +49,13 @@ public class DynamicAdPattern {
         for (Double ratio : brandRatios.values()) {
             totalAds += calculateAdCount(ratio, rotationCount);
         }
-        System.out.println("TotalAds"+totalAds);
+//        System.out.println("TotalAds"+totalAds);
         return totalAds;
     }
 
     private static int calculateAdCount(double ratio, int totalAds) {
     	int roundedResult = (int) Math.ceil(ratio * totalAds);
-    	System.out.println(roundedResult);
+//    	System.out.println(roundedResult);
         return roundedResult;
         }
   
