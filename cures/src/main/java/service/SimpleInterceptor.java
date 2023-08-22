@@ -79,8 +79,7 @@ public class SimpleInterceptor implements HandlerInterceptor {
 				int ret = query.executeUpdate();
 			if (ret > 0) {
 				  Query getAdIDQuery = session.createNativeQuery(
-				        "SELECT c.AdID FROM CampaignAds c WHERE c.ImageLocation = = :url")
-				        .setParameter("url",image[1] );
+				        "SELECT c.AdID FROM CampaignAds c WHERE c.ImageLocation = '" + image[1] + "';");
 				    
 				    CampaignAdID = (Integer) getAdIDQuery.uniqueResult();
 				    
