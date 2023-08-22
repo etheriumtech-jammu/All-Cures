@@ -37,11 +37,11 @@ public class SimpleInterceptor implements HandlerInterceptor {
     	{
     		System.out.println(customData);
     	}
-    	else if(customData!="All Ads are Served")
+    	else if(customData=="All Ads are Served")
     	{
     		System.out.println(customData);
     	}
- 	 else if(customData!=null )
+    	if(customData!=null && customData!="All Ads are Served" )
     	{
     		store(customData);
         	
