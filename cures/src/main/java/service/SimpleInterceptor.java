@@ -41,7 +41,7 @@ public class SimpleInterceptor implements HandlerInterceptor {
     	{
     		System.out.println(customData);
     	}
-    	if(customData!=null )
+ 	 else if(customData!=null )
     	{
     		store(customData);
         	
