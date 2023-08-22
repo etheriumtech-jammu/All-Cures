@@ -108,7 +108,7 @@ public class SponsoredAdsDaoImpl {
 					insertStr_values += "'" + (Date) (campaignDetail.getValue()) + "' , ";
 				}
 				else
-				{
+			{
 					insertStr_values += "'" + (String) (campaignDetail.getValue()) + "' , ";
 				}
 				
@@ -177,8 +177,8 @@ public class SponsoredAdsDaoImpl {
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
 			System.out.println("Admap " + AdMap);
-			HashMap hm2=uploadFile(image);
-			System.out.println(hm2);
+			ret=uploadFile(image);
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -189,7 +189,7 @@ public class SponsoredAdsDaoImpl {
 		return ret;
 	}
 
-	public static HashMap uploadFile( CommonsMultipartFile image) {
+	public static int uploadFile( CommonsMultipartFile image) {
 		
 		Session session = HibernateUtil.buildSessionFactory();
 		Query query = session.createNativeQuery(
@@ -240,15 +240,8 @@ public class SponsoredAdsDaoImpl {
 		    }
 		    e.printStackTrace();
 		} 
-		HashMap hm = new HashMap();
-		if(ret==1)
-		{
-			hm.put("success", 1);
-		}
-		else {
-			hm.put("fail", 0);
-		}
-		return hm;
+		
+		return ret;
 	}
 		
 		
