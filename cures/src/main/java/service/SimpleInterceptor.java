@@ -54,13 +54,13 @@ public class SimpleInterceptor implements HandlerInterceptor {
     	Session session = HibernateUtil.buildSessionFactory();
     	session.beginTransaction();
     	int res=0;
-	String substring = "444";
-	String[] image = URL.split(substring, 2); 
-	System.out.println(image[1]);
+//	String substring = "444";
+//	String[] image = URL.split(substring, 2); 
+//	System.out.println(image[1]);
     	Integer AdID = null;
 	Integer CampaignAdID=null;
     	Query query1 = session.createNativeQuery(
-				"Select stats.AdID ID1, c.AdID  ID2 from AdsStats stats inner join CampaignAds  c where  stats.AdID=c.AdID and c.ImageLocation= '" + image[1] + "';");
+				"Select stats.AdID ID1, c.AdID  ID2 from AdsStats stats inner join CampaignAds  c where  stats.AdID=c.AdID and c.ImageLocation= '" + URL + "';");
     	List<Object[]> results = (List<Object[]>) query1.getResultList();
 		
 		for (Object[] objects : results) {
@@ -73,13 +73,13 @@ public class SimpleInterceptor implements HandlerInterceptor {
 		if (AdID == null)
 		{
 			Query query = session.createNativeQuery(
-	    			"INSERT INTO AdsStats (AdID, Impressions) SELECT c.AdID, 1 FROM CampaignAds c WHERE c.ImageLocation = '" + image[1] + "';");
+	    			"INSERT INTO AdsStats (AdID, Impressions) SELECT c.AdID, 1 FROM CampaignAds c WHERE c.ImageLocation = '" + URL + "';");
 	    		System.out.println(query);
 	    	try {
 				int ret = query.executeUpdate();
 			if (ret > 0) {
 				  Query getAdIDQuery = session.createNativeQuery(
-				        "SELECT c.AdID FROM CampaignAds c WHERE c.ImageLocation = '" + image[1] + "';");
+				        "SELECT c.AdID FROM CampaignAds c WHERE c.ImageLocation = '" + URL + "';");
 				    
 				    CampaignAdID = (Integer) getAdIDQuery.uniqueResult();
 				    
@@ -103,13 +103,13 @@ public class SimpleInterceptor implements HandlerInterceptor {
 	    			"UPDATE AdsStats\r\n"
 	    			+ "JOIN CampaignAds ON AdsStats.AdID = CampaignAds.AdID\r\n"
 	    			+ "SET AdsStats.Impressions =AdsStats.Impressions + 1\r\n"
-	    			+ "WHERE CampaignAds.ImageLocation = '" + image[1] + "';");
+	    			+ "WHERE CampaignAds.ImageLocation = '" + URL + "';");
 	    		
 	    	try {
 				int ret = query.executeUpdate();
 				System.out.println(ret);
 				session.getTransaction().commit();
-				System.out.println(" entry for URL =  " + image[1]);
+	//			System.out.println(" entry for URL =  " + image[1]);
 				update(CampaignAdID);
 			
 			}catch (Exception e) {
