@@ -23,6 +23,9 @@ import net.spy.memcached.ConnectionFactoryBuilder;
 import net.spy.memcached.FailureMode;
 import net.spy.memcached.MemcachedClient;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 public class DailyTaskScheduler {
 	public static MemcachedClient mcc = null;
 	private static final String BANNER_KEY_LIST_KEY = "BannerkeyList";
@@ -39,9 +42,15 @@ public class DailyTaskScheduler {
 
         scheduler.scheduleAtFixedRate(() -> {
             // Perform your daily calculations and update cache here
-            performDailyCalculationsAndCacheUpdate();
-            DisplayPattern();
+             performDailyCalculationsAndCacheUpdate();
+            try {
+				DisplayPattern();
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }, initialDelay, period, TimeUnit.SECONDS);
+            
             
             
     }
