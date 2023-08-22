@@ -77,6 +77,17 @@ public class SimpleInterceptor implements HandlerInterceptor {
 	    		System.out.println(query);
 	    	try {
 				int ret = query.executeUpdate();
+			if (ret > 0) {
+				  Query getAdIDQuery = session.createNativeQuery(
+				        "SELECT c.AdID FROM CampaignAds c WHERE c.ImageLocation = = :url")
+				        .setParameter("url",image[1] );
+				    
+				    CampaignAdID = (Integer) getAdIDQuery.uniqueResult();
+				    
+				    // Now, 'generatedAdID' contains the AdID value
+				    System.out.println("Generated AdID: " + CampaignAdID);
+				}
+				
 				System.out.println(ret);
 				session.getTransaction().commit();
 				System.out.println(" entry for URL =  " + URL);
