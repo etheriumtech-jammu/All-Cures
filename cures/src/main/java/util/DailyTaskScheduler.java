@@ -32,16 +32,16 @@ public class DailyTaskScheduler {
 	 static int LeftrotationCount1=0;
 	 
     public static void main(String[] args) throws JsonProcessingException {    	
-   //     ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-   //     long initialDelay = calculateInitialDelay(); // Calculate the initial delay until midnight
-  //      long period = TimeUnit.DAYS.toSeconds(1); // Run every 24 hours
+        long initialDelay = calculateInitialDelay(); // Calculate the initial delay until midnight
+        long period = TimeUnit.DAYS.toSeconds(1); // Run every 24 hours
 
-  //      scheduler.scheduleAtFixedRate(() -> {
+        scheduler.scheduleAtFixedRate(() -> {
             // Perform your daily calculations and update cache here
             performDailyCalculationsAndCacheUpdate();
             DisplayPattern();
-  //      }, initialDelay, period, TimeUnit.SECONDS);
+        }, initialDelay, period, TimeUnit.SECONDS);
             
             
     }
