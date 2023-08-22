@@ -211,7 +211,7 @@ public class SponsoredAdsDaoImpl {
         String renamedFilename = "Ad_" + res + "." + FilenameUtils.getExtension(filename);
 
 		System.out.println(path + "/" + renamedFilename);
-		String finalPath=path + "/" + renamedFilename;
+		String finalPath="/cures_articleimages/"+ "cures_adsimages" + "/" + renamedFilename;
 		try {
 			byte barr[] = image.getBytes();
 
