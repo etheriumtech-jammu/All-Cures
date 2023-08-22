@@ -35,7 +35,7 @@ public class SimplifiedRatioCalculator {
 
     public static LinkedHashMap calculateSimplifiedRatio( LinkedHashMap<String, Integer> brandAdCounts) {
     	LinkedHashMap<String, Double> Results = new LinkedHashMap<>();
-    	System.out.println("brandAdCounts"+brandAdCounts);
+//    	System.out.println("brandAdCounts"+brandAdCounts);
     	List<Integer> values = new ArrayList<>();
   	  List<String> brands = new ArrayList<>();
     	for (Map.Entry<String, Integer> entry : brandAdCounts.entrySet()) {
@@ -63,7 +63,7 @@ public class SimplifiedRatioCalculator {
             ratioBuilder.append(decimalRatioValue).append(":");
         }
         ratioBuilder.setLength(ratioBuilder.length() - 1); // Remove the trailing colon
-        System.out.println("Results"+Results);
+//        System.out.println("Results"+Results);
  //       return ratioBuilder.toString();
         return Results;
     }
