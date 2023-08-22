@@ -35,11 +35,11 @@ public class SimpleInterceptor implements HandlerInterceptor {
     	String customData = (String) request.getAttribute("customData");
     	if(customData==null)
     	{
-    		System.out.println(customData);
+    //		System.out.println(customData);
     	}
     	else if(customData=="All Ads are Served")
     	{
-    		System.out.println(customData);
+  //  		System.out.println(customData);
     	}
     	if(customData!=null && customData!="All Ads are Served" )
     	{
@@ -67,14 +67,14 @@ public class SimpleInterceptor implements HandlerInterceptor {
 		
 			AdID = (Integer) objects[0];
 			CampaignAdID=(Integer) objects[1];
-			System.out.println(AdID);
+	//		System.out.println(AdID);
 		}
 		
 		if (AdID == null)
 		{
 			Query query = session.createNativeQuery(
 	    			"INSERT INTO AdsStats (AdID, Impressions) SELECT c.AdID, 1 FROM CampaignAds c WHERE c.ImageLocation = '" + URL + "';");
-	    		System.out.println(query);
+	   // 		System.out.println(query);
 	    	try {
 				int ret = query.executeUpdate();
 			if (ret > 0) {
@@ -84,12 +84,12 @@ public class SimpleInterceptor implements HandlerInterceptor {
 				    CampaignAdID = (Integer) getAdIDQuery.uniqueResult();
 				    
 				    // Now, 'generatedAdID' contains the AdID value
-				    System.out.println("Generated AdID: " + CampaignAdID);
+		//		    System.out.println("Generated AdID: " + CampaignAdID);
 				}
 				
 				System.out.println(ret);
 				session.getTransaction().commit();
-				System.out.println(" entry for URL =  " + URL);
+	//			System.out.println(" entry for URL =  " + URL);
 				update(CampaignAdID);
 			
 			}catch (Exception e) {
