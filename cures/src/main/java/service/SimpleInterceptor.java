@@ -90,7 +90,7 @@ public class SimpleInterceptor implements HandlerInterceptor {
 				System.out.println(ret);
 				session.getTransaction().commit();
 	//			System.out.println(" entry for URL =  " + URL);
-				update(CampaignAdID);
+		//		update(CampaignAdID);
 			
 			}catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -110,7 +110,7 @@ public class SimpleInterceptor implements HandlerInterceptor {
 				System.out.println(ret);
 				session.getTransaction().commit();
 	//			System.out.println(" entry for URL =  " + image[1]);
-				update(CampaignAdID);
+		//		update(CampaignAdID);
 			
 			}catch (Exception e) {
 				// TODO Auto-generated catch block
