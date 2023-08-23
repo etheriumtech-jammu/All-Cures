@@ -1093,18 +1093,39 @@ public static List ListCampaigns() {
 			 
 //			 URL ="https://uat.all-cures.com:444" + (String) mcc.get(key);
 			 URL=(String) mcc.get(key);
-			// Update the map with the new count
-		        requestCountMap.put(currentDate,requestCountMap.getOrDefault(currentDate, 0) + 1);
-			 if( (String) mcc.get(key)==null)
+			  if( URL==null)
 			 {
 				URL="All Ads are Served"; 
 			 }
-		 }
+			 else{
+			// Update the map with the new count
+		        requestCountMap.put(currentDate,requestCountMap.getOrDefault(currentDate, 0) + 1);
+			 try{
+			update(URL);
+			 }catch(Exception e)
+			 {
+			e.printStackTrace();	 
+			 }
+			 }
 		  return URL;
 		
 		
 	}
-	
+	public void update(String URL)
+    {
+    	Session session1 = HibernateUtil.buildSessionFactory();
+    	session1.beginTransaction();
+    	Query query = session1.createNativeQuery(
+   			"Update CampaignAds set AdDelivered=AdDelivered + 1 WHERE ImageLocation = '" + URL + "';");
+    	try {
+			int ret = query.executeUpdate();
+			System.out.println(ret);
+			session1.getTransaction().commit();
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
 	public static MemcachedClient initializeCacheClient() {
 		try {
 			Constant.log("Trying Connection to Memcache server", 0);
