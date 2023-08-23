@@ -1108,7 +1108,7 @@ public static List ListCampaigns() {
 			// Update the map with the new count
 		        requestCountMap.put(currentDate,requestCountMap.getOrDefault(currentDate, 0) + 1);
 			 try{
-			update(URL);
+//			update(URL);
 			 }catch(Exception e)
 			 {
 			e.printStackTrace();	 
