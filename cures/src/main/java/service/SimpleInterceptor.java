@@ -56,11 +56,11 @@ public class SimpleInterceptor implements HandlerInterceptor {
     	int res=0;
     	Integer AdID = null;
 	Integer CampaignAdID=null;
-	    System.out.println("Current Date in Milliseconds: before select " + currentTimeMillis);
+	    System.out.println("Current Date in Milliseconds: before select " + System.currentTimeMillis());
     	Query query1 = session.createNativeQuery(
 		"Select stats.AdID ID1, c.AdID  ID2 from AdsStats stats inner join CampaignAds  c where  stats.AdID=c.AdID and c.ImageLocation= '" + URL + "';");
     	List<Object[]> results = (List<Object[]>) query1.getResultList();
-		System.out.println("Current Date in Milliseconds: after select " + currentTimeMillis);
+		System.out.println("Current Date in Milliseconds: after select " + System.currentTimeMillis());
 		for (Object[] objects : results) {
 			AdID = (Integer) objects[0];
 	//		System.out.println(AdID);
@@ -68,16 +68,16 @@ public class SimpleInterceptor implements HandlerInterceptor {
 		
 		if (AdID == null)
 		{
-			System.out.println("Current Date in Milliseconds: before insert " + currentTimeMillis);
+			System.out.println("Current Date in Milliseconds: before insert " + System.currentTimeMillis());
 			Query query = session.createNativeQuery(
 	    			"INSERT INTO AdsStats (AdID, Impressions) SELECT c.AdID, 1 FROM CampaignAds c WHERE c.ImageLocation = '" + URL + "';");
 	   // 		System.out.println(query);
 	    	try {
-			System.out.println("Current Date in Milliseconds: before execution of insert " + currentTimeMillis);
+			System.out.println("Current Date in Milliseconds: before execution of insert " + System.currentTimeMillis());
 				int ret = query.executeUpdate();				
 				System.out.println(ret);
 				session.getTransaction().commit();
-			System.out.println("Current Date in Milliseconds: after execution of insert " + currentTimeMillis);
+			System.out.println("Current Date in Milliseconds: after execution of insert " + System.currentTimeMillis());
 	//			System.out.println(" entry for URL =  " + URL);
 				update(URL);
 			
@@ -88,7 +88,7 @@ public class SimpleInterceptor implements HandlerInterceptor {
 		}
 		else
 		{
-			System.out.println("Current Date in Milliseconds: before execution of update " + currentTimeMillis);
+			System.out.println("Current Date in Milliseconds: before execution of update " + System.currentTimeMillis());
 			Query query = session.createNativeQuery(
 	    			"UPDATE AdsStats\r\n"
 	    			+ "JOIN CampaignAds ON AdsStats.AdID = CampaignAds.AdID\r\n"
@@ -100,7 +100,7 @@ public class SimpleInterceptor implements HandlerInterceptor {
 			
 				System.out.println(ret);
 				session.getTransaction().commit();
-			System.out.println("Current Date in Milliseconds: after execution of update " + currentTimeMillis);
+			System.out.println("Current Date in Milliseconds: after execution of update " + System.currentTimeMillis());
 	//			System.out.println(" entry for URL =  " + image[1]);
 		//		update(URL);
 			
@@ -115,14 +115,14 @@ public class SimpleInterceptor implements HandlerInterceptor {
     {
     	Session session1 = HibernateUtil.buildSessionFactory();
     	session1.beginTransaction();
-	    System.out.println("Current Date in Milliseconds: before execution of update CampaignAds" + currentTimeMillis);
+	    System.out.println("Current Date in Milliseconds: before execution of update CampaignAds" + System.currentTimeMillis());
     	Query query = session1.createNativeQuery(
    			"Update CampaignAds set AdDelivered=AdDelivered + 1 WHERE ImageLocation = '" + URL + "';");
     	try {
 			int ret = query.executeUpdate();
 			System.out.println(ret);
 			session1.getTransaction().commit();
-		System.out.println("Current Date in Milliseconds: after execution of update CampaignAds" + currentTimeMillis);
+		System.out.println("Current Date in Milliseconds: after execution of update CampaignAds" + System.currentTimeMillis());
 		}catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
