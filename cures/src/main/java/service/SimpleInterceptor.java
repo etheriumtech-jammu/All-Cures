@@ -56,9 +56,9 @@ public class SimpleInterceptor implements HandlerInterceptor {
     	int res=0;
     	Integer AdID = null;
 	Integer CampaignAdID=null;
+	    System.out.println("Current Date in Milliseconds: before select " + currentTimeMillis);
     	Query query1 = session.createNativeQuery(
-		System.out.println("Current Date in Milliseconds: before select " + currentTimeMillis);
-				"Select stats.AdID ID1, c.AdID  ID2 from AdsStats stats inner join CampaignAds  c where  stats.AdID=c.AdID and c.ImageLocation= '" + URL + "';");
+		"Select stats.AdID ID1, c.AdID  ID2 from AdsStats stats inner join CampaignAds  c where  stats.AdID=c.AdID and c.ImageLocation= '" + URL + "';");
     	List<Object[]> results = (List<Object[]>) query1.getResultList();
 		System.out.println("Current Date in Milliseconds: after select " + currentTimeMillis);
 		for (Object[] objects : results) {
