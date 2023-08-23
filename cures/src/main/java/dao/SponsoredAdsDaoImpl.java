@@ -1107,25 +1107,29 @@ public static List ListCampaigns() {
 			// Update the map with the new count
 		        requestCountMap.put(currentDate,requestCountMap.getOrDefault(currentDate, 0) + 1);
 			 try{
-//			update(URL);
+			update(URL);
 			 }catch(Exception e)
 			 {
 			e.printStackTrace();	 
 			 }
 			 }
 		 }
+		System.out.println("Current Date in Milliseconds: before sending the response " + System.currentTimeMillis());
 		  return URL;
+		
 	}
 	public static void update(String URL)
     {
     	Session session1 = HibernateUtil.buildSessionFactory();
     	session1.beginTransaction();
+	System.out.println("Current Date in Milliseconds: before update " + System.currentTimeMillis());
     	Query query = session1.createNativeQuery(
    			"Update CampaignAds set AdDelivered=AdDelivered + 1 WHERE ImageLocation = '" + URL + "';");
     	try {
 			int ret = query.executeUpdate();
 			System.out.println(ret);
 			session1.getTransaction().commit();
+	System.out.println("Current Date in Milliseconds: after update " + System.currentTimeMillis());
 		}catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
