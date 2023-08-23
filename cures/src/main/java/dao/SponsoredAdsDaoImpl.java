@@ -1090,13 +1090,15 @@ public static List ListCampaigns() {
 		 
 		 if(val== false || flag == true)
 		 {
-			 long currentTimeMillis = System.currentTimeMillis();
+			 
 
 		        // Print the current date in milliseconds
-		        System.out.println("Current Date in Milliseconds: before memcached " + currentTimeMillis);
+			
+		        System.out.println("Current Date in Milliseconds: before memcached " + System.currentTimeMillis());
 //			 URL ="https://uat.all-cures.com:444" + (String) mcc.get(key);
 			 URL=(String) mcc.get(key);
-			 System.out.println("Current Date in Milliseconds: after memcached " + currentTimeMillis);
+			
+			 System.out.println("Current Date in Milliseconds: after memcached " + System.currentTimeMillis());
 			  if( URL==null)
 			 {
 				URL="All Ads are Served"; 
