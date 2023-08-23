@@ -1107,7 +1107,7 @@ public static List ListCampaigns() {
 			// Update the map with the new count
 		        requestCountMap.put(currentDate,requestCountMap.getOrDefault(currentDate, 0) + 1);
 			 try{
-	//		update(URL);
+			update(URL);
 			 }catch(Exception e)
 			 {
 			e.printStackTrace();	 
@@ -1118,6 +1118,7 @@ public static List ListCampaigns() {
 		  return URL;
 		
 	}
+	  @Async
 	public static void update(String URL)
     {
     	Session session1 = HibernateUtil.buildSessionFactory();
