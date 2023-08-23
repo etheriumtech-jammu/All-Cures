@@ -43,7 +43,7 @@ public class SimpleInterceptor implements HandlerInterceptor {
     	}
     	if(customData!=null && customData!="All Ads are Served" )
     	{
-    		store(customData);
+    		update(customData);
         	
     	}
     		
@@ -119,12 +119,12 @@ public class SimpleInterceptor implements HandlerInterceptor {
 		}
     	
     }
-	public void update(Integer CampaignAdID)
+	public void update(String URL)
     {
     	Session session1 = HibernateUtil.buildSessionFactory();
     	session1.beginTransaction();
     	Query query = session1.createNativeQuery(
-   			"Update CampaignAds set AdDelivered=AdDelivered + 1 where AdID= " + CampaignAdID + ";");
+   			"Update CampaignAds set AdDelivered=AdDelivered + 1 WHERE ImageLocation = '" + URL + "';");
     	try {
 			int ret = query.executeUpdate();
 			System.out.println(ret);
