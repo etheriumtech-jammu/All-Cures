@@ -26,6 +26,7 @@ import org.hibernate.Transaction;
 import util.Constant;
 import util.HibernateUtil;
 import util.DailyTaskScheduler;
+import org.springframework.scheduling.annotation.Async;
 public class SponsoredAdsDaoImpl {
 
 	public static Set<String> keySet = new HashSet<>();
