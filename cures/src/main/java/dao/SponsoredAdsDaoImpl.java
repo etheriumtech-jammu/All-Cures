@@ -1107,12 +1107,10 @@ public static List ListCampaigns() {
 			e.printStackTrace();	 
 			 }
 			 }
+		 }
 		  return URL;
-		
-		
 	}
-	}
-	public void update(String URL)
+	public static void update(String URL)
     {
     	Session session1 = HibernateUtil.buildSessionFactory();
     	session1.beginTransaction();
