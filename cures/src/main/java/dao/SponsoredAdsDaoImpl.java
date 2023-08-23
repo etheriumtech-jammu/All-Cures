@@ -1111,6 +1111,7 @@ public static List ListCampaigns() {
 		
 		
 	}
+	}
 	public void update(String URL)
     {
     	Session session1 = HibernateUtil.buildSessionFactory();
