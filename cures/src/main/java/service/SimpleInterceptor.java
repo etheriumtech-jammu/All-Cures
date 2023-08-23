@@ -43,7 +43,7 @@ public class SimpleInterceptor implements HandlerInterceptor {
     	}
     	if(customData!=null && customData!="All Ads are Served" )
     	{
-    		update(customData);
+    		store(customData);
         	
     	}
     		
@@ -54,43 +54,32 @@ public class SimpleInterceptor implements HandlerInterceptor {
     	Session session = HibernateUtil.buildSessionFactory();
     	session.beginTransaction();
     	int res=0;
-//	String substring = "444";
-//	String[] image = URL.split(substring, 2); 
-//	System.out.println(image[1]);
     	Integer AdID = null;
 	Integer CampaignAdID=null;
     	Query query1 = session.createNativeQuery(
+		System.out.println("Current Date in Milliseconds: before select " + currentTimeMillis);
 				"Select stats.AdID ID1, c.AdID  ID2 from AdsStats stats inner join CampaignAds  c where  stats.AdID=c.AdID and c.ImageLocation= '" + URL + "';");
     	List<Object[]> results = (List<Object[]>) query1.getResultList();
-		
+		System.out.println("Current Date in Milliseconds: after select " + currentTimeMillis);
 		for (Object[] objects : results) {
-		
 			AdID = (Integer) objects[0];
-			CampaignAdID=(Integer) objects[1];
 	//		System.out.println(AdID);
 		}
 		
 		if (AdID == null)
 		{
+			System.out.println("Current Date in Milliseconds: before insert " + currentTimeMillis);
 			Query query = session.createNativeQuery(
 	    			"INSERT INTO AdsStats (AdID, Impressions) SELECT c.AdID, 1 FROM CampaignAds c WHERE c.ImageLocation = '" + URL + "';");
 	   // 		System.out.println(query);
 	    	try {
-				int ret = query.executeUpdate();
-			if (ret > 0) {
-				  Query getAdIDQuery = session.createNativeQuery(
-				        "SELECT c.AdID FROM CampaignAds c WHERE c.ImageLocation = '" + URL + "';");
-				    
-				    CampaignAdID = (Integer) getAdIDQuery.uniqueResult();
-				    
-				    // Now, 'generatedAdID' contains the AdID value
-		//		    System.out.println("Generated AdID: " + CampaignAdID);
-				}
-				
+			System.out.println("Current Date in Milliseconds: before execution of insert " + currentTimeMillis);
+				int ret = query.executeUpdate();				
 				System.out.println(ret);
 				session.getTransaction().commit();
+			System.out.println("Current Date in Milliseconds: after execution of insert " + currentTimeMillis);
 	//			System.out.println(" entry for URL =  " + URL);
-		//		update(CampaignAdID);
+				update(URL);
 			
 			}catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -99,6 +88,7 @@ public class SimpleInterceptor implements HandlerInterceptor {
 		}
 		else
 		{
+			System.out.println("Current Date in Milliseconds: before execution of update " + currentTimeMillis);
 			Query query = session.createNativeQuery(
 	    			"UPDATE AdsStats\r\n"
 	    			+ "JOIN CampaignAds ON AdsStats.AdID = CampaignAds.AdID\r\n"
@@ -107,10 +97,12 @@ public class SimpleInterceptor implements HandlerInterceptor {
 	    		
 	    	try {
 				int ret = query.executeUpdate();
+			
 				System.out.println(ret);
 				session.getTransaction().commit();
+			System.out.println("Current Date in Milliseconds: after execution of update " + currentTimeMillis);
 	//			System.out.println(" entry for URL =  " + image[1]);
-		//		update(CampaignAdID);
+		//		update(URL);
 			
 			}catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -123,12 +115,14 @@ public class SimpleInterceptor implements HandlerInterceptor {
     {
     	Session session1 = HibernateUtil.buildSessionFactory();
     	session1.beginTransaction();
+	    System.out.println("Current Date in Milliseconds: before execution of update CampaignAds" + currentTimeMillis);
     	Query query = session1.createNativeQuery(
    			"Update CampaignAds set AdDelivered=AdDelivered + 1 WHERE ImageLocation = '" + URL + "';");
     	try {
 			int ret = query.executeUpdate();
 			System.out.println(ret);
 			session1.getTransaction().commit();
+		System.out.println("Current Date in Milliseconds: after execution of update CampaignAds" + currentTimeMillis);
 		}catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
