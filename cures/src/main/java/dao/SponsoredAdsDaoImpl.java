@@ -1098,7 +1098,7 @@ public static List ListCampaigns() {
 		        System.out.println("Current Date in Milliseconds: before memcached " + System.currentTimeMillis());
 //			 URL ="https://uat.all-cures.com:444" + (String) mcc.get(key);
 			 URL=(String) mcc.get(key);
-			
+			System.out.println(URL);
 			 System.out.println("Current Date in Milliseconds: after memcached " + System.currentTimeMillis());
 			  if( URL==null)
 			 {
