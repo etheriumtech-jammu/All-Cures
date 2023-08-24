@@ -1132,11 +1132,75 @@ public static List ListCampaigns() {
 			System.out.println(ret);
 			session1.getTransaction().commit();
 	System.out.println("Current Date in Milliseconds: after update " + System.currentTimeMillis());
+		store(URL);
 		}catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
+	@Async
+	  public static void store(String URL)
+	    {
+	    	Session session = HibernateUtil.buildSessionFactory();
+	    	session.beginTransaction();
+	    	int res=0;
+	    	Integer AdID = null;
+	    	Integer CampaignAdID=null;
+	    	Query query1 = session.createNativeQuery(
+					"Select stats.AdID ID1, c.AdID  ID2 from AdsStats stats inner join CampaignAds  c where  stats.AdID=c.AdID and c.ImageLocation= '" + URL + "';");
+	    	List<Object[]> results = (List<Object[]>) query1.getResultList();
+			
+			for (Object[] objects : results) {
+			
+				AdID = (Integer) objects[0];
+				System.out.println("AdID" + AdID);
+				
+			}
+			
+			if (AdID == null)
+			{
+				System.out.println("Current Date in Milliseconds: before insert " + System.currentTimeMillis());
+				Query query = session.createNativeQuery(
+		    			"INSERT INTO AdsStats (AdID, Impressions) SELECT c.AdID, 1 FROM CampaignAds c WHERE c.ImageLocation = '" + URL + "';");
+		    		System.out.println(query);
+		    	try {
+					int ret = query.executeUpdate();
+					session.getTransaction().commit();
+		System.out.println("Current Date in Milliseconds: after insert " + System.currentTimeMillis());
+
+					System.out.println(" entry for URL =  " + URL);
+				
+				}catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else
+			{
+		System.out.println("Current Date in Milliseconds: before update " + System.currentTimeMillis());
+					Query query = session.createNativeQuery(
+		    			"UPDATE AdsStats\r\n"
+		    			+ "JOIN CampaignAds ON AdsStats.AdID = CampaignAds.AdID\r\n"
+		    			+ "SET AdsStats.Impressions = AdsStats.Impressions + 1\r\n"
+		    			+ "WHERE CampaignAds.ImageLocation = '" + URL + "';");
+		    		
+		    	try {
+					int ret = query.executeUpdate();
+					System.out.println(ret);
+					session.getTransaction().commit();
+		System.out.println("Current Date in Milliseconds: after update adsstats " + System.currentTimeMillis());
+
+					System.out.println(" entry for URL =  " + URL);
+					
+				}catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+	    	
+	    }
+	  
+	
 	public static MemcachedClient initializeCacheClient() {
 		try {
 			Constant.log("Trying Connection to Memcache server", 0);
