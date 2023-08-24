@@ -102,7 +102,7 @@ public class SimpleInterceptor implements HandlerInterceptor {
 				session.getTransaction().commit();
 			System.out.println("Current Date in Milliseconds: after execution of update " + System.currentTimeMillis());
 	//			System.out.println(" entry for URL =  " + image[1]);
-		//		update(URL);
+				update(URL);
 			
 			}catch (Exception e) {
 				// TODO Auto-generated catch block
