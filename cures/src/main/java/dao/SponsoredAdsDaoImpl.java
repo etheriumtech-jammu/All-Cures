@@ -1132,7 +1132,7 @@ public static List ListCampaigns() {
 		if(AdType ==2)
 		{
 			int count = LeftCountMap.getOrDefault(currentDate, 0);
-			key="Left"+String.valueOf(count);
+			key="Left_0_"+String.valueOf(count);
 			 URL=(String) mcc.get(key);
 			 if (lastRequestDate == null || !lastRequestDate.equals(currentDate)) {
 		            LeftCountMap.clear();
