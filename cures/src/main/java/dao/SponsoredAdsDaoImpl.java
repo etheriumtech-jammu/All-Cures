@@ -25,7 +25,9 @@ import net.spy.memcached.MemcachedClient;
 import org.hibernate.Transaction;
 import util.Constant;
 import util.HibernateUtil;
+import java.util.concurrent.ConcurrentHashMap;
 import util.DailyTaskScheduler;
+import util.TargetAds;
 import org.springframework.scheduling.annotation.Async;
 public class SponsoredAdsDaoImpl {
 
