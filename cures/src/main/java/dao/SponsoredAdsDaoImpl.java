@@ -472,7 +472,7 @@ public class SponsoredAdsDaoImpl {
 		Query query = session.createNativeQuery(
 				 "SELECT ca.AdID, ca.CampaignID, cam.CampaignName, ca.DiseaseCondition, dc.dc_desc, ca.AdTypeID, at.AdTypeName,\r\n"
 				 + "       ca.AdTitle, ca.AdDescription, ca.AdCount, ca.AdDelivered, ca.ImageLocation, ca.ImageAltText,\r\n"
-				 + "       ca.StartDate, ca.EndDate, ca.CreateDate, ca.LastUpdatedDate, ca.ReviewStatus, ca.PaymentStatus\r\n"
+				 + "       ca.StartDate, ca.EndDate, ca.CreateDate, ca.LastUpdatedDate, ca.ReviewStatus, ca.PaymentStatus,ca.AdTargetID\r\n"
 				 + "FROM CampaignAds ca\r\n"
 				 + "JOIN disease_condition dc ON ca.DiseaseCondition = dc.dc_id\r\n"
 				 + "JOIN Campaign cam ON cam.CampaignID = ca.CampaignID\r\n"
@@ -514,7 +514,7 @@ public class SponsoredAdsDaoImpl {
 			Integer ReviewStatus= (Integer) objects[17];
 
 			Integer PaymentStatus= (Integer) objects[18];
-
+			Integer AdTargetID= (Integer) objects[19];
 			hm.put("AdID", AdID);
 			hm.put("CampaignID", CampaignID);
 			hm.put("CampaignName", CampaignName);
@@ -534,7 +534,7 @@ public class SponsoredAdsDaoImpl {
 			hm.put("LastUpdatedDate", LastUpdatedDate);
 			hm.put("ReviewStatus", ReviewStatus);
 			hm.put("PaymentStatus", PaymentStatus);
-
+			hm.put("AdTargetID", AdTargetID);
 
 			hmFinal.add(hm);
 
@@ -551,7 +551,7 @@ public class SponsoredAdsDaoImpl {
 		Query query = session.createNativeQuery(
 				"SELECT ca.CampaignID, cam.CampaignName, ca.DiseaseCondition, dc.dc_desc, ca.AdTypeID, at.AdTypeName,\r\n"
 				+ "       ca.AdTitle, ca.AdDescription, ca.AdCount, ca.AdDelivered, ca.ImageLocation, ca.ImageAltText,\r\n"
-				+ "       ca.StartDate, ca.EndDate, ca.CreateDate, ca.LastUpdatedDate, ca.ReviewStatus, ca.PaymentStatus\r\n"
+				+ "       ca.StartDate, ca.EndDate, ca.CreateDate, ca.LastUpdatedDate, ca.ReviewStatus, ca.PaymentStatus,ca.AdTargetID\r\n"
 				+ "FROM CampaignAds ca\r\n"
 				+ "JOIN disease_condition dc ON ca.DiseaseCondition = dc.dc_id\r\n"
 				+ "JOIN Campaign cam ON cam.CampaignID = ca.CampaignID\r\n"
@@ -593,7 +593,7 @@ public class SponsoredAdsDaoImpl {
 			Integer ReviewStatus= (Integer) objects[16];
 
 			Integer PaymentStatus= (Integer) objects[17];
-
+			Integer AdTargetID= (Integer) objects[18];
 			hm.put("CampaignID", CampaignID);
 			hm.put("CampaignName", CampaignName);
 			hm.put("DiseaseConditionID", DiseaseConditionID);
@@ -612,7 +612,7 @@ public class SponsoredAdsDaoImpl {
 			hm.put("LastUpdatedDate", LastUpdatedDate);
 			hm.put("ReviewStatus", ReviewStatus);
 			hm.put("PaymentStatus", PaymentStatus);
-
+			hm.put("AdTargetID", AdTargetID);
 
 			hmFinal.add(hm);
 
@@ -826,6 +826,10 @@ public class SponsoredAdsDaoImpl {
 		if (campaignAdsMap.containsKey("PaymentStatus")) {
 			updatestr += "`PaymentStatus` = '" + campaignAdsMap.get("PaymentStatus") + "',\r\n";
 		}
+		if (campaignAdsMap.containsKey("AdTargetID")) {
+			updatestr += "`AdTargetID` = '" + campaignAdsMap.get("AdTargetID") + "',\r\n";
+		}
+		
 		
 		updatestr+="LastUpdateddate='"  + date +  "'  ";
 		System.out.println();
