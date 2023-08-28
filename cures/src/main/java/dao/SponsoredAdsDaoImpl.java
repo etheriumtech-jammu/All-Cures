@@ -1172,7 +1172,7 @@ public static List ListCampaigns() {
 			 
 		        
 			 try{
-			update(URL);
+	//		update(URL);
 			 }catch(Exception e)
 			 {
 			e.printStackTrace();	 
