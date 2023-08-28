@@ -1063,7 +1063,7 @@ public static List ListCampaigns() {
 		return arrayDataList;
 
 		}
-	public static String AdsURL( Map<LocalDate, Integer> requestCountMap, Integer AdType ) throws JsonProcessingException {
+	public static String AdsURL(  Integer AdType, Integer DC_Cond ) throws JsonProcessingException {
 		String URL=null;
 		
 //		 Map<LocalDate, Integer> requestCountMap = null;
@@ -1172,7 +1172,7 @@ public static List ListCampaigns() {
 			 
 		        
 			 try{
-//			update(URL);
+			update(URL);
 			 }catch(Exception e)
 			 {
 			e.printStackTrace();	 
