@@ -31,6 +31,9 @@ public class SponsoredAdsDaoImpl {
 
 	public static Set<String> keySet = new HashSet<>();
 	public static MemcachedClient mcc = null;
+	private static Map<LocalDate, Integer> BannerCountMap = new ConcurrentHashMap<>();
+	    private static Map<LocalDate, Integer> LeftCountMap = new ConcurrentHashMap<>();
+	    private static LocalDate lastRequestDate = null;
 	public static Integer InsertCompaniesDetails( HashMap<String, Object> companyMap) {
 
 		Session session = HibernateUtil.buildSessionFactory();
@@ -1062,51 +1065,112 @@ public static List ListCampaigns() {
 		}
 	public static String AdsURL( Map<LocalDate, Integer> requestCountMap, Integer AdType ) throws JsonProcessingException {
 		String URL=null;
+		
+//		 Map<LocalDate, Integer> requestCountMap = null;
+		Integer total=0;
+		Integer displayed=0;
+		boolean flag = false;
 		LocalDate currentDate = LocalDate.now();
-		int count = requestCountMap.getOrDefault(currentDate, 0);
+//		int count = requestCountMap.getOrDefault(currentDate, 0);
 		String key=null;
-		System.out.println("Index" + count);
+	//	System.out.println("Index" + count);
 		 if (mcc == null) {
 	 			initializeCacheClient();
 	 		}
-		if(AdType ==1)
-		{
-			key="Banner"+String.valueOf(count);
-		}
-		else
-		{
-			key="Left"+String.valueOf(count);
-		}
-		boolean flag = false;
-		boolean val=mcc.getAvailableServers().isEmpty();
+		 boolean val=mcc.getAvailableServers().isEmpty();
 		 System.out.println("Memcached status:" + val);
 		 if(val)
 		 {
 			 System.out.println("Memcached Restarted");
 			 DailyTaskScheduler.performDailyCalculationsAndCacheUpdate();
 			 DailyTaskScheduler.DisplayPattern();
+			 TargetAds.update();
 			 flag =true;
 			 
 		 }
-		 
+
 		 if(val== false || flag == true)
 		 {
-			 
-
-		        // Print the current date in milliseconds
-			
-		        System.out.println("Current Date in Milliseconds: before memcached " + System.currentTimeMillis());
-//			 URL ="https://uat.all-cures.com:444" + (String) mcc.get(key);
+		 if(DC_Cond!=0)
+		 {
+		String count1=TargetAds.DC_AdCount.get(DC_Cond.toString());
+		System.out.println("count1"+count1);
+		if(count1!=null)
+		{
+			String []parts=count1.split(":");
+			total=Integer.parseInt(parts[0]);
+			displayed=Integer.parseInt(parts[1]);
+			System.out.println(total + displayed);
+			if(displayed<total)
+			{
+				String key1="Banner_" + DC_Cond + "_" + displayed;
+				 URL=(String) mcc.get(key1);
+				 
+			}
+			else
+			{
+				System.out.println("DC_Conds are served");
+				AdType=2;
+			}
+			 }
+		}
+		 
+		
+	
+		if(AdType ==1)
+		{
+			int count = BannerCountMap.getOrDefault(currentDate, 0);
+			key="Banner_0_"+String.valueOf(count);
+			System.out.println(key);
 			 URL=(String) mcc.get(key);
-			System.out.println(URL);
-			 System.out.println("Current Date in Milliseconds: after memcached " + System.currentTimeMillis());
+			 System.out.println(key + URL);
+			 if (lastRequestDate == null || !lastRequestDate.equals(currentDate)) {
+		            BannerCountMap.clear();
+		            lastRequestDate = currentDate;
+		        }
+		}
+		if(AdType ==2)
+		{
+			int count = LeftCountMap.getOrDefault(currentDate, 0);
+			key="Left"+String.valueOf(count);
+			 URL=(String) mcc.get(key);
+			 if (lastRequestDate == null || !lastRequestDate.equals(currentDate)) {
+		            LeftCountMap.clear();
+		            lastRequestDate = currentDate;
+		        }
+
+		}
+		
+		
+	//	  System.out.println("Current Date in Milliseconds: before memcached " + System.currentTimeMillis());
+//			 URL ="https://uat.all-cures.com:444" + (String) mcc.get(key);
+			
+//			 System.out.println("Current Date in Milliseconds: after memcached " + System.currentTimeMillis());
 			  if( URL==null)
 			 {
 				URL="All Ads are Served"; 
 			 }
 			 else{
 			// Update the map with the new count
-		        requestCountMap.put(currentDate,requestCountMap.getOrDefault(currentDate, 0) + 1);
+				 if(AdType==1)
+				 {
+					 
+					 BannerCountMap.put(currentDate,BannerCountMap.getOrDefault(currentDate, 0) + 1); 
+				 }
+				 
+				 else if(AdType==2)
+				 {
+					 LeftCountMap.put(currentDate,LeftCountMap.getOrDefault(currentDate, 0) + 1); 
+				 }
+				 else
+				 {
+					 Integer remaining=displayed + 1;
+					 
+					 TargetAds.DC_AdCount.put(DC_Cond.toString(),total + ":" + remaining);
+					 System.out.println("TargetAds.DC_AdCount" +TargetAds.DC_AdCount);
+				 }
+			 
+		        
 			 try{
 //			update(URL);
 			 }catch(Exception e)
@@ -1115,9 +1179,8 @@ public static List ListCampaigns() {
 			 }
 			 }
 		 }
-		System.out.println("Current Date in Milliseconds: before sending the response " + System.currentTimeMillis());
+		 System.out.println("Current Date in Milliseconds: before sending the response " + System.currentTimeMillis());
 		  return URL;
-		
 	}
 	  @Async
 	public static void update(String URL)
