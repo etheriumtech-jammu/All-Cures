@@ -172,36 +172,27 @@ public class SponsoredAdsController {
 	}
 
 	@RequestMapping(value = "/list/ads/url/{AdType}", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody String listadsURL(@PathVariable int AdType,HttpServletRequest request) throws Exception {
+	public @ResponseBody String listadsURL(@PathVariable  (required=false) int AdType,@RequestParam(required = false) Integer DC_Cond,HttpServletRequest request) throws Exception {
 		LocalDate currentDate = LocalDate.now();
 		String Res=null;
-		if(AdType ==1)
+		if(DC_Cond!=null)
 		{
+			AdType=0;
+		}
 			  // Reset the request counter if a new day has started
-	        if (lastRequestDate == null || !lastRequestDate.equals(currentDate)) {
-	            BannerCountMap.clear();
-	            lastRequestDate = currentDate;
-	        }
+		else {
+			DC_Cond=0;
+		}
 
-	       System.out.println("Count : " + BannerCountMap.getOrDefault(currentDate, 0));
-	       Res= SponsoredAdsDaoImpl.AdsURL(BannerCountMap,AdType);
+	       Res= SponsoredAdsDaoImpl.AdsURL(AdType,DC_Cond);
 	       request.setAttribute("customData", Res );
-		}
-		if(AdType ==2)
-		{
-			  // Reset the request counter if a new day has started
-	        if (lastRequestDate == null || !lastRequestDate.equals(currentDate)) {
-	            LeftCountMap.clear();
-	            lastRequestDate = currentDate;
-	        }
-	       System.out.println("Count : " + LeftCountMap.getOrDefault(currentDate, 0));
-	       Res= SponsoredAdsDaoImpl.AdsURL(LeftCountMap,AdType);
-	       request.setAttribute("customData", Res );
-		}
-      
+		
+		
+		  
 		return Res;
 		
 	}
+	
 	
 	
 }
