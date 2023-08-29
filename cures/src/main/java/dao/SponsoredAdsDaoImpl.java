@@ -1274,7 +1274,7 @@ public static List ListCampaigns() {
 	    	
 	    }
 
-	public static int getParentDiseaseId(int article_id) {
+	public static HashMap getParentDiseaseId(int article_id) {
 		Session session = HibernateUtil.buildSessionFactory();
 		Query query = session.createNativeQuery(
 				"SELECT article_id, dc_id, parent_dc_id FROM article a join disease_condition d\n"
@@ -1285,18 +1285,24 @@ public static List ListCampaigns() {
 		System.out.println(results.get(0));
 		Integer parent_disease_id=null;
 		Integer dc_id=null;
+		HashMap<String, Integer> hm_dc_id= new LinkedHashMap<String, Integer>();
+		HashMap<String, Integer> hm_parent_disease_id= new LinkedHashMap<String, Integer>();
 		for (Object[] res: results) {
+			
 			dc_id=(Integer) res[1];
 			parent_disease_id = (Integer) res[2];
+			hm_dc_id.put("parent_dc_id", dc_id);
+			hm_parent_disease_id.put("parent_dc_id", parent_disease_id);
 		}
 		System.out.println(dc_id);
 		System.out.println(parent_disease_id);
-		
+//		System.out.println(hm);
 		if(parent_disease_id== null) {
-			return dc_id;
+			return hm_dc_id;
 		}else {
-			return parent_disease_id;
+			return hm_parent_disease_id;
 		}
+		
 	}
 
 	public static int clicksIncrement(int adId) {
