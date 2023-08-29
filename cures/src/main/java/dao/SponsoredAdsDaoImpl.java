@@ -553,9 +553,9 @@ public class SponsoredAdsDaoImpl {
 				+ "       ca.AdTitle, ca.AdDescription, ca.AdCount, ca.AdDelivered, ca.ImageLocation, ca.ImageAltText,\r\n"
 				+ "       ca.StartDate, ca.EndDate, ca.CreateDate, ca.LastUpdatedDate, ca.ReviewStatus, ca.PaymentStatus,ca.AdTargetID\r\n"
 				+ "FROM CampaignAds ca\r\n"
-				+ "JOIN disease_condition dc ON ca.DiseaseCondition = dc.dc_id\r\n"
-				+ "JOIN Campaign cam ON cam.CampaignID = ca.CampaignID\r\n"
-				+ "JOIN AdsTypes at ON ca.AdTypeID = at.AdTypeID\r\n"
+				+ "LEFT JOIN disease_condition dc ON ca.DiseaseCondition = dc.dc_id\r\n"
+				+ "LEFT JOIN Campaign cam ON cam.CampaignID = ca.CampaignID\r\n"
+				+ "LEFT JOIN AdsTypes at ON ca.AdTypeID = at.AdTypeID\r\n"
 				+ "where AdID =" + AdID + ";");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println(results.size());
