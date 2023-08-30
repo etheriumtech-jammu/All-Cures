@@ -1100,6 +1100,7 @@ public static List ListCampaigns() {
 			 flag =true;
 			 System.out.println("flag"+flag);
 		 }
+		System.out.println("flag"+flag);
 		 if(val== false || flag == true)
 		 {
 		 if(DC_Cond!=0)
@@ -1125,7 +1126,7 @@ public static List ListCampaigns() {
 			}
 			 }else
 		{
-			
+			System.out.println("No Ads of this DC_Cond");
 			AdType=2;
 		}
 		
