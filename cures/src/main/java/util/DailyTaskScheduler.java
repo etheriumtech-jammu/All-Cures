@@ -357,7 +357,9 @@ public class DailyTaskScheduler {
                result = parts[0] + "_" + parts[1] + "_"; // Concatenate the first two parts
               System.out.println("Result: " + result);
           } 
-          
+          if (mcc == null) {
+	 initializeCacheClient();
+	 }
            int adIndex = 0;
            int index=0;
            
