@@ -1124,6 +1124,12 @@ public static List ListCampaigns() {
 				AdType=2;
 			}
 			 }
+
+			 else
+		{
+			AdType=2;
+		}
+		
 		}
 		 
 		
