@@ -187,7 +187,7 @@ public class TargetAds {
 			    adCountPerDay = calculateAdCountPerDay(arrayDataList);
 			    
 			   		    D_AdCount.put(AdID,adCountPerDay);
-			   		    AdURL.put("Banner_" + DC_cond + "_"+ AdID,ImageLocation);
+			   		    AdURL.put("Left_" + DC_cond + "_"+ AdID,ImageLocation);
 //			    HashMap<Integer, ArrayList<Integer>> adsByCondition = new HashMap<>();
 			    
 			        if (!adsByCondition.containsKey("DC_" +DC_cond)) {
@@ -240,8 +240,8 @@ public class TargetAds {
 		                Integer count = subEntry.getValue();
 		               rotationCount=rotationCount +count;
 		               System.out.println("  AdID: " + adID + ", Count: " + count);
-		                AdCount.put("Banner_" + parts[1] + "_"+ adID, count);
-		                keyList.add("Banner_" + parts[1] + "_"+ adID);
+		                AdCount.put("Left_" + parts[1] + "_"+ adID, count);
+		                keyList.add("Left_" + parts[1] + "_"+ adID);
 		                System.out.println(AdCount);
 		                
 		            }
