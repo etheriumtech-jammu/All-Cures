@@ -1094,12 +1094,12 @@ public static List ListCampaigns() {
 		 {
 			 System.out.println("Memcached Restarted");
 			 DailyTaskScheduler.performDailyCalculationsAndCacheUpdate();
-			 DailyTaskScheduler.DisplayPattern();
-			 TargetAds.update();
-			 flag =true;
 			 
+			 TargetAds.update();
+			 DailyTaskScheduler.DisplayPattern();
+			 flag =true;
+			 System.out.println("flag"+flag);
 		 }
-
 		 if(val== false || flag == true)
 		 {
 		 if(DC_Cond!=0)
@@ -1123,10 +1123,9 @@ public static List ListCampaigns() {
 				System.out.println("DC_Conds are served");
 				AdType=2;
 			}
-			 }
-
-			 else
+			 }else
 		{
+			
 			AdType=2;
 		}
 		
