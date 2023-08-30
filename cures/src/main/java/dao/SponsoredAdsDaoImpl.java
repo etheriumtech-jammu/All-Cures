@@ -1336,6 +1336,31 @@ public static List ListCampaigns() {
 		
 		return ret;
 	}
+
+	public static List getnameParentDisease() {
+		 
+
+			Session session = HibernateUtil.buildSessionFactory();
+
+			Query query = session.createNativeQuery(
+					"select parent_dc_id,dc_desc, dc_id from disease_condition;");
+			List<Object[]> results = (List<Object[]>) query.getResultList();
+			System.out.println(results.size());
+              
+			List<Object[]> arrayDataList = new ArrayList<>();
+			for (Object[] objects : results) {
+				if(null == (Integer) objects[0]) {
+					Integer disease_ID = (Integer) objects[2];
+					
+					String AdTypeName = (String) objects[1];
+               
+				    Object[] dataArray = new Object[]{disease_ID, AdTypeName};
+				    arrayDataList.add(dataArray);
+				}
+			}
+
+			return arrayDataList;
+}
 	public static MemcachedClient initializeCacheClient() {
 		try {
 			Constant.log("Trying Connection to Memcache server", 0);
