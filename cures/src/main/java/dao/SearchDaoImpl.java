@@ -481,7 +481,7 @@ public class SearchDaoImpl {
 		SolrQuery query = new SolrQuery();
 		query.setRows(Integer.MAX_VALUE);
 		query.set("q",queryStr);
-		
+		query.set("sort", "rowno desc");
 		QueryResponse response = null;
 		try {
 			response = client.query(query);
@@ -501,7 +501,8 @@ public class SearchDaoImpl {
 			if (null!=doctorid) {
 				doc.setDoctorid(doctorid.toString());
 			}
-			
+			Object rowno_ = document.getFieldValue(Constant.ROWNO);
+		    System.out.println("ROWNO: " + rowno_);
 			// String firstname = (String)
 			// document.getFirstValue("docname_first");
 			Integer gender = (Integer) document.getFirstValue(Constant.GENDER);
