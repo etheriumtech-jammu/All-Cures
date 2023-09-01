@@ -75,7 +75,7 @@ public class SearchActionController extends HttpServlet {
 	//		String featuredDoctors= request.getParameter("FeaturedDoctors");
 			Session session = HibernateUtil.buildSessionFactory();
 
-			Query query1 = session.createNativeQuery("select rowno from doctors where rowno>=871;");
+			Query query1 = session.createNativeQuery("select rowno from doctors where rowno>=871 ORDER BY rowno desc;");
 			
 			List<Integer> rownoList = query1.getResultList();
 
