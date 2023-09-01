@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,13 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
-
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 import com.google.gson.Gson;
 
 import dao.SearchDaoImpl;
 import model.Doctor;
 import util.Constant;
-
+import util.HibernateUtil;
 /**
  * Servlet implementation class SearchActionController
  */
@@ -70,7 +72,18 @@ public class SearchActionController extends HttpServlet {
 			//Map<String,List<String>> docSolr  = new HashMap<String,List<String>>();
 			List<Doctor> docSolr = new ArrayList<Doctor>();
 			
-			String featuredDoctors= request.getParameter("FeaturedDoctors");
+	//		String featuredDoctors= request.getParameter("FeaturedDoctors");
+			Session session = HibernateUtil.buildSessionFactory();
+
+			Query query1 = session.createNativeQuery("select rowno from doctors where rowno>=871 ORDER BY rowno desc;");
+			
+			List<Integer> rownoList = query1.getResultList();
+
+			// Convert the rowno values to a comma-separated string without the "rowno:" prefix
+			String featuredDoctors = rownoList.stream()
+			    .map(String::valueOf)
+			    .collect(Collectors.joining(","));
+			System.out.println(featuredDoctors);
 			if (null !=featuredDoctors && featuredDoctors.length() != 0) {
 				System.out.println("In Featured doctor..");
 				docSolr = search.featuredDoctors(featuredDoctors);
