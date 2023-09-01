@@ -87,6 +87,7 @@ public class SearchActionController extends HttpServlet {
 			if (null !=featuredDoctors && featuredDoctors.length() != 0) {
 				System.out.println("In Featured doctor..");
 				docSolr = search.featuredDoctors(featuredDoctors);
+				System.out.println("docSolr" + docSolr);
 			}else {		
 				if(!city_pin.equals("") && doc_details.equals("")){
 					Constant.log("Searching By City Pin:"+city_pin, 1);
