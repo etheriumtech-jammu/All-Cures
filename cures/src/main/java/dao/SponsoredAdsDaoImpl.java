@@ -470,14 +470,14 @@ public class SponsoredAdsDaoImpl {
 		Session session = HibernateUtil.buildSessionFactory();
 
 		Query query = session.createNativeQuery(
-				 "SELECT ca.AdID, ca.CampaignID, cam.CampaignName, ca.DiseaseCondition, dc.dc_desc, ca.AdTypeID, at.SlotName,\r\n"
+				 "SELECT ca.AdID, ca.CampaignID, cam.CampaignName, ca.DiseaseCondition, dc.dc_desc, ca.SlotID, at.SlotName,\r\n"
 				 + "       ca.AdTitle, ca.AdDescription, ca.AdCount, ca.AdDelivered, ca.ImageLocation, ca.ImageAltText,\r\n"
-				 + "       ca.StartDate, ca.EndDate, ca.CreateDate, ca.LastUpdatedDate, ca.ReviewStatus, ca.PaymentStatus,ca.AdTargetID,target.AdTargetName\r\n"
+				 + "       ca.StartDate, ca.EndDate, ca.CreateDate, ca.LastUpdatedDate, ca.ReviewStatus, ca.PaymentStatus,ca.AdTypeID,target.AdTypeName\r\n"
 				 + "FROM CampaignAds ca\r\n"
 				 + "LEFT JOIN disease_condition dc ON ca.DiseaseCondition = dc.dc_id\r\n"
 				 + "LEFT JOIN Campaign cam ON cam.CampaignID = ca.CampaignID\r\n"
-				 + "LEFT JOIN AdsSlotTypes at ON ca.AdTypeID = at.SlotID\r\n"
-				 + "LEFT JOIN AdsTargetTypes target ON ca.AdTargetID = target.AdTargetID;\r\n"
+				 + "LEFT JOIN AdsSlotTypes at ON ca.SlotID = at.SlotID\r\n"
+				 + "LEFT JOIN AdsTypes target ON ca.AdTypeID = target.AdTypeID;\r\n"
 				 + "");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println(results.size());
@@ -492,7 +492,7 @@ public class SponsoredAdsDaoImpl {
 			
 			String DiseaseConditionName = (String) objects[4];
 
-			Integer AdTypeID = (Integer) objects[5];
+			Integer SlotID = (Integer) objects[5];
 			String SlotName=(String)objects[6];
 			String AdTitle = (String) objects[7];
 			
@@ -515,14 +515,14 @@ public class SponsoredAdsDaoImpl {
 			Integer ReviewStatus= (Integer) objects[17];
 
 			Integer PaymentStatus= (Integer) objects[18];
-			Integer AdTargetID= (Integer) objects[19];
-			String AdTargetName= (String) objects[20];
+			Integer AdTypeID= (Integer) objects[19];
+			String AdTypeName= (String) objects[20];
 			hm.put("AdID", AdID);
 			hm.put("CampaignID", CampaignID);
 			hm.put("CampaignName", CampaignName);
 			hm.put("DiseaseConditionID", DiseaseConditionID);
 			hm.put("DiseaseConditionName", DiseaseConditionName);
-			hm.put("AdTypeID", AdTypeID);
+			hm.put("SlotID", SlotID);
 			hm.put("SlotName", SlotName);
 			hm.put("AdTitle", AdTitle);
 			hm.put("AdDescription", AdDescription);
@@ -536,8 +536,8 @@ public class SponsoredAdsDaoImpl {
 			hm.put("LastUpdatedDate", LastUpdatedDate);
 			hm.put("ReviewStatus", ReviewStatus);
 			hm.put("PaymentStatus", PaymentStatus);
-			hm.put("AdTargetID", AdTargetID);
-			hm.put("AdTargetName", AdTargetName);
+			hm.put("AdTypeID", AdTypeID);
+			hm.put("AdTypeName", AdTypeName);
 			hmFinal.add(hm);
 
 		}
@@ -551,14 +551,14 @@ public class SponsoredAdsDaoImpl {
 		Session session = HibernateUtil.buildSessionFactory();
 
 		Query query = session.createNativeQuery(
-				"SELECT ca.CampaignID, cam.CampaignName, ca.DiseaseCondition, dc.dc_desc, ca.AdTypeID, at.SlotName,\r\n"
+				"SELECT ca.CampaignID, cam.CampaignName, ca.DiseaseCondition, dc.dc_desc, ca.SlotID, at.SlotName,\r\n"
 				+ "       ca.AdTitle, ca.AdDescription, ca.AdCount, ca.AdDelivered, ca.ImageLocation, ca.ImageAltText,\r\n"
-				+ "       ca.StartDate, ca.EndDate, ca.CreateDate, ca.LastUpdatedDate, ca.ReviewStatus, ca.PaymentStatus,ca.AdTargetID,target.AdTargetName\r\n"
+				+ "       ca.StartDate, ca.EndDate, ca.CreateDate, ca.LastUpdatedDate, ca.ReviewStatus, ca.PaymentStatus,ca.AdTypeID,target.AdTargetName\r\n"
 				+ "FROM CampaignAds ca\r\n"
 				+ "LEFT JOIN disease_condition dc ON ca.DiseaseCondition = dc.dc_id\r\n"
 				+ "LEFT JOIN Campaign cam ON cam.CampaignID = ca.CampaignID\r\n"
-				+ "LEFT JOIN AdsSlotTypes at ON ca.AdTypeID = at.SlotID\r\n"
-				 + "LEFT JOIN AdsTargetTypes target ON ca.AdTargetID = target.AdTargetID\r\n"
+				+ "LEFT JOIN AdsSlotTypes at ON ca.SlotID = at.SlotID\r\n"
+				 + "LEFT JOIN AdsTypes target ON ca.AdTypeID = target.AdTypeID\r\n"
 				+ "where AdID =" + AdID + ";");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println(results.size());
@@ -573,7 +573,7 @@ public class SponsoredAdsDaoImpl {
 			
 			String DiseaseConditionName = (String) objects[3];
 
-			Integer AdTypeID = (Integer) objects[4];
+			Integer SlotID = (Integer) objects[4];
 			String SlotName=(String)objects[5];
 			String AdTitle = (String) objects[6];
 			
@@ -596,13 +596,13 @@ public class SponsoredAdsDaoImpl {
 			Integer ReviewStatus= (Integer) objects[16];
 
 			Integer PaymentStatus= (Integer) objects[17];
-			Integer AdTargetID= (Integer) objects[18];
-			String AdTargetName= (String) objects[19];
+			Integer AdTypeID= (Integer) objects[18];
+			String AdTypeName= (String) objects[19];
 			hm.put("CampaignID", CampaignID);
 			hm.put("CampaignName", CampaignName);
 			hm.put("DiseaseConditionID", DiseaseConditionID);
 			hm.put("DiseaseConditionName", DiseaseConditionName);
-			hm.put("AdTypeID", AdTypeID);
+			hm.put("SlotID", SlotID);
 			hm.put("SlotName", SlotName);
 			hm.put("AdTitle", AdTitle);
 			hm.put("AdDescription", AdDescription);
@@ -616,8 +616,8 @@ public class SponsoredAdsDaoImpl {
 			hm.put("LastUpdatedDate", LastUpdatedDate);
 			hm.put("ReviewStatus", ReviewStatus);
 			hm.put("PaymentStatus", PaymentStatus);
-			hm.put("AdTargetID", AdTargetID);
-			hm.put("AdTargetName", AdTargetName);
+			hm.put("AdTypeID", AdTypeID);
+			hm.put("AdTypeName", AdTypeName);
 
 			hmFinal.add(hm);
 
@@ -785,8 +785,8 @@ public class SponsoredAdsDaoImpl {
 		if (campaignAdsMap.containsKey("DiseaseCondition")) {
 			updatestr += "`DiseaseCondition` = '" + campaignAdsMap.get("DiseaseCondition") + "',\r\n";
 		}
-		if (campaignAdsMap.containsKey("AdTypeID")) {
-			updatestr += "`AdTypeID` = '" + campaignAdsMap.get("AdTypeID") + "',\r\n";
+		if (campaignAdsMap.containsKey("SlotID")) {
+			updatestr += "`SlotID` = '" + campaignAdsMap.get("SlotID") + "',\r\n";
 		}
 		if (campaignAdsMap.containsKey("AdTitle")) {
 			updatestr += "`AdTitle` = '" + campaignAdsMap.get("AdTitle") + "',\r\n";
@@ -831,8 +831,8 @@ public class SponsoredAdsDaoImpl {
 		if (campaignAdsMap.containsKey("PaymentStatus")) {
 			updatestr += "`PaymentStatus` = '" + campaignAdsMap.get("PaymentStatus") + "',\r\n";
 		}
-		if (campaignAdsMap.containsKey("AdTargetID")) {
-			updatestr += "`AdTargetID` = '" + campaignAdsMap.get("AdTargetID") + "',\r\n";
+		if (campaignAdsMap.containsKey("AdTypeID")) {
+			updatestr += "`AdTypeID` = '" + campaignAdsMap.get("AdTypeID") + "',\r\n";
 		}
 		
 		
@@ -1005,21 +1005,21 @@ public static List ListCampaigns() {
 	return arrayDataList;
 
 	}
-	public static List ListAdsSlotsTypes() {
+	public static List ListAdsTypes() {
 
 	Session session = HibernateUtil.buildSessionFactory();
 
 	Query query = session.createNativeQuery(
-			"Select SlotTypeId, SlotTypeName from AdsSlotsTypes where TotalAvailableSlots-AllotedSlots>0;");
+			"Select AdTypeID, AdTypeName from AdsTypes ;");
 	List<Object[]> results = (List<Object[]>) query.getResultList();
 	System.out.println(results.size());
 
 	List<Object[]> arrayDataList = new ArrayList<>();
 	for (Object[] objects : results) {
-	    Integer SlotTypeId = (Integer) objects[0];
-	    String SlotTypeName = (String) objects[1];
+	    Integer AdTypeID = (Integer) objects[0];
+	    String AdTypeName = (String) objects[1];
 
-	    Object[] dataArray = new Object[]{SlotTypeId, SlotTypeName};
+	    Object[] dataArray = new Object[]{AdTypeID, AdTypeName};
 	    arrayDataList.add(dataArray);
 
 	}
