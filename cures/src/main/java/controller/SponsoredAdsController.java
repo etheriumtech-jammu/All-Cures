@@ -153,10 +153,10 @@ public class SponsoredAdsController {
 	}
 	
 
-	@RequestMapping(value = "/list/adsslotstypes", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody List listadsslots(HttpServletRequest request) throws Exception {
+	@RequestMapping(value = "/list/adstypes", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List listadstypes(HttpServletRequest request) throws Exception {
 
-		return SponsoredAdsDaoImpl.ListAdsSlotsTypes();
+		return SponsoredAdsDaoImpl.ListAdsTypes();
 	}
 	
 	@RequestMapping(value = "/list/adstargettypes", produces = "application/json", method = RequestMethod.GET)
