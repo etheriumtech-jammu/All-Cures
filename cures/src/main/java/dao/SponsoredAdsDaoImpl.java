@@ -470,13 +470,13 @@ public class SponsoredAdsDaoImpl {
 		Session session = HibernateUtil.buildSessionFactory();
 
 		Query query = session.createNativeQuery(
-				 "SELECT ca.AdID, ca.CampaignID, cam.CampaignName, ca.DiseaseCondition, dc.dc_desc, ca.AdTypeID, at.AdTypeName,\r\n"
+				 "SELECT ca.AdID, ca.CampaignID, cam.CampaignName, ca.DiseaseCondition, dc.dc_desc, ca.AdTypeID, at.SlotName,\r\n"
 				 + "       ca.AdTitle, ca.AdDescription, ca.AdCount, ca.AdDelivered, ca.ImageLocation, ca.ImageAltText,\r\n"
 				 + "       ca.StartDate, ca.EndDate, ca.CreateDate, ca.LastUpdatedDate, ca.ReviewStatus, ca.PaymentStatus,ca.AdTargetID,target.AdTargetName\r\n"
 				 + "FROM CampaignAds ca\r\n"
 				 + "LEFT JOIN disease_condition dc ON ca.DiseaseCondition = dc.dc_id\r\n"
 				 + "LEFT JOIN Campaign cam ON cam.CampaignID = ca.CampaignID\r\n"
-				 + "LEFT JOIN AdsTypes at ON ca.AdTypeID = at.AdTypeID\r\n"
+				 + "LEFT JOIN AdsSlotTypes at ON ca.AdTypeID = at.SlotID\r\n"
 				 + "LEFT JOIN AdsTargetTypes target ON ca.AdTargetID = target.AdTargetID;\r\n"
 				 + "");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
@@ -493,7 +493,7 @@ public class SponsoredAdsDaoImpl {
 			String DiseaseConditionName = (String) objects[4];
 
 			Integer AdTypeID = (Integer) objects[5];
-			String AdTypeName=(String)objects[6];
+			String SlotName=(String)objects[6];
 			String AdTitle = (String) objects[7];
 			
 			String AdDescription= (String) objects[8];
@@ -523,7 +523,7 @@ public class SponsoredAdsDaoImpl {
 			hm.put("DiseaseConditionID", DiseaseConditionID);
 			hm.put("DiseaseConditionName", DiseaseConditionName);
 			hm.put("AdTypeID", AdTypeID);
-			hm.put("AdTypeName", AdTypeName);
+			hm.put("SlotName", SlotName);
 			hm.put("AdTitle", AdTitle);
 			hm.put("AdDescription", AdDescription);
 			hm.put("AdCount", AdCount);
@@ -551,13 +551,13 @@ public class SponsoredAdsDaoImpl {
 		Session session = HibernateUtil.buildSessionFactory();
 
 		Query query = session.createNativeQuery(
-				"SELECT ca.CampaignID, cam.CampaignName, ca.DiseaseCondition, dc.dc_desc, ca.AdTypeID, at.AdTypeName,\r\n"
+				"SELECT ca.CampaignID, cam.CampaignName, ca.DiseaseCondition, dc.dc_desc, ca.AdTypeID, at.SlotName,\r\n"
 				+ "       ca.AdTitle, ca.AdDescription, ca.AdCount, ca.AdDelivered, ca.ImageLocation, ca.ImageAltText,\r\n"
 				+ "       ca.StartDate, ca.EndDate, ca.CreateDate, ca.LastUpdatedDate, ca.ReviewStatus, ca.PaymentStatus,ca.AdTargetID,target.AdTargetName\r\n"
 				+ "FROM CampaignAds ca\r\n"
 				+ "LEFT JOIN disease_condition dc ON ca.DiseaseCondition = dc.dc_id\r\n"
 				+ "LEFT JOIN Campaign cam ON cam.CampaignID = ca.CampaignID\r\n"
-				+ "LEFT JOIN AdsTypes at ON ca.AdTypeID = at.AdTypeID\r\n"
+				+ "LEFT JOIN AdsSlotTypes at ON ca.AdTypeID = at.SlotID\r\n"
 				 + "LEFT JOIN AdsTargetTypes target ON ca.AdTargetID = target.AdTargetID\r\n"
 				+ "where AdID =" + AdID + ";");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
@@ -574,7 +574,7 @@ public class SponsoredAdsDaoImpl {
 			String DiseaseConditionName = (String) objects[3];
 
 			Integer AdTypeID = (Integer) objects[4];
-			String AdTypeName=(String)objects[5];
+			String SlotName=(String)objects[5];
 			String AdTitle = (String) objects[6];
 			
 			String AdDescription= (String) objects[7];
@@ -603,7 +603,7 @@ public class SponsoredAdsDaoImpl {
 			hm.put("DiseaseConditionID", DiseaseConditionID);
 			hm.put("DiseaseConditionName", DiseaseConditionName);
 			hm.put("AdTypeID", AdTypeID);
-			hm.put("AdTypeName", AdTypeName);
+			hm.put("SlotName", SlotName);
 			hm.put("AdTitle", AdTitle);
 			hm.put("AdDescription", AdDescription);
 			hm.put("AdCount", AdCount);
@@ -1057,16 +1057,16 @@ public static List ListCampaigns() {
 		Session session = HibernateUtil.buildSessionFactory();
 
 		Query query = session.createNativeQuery(
-				"Select AdTypeID,AdTypeName from AdsTypes where Status = 1 ;");
+				"Select SlotID,SlotName from AdsSlotTypes where Status = 1 ;");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println(results.size());
 
 		List<Object[]> arrayDataList = new ArrayList<>();
 		for (Object[] objects : results) {
-		    Integer AdTypeID = (Integer) objects[0];
-		    String AdTypeName = (String) objects[1];
+		    Integer SlotID = (Integer) objects[0];
+		    String SlotName = (String) objects[1];
 
-		    Object[] dataArray = new Object[]{AdTypeID, AdTypeName};
+		    Object[] dataArray = new Object[]{SlotID, SlotName};
 		    arrayDataList.add(dataArray);
 
 		}
