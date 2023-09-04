@@ -1052,7 +1052,7 @@ public static List ListCampaigns() {
 
 		}
 		
-	public static List ListAdsTypes() {
+	public static List ListAdsSlotTypes() {
 
 		Session session = HibernateUtil.buildSessionFactory();
 
