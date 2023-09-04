@@ -166,9 +166,9 @@ public class TargetAds {
 			Session session = HibernateUtil.buildSessionFactory();
 	  	  int adCountPerDay=0;
 			Query query = session.createNativeQuery(
-					"SELECT AdID,ImageLocation, StartDate, EndDate,AdCount,(AdCount-AdDelivered), AdTypeName,DiseaseCondition\r\n"
-					+ "				FROM CampaignAds c join AdsTypes t\r\n"
-					+ "				WHERE CURDATE() BETWEEN StartDate AND EndDate and ReviewStatus=1 and c.AdTypeID=t.AdTypeID and DiseaseCondition!=0");
+					"SELECT AdID,ImageLocation, StartDate, EndDate,AdCount,(AdCount-AdDelivered), SlotName,DiseaseCondition\r\n"
+					+ "				FROM CampaignAds c join AdsSlotTypes t\r\n"
+					+ "				WHERE CURDATE() BETWEEN StartDate AND EndDate and ReviewStatus=1 and c.AdTypeID=t.SlotID and DiseaseCondition!=0");
 			List<Object[]> results = (List<Object[]>) query.getResultList();
 			
 			List<Object[]> arrayDataList = new ArrayList<>();
