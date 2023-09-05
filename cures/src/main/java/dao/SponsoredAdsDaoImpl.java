@@ -1320,7 +1320,7 @@ public static List ListCampaigns() {
 		// creating transaction object
 		session.beginTransaction();
 		 
-			Query query = session.createNativeQuery("UPDATE adsstats\n"
+			Query query = session.createNativeQuery("UPDATE AdsStats\n"
 					+ "SET clicks = clicks+ 1\n"
 					+ "where AdID =" + adId);
 			int ret = 0;
@@ -1373,7 +1373,10 @@ public static List ListCampaigns() {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			Constant.log("Connection to Memcache server UN-Sucessful", 3);
-		}
+		}finally {
+            if (mcc != null) {
+                mcc.shutdown(); // Release the MemcachedClient resources
+            }}
 		return mcc;
 	}
 }
