@@ -553,7 +553,7 @@ public class SponsoredAdsDaoImpl {
 		Query query = session.createNativeQuery(
 				"SELECT ca.CampaignID, cam.CampaignName, ca.DiseaseCondition, dc.dc_desc, ca.SlotID, at.SlotName,\r\n"
 				+ "       ca.AdTitle, ca.AdDescription, ca.AdCount, ca.AdDelivered, ca.ImageLocation, ca.ImageAltText,\r\n"
-				+ "       ca.StartDate, ca.EndDate, ca.CreateDate, ca.LastUpdatedDate, ca.ReviewStatus, ca.PaymentStatus,ca.AdTypeID,target.AdTargetName\r\n"
+				+ "       ca.StartDate, ca.EndDate, ca.CreateDate, ca.LastUpdatedDate, ca.ReviewStatus, ca.PaymentStatus,ca.AdTypeID,target.AdTypeName\r\n"
 				+ "FROM CampaignAds ca\r\n"
 				+ "LEFT JOIN disease_condition dc ON ca.DiseaseCondition = dc.dc_id\r\n"
 				+ "LEFT JOIN Campaign cam ON cam.CampaignID = ca.CampaignID\r\n"
