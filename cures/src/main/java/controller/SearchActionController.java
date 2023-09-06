@@ -72,8 +72,8 @@ public class SearchActionController extends HttpServlet {
 			//Map<String,List<String>> docSolr  = new HashMap<String,List<String>>();
 			List<Doctor> docSolr = new ArrayList<Doctor>();
 			
-	//		String featuredDoctors= request.getParameter("FeaturedDoctors");
-			Session session = HibernateUtil.buildSessionFactory();
+			String featuredDoctors= request.getParameter("FeaturedDoctors");
+/*			Session session = HibernateUtil.buildSessionFactory();
 
 			Query query1 = session.createNativeQuery("select rowno from doctors where rowno>=871 ORDER BY rowno desc;");
 			
@@ -84,6 +84,7 @@ public class SearchActionController extends HttpServlet {
 			    .map(String::valueOf)
 			    .collect(Collectors.joining(","));
 			System.out.println(featuredDoctors);
+			*/
 			if (null !=featuredDoctors && featuredDoctors.length() != 0) {
 				System.out.println("In Featured doctor..");
 				docSolr = search.featuredDoctors(featuredDoctors);
