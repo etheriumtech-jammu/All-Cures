@@ -1376,4 +1376,256 @@ public static List ListCampaigns() {
 		}
 		return mcc;
 	}
+
+	[11:59 AM, 9/12/2023] Neeraj Etherium: /////SEARCH API'S STARTS HERE
+	@RequestMapping(value="/search/companies",produces = "application/json", method = RequestMethod.GET )
+	public List<LinkedHashMap<String,Object>>  searchCompanies_byCompanyName(@RequestBody HashMap companies){
+		
+		return SponsoredAdsDaoImpl.searchCompanies_byCompanyName(companies);
+	}
+	
+	@RequestMapping(value="/search/campaigns",produces = "application/json", method = RequestMethod.GET )
+	public List<LinkedHashMap<String,Object>>  searchCompanies_bycampaigns(@RequestBody HashMap campaigns){
+		
+		return SponsoredAdsDaoImpl.searchCompanies_bycampaigns(campaigns);
+	}
+	
+	@RequestMapping(value="/search/campaignsads",produces = "application/json", method = RequestMethod.GET )
+	public List<LinkedHashMap<String,Object>>  searchCompanies_bycampaignsAds(@RequestBody HashMap campaignsAds){
+		
+		return SponsoredAdsDaoImpl.searchCompanies_bycampaignsAds(campaignsAds);
+	}
+[12:00 PM, 9/12/2023] Neeraj Etherium: 
+//SEARCH API'S STARTS HERE
+	public static List<LinkedHashMap<String,Object>>  searchCompanies_byCompanyName(HashMap companies)  {
+
+		Session session = HibernateUtil.buildSessionFactory();
+        
+        Query query=null;
+        
+         try {
+        	 
+            
+        
+        if(companies.containsKey("CompanyName")) { 
+        	String CompanyName = (String) companies.get("CompanyName");
+        	query = session.createNativeQuery(
+    				"SELECT * "
+    				+ " FROM Companies where CompanyName= '"+CompanyName + "';");
+        }else if(companies.containsKey("CreateDate")) {
+        	java.sql.Date sqlDate= string_to_Date((String)companies.get("CreateDate"));
+        	query = session.createNativeQuery(
+                    "SELECT * FROM Companies WHERE CreateDate= :createDate"
+                );
+                query.setParameter("createDate", sqlDate);
+        }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        
+		List<LinkedHashMap<String,Object>> list= new ArrayList<LinkedHashMap<String,Object>>();
+		try {
+			List<Object[]> results = (List<Object[]>) query.getResultList();
+			System.out.println(results);
+			for (Object[] res: results) {
+				LinkedHashMap<String,Object> hm= new LinkedHashMap<String, Object>();
+				hm.put("CompanyID", res[0]);
+				hm.put("CompanyName", res[1]);
+				hm.put("CompanyWebsite", res[2]);
+				hm.put("ContactPerson", res[3]);
+				hm.put("Email", res[4]);
+				hm.put("Phone", res[5]);
+				hm.put("CreateDate", res[6]);
+				hm.put("LastUpdateddate", res[7]);
+				hm.put("Status", res[8]);
+				list.add(hm);
+			}
+			
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+		
+		return list;
+	}
+	
+	public static List<LinkedHashMap<String,Object>>  searchCompanies_bycampaigns(HashMap campaigns)  {
+
+		Session session = HibernateUtil.buildSessionFactory();
+        
+        Query query=null;
+        
+
+        try {
+           
+            if(campaigns.containsKey("CampaignName")) { 
+            	System.out.println(campaigns.containsKey("CampaignName"));
+            	String CampaignName = (String) campaigns.get("CampaignName");
+            	query = session.createNativeQuery(
+        				"SELECT * "
+        				+ " FROM Campaign where CampaignName= '"+CampaignName + "';");
+            }else if(campaigns.containsKey("CreateDate")) {
+            	java.sql.Date sqlDate= string_to_Date((String)campaigns.get("CreateDate"));
+            	query = session.createNativeQuery(
+                        "SELECT * FROM Campaign WHERE CreateDate= :createDate"
+                    );
+                    query.setParameter("createDate", sqlDate);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        
+        
+        
+         
+        
+        
+		List<LinkedHashMap<String,Object>> list= new ArrayList<LinkedHashMap<String,Object>>();
+		try {
+			List<Object[]> results = (List<Object[]>) query.getResultList();
+			for (Object[] res: results) {
+				LinkedHashMap<String,Object> hm= new LinkedHashMap<String, Object>();
+				hm.put("CampaignID", res[0]);
+				hm.put("CompanyID", res[1]);
+				hm.put("CampaignName", res[2]);
+				hm.put("StartDate", res[3]);
+				hm.put("EndDate", res[4]);
+				hm.put("CreateDate", res[5]);
+				hm.put("LastUpdatedDate", res[6]);
+				hm.put("Status", res[7]);
+				
+				list.add(hm);
+			}
+			
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+		
+		return list;
+	}
+	
+	public static List<LinkedHashMap<String,Object>>  searchCompanies_bycampaignsAds(HashMap campaignsAds)  {
+
+		Session session = HibernateUtil.buildSessionFactory();
+        
+        Query query=null;
+        
+        String common_str= "SELECT\n"
+				+ "    c.CampaignName,\n"
+				+ "    at.AdTypeName,\n"
+				+ "    ast.SlotName,\n"
+				+ "    ca.*\n"
+				+ "FROM\n"
+				+ "    Campaign c\n"
+				+ "JOIN\n"
+				+ "    CampaignAds ca ON c.CampaignID = ca.CampaignID\n"
+				+ "JOIN\n"
+				+ "    AdsTypes at ON ca.AdTypeID = at.AdTypeID\n"
+				+ "JOIN\n"
+				+ "    AdsSlotTypes ast ON ca.SlotID = ast.SlotID\n";
+        
+        
+         
+
+        try {
+        	             
+            if(campaignsAds.containsKey("CampaignName")) { 
+            	String CampaignName = (String) campaignsAds.get("CampaignName");
+            	query = session.createNativeQuery(
+            			common_str + "where CampaignName = '" + CampaignName +"' ;");
+            	
+            }else if(campaignsAds.containsKey("AdTypeName")) {
+            	  String AdTypeName = (String) campaignsAds.get("AdTypeName");
+            	
+            	
+            	query = session.createNativeQuery(
+            			common_str + "where AdTypeName = '" + AdTypeName +"' ;");
+            	
+            }else if(campaignsAds.containsKey("SlotName")) {
+          	  String SlotName = (String) campaignsAds.get("SlotName");
+          	
+          	
+          	query = session.createNativeQuery(
+          			common_str + "where SlotName = '" + SlotName +"' ;");
+          	
+          }else if(campaignsAds.containsKey("StartDate")) {
+        	  java.sql.Date sqlDate= string_to_Date((String)campaignsAds.get("StartDate"));
+        	  query = session.createNativeQuery(
+        			  common_str + "WHERE ca.StartDate= :StartDate"
+                  );
+                  query.setParameter("StartDate", sqlDate);
+          	
+          }else if(campaignsAds.containsKey("EndDate")) {
+        	  java.sql.Date sqlDate= string_to_Date((String)campaignsAds.get("EndDate"));
+        	  query = session.createNativeQuery(
+        			  common_str + "WHERE ca.EndDate= :EndDate"
+                  );
+                  query.setParameter("EndDate", sqlDate);
+          	
+          }else if(campaignsAds.containsKey("CreateDate")) {
+        	  java.sql.Date sqlDate= string_to_Date((String)campaignsAds.get("CreateDate"));
+        	  query = session.createNativeQuery(
+        			  common_str + "WHERE ca.CreateDate= :createDate"
+                  );
+                  query.setParameter("createDate", sqlDate);
+                  
+          }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        
+        
+        
+         
+        
+        
+		List<LinkedHashMap<String,Object>> list= new ArrayList<LinkedHashMap<String,Object>>();
+		try {
+			List<Object[]> results = (List<Object[]>) query.getResultList();
+			for (Object[] res: results) {
+				LinkedHashMap<String,Object> hm= new LinkedHashMap<String, Object>();
+				hm.put("CampaignName", res[0]);
+				hm.put("AdTypeName", res[1]);
+				hm.put("SlotName", res[2]);
+				hm.put("AdID", res[3]);
+				hm.put("CampaignID", res[4]);
+				hm.put("DiseaseCondition", res[5]);
+				hm.put("SlotID", res[6]);
+				hm.put("AdTitle", res[7]);
+				hm.put("AdDescription", res[8]);
+				hm.put("AdCount", res[9]);
+				hm.put("AdDelivered", res[10]);
+				hm.put("ImageLocation", res[11]);
+				hm.put("ImageAltText", res[12]);
+				hm.put("StartDate", res[13]);
+				hm.put("EndDate", res[14]);
+				hm.put("CreateDate", res[15]);
+				hm.put("LastUpdatedDate", res[16]);
+				hm.put("ReviewStatus", res[17]);
+				hm.put("PaymentStatus", res[18]);
+				hm.put("AdTypeID", res[19]);
+				
+				
+				list.add(hm);
+			}
+			
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+		
+		return list;
+	}
+	
+	public static java.sql.Date string_to_Date(String date) throws ParseException {
+		String inputDateString = date;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date utilDate = dateFormat.parse(inputDateString);
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        return sqlDate;
+	}
 }
