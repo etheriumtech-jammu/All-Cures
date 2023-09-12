@@ -1377,25 +1377,7 @@ public static List ListCampaigns() {
 		return mcc;
 	}
 
-	[11:59 AM, 9/12/2023] Neeraj Etherium: /////SEARCH API'S STARTS HERE
-	@RequestMapping(value="/search/companies",produces = "application/json", method = RequestMethod.GET )
-	public List<LinkedHashMap<String,Object>>  searchCompanies_byCompanyName(@RequestBody HashMap companies){
-		
-		return SponsoredAdsDaoImpl.searchCompanies_byCompanyName(companies);
-	}
 	
-	@RequestMapping(value="/search/campaigns",produces = "application/json", method = RequestMethod.GET )
-	public List<LinkedHashMap<String,Object>>  searchCompanies_bycampaigns(@RequestBody HashMap campaigns){
-		
-		return SponsoredAdsDaoImpl.searchCompanies_bycampaigns(campaigns);
-	}
-	
-	@RequestMapping(value="/search/campaignsads",produces = "application/json", method = RequestMethod.GET )
-	public List<LinkedHashMap<String,Object>>  searchCompanies_bycampaignsAds(@RequestBody HashMap campaignsAds){
-		
-		return SponsoredAdsDaoImpl.searchCompanies_bycampaignsAds(campaignsAds);
-	}
-
 	public static List<LinkedHashMap<String,Object>>  searchCompanies_byCompanyName(HashMap companies)  {
 
 		Session session = HibernateUtil.buildSessionFactory();
