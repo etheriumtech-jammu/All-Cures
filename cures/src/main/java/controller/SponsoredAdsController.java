@@ -210,19 +210,19 @@ public class SponsoredAdsController {
 		return SponsoredAdsDaoImpl.getnameParentDisease();
 	}
 	
-	@RequestMapping(value="/search/companies",produces = "application/json", method = RequestMethod.GET )
+	@RequestMapping(value="/search/companies",produces = "application/json", method = RequestMethod.POST )
 	public List<LinkedHashMap<String,Object>>  searchCompanies_byCompanyName(@RequestBody HashMap companies){
 		
 		return SponsoredAdsDaoImpl.searchCompanies_byCompanyName(companies);
 	}
 	
-	@RequestMapping(value="/search/campaigns",produces = "application/json", method = RequestMethod.GET )
+	@RequestMapping(value="/search/campaigns",produces = "application/json", method = RequestMethod.POST )
 	public List<LinkedHashMap<String,Object>>  searchCompanies_bycampaigns(@RequestBody HashMap campaigns){
 		
 		return SponsoredAdsDaoImpl.searchCompanies_bycampaigns(campaigns);
 	}
 	
-	@RequestMapping(value="/search/campaignsads",produces = "application/json", method = RequestMethod.GET )
+	@RequestMapping(value="/search/campaignsads",produces = "application/json", method = RequestMethod.POST )
 	public List<LinkedHashMap<String,Object>>  searchCompanies_bycampaignsAds(@RequestBody HashMap campaignsAds){
 		
 		return SponsoredAdsDaoImpl.searchCompanies_bycampaignsAds(campaignsAds);
