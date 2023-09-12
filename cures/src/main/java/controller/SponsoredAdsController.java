@@ -209,7 +209,7 @@ public class SponsoredAdsController {
 		
 		return SponsoredAdsDaoImpl.getnameParentDisease();
 	}
-	/////SEARCH API'S STARTS HERE
+	
 	@RequestMapping(value="/search/companies",produces = "application/json", method = RequestMethod.GET )
 	public List<LinkedHashMap<String,Object>>  searchCompanies_byCompanyName(@RequestBody HashMap companies){
 		
