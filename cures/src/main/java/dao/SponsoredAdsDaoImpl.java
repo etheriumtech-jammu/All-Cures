@@ -1395,8 +1395,7 @@ public static List ListCampaigns() {
 		
 		return SponsoredAdsDaoImpl.searchCompanies_bycampaignsAds(campaignsAds);
 	}
-[12:00 PM, 9/12/2023] Neeraj Etherium: 
-//SEARCH API'S STARTS HERE
+
 	public static List<LinkedHashMap<String,Object>>  searchCompanies_byCompanyName(HashMap companies)  {
 
 		Session session = HibernateUtil.buildSessionFactory();
