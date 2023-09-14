@@ -146,7 +146,7 @@ public class SponsoredAdsDaoImpl {
 		return ret;
 	}
 
-	public static Integer InsertAdDetails( HashMap<String, Object> AdMap ,CommonsMultipartFile image) {
+	public static Integer InsertAdDetails( HashMap<String, Object> AdMap ,CommonsMultipartFile image, CommonsMultipartFile mobile_image) {
 
 		Session session = HibernateUtil.buildSessionFactory();
 
@@ -185,7 +185,7 @@ public class SponsoredAdsDaoImpl {
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
 			System.out.println("Admap " + AdMap);
-			ret=uploadFile(image);
+			ret=uploadFile(image,mobile_image);
 			
 
 		} catch (Exception e) {
@@ -197,7 +197,7 @@ public class SponsoredAdsDaoImpl {
 		return ret;
 	}
 
-	public static int uploadFile( CommonsMultipartFile image) {
+	public static int uploadFile( CommonsMultipartFile image, CommonsMultipartFile mobile_image) {
 		
 		Session session = HibernateUtil.buildSessionFactory();
 		Query query = session.createNativeQuery(
@@ -231,7 +231,21 @@ public class SponsoredAdsDaoImpl {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		
+		if(mobile_image!=null)
+		{
+			String mobile_path = System.getProperty( "catalina.base" ) + "/webapps"+ "/cures_articleimages/"+ "cures_adsimages/mobile";
+			String mobile_filename = mobile_image.getOriginalFilename();
+			String mobile_Filename = "Ad_" + res + "." + FilenameUtils.getExtension(mobile_filename);
+			try {
+				byte barr[] = mobile_image.getBytes();
+				BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(mobile_path + "/" + mobile_Filename));
+				bout.write(barr);
+				bout.flush();
+				bout.close();
+			} catch (Exception e) {
+				System.out.println(e);
+			} 
+		}
 		Query query1 = session.createNativeQuery(
 				  "Update CampaignAds set ImageLocation='" + finalPath + "' where AdID=" + res);
 		int ret = 0;
