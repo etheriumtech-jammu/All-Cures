@@ -214,7 +214,7 @@ public static MemcachedClient mcc = null;
 		String cacheString=null;
 		cacheString = findArticleInCache(article_id);
 		String jsondata=null;
-		if(cacheString == null || "".equals(cacheString) || "null".equalsIgnoreCase(cacheString)){
+//		if(cacheString == null || "".equals(cacheString) || "null".equalsIgnoreCase(cacheString)){
 			// creating seession factory object
 			Session session = HibernateUtil.buildSessionFactory();
 
@@ -354,23 +354,23 @@ public static MemcachedClient mcc = null;
 //			session.getTransaction().commit();   
 //			session.close();
 			
-			int expirationTime = 24 * 60 * 60; // 24 hours in seconds
-			Gson gson = new GsonBuilder().serializeNulls().create();
-			 jsondata = gson.toJson(article);
-			 System.out.println(jsondata);
-			mcc.set( Integer.toString(article_id),expirationTime,jsondata );
+//			int expirationTime = 24 * 60 * 60; // 24 hours in seconds
+//			Gson gson = new GsonBuilder().serializeNulls().create();
+//			 jsondata = gson.toJson(article);
+//			 System.out.println(jsondata);
+//			mcc.set( Integer.toString(article_id),expirationTime,jsondata );
 			return article;
 			
-			}
+	//		}
 		
-		else {
+/*		else {
 			Gson gson = new GsonBuilder().serializeNulls().create();
 			jsondata = gson.toJson(cacheString);
 			Article_dc_name article = gson.fromJson(jsondata, Article_dc_name.class);
 			return article;
 		}
 		
-		
+	*/	
 	}
 	
 	public String findArticleInCache(int article_id) {
