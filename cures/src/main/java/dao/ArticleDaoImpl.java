@@ -302,7 +302,7 @@ public static MemcachedClient mcc = null;
 					// prints character
 					System.out.print(c);
 					contents = contents + c;
-				} catch (Exception e) {
+				} } catch (Exception e) {
 					// if any error occurs
 					e.printStackTrace();
 				} finally {
@@ -417,7 +417,7 @@ public static MemcachedClient mcc = null;
 		
 	}
 	
-	public String findArticleInCache(int article_id){
+	public String findArticleInCache(int article_id) {
 		String cacheString = null;
 		
 		//This is the ADDRESS OF MEMCACHE
