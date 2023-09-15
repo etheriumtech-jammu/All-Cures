@@ -211,7 +211,7 @@ public static MemcachedClient mcc = null;
 	}
 
 	public Article_dc_name getArticleDetails(int article_id) {
-String cacheString=null;
+		String cacheString=null;
 		cacheString = findArticleInCache(article_id);
 		String jsondata=null;
 		if(cacheString == null || "".equals(cacheString) || "null".equalsIgnoreCase(cacheString)){
@@ -225,85 +225,83 @@ String cacheString=null;
 //			session.beginTransaction();
 
 			Query query = session.createNativeQuery(" SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
-					+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
-					+ "    `article`.`content_type`,\r\n" + "    `article`.`keywords`,\r\n"
-					+ "    `article`.`window_title`,\r\n" + "    `article`.`content_location`,\r\n"
-					+ "    `article`.`authored_by`,\r\n" + "    `article`.`published_by`,\r\n"
-					+ "    `article`.`edited_by`,\r\n" + "    `article`.`copyright_id`,\r\n"
-					+ "    `article`.`disclaimer_id`,\r\n" + "    `article`.`create_date`,\r\n"
-					+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
-					+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n"
-					+ "    `article`.`country_id`,\r\n" + "    `article`.`disease_condition_id`,\r\n"
-					+ "    `article`.`type`,\r\n" + "    `dc`.`dc_name`,\r\n" + "    `article`.`comments`,\r\n"
-					+ "    `article`.`over_allrating`,\r\n"
-					
-					+ " (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a \r\n"
-					
-					+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
-					+ " ) as authors_name ,"
-					
-					+ " (select reg_type from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  "
-					+ "		 ) as reg_type, "
-			        + "         (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  "
-			        + "		 ) as reg_doc_pat_id ,"
-			        + " `article`.`medicine_type` ,"
-			        + "(select name from medicinetype m where m.id = `article`.`medicine_type`) as medicine_type_name"
-			        + ",featured_article"
-					+ " FROM `article`\r\n"
-					+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
-					+ " where article_id =  " + article_id + ";");
-			ArrayList<Article> articleList = (ArrayList<Article>) query.getResultList();
-			Article_dc_name article = new Article_dc_name();
-			Iterator itr = articleList.iterator();
-			while (itr.hasNext()) {
-				Object[] obj = (Object[]) itr.next();
-				System.out.println((Integer) obj[0]);
-				System.out.println((String) obj[1]);
-				article.setArticle_id((Integer) obj[0]);
-				article.setTitle((String) obj[1]);
-				article.setFriendly_name((String) obj[2]);
-				article.setSubheading((String) obj[3]);
-				article.setContent_type((String) obj[4]);
-				article.setKeywords((String) obj[5]);
-				article.setWindow_title((String) obj[6]);
-				article.setContent_location((String) obj[7]);
-				System.out.println((String) obj[7]);
-				String file = (String) obj[7];
-				// file = "/home/administrator/uat/"+
-				// file = file.replace("\\", "/");//.replace("/", "/");
-				System.out.println("FILENAME===>>>>>>>>>>" + file);
-				// String file = "C:\\" + (String) obj[7];
-//				file = "C:\\test\\14\\2021\\05\\26\\article_"+(Integer) obj[0]+".json";
-				String contents = "";
-				InputStream is = null;
-				DataInputStream dis = null;
-				try {
-					// create file input stream
-					is = new FileInputStream(file);
+				+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
+				+ "    `article`.`content_type`,\r\n" + "    `article`.`keywords`,\r\n"
+				+ "    `article`.`window_title`,\r\n" + "    `article`.`content_location`,\r\n"
+				+ "    `article`.`authored_by`,\r\n" + "    `article`.`published_by`,\r\n"
+				+ "    `article`.`edited_by`,\r\n" + "    `article`.`copyright_id`,\r\n"
+				+ "    `article`.`disclaimer_id`,\r\n" + "    `article`.`create_date`,\r\n"
+				+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
+				+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n"
+				+ "    `article`.`country_id`,\r\n" + "    `article`.`disease_condition_id`,\r\n"
+				+ "    `article`.`type`,\r\n" + "    `dc`.`dc_name`,\r\n" + "    `article`.`comments`,\r\n"
+				+ "    `article`.`over_allrating`,\r\n"
 
-					// create new data input stream
-					dis = new DataInputStream(is);
+				+ " (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a \r\n"
 
-					// available stream to be read
-					int length = dis.available();
+				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
+				+ " ) as authors_name ,"
 
-					// create buffer
-					byte[] buf = new byte[length];
+				+ " (select reg_type from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  "
+				+ "		 ) as reg_type, "
+		        + "         (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  "
+		        + "		 ) as reg_doc_pat_id ,"
+		        + " `article`.`medicine_type` ,"
+		        + "(select name from medicinetype m where m.id = `article`.`medicine_type`) as medicine_type_name"
+		        + ",featured_article"
+				+ " FROM `article`\r\n"
+				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
+				+ " where article_id =  " + article_id + ";");
+		ArrayList<Article> articleList = (ArrayList<Article>) query.getResultList();
+		Article_dc_name article = new Article_dc_name();
+		Iterator itr = articleList.iterator();
+		while (itr.hasNext()) {
+			Object[] obj = (Object[]) itr.next();
+			System.out.println((Integer) obj[0]);
+			System.out.println((String) obj[1]);
+			article.setArticle_id((Integer) obj[0]);
+			article.setTitle((String) obj[1]);
+			article.setFriendly_name((String) obj[2]);
+			article.setSubheading((String) obj[3]);
+			article.setContent_type((String) obj[4]);
+			article.setKeywords((String) obj[5]);
+			article.setWindow_title((String) obj[6]);
+			article.setContent_location((String) obj[7]);
+			System.out.println((String) obj[7]);
+			String file = (String) obj[7];
+			// file = "/home/administrator/uat/"+
+			// file = file.replace("\\", "/");//.replace("/", "/");
+			System.out.println("FILENAME===>>>>>>>>>>" + file);
+			// String file = "C:\\" + (String) obj[7];
+//			file = "C:\\test\\14\\2021\\05\\26\\article_"+(Integer) obj[0]+".json";
+			String contents = "";
+			InputStream is = null;
+			DataInputStream dis = null;
+			try {
+				// create file input stream
+				is = new FileInputStream(file);
 
-					// read the full data into the buffer
-					dis.readFully(buf);
+				// create new data input stream
+				dis = new DataInputStream(is);
 
-					// for each byte in the buffer
-					for (byte b : buf) {
+				// available stream to be read
+				int length = dis.available();
 
-						// convert byte to char
-						char c = (char) b;
+				// create buffer
+				byte[] buf = new byte[length];
 
-						// prints character
-						System.out.print(c);
-						contents = contents + c;
-					}
+				// read the full data into the buffer
+				dis.readFully(buf);
 
+				// for each byte in the buffer
+				for (byte b : buf) {
+
+					// convert byte to char
+					char c = (char) b;
+
+					// prints character
+					System.out.print(c);
+					contents = contents + c;
 				} catch (Exception e) {
 					// if any error occurs
 					e.printStackTrace();
@@ -324,6 +322,26 @@ String cacheString=null;
 							e.printStackTrace();
 						}
 				}
+
+			} catch (Exception e) {
+				// if any error occurs
+				e.printStackTrace();
+			} finally {
+				// releases all system resources from the streams
+				if (is != null)
+					try {
+						is.close();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				if (dis != null)
+					try {
+						dis.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				System.out.println(contents);
 
 				article.setAuthored_by((String) obj[8]);
@@ -350,6 +368,33 @@ String cacheString=null;
 				article.setMedicine_type_name((String) obj[28]);
 				article.setFeatured_article((String) obj[29]);
 			}
+			System.out.println(contents);
+
+			article.setAuthored_by((String) obj[8]);
+			article.setPublished_by((Integer) obj[9]);
+			article.setEdited_by((Integer) obj[10]);
+			article.setCopyright_id((Integer) obj[11]);
+			article.setDisclaimer_id((Integer) obj[12]);
+			article.setCreate_date((Date) obj[13]);
+			article.setPublished_date((Date) obj[14]);
+			article.setPubstatus_id((Integer) obj[15]);
+			article.setLanguage_id((Integer) obj[16]);
+			article.setContent_small((String) obj[17]);
+			article.setCountry_id((Integer) obj[18]);
+			article.setDisease_condition_id((Integer) obj[19]);
+			article.setType((String) obj[20]);
+			article.setContent(contents);
+			article.setDc_name((String) obj[21]);
+			article.setComments((String) obj[22]);
+			article.setOver_allrating((Float) obj[23]);
+			article.setAuthors_name((String) obj[24]);
+			article.setReg_type(""+(Integer) obj[25]);
+			article.setReg_doc_pat_id(""+(Integer) obj[26]);
+			article.setMedicine_type((Integer) obj[27]);
+			article.setMedicine_type_name((String) obj[28]);
+			article.setFeatured_article((String) obj[29]);
+
+			
 			
 //			session.getTransaction().commit();   
 //			session.close();
@@ -359,7 +404,7 @@ String cacheString=null;
 			 jsondata = gson.toJson(article);
 			mcc.set( Integer.toString(article_id),expirationTime,jsondata );
 			return article;
-			
+	
 			}
 		
 		else {
