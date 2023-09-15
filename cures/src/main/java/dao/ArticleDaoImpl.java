@@ -29,6 +29,11 @@ import util.Constant;
 import util.HibernateUtil;
 import util.WhatsAPITemplateMessage;
 import Chat_Function.NotificationService;
+
+import net.spy.memcached.AddrUtil;
+import net.spy.memcached.ConnectionFactoryBuilder;
+import net.spy.memcached.FailureMode;
+import net.spy.memcached.MemcachedClient;
 //1	active
 //7	WorkInProgress
 //@Component makes sure it is picked up by the ComponentScan (if it is in the right package). This allows @Autowired to work in other classes for instances of this class
