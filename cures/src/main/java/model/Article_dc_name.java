@@ -1,6 +1,11 @@
 package model;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -18,6 +23,16 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 import util.Constant;
 
@@ -597,4 +612,56 @@ public class Article_dc_name implements Serializable {
 	 * public void setAuthor(Author author) { this.author = author; }
 	 * 
 	 */
+
+	public String toJson() {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Date.class, new DateSerializer())
+                .registerTypeAdapter(Date.class, new DateDeserializer())
+                .create();
+        return gson.toJson(this);
+    }
+	
+	public static Article_dc_name fromJson(String json) {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Date.class, new DateSerializer())
+                .registerTypeAdapter(Date.class, new DateDeserializer())
+                .create();
+        return gson.fromJson(json, Article_dc_name.class);
+    }
+	
+	private static  class DateSerializer implements JsonSerializer<Date> {
+        private final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy");
+
+        @Override
+        public JsonElement serialize(Date date, Type type, JsonSerializationContext jsonSerializationContext) {
+            return new JsonPrimitive(dateFormat.format(date));
+        }
+    }
+	
+	private static class DateDeserializer implements JsonDeserializer<Date> {
+        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+       
+        SimpleDateFormat inputDateFormat = new SimpleDateFormat("MMM d, yyyy");
+        SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        @Override
+        public Date deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+            try {
+                String dateString = jsonElement.getAsString();
+                
+                Date parsedDate = inputDateFormat.parse(dateString);
+                String formattedDate = outputDateFormat.format(parsedDate);
+                
+                LocalDate parsedDate_local = LocalDate.parse(formattedDate, formatter);
+               
+                LocalDate truncatedDate = parsedDate_local;
+                java.sql.Date date = java.sql.Date.valueOf(truncatedDate);
+                             
+                return date;
+            } catch (ParseException e) {
+                throw new JsonParseException(e);
+            }
+        }
+    }	
 }
