@@ -214,7 +214,7 @@ public static MemcachedClient mcc = null;
 		String cacheString=null;
 		cacheString = findArticleInCache(article_id);
 		String jsondata=null;
-//		if(cacheString == null || "".equals(cacheString) || "null".equalsIgnoreCase(cacheString)){
+		if(cacheString == null || "".equals(cacheString) || "null".equalsIgnoreCase(cacheString)){
 			// creating seession factory object
 			Session session = HibernateUtil.buildSessionFactory();
 
@@ -354,26 +354,22 @@ public static MemcachedClient mcc = null;
 //			session.getTransaction().commit();   
 //			session.close();
 			
-//			int expirationTime = 24 * 60 * 60; // 24 hours in seconds
-//			Gson gson = new GsonBuilder().serializeNulls().create();
-//			 jsondata = gson.toJson(article);
-//			 System.out.println(jsondata);
-//			mcc.set( Integer.toString(article_id),expirationTime,jsondata );
+			int expirationTime = 24 * 60 * 60; // 24 hours in seconds
+			//to set data
+			jsondata = article.toJson();
+			System.out.println("jsondata"+jsondata);
+			mcc.set( Integer.toString(article_id),expirationTime,jsondata );
 			return article;
 			
-	//		}
+			}
 		
-/*		else {
-			Gson gson = new GsonBuilder().serializeNulls().create();
-			jsondata = gson.toJson(cacheString);
-			Article_dc_name article = gson.fromJson(jsondata, Article_dc_name.class);
+		else {
+			Article_dc_name article= Article_dc_name.fromJson(cacheString);
 			return article;
-		}
-		
-	*/	
+		}	
 	}
 	
-	public String findArticleInCache(int article_id) {
+	public String findArticleInCache(int article_id){
 		String cacheString = null;
 		
 		//This is the ADDRESS OF MEMCACHE
@@ -381,11 +377,14 @@ public static MemcachedClient mcc = null;
 		if(mcc == null){
 			initializeCacheClient();
 		}
-		
-		Constant.log("Getting article from MemCache",0);
-		if(mcc.get(Integer.toString(article_id)) != null)
-			cacheString = mcc.get(Integer.toString(article_id)).toString();
-		Constant.log("Found In MemCache:"+cacheString,0);
+		if (mcc.get(Integer.toString(article_id)) != null) {
+		    cacheString = mcc.get(Integer.toString(article_id)).toString();
+		    Constant.log("Getting article from MemCache", 0);
+		}
+		else
+		{
+			Constant.log("Getting null from MemCache", 0);
+		}
 		return cacheString;
 	}
 	public static MemcachedClient initializeCacheClient() {
