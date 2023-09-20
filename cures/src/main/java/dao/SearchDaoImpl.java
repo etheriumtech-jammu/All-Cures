@@ -502,7 +502,6 @@ public class SearchDaoImpl {
 				doc.setDoctorid(doctorid.toString());
 			}
 			Object rowno_ = document.getFieldValue(Constant.ROWNO);
-		    System.out.println("ROWNO: " + rowno_);
 			// String firstname = (String)
 			// document.getFirstValue("docname_first");
 			Integer gender = (Integer) document.getFirstValue(Constant.GENDER);
