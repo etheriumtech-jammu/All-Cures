@@ -476,7 +476,7 @@ public class SearchDaoImpl {
 			queryStr = queryStr + Constant.ROWNO + ":" + featuredDoc + Constant.OR;
 		}
 		
-		Constant.log(queryStr,0);
+//		Constant.log(queryStr,0);
 		
 		SolrQuery query = new SolrQuery();
 		query.setRows(Integer.MAX_VALUE);
