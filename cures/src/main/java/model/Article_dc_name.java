@@ -118,6 +118,7 @@ public class Article_dc_name implements Serializable {
 	private String content_small;
 	
 	private String medicine_type_name;
+	private String parent_Medicine_type;
 
 
 	
@@ -479,6 +480,14 @@ public class Article_dc_name implements Serializable {
 
 	public void setMedicine_type_name(String medicine_type_name) {
 		this.medicine_type_name = medicine_type_name;
+	}
+
+	public String getParent_Medicine_type() {
+		return parent_Medicine_type;
+	}
+
+	public void setParent_Medicine_type(String parent_Medicine_type) {
+		this.parent_Medicine_type = parent_Medicine_type;
 	}
 
 	/*
