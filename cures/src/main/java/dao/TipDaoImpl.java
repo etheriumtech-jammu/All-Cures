@@ -69,15 +69,8 @@ public class TipDaoImpl {
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
 			System.out.println("inserted new entry to tip table for tip_title =  " + tip_title);
-			
-			
-			
-		} catch (Exception ex) {
-			session.getTransaction().rollback();
-		} finally {
-		
-		}
-		try {
+			TipNotification(tip_title);
+			try {
 			WhatsAPITemplateMessage.POSTRequestTrackEventsByTip(tip_title);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -86,9 +79,13 @@ public class TipDaoImpl {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		TipNotification(tip_title);
+			
+		} catch (Exception ex) {
+			session.getTransaction().rollback();
+		} finally {
 		}
 		
+		}
 		else
 		{
 			ret=-1;
