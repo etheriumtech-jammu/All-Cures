@@ -219,7 +219,7 @@ public class WhatsAPITemplateMessage {
 		params[1]	 = (String) ((HashMap) NSData.get(i)).get("mobile");
 		
 		params[2] = "+" + (Integer) ((HashMap) NSData.get(i)).get("country_code");
-		System.out.println(params[2]+params[1]);
+	//	System.out.println(params[2]+params[1]);
 		params[3]=title;
 	//	WhatsAPITemplateMessage.runInterakt(params);
 		try {
