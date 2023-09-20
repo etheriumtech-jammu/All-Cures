@@ -224,34 +224,51 @@ public static MemcachedClient mcc = null;
 			// creating transaction object
 //			session.beginTransaction();
 
-			Query query = session.createNativeQuery(" SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
-					+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
+			Query query = session.createNativeQuery(" SELECT\r\n"
+					+ "    `article`.`article_id`,\r\n"	+ "    `article`.`title`,\r\n"
+					+ "    `article`.`friendly_name`,\r\n"	+ "    `article`.`subheading`,\r\n"
 					+ "    `article`.`content_type`,\r\n" + "    `article`.`keywords`,\r\n"
-					+ "    `article`.`window_title`,\r\n" + "    `article`.`content_location`,\r\n"
+					+ "    `article`.`window_title`,\r\n"+ "    `article`.`content_location`,\r\n"
 					+ "    `article`.`authored_by`,\r\n" + "    `article`.`published_by`,\r\n"
-					+ "    `article`.`edited_by`,\r\n" + "    `article`.`copyright_id`,\r\n"
-					+ "    `article`.`disclaimer_id`,\r\n" + "    `article`.`create_date`,\r\n"
-					+ "    `article`.`published_date`,\r\n" + "    `article`.`pubstatus_id`,\r\n"
-					+ "    `article`.`language_id`,\r\n" + "    `article`.`content`,\r\n"
-					+ "    `article`.`country_id`,\r\n" + "    `article`.`disease_condition_id`,\r\n"
-					+ "    `article`.`type`,\r\n" + "    `dc`.`dc_name`,\r\n" + "    `article`.`comments`,\r\n"
-					+ "    `article`.`over_allrating`,\r\n"
-					
-					+ " (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a \r\n"
-					
-					+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
-					+ " ) as authors_name ,"
-					
-					+ " (select reg_type from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  "
-					+ "		 ) as reg_type, "
-			        + "         (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  "
-			        + "		 ) as reg_doc_pat_id ,"
-			        + " `article`.`medicine_type` ,"
-			        + "(select name from medicinetype m where m.id = `article`.`medicine_type`) as medicine_type_name"
-			        + ",featured_article"
-					+ " FROM `article`\r\n"
-					+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
-					+ " where article_id =  " + article_id + ";");
+					+ "    `article`.`edited_by`,\r\n" 	+ "    `article`.`copyright_id`,\r\n"
+					+ "    `article`.`disclaimer_id`,\r\n"	+ "    `article`.`create_date`,\r\n"
+					+ "    `article`.`published_date`,\r\n"	+ "    `article`.`pubstatus_id`,\r\n"
+					+ "    `article`.`language_id`,\r\n"+ "    `article`.`content`,\r\n"
+					+ "    `article`.`country_id`,\r\n"	+ "    `article`.`disease_condition_id`,\r\n"
+					+ "    `article`.`type`,\r\n"+ "    `dc`.`dc_name`,\r\n"
+					+ "    `article`.`comments`,\r\n"+ "    `article`.`over_allrating`,\r\n"
+					+ "    (\r\n"
+					+ "        SELECT\r\n"
+					+ "            GROUP_CONCAT(a.author_firstname, ' ', a.author_lastname)\r\n"
+					+ "        FROM author a\r\n"
+					+ "        WHERE a.author_id IN (TRIM(TRAILING ']' FROM TRIM(LEADING '[' FROM `article`.`authored_by`)))\r\n"
+					+ "    ) AS authors_name,\r\n"
+					+ "    (\r\n"
+					+ "        SELECT reg_type\r\n"
+					+ "        FROM author\r\n"
+					+ "        WHERE author_id IN (TRIM(TRAILING ']' FROM TRIM(LEADING '[' FROM `article`.`authored_by`)))\r\n"
+					+ "    ) AS reg_type,\r\n"
+					+ "    (\r\n"
+					+ "        SELECT reg_doc_pat_id\r\n"
+					+ "        FROM author\r\n"
+					+ "        WHERE author_id IN (TRIM(TRAILING ']' FROM TRIM(LEADING '[' FROM `article`.`authored_by`)))\r\n"
+					+ "    ) AS reg_doc_pat_id,\r\n"
+					+ "    `article`.`medicine_type`,\r\n"
+					+ "    (\r\n"
+					+ "        SELECT m.name\r\n"
+					+ "        FROM medicinetype m\r\n"
+					+ "        WHERE m.id = `article`.`medicine_type`\r\n"
+					+ "    ) AS medicine_type_name,\r\n"
+					+ "    (\r\n"
+					+ "        SELECT p.name\r\n"
+					+ "        FROM medicinetype m\r\n"
+					+ "        LEFT JOIN medicinetype p ON m.parent_med_type = p.id\r\n"
+					+ "        WHERE m.id = `article`.`medicine_type`\r\n"
+					+ "    ) AS parent_medicine_type,\r\n"
+					+ "    `article`.`featured_article`\r\n"
+					+ "FROM `article`\r\n"
+					+ "LEFT JOIN disease_condition dc ON dc.dc_id = `article`.`disease_condition_id`\r\n"
+					+ "WHERE article_id =  " + article_id + ";");
 			ArrayList<Article> articleList = (ArrayList<Article>) query.getResultList();
 			Article_dc_name article = new Article_dc_name();
 			Iterator itr = articleList.iterator();
@@ -348,7 +365,8 @@ public static MemcachedClient mcc = null;
 				article.setReg_doc_pat_id(""+(Integer) obj[26]);
 				article.setMedicine_type((Integer) obj[27]);
 				article.setMedicine_type_name((String) obj[28]);
-				article.setFeatured_article((String) obj[29]);
+				article.setParent_Medicine_type((String) obj[29]);
+				article.setFeatured_article((String) obj[30]);
 			}
 			
 //			session.getTransaction().commit();   
