@@ -483,8 +483,9 @@ public class SearchDaoImpl {
 		Constant.log(queryStr,0);
 		
 		SolrQuery query = new SolrQuery();
+		query.setRows(Integer.MAX_VALUE);
 		query.set("q",queryStr);
-		
+		query.set("sort", "rowno desc");
 		QueryResponse response = null;
 		try {
 			response = client.query(query);
