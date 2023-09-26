@@ -284,7 +284,7 @@ public static MemcachedClient mcc = null;
 				article.setKeywords((String) obj[5]);
 				article.setWindow_title((String) obj[6]);
 				article.setContent_location((String) obj[7]);
-				System.out.println((String) obj[7]);
+		//		System.out.println((String) obj[7]);
 				String file = (String) obj[7];
 				// file = "/home/administrator/uat/"+
 				// file = file.replace("\\", "/");//.replace("/", "/");
@@ -317,7 +317,7 @@ public static MemcachedClient mcc = null;
 						char c = (char) b;
 
 						// prints character
-						System.out.print(c);
+			//			System.out.print(c);
 						contents = contents + c;
 					}
 
@@ -341,7 +341,7 @@ public static MemcachedClient mcc = null;
 							e.printStackTrace();
 						}
 				}
-				System.out.println(contents);
+	//			System.out.println(contents);
 
 				article.setAuthored_by((String) obj[8]);
 				article.setPublished_by((Integer) obj[9]);
@@ -375,7 +375,7 @@ public static MemcachedClient mcc = null;
 			int expirationTime = 24 * 60 * 60; // 24 hours in seconds
 			//to set data
 			jsondata = article.toJson();
-			System.out.println("jsondata"+jsondata);
+	//		System.out.println("jsondata"+jsondata);
 			mcc.set( Integer.toString(article_id),expirationTime,jsondata );
 			return article;
 			
