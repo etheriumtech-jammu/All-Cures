@@ -496,7 +496,8 @@ public class DiseaseANDConditionDaoImpl {
 		
 		// needs other condition too but unable to find correct column
 		// ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
-		System.out.println("result list searched article count@@@@@@@@@@@@@" + query.getQueryString());
+//		System.out.println("result list searched article count@@@@@@@@@@@@@" + query.getQueryString());
+		System.out.println("result list searched article count@@@@@@@@@@@@@" );
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
