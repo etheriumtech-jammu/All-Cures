@@ -58,6 +58,64 @@ public class DataDaoImpl {
 		return ret;
 	}
 
+	public static int file_upload_NewsLetter(CommonsMultipartFile image) throws IOException {
+		Session session = HibernateUtil.buildSessionFactory();
+    	int i= 0;
+    	String path = System.getProperty( "catalina.base" ) + "/webapps"+ "/cures_articleimages"+"/newsletter_images";
+    	System.out.println(path);
+    	
+    	String filename = image.getOriginalFilename();//Test_image.jpg
+    	
+    	
+    	String finalPath="/cures_articleimages"+"/newsletter_images" +"/"+ filename;
+    	
+    	try {
+			byte barr[] = image.getBytes();
+            i=1;
+			BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(path + "/" + filename));
+			bout.write(barr);
+			bout.flush();
+			bout.close();
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+    	
+    	 
+		int ret = 0;
+		
+		try {
+			session.beginTransaction();
+			Query query = session.createNativeQuery(
+	    			 "INSERT INTO NewsLetter_File_Upload (image) VALUES ('"+finalPath+"');");
+			ret = query.executeUpdate();
+			session.getTransaction().commit();
+
+		} catch (Exception e) {
+		    e.printStackTrace();
+		} 
+		
+    	 
+    	return ret;
+    }
+	
+	public static List file_Get_NewsLetter() {
+		
+		Session session = HibernateUtil.buildSessionFactory();
+
+		Query query = session.createNativeQuery(
+				"select image from NewsLetter_File_Upload");
+		List<String> results = (List<String>) query.getResultList();
+		System.out.println(results.size());
+		List hmFinal = new ArrayList();
+		for (String objects : results) {
+			hmFinal.add(objects);
+
+		}
+		
+		System.out.println(hmFinal);
+		return hmFinal; 
+	}
 	
 	
 
