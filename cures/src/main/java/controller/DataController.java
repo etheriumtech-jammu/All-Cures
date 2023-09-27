@@ -89,6 +89,16 @@ public class DataController {
 	  }
 	
 	
+	@RequestMapping(value = "/newsletter/upload", produces = "application/json", method = RequestMethod.POST)
+	public int NewsLetter_fileupload(@RequestParam("image") CommonsMultipartFile image) throws IOException {
+		return DataDaoImpl.file_upload_NewsLetter(image);
+		
+	}
 	
+	@RequestMapping(value = "/newsletter/get", produces = "application/json", method = RequestMethod.GET)
+	public List NewsLetter_fileGet() throws IOException {
+		return DataDaoImpl.file_Get_NewsLetter();
+		
+	}
 
 }
