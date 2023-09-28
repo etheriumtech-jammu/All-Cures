@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;    
 import Chat_Function.ClientExample;
 import Chat_Function.SocketIOServer1;
 
@@ -98,6 +100,21 @@ public class DataController {
 	@RequestMapping(value = "/newsletter/get", produces = "application/json", method = RequestMethod.GET)
 	public List NewsLetter_fileGet() throws IOException {
 		return DataDaoImpl.file_Get_NewsLetter();
+		
+	}
+
+	@RequestMapping(value = "/webStories/upload", produces = "application/json", method = RequestMethod.POST)
+	public int webStories_fileupload(@RequestParam("image") CommonsMultipartFile image, 
+			@RequestParam("webData") String webDataJson) throws IOException {
+		ObjectMapper objectMapper = new ObjectMapper();
+		HashMap<String, Object> webData = objectMapper.readValue(webDataJson, new TypeReference<HashMap<String, Object>>() {});
+		return DataDaoImpl.file_upload_webStories(webData,image);
+		
+	}
+	
+	@RequestMapping(value = "/webStories/get", produces = "application/json", method = RequestMethod.GET)
+	public List webStories_fileGet() throws IOException {
+		return DataDaoImpl.file_Get_webStories();
 		
 	}
 
