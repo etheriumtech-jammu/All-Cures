@@ -121,7 +121,86 @@ public class DataDaoImpl {
 	}
 	
 	
+public static int file_upload_webStories(HashMap webData,CommonsMultipartFile image) throws IOException {
+		Session session = HibernateUtil.buildSessionFactory();
+    	int i= 0;
+    	String title= "";
+    	String description= "";
+    	String link= "";
+    	String altText= "";
+    	
 
+    	String path = System.getProperty( "catalina.base" ) + "/webapps"+ "/cures_articleimages"+"/webstories_images";
+    	System.out.println(path);
+    	
+    	String filename = image.getOriginalFilename();
+    	
+    	
+    	String finalPath= "/cures_articleimages"+"/webstories_images" +"/"+ filename;
+    	
+    	try {
+			byte barr[] = image.getBytes();
+            i=1;
+			BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(path + "/" + filename));
+			bout.write(barr);
+			bout.flush();
+			bout.close();
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+    	
+    	if(webData.containsKey("title")||webData.containsKey("description")||webData.containsKey("link")
+    			||webData.containsKey("ImageAltText")) {
+    		title= (String) webData.get("title");
+        	description= (String) webData.get("description");
+        	link= (String) webData.get("link");
+        	altText= (String) webData.get("ImageAltText");
+    	}
+    	 
+		int ret = 0;
+		
+		try {
+			session.beginTransaction();
+			Query query = session.createNativeQuery(
+					"INSERT INTO WebStories_data (Title,Description,Link,image,Alt_Text)"
+			    			 + " VALUES"
+			    			 + " ('"+title+"','"+description+"','"+link+"'"+","+"'"+finalPath+"'"+","+"'"+altText+"');");
+			
+			ret = query.executeUpdate();
+			session.getTransaction().commit();
+
+		} catch (Exception e) {
+		    e.printStackTrace();
+		} 
+		
+    	 
+    	return ret;
+    }
+	
+	public static List file_Get_webStories() {
+		
+		Session session = HibernateUtil.buildSessionFactory();
+
+		Query query = session.createNativeQuery(
+				"select Title,Description,Link,image,Alt_Text from webstories_data");
+		List<Object[]> results = (List<Object[]>) query.getResultList();
+		System.out.println(results.size());
+		List hmFinal = new ArrayList();
+		for (Object[] objects : results) {
+			LinkedHashMap<String, String> hm= new LinkedHashMap<String, String>();
+			hm.put("title", (String)objects[0]);
+			hm.put("description", (String)objects[1]);
+			hm.put("link", (String)objects[2]);
+			hm.put("image", (String)objects[3]);
+			hm.put("ImageAltText", (String)objects[4]);
+			
+			hmFinal.add(hm);
+
+		}
+		
+		return hmFinal; 
+	}
 
 
 	}
