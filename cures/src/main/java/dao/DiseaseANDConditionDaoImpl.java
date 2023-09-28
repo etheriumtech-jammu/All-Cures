@@ -443,6 +443,9 @@ public class DiseaseANDConditionDaoImpl {
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
 
+		  if (search_str.contains("'s")) {
+	            search_str = search_str.replace("'s", "''s");
+	        }
 		// creating session object
 		//Session session = factory;
 
