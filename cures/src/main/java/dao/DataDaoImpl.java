@@ -163,7 +163,7 @@ public static int file_upload_webStories(HashMap webData,CommonsMultipartFile im
 		try {
 			session.beginTransaction();
 			Query query = session.createNativeQuery(
-					"INSERT INTO WebStories_data (Title,Description,Link,image,Alt_Text)"
+					"INSERT INTO WebStories_Data (Title,Description,Link,image,Alt_Text)"
 			    			 + " VALUES"
 			    			 + " ('"+title+"','"+description+"','"+link+"'"+","+"'"+finalPath+"'"+","+"'"+altText+"');");
 			
@@ -183,7 +183,7 @@ public static int file_upload_webStories(HashMap webData,CommonsMultipartFile im
 		Session session = HibernateUtil.buildSessionFactory();
 
 		Query query = session.createNativeQuery(
-				"select Title,Description,Link,image,Alt_Text from webstories_data");
+				"select Title,Description,Link,image,Alt_Text from Webstories_Data");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println(results.size());
 		List hmFinal = new ArrayList();
