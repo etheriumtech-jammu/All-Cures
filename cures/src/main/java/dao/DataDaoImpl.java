@@ -183,7 +183,7 @@ public static int file_upload_webStories(HashMap webData,CommonsMultipartFile im
 		Session session = HibernateUtil.buildSessionFactory();
 
 		Query query = session.createNativeQuery(
-				"select Title,Description,Link,image,Alt_Text from Webstories_Data");
+				"select Title,Description,Link,image,Alt_Text from WebStories_Data");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println(results.size());
 		List hmFinal = new ArrayList();
