@@ -235,9 +235,19 @@ public class ArticleDaoImpl {
 				+ "		 ) as reg_type, "
 		        + "         (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  "
 		        + "		 ) as reg_doc_pat_id ,"
-		        + " `article`.`medicine_type` ,"
-		        + "(select name from medicinetype m where m.id = `article`.`medicine_type`) as medicine_type_name"
-		        + ",featured_article"
+		    + "    `article`.`medicine_type`,\r\n"
+					+ "    (\r\n"
+					+ "        SELECT m.name\r\n"
+					+ "        FROM medicinetype m\r\n"
+					+ "        WHERE m.id = `article`.`medicine_type`\r\n"
+					+ "    ) AS medicine_type_name,\r\n"
+					+ "    (\r\n"
+					+ "        SELECT p.name\r\n"
+					+ "        FROM medicinetype m\r\n"
+					+ "        LEFT JOIN medicinetype p ON m.parent_med_type = p.id\r\n"
+					+ "        WHERE m.id = `article`.`medicine_type`\r\n"
+					+ "    ) AS parent_medicine_type,\r\n"
+					+ "    `article`.`featured_article`\r\n"
 				+ " FROM `article`\r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
 				+ " where article_id =  " + article_id + ";");
@@ -337,7 +347,8 @@ public class ArticleDaoImpl {
 			article.setReg_doc_pat_id(""+(Integer) obj[26]);
 			article.setMedicine_type((Integer) obj[27]);
 			article.setMedicine_type_name((String) obj[28]);
-			article.setFeatured_article((String) obj[29]);
+			article.setParent_Medicine_type((String) obj[29]);
+			article.setFeatured_article((String) obj[30]);
 		}
 //		session.getTransaction().commit();   
 		//session.close();
