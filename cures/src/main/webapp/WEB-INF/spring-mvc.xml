@@ -110,6 +110,14 @@
 </bean>
 
 </mvc:interceptor>
+
+<mvc:interceptor>
+
+<mvc:mapping path="/article/allkvfeatured"/>
+<bean class="service.TokenValidationInterceptor">
+</bean>
+
+</mvc:interceptor>
 </mvc:interceptors>
 	<context:component-scan
 		base-package="controller,dao,service" />
