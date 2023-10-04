@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;    
 import Chat_Function.ClientExample;
 import Chat_Function.SocketIOServer1;
 
@@ -87,7 +89,18 @@ public class DataController {
 	   
 	  return "WebSocket server started!";
 	  }
+
+	@RequestMapping(value = "/newsletter/upload", produces = "application/json", method = RequestMethod.POST)
+	public int NewsLetter_fileupload(@RequestParam("image") CommonsMultipartFile image) throws IOException {
+		return DataDaoImpl.file_upload_NewsLetter(image);
+		
+	}
 	
+	@RequestMapping(value = "/newsletter/get", produces = "application/json", method = RequestMethod.GET)
+	public List NewsLetter_fileGet() throws IOException {
+		return DataDaoImpl.file_Get_NewsLetter();
+		
+	}
 	
 	
 
