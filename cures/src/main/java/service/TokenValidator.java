@@ -15,7 +15,7 @@ import util.HibernateUtil;
 
 public class TokenValidator {
 
-    public static int isValidToken(String token) {
+    public static int isValidToken(String token, String url) {
     	
     	 if (token.startsWith("Bearer ")) {
   	        token = token.substring("Bearer ".length());
@@ -38,8 +38,7 @@ public class TokenValidator {
  		 		+ "    APITokenAnalytics aa\r\n"
  		 		+ "ON\r\n"
  		 		+ "    at.TokenID = aa.TokenID\r\n"
- 		 		+ "where Token =   '"+token+"' \r\n"
- 		 		+ "    ;\r\n"
+ 		 		+ "where Token =   '"+token+"' and aa.API='"+url+ "' \r\n"
  		 		+ ";");
  		 try {
  			 List<Object[]> results =(List<Object[]>)  query.getResultList();
@@ -52,7 +51,7 @@ public class TokenValidator {
  					String Token=(String) list[1];
  					Integer Status=(Integer) list[2];
  					Integer Max_Allowed=(Integer) list[3]==null?0:(Integer) list[3];
- 					Integer Total_Count=(Integer) list[4];
+ 					Integer Total_Count=(Integer) list[4]==null?0:(Integer) list[4];
  					Date LastUpdateDate=(Date) list[5];
  					 
  					// 1 for update
@@ -92,7 +91,7 @@ public class TokenValidator {
 	      session.beginTransaction();
 	      int ret=0;  
 	      String str = "";
-	      if(Total_count ==null) {
+	      if(Total_count ==0) {
 	    	  str="UPDATE APITokenAnalytics\r\n"
 	    	  		+ "SET Total_Count = 1\r\n"
 	    	  		+ "where TokenID = "+tokeID+"\r\n"
