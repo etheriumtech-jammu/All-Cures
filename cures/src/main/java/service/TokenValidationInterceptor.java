@@ -18,10 +18,20 @@ public class TokenValidationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("Authorization");
+        String url= request.getServletPath().toString();
+        String final_url="";
+        String pattern = "\\d+$";
+        String url_result = url.replaceAll(pattern, "");
+        
+        if (!url.equals(url_result)) {
+            final_url += url_result;
+        } else {
+            final_url+= url;
+        }
         logger.info("TokenValidationInterceptor: Request received with token: {}", token);
         try {
             if (!(token == null )) {
-            	  int result=TokenValidator.isValidToken(token);
+            	  int result=TokenValidator.isValidToken(token,final_url);
             	if(result==0)
             	{
             		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or missing token.");
