@@ -59,7 +59,7 @@ public class TokenValidator {
  					
  					if(token.equals(Token) && Status == 1) {
  						if(Max_Allowed==Total_Count &&  false == current_Date.equals(LastUpdateDate)) {
- 							res=update_Total_Count(TokenID,Total_Count, 1);
+ 							res=update_Total_Count(url,TokenID,Total_Count, 1);
  							
  						}
  						if(Max_Allowed==Total_Count && true == current_Date.equals(LastUpdateDate)) {
@@ -69,7 +69,7 @@ public class TokenValidator {
  							res=1;
  						}
  						if(Max_Allowed > Total_Count) {
- 							res = update_Total_Count(TokenID,Total_Count,2);
+ 							res = update_Total_Count(url,TokenID,Total_Count, 2);
  							
  						}
  					}
@@ -86,7 +86,7 @@ public class TokenValidator {
  		 return res;
     }
     
-    public static int update_Total_Count(int tokeID,Integer Total_count, int toDo) {
+    public static int update_Total_Count(String url,Integer tokenID,Integer Total_count, int toDo) {
 		Session session = HibernateUtil.buildSessionFactory();
 	      session.beginTransaction();
 	      int ret=0;  
@@ -94,20 +94,20 @@ public class TokenValidator {
 	      if(Total_count ==0) {
 	    	  str="UPDATE APITokenAnalytics\r\n"
 	    	  		+ "SET Total_Count = 1\r\n"
-	    	  		+ "where TokenID = "+tokeID+"\r\n"
+	    	  		+ "where TokenID="+tokenID+" and API = '"+url+"'\r\n"
 	    	  		+ ";";
 	    	  toDo=0;
 	      }
 	      if(toDo ==1) {
 	    	  str="UPDATE APITokenAnalytics\r\n"
 	    	  		+ "SET Total_Count = 1\r\n"
-	    	  		+ "where TokenID = "+tokeID+"\r\n"
+	    	  		+ "where TokenID="+tokenID+" and API = '"+url+"'\r\n"
 	    	  		+ ";";
 	      }
 	      if(toDo==2) {
 	    	  str="UPDATE APITokenAnalytics\r\n"
 	    	  		+ "SET Total_Count = Total_Count+1\r\n"
-	    	  		+ "where TokenID = "+tokeID+"\r\n"
+	    	  		+ "where TokenID="+tokenID+" and API = '"+url+"'\r\n"
 	    	  		+ ";";
 	      }
 	       
