@@ -32,6 +32,7 @@ public class SimpleInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         // This method is called after the response has been sent to the client.
         // You can perform additional actions here if needed.
+	System.out.println("afterCompletion");
     	String customData = (String) request.getAttribute("customData");
     	if(customData==null)
     	{
