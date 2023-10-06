@@ -105,14 +105,6 @@
 	<mvc:interceptors>
 <mvc:interceptor>
 
-<mvc:mapping path="/sponsored/list/ads/url/"/>
-<bean class="service.SimpleInterceptor">
-</bean>
-
-</mvc:interceptor>
-
-<mvc:interceptor>
-
 <mvc:mapping path="/article/allkvfeatured"/>
 <bean class="service.TokenValidationInterceptor">
 </bean>
