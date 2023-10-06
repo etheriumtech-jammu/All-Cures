@@ -68,7 +68,7 @@ public class TokenValidator {
         session.beginTransaction();
         int ret = 0;
         String str = "";
-
+	System.out.println("Asynchronous Call");
         if (totalCount == 0) {
             str = "UPDATE APITokenAnalytics SET Total_Count = 1 WHERE TokenID = :tokenID AND API = :url";
             toDo = 0;
