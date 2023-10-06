@@ -44,13 +44,25 @@ public class TokenValidator {
 
                 if (token.equals(Token) && Status == 1) {
                     if (Max_Allowed == Total_Count && false == current_Date.equals(LastUpdateDate)) {
-                        res = updateTotalCount(url, TokenID, Total_Count, 1, session);
+                        TokenValidationInterceptor.url=url;
+                    	TokenValidationInterceptor.tokenID=TokenID;
+                    	TokenValidationInterceptor.totalCount=Total_Count;
+                    	TokenValidationInterceptor.toDo=1;
+                    	TokenValidationInterceptor.session=session;
+                    	TokenValidationInterceptor.whenTORun=true;
+                        res = 1;
                     } else if (Max_Allowed == Total_Count && true == current_Date.equals(LastUpdateDate)) {
                         res = 2;
                     } else if (Max_Allowed == 0) {
                         res = 1;
                     } else if (Max_Allowed > Total_Count) {
-                        res = updateTotalCount(url, TokenID, Total_Count, 2, session);
+                        TokenValidationInterceptor.url=url;
+                    	TokenValidationInterceptor.tokenID=TokenID;
+                    	TokenValidationInterceptor.totalCount=Total_Count;
+                    	TokenValidationInterceptor.toDo=2;
+                    	TokenValidationInterceptor.session=session;
+                    	TokenValidationInterceptor.whenTORun=true;
+                        res = 1;
                     }
                 }
             }
