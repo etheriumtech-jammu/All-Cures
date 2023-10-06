@@ -10,6 +10,7 @@ import javax.persistence.NoResultException;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+
 import util.HibernateUtil;
 
 public class TokenValidator {
