@@ -13,6 +13,13 @@ import org.springframework.web.servlet.ModelAndView;
 @Component
 public class TokenValidationInterceptor implements HandlerInterceptor {
 
+    public static String url="";
+	public static int tokenID=0;
+	public static int totalCount=0;
+	public static int toDo=0;
+	public static Session session;
+	public static boolean whenTORun=false;
+    
     private static final Logger logger = LoggerFactory.getLogger(TokenValidationInterceptor.class);
   
     @Override
@@ -65,6 +72,9 @@ public class TokenValidationInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         // This method is called after the response has been sent to the client.
         // You can perform additional actions here if needed.
+        if(whenTORun) {
+    		TokenValidator.updateTotalCount(url, tokenID, totalCount, toDo, session);
+    	}
     }
 }
 
