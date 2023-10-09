@@ -79,10 +79,17 @@
 	</dependency>
 
 		<dependency>
-    <groupId>com.google.firebase</groupId>
-    <artifactId>firebase-admin</artifactId>
-    <version>7.2.0</version>
-</dependency>
+  	  <groupId>com.google.firebase</groupId>
+ 	   <artifactId>firebase-admin</artifactId>
+	    <version>7.2.0</version>
+		</dependency>
+		   <!-- https://mvnrepository.com/artifact/org.springframework/spring-tx -->
+	<dependency>
+	    <groupId>org.springframework</groupId>
+	    <artifactId>spring-tx</artifactId>
+	    <version>6.0.7</version>
+	</dependency>
+
 
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
