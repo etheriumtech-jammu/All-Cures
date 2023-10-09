@@ -7,14 +7,15 @@ import java.sql.Date;
 import java.util.List;
 import org.springframework.scheduling.annotation.Async;
 import javax.persistence.NoResultException;
-
+import javax.transaction.Transactional;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import util.HibernateUtil;
 
 public class TokenValidator {
 	private static final String STATIC_TOKEN = "All-Cures";
-	@Async
+	
+	@Transactional
 	public static int isValidToken(String token, String url) {
 		if (token.startsWith("Bearer ")) {
 			token = token.substring("Bearer ".length());
