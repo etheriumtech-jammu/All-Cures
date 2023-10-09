@@ -16,9 +16,10 @@ import util.HibernateUtil;
 
 public class TokenValidator {
 	private static final String STATIC_TOKEN = "All-Cures";
-	
+	private static Object lock = new Object();
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public static  synchronized int isValidToken(String token, String url) {
+	public static int isValidToken(String token, String url) {
+		
 		if (token.startsWith("Bearer ")) {
 			token = token.substring("Bearer ".length());
 		}
@@ -28,7 +29,7 @@ public class TokenValidator {
 		int res = 0;
 
 		Date current_Date = generatingCurrentDate();
-		@SuppressWarnings("unchecked")
+		synchronized (lock) {
 		Query<Object[]> query = session.createNativeQuery(
 						"SELECT at.TokenID, at.Token, at.Status, at.Max_Allowed, aa.Total_Count, aa.LastUpdateDate FROM API_Tokens at JOIN APITokenAnalytics aa ON at.TokenID = aa.TokenID WHERE at.Token = :token AND aa.API = :url")
 				.setParameter("token", token)
@@ -91,7 +92,7 @@ public class TokenValidator {
 		} finally {
 			//         session.close(); // Close the session when done
 		}
-
+		}
 		return res;
 	}
 
