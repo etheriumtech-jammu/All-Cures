@@ -64,11 +64,12 @@ public class TokenValidator {
 	}
 
 	@Async
-	public static synchronized int updateTotalCount(String url, Integer tokenID, Integer totalCount, int toDo, Session session) {
+	public static int updateTotalCount(String url, Integer tokenID, Integer totalCount, int toDo, Session session) {
 		session.beginTransaction();
 		int ret = 0;
 		String str = "";
 		System.out.println("Asynchronous Call");
+		synchronized (TokenValidator.class) {
 		if (totalCount == 0) {
 			str = "UPDATE APITokenAnalytics SET Total_Count = 1 WHERE TokenID = :tokenID AND API = :url";
 			toDo = 0;
@@ -88,7 +89,7 @@ public class TokenValidator {
 			e.printStackTrace();
 			session.getTransaction().rollback();
 		}
-
+		}
 		return ret;
 	}
 
