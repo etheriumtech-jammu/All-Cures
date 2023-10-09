@@ -63,7 +63,7 @@ public class TokenValidator {
 		return res;
 	}
 
-
+	@Async
 	public static synchronized int updateTotalCount(String url, Integer tokenID, Integer totalCount, int toDo, Session session) {
 		session.beginTransaction();
 		int ret = 0;
