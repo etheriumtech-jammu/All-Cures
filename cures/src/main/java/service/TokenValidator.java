@@ -14,7 +14,7 @@ import util.HibernateUtil;
 
 public class TokenValidator {
 	private static final String STATIC_TOKEN = "All-Cures";
-	
+	@Async
 	public static int isValidToken(String token, String url) {
 		if (token.startsWith("Bearer ")) {
 			token = token.substring("Bearer ".length());
