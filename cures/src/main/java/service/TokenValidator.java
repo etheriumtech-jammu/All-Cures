@@ -3,7 +3,7 @@ package service;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import org.springframework.scheduling.annotation.Async;
 import javax.persistence.NoResultException;
@@ -33,7 +33,7 @@ public class TokenValidator {
 
 		try {
 			List<Object[]> results = query.getResultList();
-
+			if(results.size()>0) {
 			for (Object[] list : results) {
 				Integer TokenID = (Integer) list[0];
 				String Token = (String) list[1];
@@ -43,16 +43,44 @@ public class TokenValidator {
 				Date LastUpdateDate = (Date) list[5];
 
 				if (token.equals(Token) && Status == 1) {
+					
+					
 					if (Max_Allowed == Total_Count && false == current_Date.equals(LastUpdateDate)) {
-						res = updateTotalCount(url, TokenID, Total_Count, 1, session);
-					} else if (Max_Allowed == Total_Count && true == current_Date.equals(LastUpdateDate)) {
+						session.beginTransaction();
+						String str = "UPDATE APITokenAnalytics SET Total_Count = 1 "
+								+ "WHERE TokenID = :tokenID AND API = :url";
+						try {
+							Query<?> query1 = session.createNativeQuery(str)
+									.setParameter("tokenID", TokenID)
+									.setParameter("url", url);
+							res = query1.executeUpdate();
+							session.getTransaction().commit();
+						} catch (Exception e) {
+							e.printStackTrace();
+							session.getTransaction().rollback();
+						}
+						}
+					 else if (Max_Allowed == Total_Count && true == current_Date.equals(LastUpdateDate)) {
 						res = 2;
 					} else if (Max_Allowed == 0) {
 						res = 1;
 					} else if (Max_Allowed > Total_Count) {
-						res = updateTotalCount(url, TokenID, Total_Count, 2, session);
+						session.beginTransaction();
+						String str = "UPDATE APITokenAnalytics SET Total_Count = Total_Count + 1 "
+								+ "WHERE TokenID = :tokenID AND API = :url";
+						try {
+							Query<?> query1 = session.createNativeQuery(str)
+									.setParameter("tokenID", TokenID)
+									.setParameter("url", url);
+							res = query1.executeUpdate();
+							session.getTransaction().commit();
+						} catch (Exception e) {
+							e.printStackTrace();
+							session.getTransaction().rollback();
+						}
 					}
 				}
+			}
 			}
 		} catch (NoResultException e) {
 			System.out.println("No Entry");
@@ -63,40 +91,8 @@ public class TokenValidator {
 		return res;
 	}
 
-	@Async
-	public static int updateTotalCount(String url, Integer tokenID, Integer totalCount, int toDo, Session session) {
-		session.beginTransaction();
-		int ret = 0;
-		String str = "";
-		System.out.println("Asynchronous Call");
-		synchronized (TokenValidator.class) {
-		if (totalCount == 0) {
-			str = "UPDATE APITokenAnalytics SET Total_Count = 1 WHERE TokenID = :tokenID AND API = :url";
-			toDo = 0;
-		} else if (toDo == 1) {
-			str = "UPDATE APITokenAnalytics SET Total_Count = 1 WHERE TokenID = :tokenID AND API = :url";
-		} else if (toDo == 2) {
-			str = "UPDATE APITokenAnalytics SET Total_Count = Total_Count + 1 WHERE TokenID = :tokenID AND API = :url";
-		}
-
-		try {
-			Query<?> query = session.createNativeQuery(str)
-					.setParameter("tokenID", tokenID)
-					.setParameter("url", url);
-			ret = query.executeUpdate();
-			session.getTransaction().commit();
-		} catch (Exception e) {
-			e.printStackTrace();
-			session.getTransaction().rollback();
-		}
-		}
-		return ret;
-	}
-
 	public static Date generatingCurrentDate() {
-		LocalDate currentDate = LocalDate.now();
-		ZoneId zoneId = ZoneId.systemDefault();
-		ZonedDateTime zonedDateTime = currentDate.atStartOfDay(zoneId);
-		return Date.from(zonedDateTime.toInstant());
+		LocalDate localDate=LocalDate.now();
+		return Date.valueOf(localDate);
 	}
 }
