@@ -18,7 +18,7 @@ public class TokenValidator {
 	private static final String STATIC_TOKEN = "All-Cures";
 	
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public static int synchronized isValidToken(String token, String url) {
+	public static  synchronized int isValidToken(String token, String url) {
 		if (token.startsWith("Bearer ")) {
 			token = token.substring("Bearer ".length());
 		}
