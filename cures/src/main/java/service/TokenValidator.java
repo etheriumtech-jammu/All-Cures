@@ -18,7 +18,7 @@ public class TokenValidator {
 	private static final String STATIC_TOKEN = "All-Cures";
 	
 	@Transactional(isolation = Isolation.SERIALIZABLE)
-	public static int isValidToken(String token, String url) {
+	public static int synchronized isValidToken(String token, String url) {
 		if (token.startsWith("Bearer ")) {
 			token = token.substring("Bearer ".length());
 		}
@@ -42,14 +42,14 @@ public class TokenValidator {
 				String Token = (String) list[1];
 				Integer Status = (Integer) list[2];
 				Integer Max_Allowed = (Integer) (list[3] == null ? 0 : list[3]);
-				// Integer Total_Count = (Integer) (list[4] == null ? 0 : list[4]);
-				AtomicInteger Total_Count = new AtomicInteger((Integer) (list[4] == null ? 0 : list[4]));
+				 Integer Total_Count = (Integer) (list[4] == null ? 0 : list[4]);
+				
 				Date LastUpdateDate = (Date) list[5];
 
 				if (token.equals(Token) && Status == 1) {
 					
 					
-					if (Max_Allowed == Total_Count.get() && false == current_Date.equals(LastUpdateDate)) {
+					if (Max_Allowed == Total_Count && false == current_Date.equals(LastUpdateDate)) {
 						session.beginTransaction();
 						String str = "UPDATE APITokenAnalytics SET Total_Count = 1 "
 								+ "WHERE TokenID = :tokenID AND API = :url";
@@ -64,11 +64,11 @@ public class TokenValidator {
 							session.getTransaction().rollback();
 						}
 						}
-					 else if (Max_Allowed == Total_Count.get() && true == current_Date.equals(LastUpdateDate)) {
+					 else if (Max_Allowed == Total_Count && true == current_Date.equals(LastUpdateDate)) {
 						res = 2;
 					} else if (Max_Allowed == 0) {
 						res = 1;
-					} else if (Max_Allowed > Total_Count.get()) {
+					} else if (Max_Allowed > Total_Count) {
 						session.beginTransaction();
 						String str = "UPDATE APITokenAnalytics SET Total_Count = Total_Count + 1 "
 								+ "WHERE TokenID = :tokenID AND API = :url";
