@@ -58,6 +58,7 @@ public class SearchActionController extends HttpServlet {
 	}
 	
 	public void getResults(HttpServletRequest request, HttpServletResponse response, boolean jsonResponse) throws ServletException, IOException {
+		String featuredDoctors="";
 		try{
 			String lat= request.getParameter("Latitude");
 			String lon = request.getParameter("Longitude");
@@ -75,15 +76,27 @@ public class SearchActionController extends HttpServlet {
 	//		String featuredDoctors= request.getParameter("FeaturedDoctors");
 			Session session = HibernateUtil.buildSessionFactory();
 
-			Query query1 = session.createNativeQuery("select rowno from doctors where rowno>=871 ORDER BY rowno desc;");
-			
-			List<Integer> rownoList = query1.getResultList();
+			if(doc_details == null || city_pin == null || city_pin==null || lat == null || lon ==null )
+			{
+				Query query1 = session.createNativeQuery("SELECT rowno, country_code " +
+				        "FROM doctors " +
+				        "WHERE rowno >= 871 " +
+				        "ORDER BY rowno desc "  + ";");
+				
+		//		List<Integer> rownoList = query1.getResultList();
+				List<Object[]> resultList = query1.getResultList();
 
-			// Convert the rowno values to a comma-separated string without the "rowno:" prefix
-			String featuredDoctors = rownoList.stream()
-			    .map(String::valueOf)
-			    .collect(Collectors.joining(","));
-			System.out.println(featuredDoctors);
+				// Convert the rowno values to a comma-separated string without the "rowno:" prefix
+		//		String featuredDoctors = rownoList.stream()
+		//		    .map(String::valueOf)
+		//		    .collect(Collectors.joining(","));
+				
+				 featuredDoctors = resultList.stream()
+				        .map(row -> String.valueOf(row[0]))
+				        .collect(Collectors.joining(","));
+				System.out.println(featuredDoctors);
+			}
+			
 			if (null !=featuredDoctors && featuredDoctors.length() != 0) {
 				System.out.println("In Featured doctor..");
 				docSolr = search.featuredDoctors(featuredDoctors);
