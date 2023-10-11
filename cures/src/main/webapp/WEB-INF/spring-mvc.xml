@@ -101,6 +101,40 @@
 
 	<!-- Scan & register components of RESTful Web Service. -->
 	<!-- (6) -->
+	<mvc:interceptors>
+<mvc:interceptor>
+
+<mvc:mapping path="/article/allkvfeatured"/>
+<bean class="service.TokenValidationInterceptor">
+</bean>
+
+</mvc:interceptor>
+
+<mvc:interceptor>
+
+<mvc:mapping path="/article/allkv"/>
+<bean class="service.TokenValidationInterceptor">
+</bean>
+
+</mvc:interceptor>
+
+<mvc:interceptor>
+
+<mvc:mapping path="/isearch/diseases/*"/>
+<bean class="service.TokenValidationInterceptor">
+</bean>
+
+</mvc:interceptor>
+
+<mvc:interceptor>
+
+<mvc:mapping path="/isearch/medicinetype/*"/>
+<bean class="service.TokenValidationInterceptor">
+</bean>
+
+</mvc:interceptor>
+
+</mvc:interceptors>
 	<context:component-scan
 		base-package="controller,dao,service" />
 <!--
