@@ -20,6 +20,9 @@ public class DiseaseANDConditionDaoImpl {
 
 	public static List getAllMatchingDCList(String search_str, Integer limit, Integer offset, String orderByStr) {
 
+		if (search_str.contains("'s")) {
+	            search_str = search_str.replace("'s", "''s");
+	        }
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
 
