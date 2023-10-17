@@ -71,7 +71,7 @@ public class TipDaoImpl {
 			System.out.println("inserted new entry to tip table for tip_title =  " + tip_title);
 			TipNotification(tip_title);
 			try {
-			WhatsAPITemplateMessage.POSTRequestTrackEventsByTip(tip_title);
+	//		WhatsAPITemplateMessage.POSTRequestTrackEventsByTip(tip_title);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
