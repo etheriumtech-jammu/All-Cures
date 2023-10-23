@@ -74,10 +74,10 @@ public class TipDaoImpl {
 	//		WhatsAPITemplateMessage.POSTRequestTrackEventsByTip(tip_title);
 	//	} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+	//		e.printStackTrace();
 	//	} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+	//		e.printStackTrace();
 	//	}	
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
