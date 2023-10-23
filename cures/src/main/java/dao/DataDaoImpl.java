@@ -202,5 +202,27 @@ public static int file_upload_webStories(HashMap webData,CommonsMultipartFile im
 		return hmFinal; 
 	}
 
+	public static List doctor_image() {
+		
+		Session session = HibernateUtil.buildSessionFactory();
+
+		Query query = session.createNativeQuery(
+				"SELECT rowno, img_Loc FROM doctors;");
+		List<Object[]> results = (List<Object[]>) query.getResultList();
+		System.out.println(results.size());
+		List hmFinal = new ArrayList();
+		for (Object[] objects : results) {
+			LinkedHashMap<String, Object> hm= new LinkedHashMap<String, Object>();
+			hm.put("rowno", (Integer)objects[0]);
+			hm.put("img_Loc", (String)objects[1]);
+			
+			hmFinal.add(hm);
+
+		}
+		
+		return hmFinal; 
+		
+	}
+
 
 	}
