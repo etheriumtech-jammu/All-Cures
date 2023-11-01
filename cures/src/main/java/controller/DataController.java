@@ -102,6 +102,10 @@ public class DataController {
 		
 	}
 	
-	
+	@RequestMapping(value = "/doctor/image", produces = "application/json", method = RequestMethod.GET)
+	public List doctor_image() throws IOException {
+		return DataDaoImpl.doctor_image();
+		
+	}
 
 }
