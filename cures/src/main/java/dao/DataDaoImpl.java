@@ -16,7 +16,6 @@ import java.util.LinkedHashMap;
 @Component
 public class DataDaoImpl {
 
-	
 	public static int addDataDetails(HashMap dataMap) {
 
 		// creating seession factory object
