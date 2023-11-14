@@ -126,12 +126,12 @@ public class DataController {
 
 	@RequestMapping(value = "/categories", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List Categories() {
-		return dataDaoImpl.viewCategories();
+		return DataDaoImpl.viewCategories();
 	}
 
 	@RequestMapping(value = "/medicines", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List Medicines() {
-		return dataDaoImpl.viewMedicines();
+		return DataDaoImpl.viewMedicines();
 	}
 
 }
