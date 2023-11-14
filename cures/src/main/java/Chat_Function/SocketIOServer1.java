@@ -40,7 +40,7 @@ public class SocketIOServer1 extends WebSocketServer {
 	
 	private static final String KEYSTORE_PASSWORD = "Password@123";
 	  private static final String KEY_PASSWORD = "Password@123";
-	  private static final String KEYSTORE_PATH = "/home/etheriumtechnologies/SSL_Oct/all-cures.com.jks";
+	  private static final String KEYSTORE_PATH = "/home/etheriumtechnologies/SSL_NOV/www.all-cures.com.jks";
 	  
 	
 	private static final AtomicInteger connectionCount = new AtomicInteger(0);
