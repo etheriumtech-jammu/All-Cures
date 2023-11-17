@@ -116,7 +116,7 @@ public class DeltaSiteMapGen {
 					str_add = rs_doc.getString(1) + "-" + doc_fname + "-" + rs_doc.getString(3);
 				}
 
-				String final_string = "https://all-cures.com/profile/" + str_add + "";
+				String final_string = "https://www.all-cures.com/profile/" + str_add + "";
 				System.out.println(final_string);
 				updateSitemap(baseSitemap, final_string, "add");
 				
@@ -133,7 +133,7 @@ public class DeltaSiteMapGen {
 				System.out.println();
 				str_add = rs2_cure.getString(1) + "-" + title;
 				
-				String final_string = "https://all-cures.com/cure/" + str_add + "";
+				String final_string = "https://www.all-cures.com/cure/" + str_add + "";
 				System.out.println(final_string);
 				updateSitemap(baseSitemap, final_string, "add");
 			
@@ -204,7 +204,7 @@ public class DeltaSiteMapGen {
 						str_add = rs_doc.getString(1) + "-" + doc_fname + "-" + rs_doc.getString(3);
 					}
 
-					String final_string = "https://all-cures.com/profile/" + str_add + "";
+					String final_string = "https://www.all-cures.com/profile/" + str_add + "";
 					System.out.println(final_string);
 					updateSitemap(baseSitemap1, final_string, "update");
 					updateDeltaSitemap(deltaSitemap1, final_string);
@@ -222,7 +222,7 @@ public class DeltaSiteMapGen {
 					System.out.println();
 					str_add = rs2_cure.getString(1) + "-" + title;
 
-					String final_string = "https://all-cures.com/cure/" + str_add + "";
+					String final_string = "https://www.all-cures.com/cure/" + str_add + "";
 					System.out.println(final_string);
 					updateDeltaSitemap(deltaSitemap1, final_string);
 					updateSitemap(baseSitemap1, final_string, "update");
