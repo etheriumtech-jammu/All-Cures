@@ -74,7 +74,7 @@ public class DiseaseANDConditionDaoImpl {
 						+ search_str + "%'\r\n" + " or window_title  like '%" + search_str + "%'\r\n"
 						+ " or countryname like '%" + search_str + "%'\r\n" + " or keywords like '%"+ search_str +"%' or lang_name like '%" + search_str
 						+ "%' " + " or medicine_type like '%" + search_str + "%'" 
-						+ ") " + " and pubstatus_id = 3 " + limit_str + offset_str + "  order by published_date desc " );
+						+ ") " + " and pubstatus_id = 3 " + limit_str + offset_str + " order by published_date desc " );
 		// needs other condition too but unable to find correct column
 		// ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list searched article count@@@@@@@@@@@@@");
@@ -185,7 +185,7 @@ public class DiseaseANDConditionDaoImpl {
 						+ " inner join disease_condition dc on a.disease_condition_id = dc.dc_id\r\n"
 						+ " inner join languages l on a.language_id = l.language_id\r\n"
 						+ "inner join countries c on c.countrycodeid = a.country_id or a.country_id is null \r\n"
-						+ " where medicine_type =  " +medicine_type+ " and pubstatus_id = 3 " + limit_str + offset_str + "   order by published_date desc " );
+						+ " where medicine_type =  " +medicine_type+ " and pubstatus_id = 3    order by published_date desc " + limit_str + offset_str );
 		// needs other condition too but unable to find correct column
 		// ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list searched article count@@@@@@@@@@@@@" + query.getQueryString());
@@ -294,7 +294,7 @@ public class DiseaseANDConditionDaoImpl {
 						+ " inner join disease_condition dc on a.disease_condition_id = dc.dc_id\r\n"
 						+ " inner join languages l on a.language_id = l.language_id\r\n"
 						+ "inner join countries c on c.countrycodeid = a.country_id or a.country_id is null \r\n"
-						+ " where disease_condition_id =  " +disease_condition_id+ " and pubstatus_id = 3 " + limit_str + offset_str + "   order by published_date desc " );
+						+ " where disease_condition_id =  " +disease_condition_id+ " and pubstatus_id = 3   order by published_date desc " + limit_str + offset_str);
 		// needs other condition too but unable to find correct column
 		// ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list searched article count@@@@@@@@@@@@@" + query.getQueryString());
