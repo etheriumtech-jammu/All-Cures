@@ -54,13 +54,13 @@ public class SearchController {
 	
 	
 	@RequestMapping(value = "/medicinetype/{medicine_type}", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody List listDataFromMatchingString(@PathVariable Integer medicine_type)  {
-		return diseaseANDconditionDaoImpl.getAllarticlebymedicinetypeList(medicine_type);
+	public @ResponseBody List listDataFromMatchingString(@PathVariable Integer medicine_type,@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset, @RequestParam(required = false) String order)  {
+		return diseaseANDconditionDaoImpl.getAllarticlebymedicinetypeList(medicine_type, limit, offset, order);
 	}
 	
 	@RequestMapping(value = "/diseases/{disease_condition_id}", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody List dataFromMatchingString(@PathVariable Integer disease_condition_id)  {
-		return diseaseANDconditionDaoImpl.getAllArticleByDiseaseList(disease_condition_id);
+	public @ResponseBody List dataFromMatchingString(@PathVariable Integer disease_condition_id,@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset, @RequestParam(required = false) String order)  {
+		return diseaseANDconditionDaoImpl.getAllArticleByDiseaseList(disease_condition_id, limit, offset, order);
 	}
 	
 	
