@@ -123,15 +123,15 @@ public class DataController {
 		return DataDaoImpl.doctor_image();
 		
 	}
-/*
+
 	@RequestMapping(value = "/categories", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody List Categories() {
+	public  List Categories() {
 		return DataDaoImpl.viewCategories();
 	}
 
 	@RequestMapping(value = "/medicines", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody List Medicines() {
+	public  List Medicines() {
 		return DataDaoImpl.viewMedicines();
 	}
-*/
+
 }
