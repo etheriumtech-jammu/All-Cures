@@ -751,7 +751,12 @@ public static MemcachedClient mcc = null;
 				+ " ) as authors_name, "
 				+ " (select count(*) from article) as count ,"
 				+ " (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))) as rowno \r\n" 
-				+ " , `article`.`medicine_type` \r\n"
+				+ " , `article`.`medicine_type`, \r\n"
+				+ "    (\r\n"
+				+ "        SELECT m.name\r\n"
+				+ "        FROM medicinetype m\r\n"
+				+ "        WHERE m.id = `article`.`medicine_type`\r\n"
+				+ "    ) AS medicine_type_name\r\n"
 				+ " FROM `article` \r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
 				+ "where `article`.`type` = '[2]'"
@@ -792,9 +797,8 @@ public static MemcachedClient mcc = null;
 			BigInteger count = (BigInteger) objects[24];
 			int rowno = objects[25] != null ? (int) objects[25] : 0;
 			int medicine_type = objects[26] != null ? (int) objects[26] : 0;
-			
-			
-			
+			String med_type_name = (String) objects[27];
+						
 			hm.put("article_id", article_id);
 			hm.put("title", title);
 			hm.put("friendly_name", friendly_name);
@@ -822,7 +826,7 @@ public static MemcachedClient mcc = null;
 			hm.put("count", count);
 			hm.put("rowno", rowno);
 			hm.put("medicine_type", medicine_type);
-			
+			hm.put("med_type_name", med_type_name);
 			hmFinal.add(hm);
 //			System.out.println(hm);
 		}
@@ -878,7 +882,12 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 				+ " ) as authors_name, "
 				+ " (select count(*) from article) as count , "
 				+ " (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))) as rowno \r\n" 
-				+ " , `article`.`medicine_type` \r\n"
+				+ " , `article`.`medicine_type`, \r\n"
+				+ "    (\r\n"
+				+ "        SELECT m.name\r\n"
+				+ "        FROM medicinetype m\r\n"
+				+ "        WHERE m.id = `article`.`medicine_type`\r\n"
+				+ "    ) AS medicine_type_name\r\n"
 				+ " FROM `article` \r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
 				+  search_str + orderby_str
@@ -918,6 +927,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 			BigInteger count = (BigInteger) objects[24];
 			int rowno = objects[25] != null ? (int) objects[25] : 0;	
 			int medicine_type = objects[26] != null ? (int) objects[26] : 0;
+			String med_type_name = (String) objects[27];
 			
 			hm.put("article_id", article_id);
 			hm.put("title", title);
@@ -946,7 +956,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 			hm.put("count", count);
 			hm.put("rowno", rowno);
 			hm.put("medicine_type", medicine_type);
-			
+			hm.put("med_type_name", med_type_name);
 			hmFinal.add(hm);
 //			System.out.println(hm);
 		}
