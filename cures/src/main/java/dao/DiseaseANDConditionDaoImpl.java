@@ -142,10 +142,15 @@ public class DiseaseANDConditionDaoImpl {
 
 		return hmFinal;
 	}
-	public static List getAllarticlebymedicinetypeList(Integer medicine_type ) {
+	public static List getAllarticlebymedicinetypeList(Integer medicine_type , Integer limit, Integer offset, String order) {
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
-
+		String limit_str = "";
+		if (null != limit)
+			limit_str = " limit " + limit;
+		String offset_str = "";
+		if (null != offset)
+			offset_str = " offset " + offset;
 		// creating session object
 		//Session session = factory;
 
@@ -180,7 +185,7 @@ public class DiseaseANDConditionDaoImpl {
 						+ " inner join disease_condition dc on a.disease_condition_id = dc.dc_id\r\n"
 						+ " inner join languages l on a.language_id = l.language_id\r\n"
 						+ "inner join countries c on c.countrycodeid = a.country_id or a.country_id is null \r\n"
-						+ " where medicine_type =  " +medicine_type+ " and pubstatus_id = 3  order by published_date desc " );
+						+ " where medicine_type =  " +medicine_type+ " and pubstatus_id = 3 " + limit_str + offset_str + "   order by published_date desc " );
 		// needs other condition too but unable to find correct column
 		// ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list searched article count@@@@@@@@@@@@@" + query.getQueryString());
@@ -253,10 +258,15 @@ public class DiseaseANDConditionDaoImpl {
 	
 	
 	
-	public static List getAllArticleByDiseaseList(Integer disease_condition_id ) {
+	public static List getAllArticleByDiseaseList(Integer disease_condition_id, Integer limit, Integer offset, String order ) {
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
-
+		String limit_str = "";
+		if (null != limit)
+			limit_str = " limit " + limit;
+		String offset_str = "";
+		if (null != offset)
+			offset_str = " offset " + offset;
 //		String search_str_ = "";
 //		if (null != searchStr) {
 //			search_str = " where ";
@@ -284,7 +294,7 @@ public class DiseaseANDConditionDaoImpl {
 						+ " inner join disease_condition dc on a.disease_condition_id = dc.dc_id\r\n"
 						+ " inner join languages l on a.language_id = l.language_id\r\n"
 						+ "inner join countries c on c.countrycodeid = a.country_id or a.country_id is null \r\n"
-						+ " where disease_condition_id =  " +disease_condition_id+ " and pubstatus_id = 3  order by published_date desc " );
+						+ " where disease_condition_id =  " +disease_condition_id+ " and pubstatus_id = 3 " + limit_str + offset_str + "   order by published_date desc " );
 		// needs other condition too but unable to find correct column
 		// ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 		System.out.println("result list searched article count@@@@@@@@@@@@@" + query.getQueryString());
