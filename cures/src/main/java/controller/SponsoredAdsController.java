@@ -20,6 +20,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.SponsoredAdsDaoImpl;
+import model.SponsoredServicesMaster;
 @RestController
 @RequestMapping(path = "/sponsored")
 public class SponsoredAdsController {
@@ -226,5 +227,37 @@ public class SponsoredAdsController {
 	public List<LinkedHashMap<String,Object>>  searchCompanies_bycampaignsAds(@RequestBody HashMap campaignsAds){
 		
 		return SponsoredAdsDaoImpl.searchCompanies_bycampaignsAds(campaignsAds);
+	}
+
+	@RequestMapping(value = "/create/service", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody Integer addservice(@RequestBody HashMap Service_Map,HttpServletRequest request ) throws Exception {
+
+		return SponsoredAdsDaoImpl.InsertServices(Service_Map);
+	}
+	
+	@RequestMapping(value = "/get/all/services", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List<SponsoredServicesMaster> allservices(HttpServletRequest request) throws Exception {
+
+		return SponsoredAdsDaoImpl.getAllServices();
+	}
+	
+	@RequestMapping(value = "update/service/{ServiceID}", produces = "application/json", method = RequestMethod.PUT)
+	public @ResponseBody int updateService(@PathVariable(name = "ServiceID") Integer ServiceID, @RequestBody HashMap ServiceMap, HttpServletRequest request) {
+	
+	return SponsoredAdsDaoImpl.updateService(ServiceID, ServiceMap);
+		
+	}
+	
+	@RequestMapping(value = "delete/service/{ServiceID}", produces = "application/json", method = RequestMethod.DELETE)
+	public @ResponseBody int deleteService(@PathVariable int ServiceID,  HttpServletRequest request) {
+	
+	return SponsoredAdsDaoImpl.deleteService(ServiceID);
+	
+	}
+	
+	@RequestMapping(value = "/get/service/{ServiceID}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List<SponsoredServicesMaster> getservice(@PathVariable int ServiceID,HttpServletRequest request) throws Exception {
+
+		return SponsoredAdsDaoImpl.getService(ServiceID);
 	}
 }
