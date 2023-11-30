@@ -64,7 +64,7 @@
 		<mapping resource="model/Doctorsrating.hbm.xml" class="model.Doctorsrating"></mapping>
 	    	<mapping class="model.IP_Details"/>
 		<mapping class="model.Chat"/>
-
+		<mapping class="model.SponsoredServicesMaster"/>
 		
 		
 		
