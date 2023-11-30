@@ -1660,7 +1660,7 @@ public static List ListCampaigns() {
 	  
 	  public static List<SponsoredServicesMaster> getAllServices() {
 		    Session session = HibernateUtil.buildSessionFactory();
-		    Query query1 = session.createNativeQuery("SELECT * FROM sponsoredservicesmaster;");
+		    Query query1 = session.createNativeQuery("SELECT * FROM SponsoredServicesMaster;");
 		    List<SponsoredServicesMaster> servicesList = new ArrayList<>();
 		    
 		    List<Object[]> resultList = query1.getResultList();
@@ -1759,7 +1759,7 @@ public static List ListCampaigns() {
   
 	  public static List<SponsoredServicesMaster> getService(int ServiceID) {
 		    Session session = HibernateUtil.buildSessionFactory();
-		    Query query1 = session.createNativeQuery("SELECT * FROM sponsoredservicesmaster where ServiceID ="+ ServiceID + ";");
+		    Query query1 = session.createNativeQuery("SELECT * FROM SponsoredServicesMaster where ServiceID ="+ ServiceID + ";");
 		    List<SponsoredServicesMaster> servicesList = new ArrayList<>();
 		    
 		    List<Object[]> resultList = query1.getResultList();
