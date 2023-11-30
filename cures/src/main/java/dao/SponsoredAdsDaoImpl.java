@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -13,6 +14,8 @@ import java.util.Map;
 import java.util.Set;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.apache.commons.io.FilenameUtils;
 import javax.persistence.NoResultException;
@@ -31,6 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import util.DailyTaskScheduler;
 import util.TargetAds;
 import org.springframework.scheduling.annotation.Async;
+import model.SponsoredServicesMaster;
 public class SponsoredAdsDaoImpl {
 
 	public static Set<String> keySet = new HashSet<>();
@@ -1626,4 +1630,158 @@ public static List ListCampaigns() {
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
         return sqlDate;
 	}
+
+	public static Integer InsertServices( HashMap<String, Object> ServiceMap) { 
+		  Session session = HibernateUtil.buildSessionFactory();
+		  SponsoredServicesMaster service = new SponsoredServicesMaster();
+		  
+	        try {
+	            // Assuming your HashMap has keys matching the property names in Service
+	            // Adjust these names based on your actual Service class
+	        	Transaction tx = session.beginTransaction();
+				
+	            service.setServiceName((String) ServiceMap.get("ServiceName"));
+	            service.setServiceDesc((String) ServiceMap.get("ServiceDesc"));
+	            service.setPaymentReq((Integer) ServiceMap.get("PaymentReq"));
+	            service.setContractReq((Integer) ServiceMap.get("ContractReq"));
+	            service.setCreatedBy((Integer) ServiceMap.get("CreatedBy"));
+	            service.setStatus((Integer) ServiceMap.get("Status"));
+	            session.save(service);
+	            tx.commit();
+	            // Return 1 if insertion is successful
+	            return 1;
+	        } catch (Exception e) {
+	            e.printStackTrace(); // Log the exception or handle it appropriately
+
+	            // Return 0 if insertion fails
+	            return 0;
+	        }
+	    }
+	  
+	  public static List<SponsoredServicesMaster> getAllServices() {
+		    Session session = HibernateUtil.buildSessionFactory();
+		    Query query1 = session.createNativeQuery("SELECT * FROM sponsoredservicesmaster;");
+		    List<SponsoredServicesMaster> servicesList = new ArrayList<>();
+		    
+		    List<Object[]> resultList = query1.getResultList();
+		    Constant.log("Executed Query and Got: " + resultList.size() + " services back", 1);
+
+		    for (Object[] obj : resultList) {
+		        SponsoredServicesMaster service = new SponsoredServicesMaster();
+
+		        service.setServiceId(obj[0] != null ? (Integer) obj[0] : 0);
+		        service.setServiceName((String) obj[1] != null ? (String) obj[1] : "");
+		        service.setServiceDesc((String) obj[2] != null ? (String) obj[2] : "");
+		        service.setPaymentReq(obj[3] != null ? (Integer) obj[3] : 0);
+		        service.setContractReq(obj[4] != null ? (Integer) obj[4] : 0);
+		        service.setCreatedBy(obj[5] != null ? (Integer) obj[5] : 0);
+		        service.setCreatedDate((Timestamp) (obj[6] != null ? obj[6] : null));
+		        service.setLastUpdatedDate((Timestamp) (obj[7] != null ? obj[7] : null));
+		        service.setStatus(obj[8] != null ? (Integer) obj[8] : 0);
+		        service.setUpdatedBy(obj[9] != null ? (Integer) obj[9] : 0);
+
+		        servicesList.add(service);
+		    }
+
+		    return servicesList;
+		}
+
+	  public static int updateService(Integer ServiceID, HashMap ServiceMap) {
+		  String updatestr = "";
+		  if (ServiceMap.containsKey("ServiceName")) {
+			    updatestr += "ServiceName = '" + ServiceMap.get("ServiceName") + "',\r\n";
+			}
+			if (ServiceMap.containsKey("ServiceDesc")) {
+			    updatestr += "ServiceDesc = '" + ServiceMap.get("ServiceDesc") + "',\r\n";
+			}
+		  if (ServiceMap.containsKey("PaymentReq")) {
+				updatestr += " PaymentReq = " + ServiceMap.get("PaymentReq") + ",\r\n";
+			}
+		  if (ServiceMap.containsKey("ContractReq")) {
+				updatestr += " ContractReq = " + ServiceMap.get("ContractReq") + ",\r\n";
+			}
+		  if (ServiceMap.containsKey("UpdatedBy")) {
+				updatestr += " UpdatedBy = " + ServiceMap.get("UpdatedBy") + ",\r\n";
+			}
+		  if (ServiceMap.containsKey("Status")) {
+				updatestr += " Status = " + ServiceMap.get("Status") + ",\r\n";
+			}
+		  updatestr = updatestr.replaceAll(",$", "");
+		  Session session = HibernateUtil.buildSessionFactory();
+		  session.beginTransaction();
+
+			Query query = session
+					.createNativeQuery("UPDATE SponsoredServicesMaster " + "SET " + updatestr + " WHERE ServiceID = " + ServiceID + ";");
+			int ret = 0;
+			try {
+				ret = query.executeUpdate();
+				
+				Constant.log(">>>>>>updated Services table for ServiceID =  " + ServiceID, 1);
+
+				session.getTransaction().commit();
+
+			} catch (Exception ex) {
+				session.getTransaction().rollback();
+			} finally {
+//				session.getTransaction().commit();   //session.close();
+			}
+			return ret;
+	  }
+
+	  public static int deleteService(int ServiceID) {
+			
+			Session session = HibernateUtil.buildSessionFactory();
+
+			// creating session object
+			//Session session = factory;
+			// creating transaction object
+			session.beginTransaction();
+			
+			 String updatestr = " status = 0  ";
+			 
+			 System.out.println(updatestr);
+				Query query = session.createNativeQuery(
+						"UPDATE `SponsoredServicesMaster`\r\n" + "SET\r\n" + updatestr + "WHERE `ServiceID` = " + ServiceID + ";");
+				int ret = 0;
+				try {
+				ret = query.executeUpdate();
+				session.getTransaction().commit();
+				System.out.println("deleted entry for ServiceID =  " + ServiceID);
+			
+			}catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return ret;
+			 	 
+		}
+  
+	  public static List<SponsoredServicesMaster> getService(int ServiceID) {
+		    Session session = HibernateUtil.buildSessionFactory();
+		    Query query1 = session.createNativeQuery("SELECT * FROM sponsoredservicesmaster where ServiceID ="+ ServiceID + ";");
+		    List<SponsoredServicesMaster> servicesList = new ArrayList<>();
+		    
+		    List<Object[]> resultList = query1.getResultList();
+		    
+		    for (Object[] obj : resultList) {
+		        SponsoredServicesMaster service = new SponsoredServicesMaster();
+
+		        service.setServiceId(obj[0] != null ? (Integer) obj[0] : 0);
+		        service.setServiceName((String) obj[1] != null ? (String) obj[1] : "");
+		        service.setServiceDesc((String) obj[2] != null ? (String) obj[2] : "");
+		        service.setPaymentReq(obj[3] != null ? (Integer) obj[3] : 0);
+		        service.setContractReq(obj[4] != null ? (Integer) obj[4] : 0);
+		        service.setCreatedBy(obj[5] != null ? (Integer) obj[5] : 0);
+		        service.setCreatedDate((Timestamp) (obj[6] != null ? obj[6] : null));
+		        service.setLastUpdatedDate((Timestamp) (obj[7] != null ? obj[7] : null));
+		        service.setStatus(obj[8] != null ? (Integer) obj[8] : 0);
+		        service.setUpdatedBy(obj[9] != null ? (Integer) obj[9] : 0);
+
+		        servicesList.add(service);
+		    }
+
+		    return servicesList;
+		}
+
 }
