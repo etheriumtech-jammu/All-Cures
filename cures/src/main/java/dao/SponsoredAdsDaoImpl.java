@@ -35,6 +35,7 @@ import util.DailyTaskScheduler;
 import util.TargetAds;
 import org.springframework.scheduling.annotation.Async;
 import model.SponsoredServicesMaster;
+import model.ServiceContract;
 public class SponsoredAdsDaoImpl {
 
 	public static Set<String> keySet = new HashSet<>();
