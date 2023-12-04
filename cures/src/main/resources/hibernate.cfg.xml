@@ -65,7 +65,7 @@
 	    	<mapping class="model.IP_Details"/>
 		<mapping class="model.Chat"/>
 		<mapping class="model.SponsoredServicesMaster"/>
-		
+		<mapping class="model.ServiceContract"/>
 		
 		
 	
