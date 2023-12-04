@@ -21,6 +21,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.SponsoredAdsDaoImpl;
 import model.SponsoredServicesMaster;
+import model.ServiceContract;
 @RestController
 @RequestMapping(path = "/sponsored")
 public class SponsoredAdsController {
@@ -259,5 +260,37 @@ public class SponsoredAdsController {
 	public @ResponseBody List<SponsoredServicesMaster> getservice(@PathVariable int ServiceID,HttpServletRequest request) throws Exception {
 
 		return SponsoredAdsDaoImpl.getService(ServiceID);
+	}
+
+	@RequestMapping(value = "/create/contract", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody Integer addContract(@RequestBody HashMap Contract_Map,HttpServletRequest request ) throws Exception {
+
+		return SponsoredAdsDaoImpl.InsertContract(Contract_Map);
+	}
+	
+	@RequestMapping(value = "/get/all/contracts", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List<ServiceContract> allcontracts(HttpServletRequest request) throws Exception {
+
+		return SponsoredAdsDaoImpl.getAllContracts();
+	}
+	
+	@RequestMapping(value = "update/contract/{ContractID}", produces = "application/json", method = RequestMethod.PUT)
+	public @ResponseBody int updateContract(@PathVariable(name = "ContractID") Integer ContractID, @RequestBody HashMap ContractMap, HttpServletRequest request) {
+	
+	return SponsoredAdsDaoImpl.updateContract(ContractID, ContractMap);
+		
+	}
+	
+	@RequestMapping(value = "delete/contract/{ContractID}", produces = "application/json", method = RequestMethod.DELETE)
+	public @ResponseBody int deleteContract(@PathVariable int ContractID,  HttpServletRequest request) {
+	
+	return SponsoredAdsDaoImpl.deleteContract(ContractID);
+	
+	}
+	
+	@RequestMapping(value = "/get/contract/{ContractID}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List<ServiceContract> getcontract(@PathVariable int ContractID,HttpServletRequest request) throws Exception {
+
+		return SponsoredAdsDaoImpl.getContract(ContractID);
 	}
 }
