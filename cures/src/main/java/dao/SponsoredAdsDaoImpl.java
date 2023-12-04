@@ -1784,4 +1784,226 @@ public static List ListCampaigns() {
 		    return servicesList;
 		}
 
+	public static Integer InsertContract( HashMap<String, Object> ContractMap) { 
+		  Session session = HibernateUtil.buildSessionFactory();
+		  ServiceContract contract = new ServiceContract();
+		  
+	        try {
+	            // Assuming your HashMap has keys matching the property names in Service
+	            // Adjust these names based on your actual Service class
+	        	Transaction tx = session.beginTransaction();
+	        	contract.setServiceId((Integer) ContractMap.get("ServiceID"));
+	        	contract.setUserId((Integer) ContractMap.get("UserID"));
+	        	contract.setContactFirstName((String) ContractMap.get("ContactFirstName"));
+	        	contract.setContactLastName((String) ContractMap.get("ContactLastName"));
+	        	contract.setDocumentPath((String) ContractMap.get("DocumentPath"));
+	        	contract.setStartDate((String) ContractMap.get("StartDate"));
+	        	contract.setEndDate((String) ContractMap.get("EndDate"));
+	        	contract.setFee((String) ContractMap.get("Fee"));
+	        	contract.setCurrency((String) ContractMap.get("Currency"));
+	        	contract.setCreatedBy((Integer) ContractMap.get("CreatedBy"));
+	        	contract.setStatus((Integer) ContractMap.get("Status"));
+	            session.save(contract);
+	            tx.commit();
+	            // Return 1 if insertion is successful
+	            return 1;
+	        } catch (Exception e) {
+	            e.printStackTrace(); // Log the exception or handle it appropriately
+
+	            // Return 0 if insertion fails
+	            return 0;
+	        }
+	    }
+
+	  public static List<ServiceContract> getAllContracts() {
+		    Session session = HibernateUtil.buildSessionFactory();
+		    Query query1 = session.createNativeQuery("SELECT * FROM ServiceContractDetails;");
+		    List<ServiceContract> contractsList = new ArrayList<>();
+		    
+		    List<Object[]> resultList = query1.getResultList();
+		    Constant.log("Executed Query and Got: " + resultList.size() + " Services Contracts back", 1);
+
+		    for (Object[] obj : resultList) {
+		    	ServiceContract contract = new ServiceContract();
+
+		    	contract.setContractId(obj[0] != null ? (Integer) obj[0] : 0);
+		    	contract.setServiceId(obj[1] != null ? (Integer) obj[1] : 0);
+		    	contract.setUserId(obj[2] != null ? (Integer) obj[2] : 0);
+		    	contract.setContactFirstName((String) obj[3] != null ? (String) obj[3] : "");
+		    	contract.setContactLastName((String) obj[4] != null ? (String) obj[4] : "");
+		    	contract.setCreatedBy(obj[5] != null ? (Integer) obj[5] : 0);
+		    	contract.setDocumentPath((String) obj[6] != null ? (String) obj[6] : "");
+		    	contract.setStartDate((obj[7] != null ? obj[7].toString() : null));
+		    	contract.setEndDate( (obj[8] != null ? obj[8].toString() : null));
+		    	contract.setFee( (obj[9] != null ? obj[9].toString() : null));
+		    	contract.setCurrency((String) (obj[10] != null ? obj[10] : null));
+		    	contract.setCreatedDate((Timestamp) (obj[11] != null ? obj[11] : null));
+		    	contract.setLastUpdatedDate((Timestamp) (obj[12] != null ? obj[12] : null));
+		    	contract.setStatus(obj[13] != null ? (Integer) obj[13] : 0);
+		    	contract.setUpdatedBy(obj[14] != null ? (Integer) obj[14] : 0);
+
+		    	contractsList.add(contract);
+		    }
+
+		    return contractsList;
+		}
+
+	// Method to update a ServiceContract based on ContractID and provided ContractMap
+	    
+	  public static int updateContract(Integer ContractID, HashMap ContractMap) {
+		// String to store the update clauses
+	        String updatestr = "";
+
+	        // Construct the update clauses based on the keys in ContractMap
+	       
+		  if (ContractMap.containsKey("ServiceID")) {
+			    updatestr += "ServiceID = " + ContractMap.get("ServiceID") + ",\r\n";
+			}
+			if (ContractMap.containsKey("UserID")) {
+			    updatestr += "UserID = " + ContractMap.get("UserID") + ",\r\n";
+			}
+		  if (ContractMap.containsKey("ContactFirstName")) {
+				updatestr +=" ContactFirstName = '" + ContractMap.get("ContactFirstName") + "',\r\n";
+			}
+		  if (ContractMap.containsKey("ContactLastName")) {
+				updatestr += " ContactLastName =' " + ContractMap.get("ContactLastName") + "',\r\n";
+			}
+		  if (ContractMap.containsKey("UpdatedBy")) {
+				updatestr += " UpdatedBy = " + ContractMap.get("UpdatedBy") + ",\r\n";
+			}
+		  if (ContractMap.containsKey("DocumentPath")) {
+				updatestr += " DocumentPath = '" + ContractMap.get("DocumentPath") + "',\r\n";
+			}
+		  
+		  if (ContractMap.containsKey("StartDate")) {
+				updatestr += " StartDate = '" + ContractMap.get("StartDate") + "',\r\n";
+			}
+		  if (ContractMap.containsKey("EndDate")) {
+				updatestr += " EndDate =' " + ContractMap.get("EndDate") + "',\r\n";
+			}
+		  if (ContractMap.containsKey("Fee")) {
+				updatestr += " Fee = '" + ContractMap.get("Fee") + "',\r\n";
+			}
+		  if (ContractMap.containsKey("Currency")) {
+				updatestr += " Currency = '" + ContractMap.get("Currency") + "',\r\n";
+			}
+		  
+		  
+		  if (ContractMap.containsKey("Status")) {
+				updatestr += " Status = " + ContractMap.get("Status") + ",\r\n";
+			}
+		// Remove trailing comma from the update string
+	        updatestr = updatestr.replaceAll(",$", "");
+
+	        // Create a Hibernate session
+	        Session session = HibernateUtil.buildSessionFactory();
+
+	        // Begin a transaction
+	        session.beginTransaction();
+
+	        // Create a native SQL query to update servicecontractdetails table
+	        Query query = session.createNativeQuery("UPDATE ServiceContractDetails SET " + updatestr + " WHERE ContractID = " + ContractID + ";");
+
+	        int ret = 0;  // Variable to store the result of the update
+
+	        try {
+	            // Execute the update query
+	            ret = query.executeUpdate();
+
+	            // Log success message
+	            Constant.log(" Updated servicecontractdetails table for ContractID = " + ContractID, 1);
+
+	            // Commit the transaction
+	            session.getTransaction().commit();
+	        } catch (Exception ex) {
+	            // Rollback the transaction if an exception occurs
+	            session.getTransaction().rollback();
+	        } finally {
+	            // Uncomment the line below if you want to close the session here
+	            // session.close();
+	        }
+
+	        // Return the result of the update
+	        return ret;
+	    }
+
+	  public static int deleteContract(int ContractID) {
+			
+			Session session = HibernateUtil.buildSessionFactory();
+
+			// creating session object
+			//Session session = factory;
+			// creating transaction object
+			session.beginTransaction();
+			
+			 String updatestr = " status = 0  ";
+			 
+			 System.out.println(updatestr);
+				Query query = session.createNativeQuery(
+						"UPDATE `ServiceContractDetails`\r\n" + "SET\r\n" + updatestr + "WHERE `ContractID` = " + ContractID + ";");
+				int ret = 0;
+				try {
+				ret = query.executeUpdate();
+				session.getTransaction().commit();
+				System.out.println("deleted entry for ContractID =  " + ContractID);
+			
+			}catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return ret;
+			 	 
+		}
+
+	// Method to retrieve a list of ServiceContracts based on ContractID
+	    public static List<ServiceContract> getContract(int ContractID) {
+	        // Create a Hibernate session
+	        Session session = HibernateUtil.buildSessionFactory();
+
+	        // Create a native SQL query to retrieve ServiceContract details
+	        Query query1 = session.createNativeQuery("SELECT * FROM ServiceContractDetails where ContractID =" + ContractID + ";");
+
+	        // List to store the resulting ServiceContracts
+	        List<ServiceContract> contractsList = new ArrayList<>();
+
+	        // Retrieve the results as a list of Object arrays
+	        List<Object[]> resultList = query1.getResultList();
+
+	        // Log the number of Service Contracts retrieved
+	        Constant.log("Executed Query and Got: " + resultList.size() + " Services Contracts back", 1);
+
+	        // Iterate through each Object array and create ServiceContract objects
+	        for (Object[] obj : resultList) {
+	            ServiceContract contract = new ServiceContract();
+
+	            // Set ContractId, ServiceId, UserId, etc. for each ServiceContract
+	            contract.setContractId(obj[0] != null ? (Integer) obj[0] : 0);
+	            contract.setServiceId(obj[1] != null ? (Integer) obj[1] : 0);
+	            contract.setUserId(obj[2] != null ? (Integer) obj[2] : 0);
+	            contract.setContactFirstName((String) obj[3] != null ? (String) obj[3] : "");
+	            contract.setContactLastName((String) obj[4] != null ? (String) obj[4] : "");
+	            contract.setCreatedBy(obj[5] != null ? (Integer) obj[5] : 0);
+	            contract.setDocumentPath((String) obj[6] != null ? (String) obj[6] : "");
+
+	            // Convert obj[7] and obj[8] to String, assuming they are Date fields
+	            contract.setStartDate((obj[7] != null ? obj[7].toString() : null));
+	            contract.setEndDate((obj[8] != null ? obj[8].toString() : null));
+
+	            // Convert obj[9] to String, assuming it's a DECIMAL field
+	            contract.setFee((obj[9] != null ? obj[9].toString() : null));
+
+	            contract.setCurrency((String) (obj[10] != null ? obj[10] : null));
+	            contract.setCreatedDate((Timestamp) (obj[11] != null ? obj[11] : null));
+	            contract.setLastUpdatedDate((Timestamp) (obj[12] != null ? obj[12] : null));
+	            contract.setStatus(obj[13] != null ? (Integer) obj[13] : 0);
+	            contract.setUpdatedBy(obj[14] != null ? (Integer) obj[14] : 0);
+
+	            // Add the ServiceContract to the list
+	            contractsList.add(contract);
+	        }
+
+	        // Return the list of ServiceContracts
+	        return contractsList;
+	    }
 }
