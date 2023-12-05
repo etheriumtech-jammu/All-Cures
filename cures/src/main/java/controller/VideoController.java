@@ -61,7 +61,7 @@ public class VideoController {
 		
 	}
 	
-	@RequestMapping(value = "/get/all/failures/reasons", produces = "application/json", method = RequestMethod.GET)
+	@RequestMapping(value = "/get/all/failure/reasons", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List<VideoFailure> allfailures(HttpServletRequest request) throws Exception {
 
 		return VideoDaoImpl.getFailures();
