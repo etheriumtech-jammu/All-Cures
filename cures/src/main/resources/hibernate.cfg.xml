@@ -67,7 +67,7 @@
 		<mapping class="model.SponsoredServicesMaster"/>
 		<mapping class="model.ServiceContract"/>
 	    	<mapping class="model.AvailabilitySchedule"/>
-		
+		<mapping class="model.VideoFailure"/>
 		
 	
    <!--   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
