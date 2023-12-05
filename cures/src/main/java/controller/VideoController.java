@@ -16,7 +16,7 @@ import dao.SponsoredAdsDaoImpl;
 import dao.VideoDaoImpl;
 import model.AvailabilitySchedule;
 import model.ServiceContract;
-
+import model.VideoFailure;
 @RestController
 @RequestMapping(path = "/video")
 public class VideoController {
