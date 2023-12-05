@@ -53,4 +53,39 @@ public class VideoController {
 
 		return VideoDaoImpl.getSchedule(DocID);
 	}
+
+	@RequestMapping(value = "/add/failure/reason", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody Integer AddFailure(@RequestBody HashMap FailureMap,HttpServletRequest request ) throws Exception {
+
+		return VideoDaoImpl.InsertFailure(FailureMap);
+		
+	}
+	
+	@RequestMapping(value = "/get/all/failures/reasons", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List<VideoFailure> allfailures(HttpServletRequest request) throws Exception {
+
+		return VideoDaoImpl.getFailures();
+	}
+	
+	@RequestMapping(value = "update/failure/reason/{FailureID}", produces = "application/json", method = RequestMethod.PUT)
+	public @ResponseBody int updateFailure(@PathVariable(name = "FailureID") Integer FailureID, @RequestBody HashMap FailureMap, HttpServletRequest request) {
+	
+	return VideoDaoImpl.updateFailure(FailureID, FailureMap);
+		
+	}
+	
+	@RequestMapping(value = "delete/failure/reason/{FailureID}", produces = "application/json", method = RequestMethod.DELETE)
+	public @ResponseBody int deleteFailure(@PathVariable int FailureID,  HttpServletRequest request) {
+	
+	return VideoDaoImpl.deleteFailure(FailureID);
+	
+	}
+	
+	@RequestMapping(value = "/get/failure/reason/{FailureID}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List<VideoFailure> getfailure(@PathVariable int FailureID,HttpServletRequest request) throws Exception {
+
+		return VideoDaoImpl.getFailure(FailureID);
+	}
+	
+	
 }
