@@ -16,7 +16,7 @@ import dao.PaymentDaoImpl;
 import dao.VideoDaoImpl;
 import model.ServicePayment;
 import model.VideoFailure;
-
+import model.ServicePaymentMethod;
 @RestController
 @RequestMapping(path = "/payment")
 public class PaymentController {
@@ -53,5 +53,41 @@ public class PaymentController {
 
 		return PaymentDaoImpl.getServicePayment(ServicePaymentMasterID);
 	}
+
+	
+	@RequestMapping(value = "/method/add", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody Integer AddPaymentMethod(@RequestBody HashMap PaymentMethodMap,HttpServletRequest request ) throws Exception {
+
+		return PaymentDaoImpl.InsertPaymentMethod(PaymentMethodMap);
+		
+	}
+	
+	@RequestMapping(value = "/method/get/all", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List<ServicePaymentMethod> PaymentMethods(HttpServletRequest request) throws Exception {
+
+		return PaymentDaoImpl.getPaymentMethods();
+	}
+	
+	@RequestMapping(value = "/method/update/{ServicePaymentMethodID}", produces = "application/json", method = RequestMethod.PUT)
+	public @ResponseBody int updatePaymentMethod(@PathVariable(name = "ServicePaymentMethodID") Integer ServicePaymentMethodID, @RequestBody HashMap PaymentMethodMap, HttpServletRequest request) {
+	
+	return PaymentDaoImpl.updatePaymentMethod(ServicePaymentMethodID, PaymentMethodMap);
+		
+	}
+	
+	@RequestMapping(value = "/method/delete/{ServicePaymentMethodID}", produces = "application/json", method = RequestMethod.DELETE)
+	public @ResponseBody int deletePaymentMethod(@PathVariable int ServicePaymentMethodID,  HttpServletRequest request) {
+	
+	return PaymentDaoImpl.deletePaymentMethod(ServicePaymentMethodID);
+	
+	}
+	
+	
+	@RequestMapping(value = "/method/get/{ServicePaymentMethodID}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List<ServicePaymentMethod> getPaymentMethod(@PathVariable int ServicePaymentMethodID,HttpServletRequest request) throws Exception {
+
+		return PaymentDaoImpl.getPaymentMethod(ServicePaymentMethodID);
+	}
+	
 	
 }
