@@ -1827,7 +1827,7 @@ public static List ListCampaigns() {
 	  
 	    public static int uploadContractFile( CommonsMultipartFile image) {
 	//    	String path=System.getProperty( "catalina.base" );
-	    	String path = System.getProperty( "catalina.base" ) + "/webapps/"+ "cures_articleimages"+ "contracts";
+	    	String path = System.getProperty( "catalina.base" ) + "/webapps/"+ "cures_articleimages/"+ "contracts";
 
 		String filename = image.getOriginalFilename();
 		String finalPath=path + "/" + filename;
