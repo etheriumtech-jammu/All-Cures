@@ -263,9 +263,9 @@ public class SponsoredAdsController {
 	}
 
 	@RequestMapping(value = "/create/contract", produces = "application/json", method = RequestMethod.POST)
-	public @ResponseBody Integer addContract(@RequestBody HashMap Contract_Map,HttpServletRequest request ) throws Exception {
+	public @ResponseBody Integer addContract(@RequestParam("image") CommonsMultipartFile image,@RequestBody HashMap Contract_Map,HttpServletRequest request ) throws Exception {
 
-		return SponsoredAdsDaoImpl.InsertContract(Contract_Map);
+		return SponsoredAdsDaoImpl.InsertContract(Contract_Map,image);
 	}
 	
 	@RequestMapping(value = "/get/all/contracts", produces = "application/json", method = RequestMethod.GET)
