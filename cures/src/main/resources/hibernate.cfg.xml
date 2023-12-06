@@ -68,7 +68,7 @@
 		<mapping class="model.ServiceContract"/>
 	    	<mapping class="model.AvailabilitySchedule"/>
 		<mapping class="model.VideoFailure"/>
-		
+		<mapping class="model.ServicePayment"/>
 	
    <!--   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.username">root</property>
