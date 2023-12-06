@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
+import javax.persistence.StoredProcedureQuery;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1593,6 +1593,168 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 //			System.out.println(hm);
 		}
 //		session.getTransaction().commit();   
+		//session.close();
+		
+		return hmFinal;
+	}
+// Method to call Procedure that will create the view of ranked articles
+	public static int create_ranked_articles()
+	{
+		Session session = HibernateUtil.buildSessionFactory();	
+		int ret=0;
+		try {
+		    session.beginTransaction();
+
+		    StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("DropAndCreateRankedArticles");
+		    storedProcedure.execute();
+
+		    session.getTransaction().commit();
+		    ret=1;
+		} catch (Exception e) {
+		    if (session.getTransaction() != null) {
+		        session.getTransaction().rollback();
+		    }
+		    e.printStackTrace();
+		} finally {
+	//	    session.close();
+		}
+
+		return ret;
+		
+	}
+	
+public static List getArticlesListAllKeysRanked(Integer limit, Integer offset, String searchStr, String orderByStr) {
+		int ret=create_ranked_articles();
+		List hmFinal = new ArrayList();
+		if(ret==0)
+		{
+			System.out.println("Failed to call procedure");
+		}
+		
+		else
+		{
+			// creating seession factory object
+			Session session = HibernateUtil.buildSessionFactory();
+			
+			// creating session object
+			//Session session = factory;
+			
+			// creating transaction object
+//			session.beginTransaction();
+			String limit_str = "";
+			if (null != limit)
+				limit_str = " limit " + limit;
+			String offset_str = "";
+			if (null != offset)
+				offset_str = " offset " + offset;
+			String orderby_str = " order by `rnk`,`published_date` desc ";
+			
+			String search_str = "";
+
+			Query query = session.createNativeQuery("SELECT\r\n"
+					+ "        `article_id`,\r\n"
+					+ "    `title`,\r\n"
+					+ " `friendly_name`,\r\n"
+					+ "    `subheading`,\r\n"
+					+ "    `content_type`,\r\n"
+					+ "    `keywords`,\r\n"
+					+ "    `window_title`,\r\n"
+					+ "    `content_location`,\r\n"
+					+ "    `authored_by`,\r\n"
+					+ "    `published_by`,\r\n"
+					+ "    `edited_by`,\r\n"
+					+ "    `copyright_id`,\r\n"
+					+ "    `disclaimer_id`,\r\n"
+					+ "    `create_date`,\r\n"
+					+ "    `published_date`,\r\n"
+					+ "    `pubstatus_id`,\r\n"
+					+ "    `language_id`,\r\n"
+					+ "    `content`,\r\n"
+					+ "    `dc_name`,\r\n"
+					+ "`comments`,\r\n"
+					+ "`type`,\r\n"
+					+ "`country_id`,\r\n"
+					+ "`over_allrating`, \r\n"
+					+ "`medicine_type_name`,\r\n"
+					+ "`authors_name`,\r\n"
+					+ "`count`,\r\n"
+					+ "`rowno`,\r\n"
+					
+					+ "`rnk`\r\n"
+					+ "\r\n"
+					+ "    FROM ranked\r\n"
+					+ orderby_str
+					+ limit_str + offset_str + " ;");
+			// needs other condition too but unable to find correct column
+			List<Object[]> results = (List<Object[]>) query.getResultList();
+			System.out.println("result list article@@@@@@@@@@@@@" + results.size());
+//			session.getTransaction().commit();   //session.close();
+			
+			
+			for (Object[] objects : results) {
+				HashMap hm = new HashMap();
+				int article_id = (int) objects[0];
+				String title = (String) objects[1];
+				String friendly_name = (String) objects[2];
+				String subheading = (String) objects[3];
+				String content_type = (String) objects[4];
+				String keywords = (String) objects[5];
+				String window_title = (String) objects[6];
+				String content_location = (String) objects[7];
+				String authored_by = (String) objects[8];
+				int published_by = objects[9] != null ? (int) objects[9] : 0;
+				int edited_by = (int) objects[10];
+				int copyright_id = (int) objects[11];
+				int disclaimer_id = (int) objects[12];
+				java.sql.Date create_date = (java.sql.Date) objects[13];
+				java.sql.Date published_date = (java.sql.Date) objects[14];
+				int pubstatus_id = (int) objects[15];
+				int language_id = (int) objects[16];
+				String content = (String) objects[17];
+				String dc_name = (String) objects[18];
+				String comments = (String) objects[19];
+				String type = (String) objects[20];
+				int country_id = objects[21] != null ? (int) objects[21] : 0;
+				float over_allrating = (float) (objects[22] != null ? (Float) objects[22] : 0.0);
+				String med_type_name = (String) objects[23];
+				String authors_name = (String) objects[24];
+				BigInteger count = (BigInteger) objects[25];
+				BigInteger rowno = (BigInteger) objects[26];
+				hm.put("article_id", article_id);
+				hm.put("title", title);
+				hm.put("friendly_name", friendly_name);
+				hm.put("subheading", subheading);
+				hm.put("content_type", content_type);
+				hm.put("keywords", keywords);
+				hm.put("window_title", window_title);
+				hm.put("content_location", content_location);
+				hm.put("authored_by", authored_by);
+				hm.put("published_by", published_by);
+				hm.put("edited_by", edited_by);
+				hm.put("copyright_id", copyright_id);
+				hm.put("disclaimer_id", disclaimer_id);
+				hm.put("create_date", create_date);
+				hm.put("published_date", published_date);
+				hm.put("pubstatus_id", pubstatus_id);
+				hm.put("language_id", language_id);
+				hm.put("content", content);
+				hm.put("dc_name", dc_name);
+				hm.put("comments", comments);
+				hm.put("type", type);
+				hm.put("country_id", country_id);
+				hm.put("over_allrating", over_allrating);
+				hm.put("authors_name", authors_name);
+				hm.put("count", count);
+				hm.put("rowno", rowno);
+		
+				hm.put("med_type_name", med_type_name);
+				hmFinal.add(hm);
+
+			}	
+		}
+		
+//		session.getTransaction().commit(); 
+		
 		//session.close();
 		
 		return hmFinal;
