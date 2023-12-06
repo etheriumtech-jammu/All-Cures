@@ -1785,37 +1785,68 @@ public static List ListCampaigns() {
 		    return servicesList;
 		}
 
-	public static Integer InsertContract( HashMap<String, Object> ContractMap) { 
+	public static Integer InsertContract( HashMap<String, Object> ContractMap, CommonsMultipartFile image) { 
 		  Session session = HibernateUtil.buildSessionFactory();
 		  ServiceContract contract = new ServiceContract();
-		  
-	        try {
-	            // Assuming your HashMap has keys matching the property names in Service
-	            // Adjust these names based on your actual Service class
-	        	Transaction tx = session.beginTransaction();
-	        	contract.setServiceId((Integer) ContractMap.get("ServiceID"));
-	        	contract.setUserId((Integer) ContractMap.get("UserID"));
-	        	contract.setContactFirstName((String) ContractMap.get("ContactFirstName"));
-	        	contract.setContactLastName((String) ContractMap.get("ContactLastName"));
-	        	contract.setDocumentPath((String) ContractMap.get("DocumentPath"));
-	        	contract.setStartDate((String) ContractMap.get("StartDate"));
-	        	contract.setEndDate((String) ContractMap.get("EndDate"));
-	        	contract.setFee((String) ContractMap.get("Fee"));
-	        	contract.setCurrency((String) ContractMap.get("Currency"));
-	        	contract.setCreatedBy((Integer) ContractMap.get("CreatedBy"));
-	        	contract.setStatus((Integer) ContractMap.get("Status"));
-	            session.save(contract);
-	            tx.commit();
-	            // Return 1 if insertion is successful
-	            return 1;
-	        } catch (Exception e) {
-	            e.printStackTrace(); // Log the exception or handle it appropriately
+		  int result=uploadContractFile(image);
+		  String filename=image.getOriginalFilename();
+		  if(result==0)
+		  {
+			 System.out.println("error in uploading the image"); 
+		  }
+		  else
+		  {
+			  try {
+		            // Assuming your HashMap has keys matching the property names in Service
+		            // Adjust these names based on your actual Service class
+		        	Transaction tx = session.beginTransaction();
+		        	contract.setServiceId((Integer) ContractMap.get("ServiceID"));
+		        	contract.setUserId((Integer) ContractMap.get("UserID"));
+		        	contract.setContactFirstName((String) ContractMap.get("ContactFirstName"));
+		        	contract.setContactLastName((String) ContractMap.get("ContactLastName"));
+		        	contract.setDocumentPath(filename);
+		        	contract.setStartDate((String) ContractMap.get("StartDate"));
+		        	contract.setEndDate((String) ContractMap.get("EndDate"));
+		        	contract.setFee((String) ContractMap.get("Fee"));
+		        	contract.setCurrency((String) ContractMap.get("Currency"));
+		        	contract.setCreatedBy((Integer) ContractMap.get("CreatedBy"));
+		        	contract.setStatus((Integer) ContractMap.get("Status"));
+		            session.save(contract);
+		            tx.commit();
+		            // Return 1 if insertion is successful
+		            return 1;
+		        } catch (Exception e) {
+		            e.printStackTrace(); // Log the exception or handle it appropriately
 
-	            // Return 0 if insertion fails
-	            return 0;
-	        }
+		            // Return 0 if insertion fails
+		            return 0;
+		        }  
+		  }
+	        return result;
 	    }
+	  
+	    public static int uploadContractFile( CommonsMultipartFile image) {
+	//    	String path=System.getProperty( "catalina.base" );
+	    	String path = System.getProperty( "catalina.base" ) + "/webapps/"+ "cures_articleimages"+ "contracts";
 
+		String filename = image.getOriginalFilename();
+		String finalPath=path + "/" + filename;
+	        System.out.println(path + "/" + filename);
+			int ret=0;	
+			try {
+				byte barr[] = image.getBytes();
+				BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(path + "/" + filename));
+				bout.write(barr);
+				bout.flush();
+				bout.close();
+				ret=1;
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+			
+	    	return ret;
+	    	
+	    }
 	  public static List<ServiceContract> getAllContracts() {
 		    Session session = HibernateUtil.buildSessionFactory();
 		    Query query1 = session.createNativeQuery("SELECT * FROM ServiceContractDetails;");
