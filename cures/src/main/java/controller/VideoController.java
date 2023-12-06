@@ -34,14 +34,14 @@ public class VideoController {
 		return VideoDaoImpl.getSchedules();
 	}
 	
-	@RequestMapping(value = "update/schedule/{DocID}", produces = "application/json", method = RequestMethod.PUT)
+	@RequestMapping(value = "/update/schedule/{DocID}", produces = "application/json", method = RequestMethod.PUT)
 	public @ResponseBody int updateSchedule(@PathVariable(name = "DocID") Integer DocID, @RequestBody HashMap ScheduleMap, HttpServletRequest request) {
 	
 	return VideoDaoImpl.updateSchedule(DocID, ScheduleMap);
 		
 	}
 	
-	@RequestMapping(value = "delete/schedule/{DocID}", produces = "application/json", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/delete/schedule/{DocID}", produces = "application/json", method = RequestMethod.DELETE)
 	public @ResponseBody int deleteSchedule(@PathVariable int DocID,  HttpServletRequest request) {
 	
 	return VideoDaoImpl.deleteSchedule(DocID);
@@ -67,14 +67,14 @@ public class VideoController {
 		return VideoDaoImpl.getFailures();
 	}
 	
-	@RequestMapping(value = "update/failure/reason/{FailureID}", produces = "application/json", method = RequestMethod.PUT)
+	@RequestMapping(value = "/update/failure/reason/{FailureID}", produces = "application/json", method = RequestMethod.PUT)
 	public @ResponseBody int updateFailure(@PathVariable(name = "FailureID") Integer FailureID, @RequestBody HashMap FailureMap, HttpServletRequest request) {
 	
 	return VideoDaoImpl.updateFailure(FailureID, FailureMap);
 		
 	}
 	
-	@RequestMapping(value = "delete/failure/reason/{FailureID}", produces = "application/json", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/delete/failure/reason/{FailureID}", produces = "application/json", method = RequestMethod.DELETE)
 	public @ResponseBody int deleteFailure(@PathVariable int FailureID,  HttpServletRequest request) {
 	
 	return VideoDaoImpl.deleteFailure(FailureID);
