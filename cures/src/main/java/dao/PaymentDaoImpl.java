@@ -212,7 +212,7 @@ public class PaymentDaoImpl {
 	
 	  public static List<ServicePaymentMethod> getPaymentMethods() {
 		    Session session = HibernateUtil.buildSessionFactory();
-		    Query query1 = session.createNativeQuery("SELECT * FROM servicepaymentmethod;");
+		    Query query1 = session.createNativeQuery("SELECT * FROM ServicePaymentMethod;");
 		    List<ServicePaymentMethod> PaymentMethodList = new ArrayList<>();
 		    
 		    List<Object[]> resultList = query1.getResultList();
@@ -238,28 +238,26 @@ public class PaymentDaoImpl {
 		    return PaymentMethodList;
 		}
 	  
-	// Method to update a ServiceContract based on ContractID and provided ContractMap
-	    
-		  public static int updatePaymentMethod(Integer ServicePaymentMethodID, HashMap PaymentMethodMap) {
+	// Method to update a ServicePaymentMethod based on ID and provided Map
+	    public static int updatePaymentMethod(Integer ServicePaymentMethodID, HashMap PaymentMethodMap) {
 			// String to store the update clauses
 		        String updatestr = "";
 
 		        // Construct the update clauses based on the keys in ContractMap
 		       
-			 
-				if (PaymentMethodMap.containsKey("ServiceID")) {
-				    updatestr += "ServiceID = '" + PaymentMethodMap.get("ServiceID") + "',\r\n";
+	if (PaymentMethodMap.containsKey("ServiceID")) {
+			updatestr += "ServiceID = '" + PaymentMethodMap.get("ServiceID") + "',\r\n";
 				}
-			  if (PaymentMethodMap.containsKey("ServicePaymentMasterID")) {
-					updatestr +=" ServicePaymentMasterID = " + PaymentMethodMap.get("ServicePaymentMasterID") + ",\r\n";
+	 if (PaymentMethodMap.containsKey("ServicePaymentMasterID")) {
+			updatestr +=" ServicePaymentMasterID = " + PaymentMethodMap.get("ServicePaymentMasterID") + ",\r\n";
 				}
 			  
-			  if (PaymentMethodMap.containsKey("UpdatedBy")) {
-					updatestr += " UpdatedBy = " + PaymentMethodMap.get("UpdatedBy") + ",\r\n";
+	  if (PaymentMethodMap.containsKey("UpdatedBy")) {
+			updatestr += " UpdatedBy = " + PaymentMethodMap.get("UpdatedBy") + ",\r\n";
 				}
 			 
-			  if (PaymentMethodMap.containsKey("Status")) {
-					updatestr += " Status = " + PaymentMethodMap.get("Status") + ",\r\n";
+	  if (PaymentMethodMap.containsKey("Status")) {
+			updatestr += " Status = " + PaymentMethodMap.get("Status") + ",\r\n";
 				}
 			// Remove trailing comma from the update string
 		        updatestr = updatestr.replaceAll(",$", "");
@@ -271,7 +269,7 @@ public class PaymentDaoImpl {
 		        session.beginTransaction();
 
 		        // Create a native SQL query to update servicecontractdetails table
-		        Query query = session.createNativeQuery("UPDATE servicepaymentmethod SET " + updatestr + " WHERE ServicePaymentMethodID = " + ServicePaymentMethodID + ";");
+		        Query query = session.createNativeQuery("UPDATE ServicePaymentMethod SET " + updatestr + " WHERE ServicePaymentMethodID = " + ServicePaymentMethodID + ";");
 
 		        int ret = 0;  // Variable to store the result of the update
 
@@ -295,14 +293,14 @@ public class PaymentDaoImpl {
 		        // Return the result of the update
 		        return ret;
 		    }
-
-		  public static int deletePaymentMethod(int ServicePaymentMethodID) {
+	// Mthod to delete a payment Method for a particular service
+	  public static int deletePaymentMethod(int ServicePaymentMethodID) {
 				
-				Session session = HibernateUtil.buildSessionFactory();
+		Session session = HibernateUtil.buildSessionFactory();
 
-				// creating session object
-				//Session session = factory;
-				// creating transaction object
+			// creating session object
+			//Session session = factory;
+			// creating transaction object
 				session.beginTransaction();
 				
 				 String updatestr = " status = 0  ";
@@ -327,7 +325,7 @@ public class PaymentDaoImpl {
 		  
 		  public static List<ServicePaymentMethod> getPaymentMethod(int ServicePaymentMethodID) {
 			    Session session = HibernateUtil.buildSessionFactory();
-			    Query query1 = session.createNativeQuery("SELECT * FROM servicepaymentmethod where ServicePaymentMethodID =" + ServicePaymentMethodID + ";");
+			    Query query1 = session.createNativeQuery("SELECT * FROM ServicePaymentMethod where ServicePaymentMethodID =" + ServicePaymentMethodID + ";");
 			    List<ServicePaymentMethod> PaymentMethodList = new ArrayList<>();
 			    
 			    List<Object[]> resultList = query1.getResultList();
