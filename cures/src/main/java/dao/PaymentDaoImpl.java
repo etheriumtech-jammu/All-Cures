@@ -1,0 +1,190 @@
+package dao;
+
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+
+import model.ServicePayment;
+
+import util.Constant;
+import util.HibernateUtil;
+
+public class PaymentDaoImpl {
+	public static Integer InsertPayment( HashMap<String, Object> PaymentMap) { 
+		  Session session = HibernateUtil.buildSessionFactory();
+		  ServicePayment payment= new ServicePayment();
+		  
+	        try {
+	            // Assuming your HashMap has keys matching the property names in Service
+	            // Adjust these names based on your actual Service class
+	        	Transaction tx = session.beginTransaction();
+	        	payment.setServicePaymentMasterName((String) PaymentMap.get("ServicePaymentMasterName"));
+	        	payment.setServicePaymentDesc((String) PaymentMap.get("ServicePaymentDesc"));
+	        	payment.setCreatedBy((Integer) PaymentMap.get("CreatedBy"));
+	        	payment.setStatus((Integer) PaymentMap.get("Status"));
+	            session.save(payment);
+	            tx.commit();
+	            // Return 1 if insertion is successful
+	            return 1;
+	        } catch (Exception e) {
+	            e.printStackTrace(); // Log the exception or handle it appropriately
+	            session.getTransaction().rollback();
+	            // Return 0 if insertion fails
+	            return 0;
+	        }
+	    }
+	
+	public static List<ServicePayment> getServicePayments() {
+	    Session session = HibernateUtil.buildSessionFactory();
+	    Query query1 = session.createNativeQuery("SELECT * FROM ServicePaymentMaster;");
+	    List<ServicePayment> ServicePaymentList = new ArrayList<>();
+	    
+	    List<Object[]> resultList = query1.getResultList();
+	    Constant.log("Executed Query and Got: " + resultList.size() + " Schedule Lists back", 1);
+
+	    for (Object[] obj : resultList) {
+	    	ServicePayment payment = new ServicePayment();
+
+	    	payment.setServicePaymentMasterID(obj[0] != null ? (Integer) obj[0] : 0);
+	    	payment.setServicePaymentMasterName(obj[1] != null ? (String) obj[1] : "");
+	    	payment.setServicePaymentDesc(obj[2] != null ? (String) obj[2] : "");
+	    	
+	    	
+	    	payment.setCreatedBy(obj[3] != null ? (Integer) obj[3] : 0);
+	    	payment.setCreatedDate((Timestamp) (obj[4] != null ? obj[4] : null));
+	    	payment.setLastUpdatedDate((Timestamp) (obj[5] != null ? obj[5] : null));
+	    	payment.setStatus(obj[6] != null ? (Integer) obj[6] : 0);
+	    	payment.setUpdatedBy(obj[7] != null ? (Integer) obj[7] : 0);
+	    	
+	    	
+	    	ServicePaymentList.add(payment);
+	    }
+
+	    return ServicePaymentList;
+	}
+  
+	// Method to update a ServiceContract based on ContractID and provided ContractMap
+    
+	  public static int updatePayment(Integer ServicePaymentMasterID, HashMap PaymentMap) {
+		// String to store the update clauses
+	        String updatestr = "";
+
+	        // Construct the update clauses based on the keys in ContractMap
+	       
+		 
+			if (PaymentMap.containsKey("ServicePaymentMasterName")) {
+			    updatestr += "ServicePaymentMasterName = '" + PaymentMap.get("ServicePaymentMasterName") + "',\r\n";
+			}
+		  if (PaymentMap.containsKey("ServicePaymentDesc")) {
+				updatestr +=" ServicePaymentDesc =' " + PaymentMap.get("ServicePaymentDesc") + "',\r\n";
+			}
+		  
+		  if (PaymentMap.containsKey("UpdatedBy")) {
+				updatestr += " UpdatedBy = " + PaymentMap.get("UpdatedBy") + ",\r\n";
+			}
+		 
+		  if (PaymentMap.containsKey("Status")) {
+				updatestr += " Status = " + PaymentMap.get("Status") + ",\r\n";
+			}
+		// Remove trailing comma from the update string
+	        updatestr = updatestr.replaceAll(",$", "");
+
+	        // Create a Hibernate session
+	        Session session = HibernateUtil.buildSessionFactory();
+
+	        // Begin a transaction
+	        session.beginTransaction();
+
+	        // Create a native SQL query to update servicecontractdetails table
+	        Query query = session.createNativeQuery("UPDATE ServicePaymentMaster SET " + updatestr + " WHERE ServicePaymentMasterID = " + ServicePaymentMasterID + ";");
+
+	        int ret = 0;  // Variable to store the result of the update
+
+	        try {
+	            // Execute the update query
+	            ret = query.executeUpdate();
+
+	            // Log success message
+	            Constant.log(" Updated ServicePaymentMaster table for ServicePaymentMasterID = " + ServicePaymentMasterID, 1);
+
+	            // Commit the transaction
+	            session.getTransaction().commit();
+	        } catch (Exception ex) {
+	            // Rollback the transaction if an exception occurs
+	            session.getTransaction().rollback();
+	        } finally {
+	            // Uncomment the line below if you want to close the session here
+	            // session.close();
+	        }
+
+	        // Return the result of the update
+	        return ret;
+	    }
+	  
+	  public static int deletePayment(int ServicePaymentMasterID) {
+			
+			Session session = HibernateUtil.buildSessionFactory();
+
+			// creating session object
+			//Session session = factory;
+			// creating transaction object
+			session.beginTransaction();
+			
+			 String updatestr = " status = 0  ";
+			 
+			 System.out.println(updatestr);
+				Query query = session.createNativeQuery(
+						"UPDATE `ServicePaymentMaster`\r\n" + "SET\r\n" + updatestr + "WHERE `ServicePaymentMasterID` = " + ServicePaymentMasterID + ";");
+				int ret = 0;
+				try {
+				ret = query.executeUpdate();
+				session.getTransaction().commit();
+				System.out.println("deleted entry for ServicePaymentMasterID =  " + ServicePaymentMasterID);
+			
+			}catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return ret;
+			 	 
+		}
+	  
+	  public static List<ServicePayment> getServicePayment(int ServicePaymentMasterID) {
+		    Session session = HibernateUtil.buildSessionFactory();
+		    Query query1 = session.createNativeQuery("SELECT * FROM ServicePaymentMaster where ServicePaymentMasterID =" + ServicePaymentMasterID + ";");
+		    List<ServicePayment> ServicePaymentList = new ArrayList<>();
+		    
+		    List<Object[]> resultList = query1.getResultList();
+		    Constant.log("Executed Query and Got: " + resultList.size() + " Schedule Lists back", 1);
+
+		    for (Object[] obj : resultList) {
+		    	ServicePayment payment = new ServicePayment();
+
+		    	payment.setServicePaymentMasterID(obj[0] != null ? (Integer) obj[0] : 0);
+		    	payment.setServicePaymentMasterName(obj[1] != null ? (String) obj[1] : "");
+		    	payment.setServicePaymentDesc(obj[2] != null ? (String) obj[2] : "");
+		    	
+		    	
+		    	payment.setCreatedBy(obj[3] != null ? (Integer) obj[3] : 0);
+		    	payment.setCreatedDate((Timestamp) (obj[4] != null ? obj[4] : null));
+		    	payment.setLastUpdatedDate((Timestamp) (obj[5] != null ? obj[5] : null));
+		    	payment.setStatus(obj[6] != null ? (Integer) obj[6] : 0);
+		    	payment.setUpdatedBy(obj[7] != null ? (Integer) obj[7] : 0);
+		    	
+		    	
+		    	ServicePaymentList.add(payment);
+		    }
+
+		    return ServicePaymentList;
+		}
+	  
+
+	
+}
