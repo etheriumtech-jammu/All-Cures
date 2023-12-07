@@ -263,14 +263,13 @@ public class SponsoredAdsController {
 	}
 
 	@RequestMapping(value = "/create/contract", produces = "application/json", method = RequestMethod.POST)
-	public @ResponseBody Integer addContract(@RequestParam("image") CommonsMultipartFile image,@RequestParam("Contract_Map") String ContractMap,
+	public @ResponseBody Integer addContract(@RequestParam(value = "document" , required = false) CommonsMultipartFile document,@RequestParam("Contract_Map") String ContractMap,
             HttpServletRequest request) throws Exception {
 		ObjectMapper objectMapper = new ObjectMapper();
 		HashMap<String, Object> Contract_Map = objectMapper.readValue(ContractMap, new TypeReference<HashMap<String, Object>>() {});
 		
-		return SponsoredAdsDaoImpl.InsertContract(Contract_Map, image);
+		return SponsoredAdsDaoImpl.InsertContract(Contract_Map, document);
 	}
-	
 	@RequestMapping(value = "/get/all/contracts", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List<ServiceContract> allcontracts(HttpServletRequest request) throws Exception {
 
