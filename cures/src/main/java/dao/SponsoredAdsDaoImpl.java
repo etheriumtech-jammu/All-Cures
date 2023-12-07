@@ -1785,17 +1785,22 @@ public static List ListCampaigns() {
 		    return servicesList;
 		}
 
-	public static Integer InsertContract( HashMap<String, Object> ContractMap, CommonsMultipartFile image) { 
+	public static Integer InsertContract( HashMap<String, Object> ContractMap, CommonsMultipartFile document) { 
 		  Session session = HibernateUtil.buildSessionFactory();
 		  ServiceContract contract = new ServiceContract();
-		  int result=uploadContractFile(image);
-		  String filename=image.getOriginalFilename();
+		   int result=0;
+		  String filename="";
+		  if(document!=null)
+		  {
+			  result=uploadContractFile(document);
+			  filename=document.getOriginalFilename();
+			  System.out.println("Filename"+filename);
+		  }
+		  
 		  if(result==0)
 		  {
-			 System.out.println("error in uploading the image"); 
+			 System.out.println("Not uploading the document"); 
 		  }
-		  else
-		  {
 			  try {
 		            // Assuming your HashMap has keys matching the property names in Service
 		            // Adjust these names based on your actual Service class
@@ -1821,12 +1826,11 @@ public static List ListCampaigns() {
 		            // Return 0 if insertion fails
 		            return 0;
 		        }  
-		  }
-	        return result;
+		  
 	    }
 	  
 	    public static int uploadContractFile( CommonsMultipartFile image) {
-	//    	String path=System.getProperty( "catalina.base" );
+	
 	    	String path = System.getProperty( "catalina.base" ) + "/webapps/"+ "cures_articleimages/"+ "contracts";
 
 		String filename = image.getOriginalFilename();
