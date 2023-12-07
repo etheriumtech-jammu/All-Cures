@@ -1818,6 +1818,7 @@ public static List ListCampaigns() {
 		        	contract.setStatus((Integer) ContractMap.get("Status"));
 		            session.save(contract);
 		            tx.commit();
+				System.out.println("Contract added");
 		            // Return 1 if insertion is successful
 		            return 1;
 		        } catch (Exception e) {
