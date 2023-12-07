@@ -277,12 +277,14 @@ public class SponsoredAdsController {
 	}
 	
 	@RequestMapping(value = "update/contract/{ContractID}", produces = "application/json", method = RequestMethod.PUT)
-	public @ResponseBody int updateContract(@PathVariable(name = "ContractID") Integer ContractID, @RequestBody HashMap ContractMap, HttpServletRequest request) {
-	
-	return SponsoredAdsDaoImpl.updateContract(ContractID, ContractMap);
+	public @ResponseBody int updateContract(@PathVariable(name = "ContractID") Integer ContractID , @RequestParam(value = "document" , required = false) CommonsMultipartFile document,@RequestParam("Contract_Map") String ContractMap,
+            HttpServletRequest request) throws Exception {
+		ObjectMapper objectMapper = new ObjectMapper();
+		HashMap<String, Object> Contract_Map = objectMapper.readValue(ContractMap, new TypeReference<HashMap<String, Object>>() {});
+		
+	return SponsoredAdsDaoImpl.updateContract(ContractID, Contract_Map, document);
 		
 	}
-	
 	@RequestMapping(value = "delete/contract/{ContractID}", produces = "application/json", method = RequestMethod.DELETE)
 	public @ResponseBody int deleteContract(@PathVariable int ContractID,  HttpServletRequest request) {
 	
