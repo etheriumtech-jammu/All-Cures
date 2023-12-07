@@ -276,7 +276,7 @@ public class SponsoredAdsController {
 		return SponsoredAdsDaoImpl.getAllContracts();
 	}
 	
-	@RequestMapping(value = "/update/contract/{ContractID}", produces = "application/json", method = RequestMethod.PUT)
+	@RequestMapping(value = "/update/contract/{ContractID}", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody Integer updateContract(@PathVariable int ContractID,@RequestParam(value = "document" , required = false) CommonsMultipartFile document,@RequestParam("Contract_Map") String ContractMap,
             HttpServletRequest request) throws Exception {
 		ObjectMapper objectMapper = new ObjectMapper();
