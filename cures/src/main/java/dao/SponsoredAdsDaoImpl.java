@@ -1887,10 +1887,23 @@ public static List ListCampaigns() {
 
 	// Method to update a ServiceContract based on ContractID and provided ContractMap
 	    
-	  public static int updateContract(Integer ContractID, HashMap ContractMap) {
+	  public static int updateContract(Integer ContractID, HashMap ContractMap,CommonsMultipartFile document) {
 		// String to store the update clauses
-	        String updatestr = "";
-
+	        	String updatestr = "";
+			int result=0;
+			String filename="";
+			if(document!=null)
+			  {
+				  result=uploadContractFile(document);
+				  filename=document.getOriginalFilename();
+				  System.out.println("Filename"+filename);
+				  updatestr += " DocumentPath = '" +filename +"',\r\n";
+			  }
+			  
+			  if(result==0)
+			  {
+				 System.out.println("Not uploading the image"); 
+			  }
 	        // Construct the update clauses based on the keys in ContractMap
 	       
 		  if (ContractMap.containsKey("ServiceID")) {
@@ -1907,11 +1920,7 @@ public static List ListCampaigns() {
 			}
 		  if (ContractMap.containsKey("UpdatedBy")) {
 				updatestr += " UpdatedBy = " + ContractMap.get("UpdatedBy") + ",\r\n";
-			}
-		  if (ContractMap.containsKey("DocumentPath")) {
-				updatestr += " DocumentPath = '" + ContractMap.get("DocumentPath") + "',\r\n";
-			}
-		  
+			}		  
 		  if (ContractMap.containsKey("StartDate")) {
 				updatestr += " StartDate = '" + ContractMap.get("StartDate") + "',\r\n";
 			}
