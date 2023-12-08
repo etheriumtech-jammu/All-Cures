@@ -176,6 +176,30 @@ public class ServiceContract {
 		this.updatedBy = updatedBy;
 	}
 
+	@Transient
+    private String ServiceName;
+	
+	@Transient
+    private String UserName;
+
+
+
+	public String getServiceName() {
+		return ServiceName;
+	}
+
+	public void setServiceName(String serviceName) {
+		ServiceName = serviceName;
+	}
+
+	public String getUserName() {
+		return UserName;
+	}
+
+	public void setUserName(String userName) {
+		UserName = userName;
+	}
+	
     
     // Constructors, getters, and setters
 
