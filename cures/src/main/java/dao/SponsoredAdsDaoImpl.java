@@ -1854,7 +1854,32 @@ public static List ListCampaigns() {
 	    }
 	  public static List<ServiceContract> getAllContracts() {
 		    Session session = HibernateUtil.buildSessionFactory();
-		    Query query1 = session.createNativeQuery("SELECT * FROM ServiceContractDetails;");
+		    Query query1 = session.createNativeQuery("SELECT\r\n"
+		    		+ "    c.ContractID,\r\n"
+		    		+ "    c.ServiceID,\r\n"
+		    		+ "    s.ServiceName,\r\n"
+		    		+ "    r.first_name,\r\n"
+		    		+ "    c.UserID,\r\n"
+		    		+ "    c.ContactFirstName,\r\n"
+		    		+ "    c.ContactLastName,\r\n"
+		    		+ "    c.CreatedBy,\r\n"
+		    		+ "    c.DocumentPath,\r\n"
+		    		+ "    c.StartDate,\r\n"
+		    		+ "    c.EndDate,\r\n"
+		    		+ "    c.Fee,\r\n"
+		    		+ "    c.Currency,\r\n"
+		    		+ "    c.CreatedDate,\r\n"
+		    		+ "    c.LastUpdatedDate,\r\n"
+		    		+ "    c.Status,\r\n"
+		    		+ "    c.UpdatedBy,\r\n"
+		    		+ "    r.last_name\r\n"
+		    		+ "FROM\r\n"
+		    		+ "    ServiceContractDetails c\r\n"
+		    		+ "JOIN\r\n"
+		    		+ "    SponsoredServicesMaster s ON c.ServiceID = s.ServiceID\r\n"
+		    		+ "LEFT JOIN\r\n"
+		    		+ "    registration r ON c.UserID = r.registration_id\r\n"
+		    		+ "");
 		    List<ServiceContract> contractsList = new ArrayList<>();
 		    
 		    List<Object[]> resultList = query1.getResultList();
@@ -1865,25 +1890,29 @@ public static List ListCampaigns() {
 
 		    	contract.setContractId(obj[0] != null ? (Integer) obj[0] : 0);
 		    	contract.setServiceId(obj[1] != null ? (Integer) obj[1] : 0);
-		    	contract.setUserId(obj[2] != null ? (Integer) obj[2] : 0);
-		    	contract.setContactFirstName((String) obj[3] != null ? (String) obj[3] : "");
-		    	contract.setContactLastName((String) obj[4] != null ? (String) obj[4] : "");
-		    	contract.setCreatedBy(obj[5] != null ? (Integer) obj[5] : 0);
-		    	contract.setDocumentPath((String) obj[6] != null ? (String) obj[6] : "");
-		    	contract.setStartDate((obj[7] != null ? obj[7].toString() : null));
-		    	contract.setEndDate( (obj[8] != null ? obj[8].toString() : null));
-		    	contract.setFee( (obj[9] != null ? obj[9].toString() : null));
-		    	contract.setCurrency((String) (obj[10] != null ? obj[10] : null));
-		    	contract.setCreatedDate((Timestamp) (obj[11] != null ? obj[11] : null));
-		    	contract.setLastUpdatedDate((Timestamp) (obj[12] != null ? obj[12] : null));
-		    	contract.setStatus(obj[13] != null ? (Integer) obj[13] : 0);
-		    	contract.setUpdatedBy(obj[14] != null ? (Integer) obj[14] : 0);
+		    	contract.setServiceName((String) obj[2] != null ? (String) obj[2] : "");
+		    	contract.setUserName((String) obj[3] != null? ((String) obj[17] != null? (String) obj[3] + " " + (String) obj[17]: (String) obj[3]) : "");
+		    	contract.setUserId(obj[4] != null ? (Integer) obj[4] : 0);
+		    	contract.setContactFirstName((String) obj[5] != null ? (String) obj[5] : "");
+		    	contract.setContactLastName((String) obj[6] != null ? (String) obj[6] : "");
+		    	contract.setCreatedBy(obj[7] != null ? (Integer) obj[7] : 0);
+		    	contract.setDocumentPath((String) obj[8] != null ? (String) obj[8] : "");
+		    	contract.setStartDate((obj[9] != null ? obj[9].toString() : null));
+		    	contract.setEndDate( (obj[10] != null ? obj[10].toString() : null));
+		    	contract.setFee( (obj[11] != null ? obj[11].toString() : null));
+		    	contract.setCurrency((String) (obj[12] != null ? obj[12] : null));
+		    	contract.setCreatedDate((Timestamp) (obj[13] != null ? obj[13] : null));
+		    	contract.setLastUpdatedDate((Timestamp) (obj[14] != null ? obj[14] : null));
+		    	contract.setStatus(obj[15] != null ? (Integer) obj[15] : 0);
+		    	contract.setUpdatedBy(obj[16] != null ? (Integer) obj[16] : 0);
+		    	
 
 		    	contractsList.add(contract);
 		    }
 
 		    return contractsList;
 		}
+
 
 	// Method to update a ServiceContract based on ContractID and provided ContractMap
 	    
@@ -2008,7 +2037,34 @@ public static List ListCampaigns() {
 	        Session session = HibernateUtil.buildSessionFactory();
 
 	        // Create a native SQL query to retrieve ServiceContract details
-	        Query query1 = session.createNativeQuery("SELECT * FROM ServiceContractDetails where ContractID =" + ContractID + ";");
+	        Query query1 = session.createNativeQuery("SELECT\r\n"
+	        		+ "    c.ContractID,\r\n"
+	        		+ "    c.ServiceID,\r\n"
+	        		+ "    s.ServiceName,\r\n"
+	        		+ "    r.first_name,\r\n"
+	        		+ "    c.UserID,\r\n"
+	        		+ "    c.ContactFirstName,\r\n"
+	        		+ "    c.ContactLastName,\r\n"
+	        		+ "    c.CreatedBy,\r\n"
+	        		+ "    c.DocumentPath,\r\n"
+	        		+ "    c.StartDate,\r\n"
+	        		+ "    c.EndDate,\r\n"
+	        		+ "    c.Fee,\r\n"
+	        		+ "    c.Currency,\r\n"
+	        		+ "    c.CreatedDate,\r\n"
+	        		+ "    c.LastUpdatedDate,\r\n"
+	        		+ "    c.Status,\r\n"
+	        		+ "    c.UpdatedBy,\r\n"
+	        		+ "    r.last_name\r\n"
+	        		+ "FROM\r\n"
+	        		+ "    ServiceContractDetails c\r\n"
+	        		+ "JOIN\r\n"
+	        		+ "    SponsoredServicesMaster s ON c.ServiceID = s.ServiceID\r\n"
+	        		+ "LEFT JOIN\r\n"
+	        		+ "    registration r ON c.UserID = r.registration_id\r\n"
+	        		+ "WHERE\r\n"
+	//        		+ "    c.ContractID = s.ServiceID AND \r\n"
+	        		+ " ContractID =" + ContractID + ";");
 
 	        // List to store the resulting ServiceContracts
 	        List<ServiceContract> contractsList = new ArrayList<>();
@@ -2026,30 +2082,33 @@ public static List ListCampaigns() {
 	            // Set ContractId, ServiceId, UserId, etc. for each ServiceContract
 	            contract.setContractId(obj[0] != null ? (Integer) obj[0] : 0);
 	            contract.setServiceId(obj[1] != null ? (Integer) obj[1] : 0);
-	            contract.setUserId(obj[2] != null ? (Integer) obj[2] : 0);
-	            contract.setContactFirstName((String) obj[3] != null ? (String) obj[3] : "");
-	            contract.setContactLastName((String) obj[4] != null ? (String) obj[4] : "");
-	            contract.setCreatedBy(obj[5] != null ? (Integer) obj[5] : 0);
-	            contract.setDocumentPath((String) obj[6] != null ? (String) obj[6] : "");
+	            contract.setServiceName((String) obj[2] != null ? (String) obj[2] : "");
+		    	contract.setUserName((String) obj[3] != null? ((String) obj[17] != null? (String) obj[3] + " " + (String) obj[17]: (String) obj[3]) : "");
+		    	
+	            contract.setUserId(obj[4] != null ? (Integer) obj[4] : 0);
+	            contract.setContactFirstName((String) obj[5] != null ? (String) obj[5] : "");
+	            contract.setContactLastName((String) obj[6] != null ? (String) obj[6] : "");
+	            contract.setCreatedBy(obj[7] != null ? (Integer) obj[7] : 0);
+	            contract.setDocumentPath((String) obj[8] != null ? (String) obj[8] : "");
 
 	            // Convert obj[7] and obj[8] to String, assuming they are Date fields
-	            contract.setStartDate((obj[7] != null ? obj[7].toString() : null));
-	            contract.setEndDate((obj[8] != null ? obj[8].toString() : null));
+	            contract.setStartDate((obj[9] != null ? obj[9].toString() : null));
+	            contract.setEndDate((obj[10] != null ? obj[10].toString() : null));
 
 	            // Convert obj[9] to String, assuming it's a DECIMAL field
-	            contract.setFee((obj[9] != null ? obj[9].toString() : null));
+	            contract.setFee((obj[11] != null ? obj[11].toString() : null));
 
-	            contract.setCurrency((String) (obj[10] != null ? obj[10] : null));
-	            contract.setCreatedDate((Timestamp) (obj[11] != null ? obj[11] : null));
-	            contract.setLastUpdatedDate((Timestamp) (obj[12] != null ? obj[12] : null));
-	            contract.setStatus(obj[13] != null ? (Integer) obj[13] : 0);
-	            contract.setUpdatedBy(obj[14] != null ? (Integer) obj[14] : 0);
+	            contract.setCurrency((String) (obj[12] != null ? obj[12] : null));
+	            contract.setCreatedDate((Timestamp) (obj[13] != null ? obj[13] : null));
+	            contract.setLastUpdatedDate((Timestamp) (obj[14] != null ? obj[14] : null));
+	            contract.setStatus(obj[15] != null ? (Integer) obj[15] : 0);
+	            contract.setUpdatedBy(obj[16] != null ? (Integer) obj[16] : 0);
 
 	            // Add the ServiceContract to the list
 	            contractsList.add(contract);
 	        }
-
 	        // Return the list of ServiceContracts
 	        return contractsList;
 	    }
+	    
 }
