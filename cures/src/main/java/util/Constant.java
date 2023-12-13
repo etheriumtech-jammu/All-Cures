@@ -119,13 +119,13 @@ public class Constant{
 
 	//Logging Related Settings
 	public static final boolean LoggingOn = true;
-	public static final int ALLOWED_MSG_LVL = 0; //0 = DEBUG; 1 = INFO; 2 = WARN; 3 = ERROR;
-/*	
+	public static final int ALLOWED_MSG_LVL = 3; //0 = DEBUG; 1 = INFO; 2 = WARN; 3 = ERROR;
+	
 	public static void log(String msg, int msg_level){
 		if(LoggingOn && msg_level >= ALLOWED_MSG_LVL){
 			System.out.println(msg);
 		}
 		return;
 	}
-	*/
+	
 }
