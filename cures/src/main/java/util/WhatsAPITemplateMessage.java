@@ -69,13 +69,13 @@ public class WhatsAPITemplateMessage {
 			for (String par_1 : params[1].split(",")) {
 				BV2_dc_name = par_1;
 				BV3_desc = BV3_desc.replace("#", BV2_dc_name);
-	//			WhatsAPITemplateMessage.runInteraktAPI(template_name, BV2_dc_name, countryCode, mobile, header1_imgpath,
-	//					BV1_art_id, BV3_desc, author_medicine_type, disease_name);
+				WhatsAPITemplateMessage.runInteraktAPI(template_name, BV2_dc_name, countryCode, mobile, header1_imgpath,
+						BV1_art_id, BV3_desc, author_medicine_type, disease_name);
 			}
 
 		} else {
-	//		WhatsAPITemplateMessage.runInteraktAPI(template_name, BV2_dc_name, countryCode, mobile, header1_imgpath,
-	//				BV1_art_id, BV3_desc, author_medicine_type, disease_name);
+			WhatsAPITemplateMessage.runInteraktAPI(template_name, BV2_dc_name, countryCode, mobile, header1_imgpath,
+					BV1_art_id, BV3_desc, author_medicine_type, disease_name);
 		}
 	}
 
