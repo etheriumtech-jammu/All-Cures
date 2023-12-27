@@ -110,7 +110,7 @@ public class WhatsAPITemplateMessage {
 //		URL obj = new URL("https://api.interakt.ai/v1/public/track/events/");
 		URL obj = new URL(prop.getProperty("URL_API_TEMPLATES"));
 //		HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
-/*		HttpsURLConnection postConnection = (HttpsURLConnection) obj.openConnection();
+		HttpsURLConnection postConnection = (HttpsURLConnection) obj.openConnection();
 		
 		postConnection.setRequestMethod("POST");
 		postConnection.setRequestProperty("Authorization", "Basic " + prop.getProperty("Authorization_Key"));
@@ -141,7 +141,7 @@ public class WhatsAPITemplateMessage {
 		} else {
 			System.out.println("POST NOT WORKED");
 		}
-  */
+  
 	}
 
 	public static void POSTRequestTrackEventsByArticleId(String art_title, int article_id, String type, int dc_id,
