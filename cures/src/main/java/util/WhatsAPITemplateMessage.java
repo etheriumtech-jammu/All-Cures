@@ -162,8 +162,8 @@ public class WhatsAPITemplateMessage {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-//		for (int i = 0; i < NSData.size(); i++) {
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < NSData.size(); i++) {
+//		for (int i = 0; i < 1; i++) {
 			String[] params = new String[10];
 			// params[0] = "dynamic_disease_template_kb";//
 			// "DAILY_NL_DISEASE_IDS";//"NEW_ARTICLE_PUBLISHED";
