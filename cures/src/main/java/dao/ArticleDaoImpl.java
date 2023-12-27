@@ -1363,7 +1363,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 			        	author_medicine_type += "   "+art.getContent();
 			        }
 					if (articleMap.containsKey("update_subscribers") && (Boolean) articleMap.get("update_subscribers")) {
-						WhatsAPITrackEvents.POSTRequestTrackEventsByArticleId(article_id);
+		//				WhatsAPITrackEvents.POSTRequestTrackEventsByArticleId(article_id);
 						WhatsAPITemplateMessage.POSTRequestTrackEventsByArticleId(art.getTitle()+"?whatsapp", article_id, type, art.getDisease_condition_id(), article_location_relative_full, author_medicine_type, disease_name);
 						System.out.println("Subscription WhatsApp Message sent.");
 					}
