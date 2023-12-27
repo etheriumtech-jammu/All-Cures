@@ -108,6 +108,7 @@ public class WhatsAPITemplateMessage {
 	        System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
 
 		System.out.println(POST_PARAMS);
+/*
 //		URL obj = new URL("https://api.interakt.ai/v1/public/track/events/");
 		URL obj = new URL(prop.getProperty("URL_API_TEMPLATES"));
 //		HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
@@ -142,6 +143,7 @@ public class WhatsAPITemplateMessage {
 		} else {
 			System.out.println("POST NOT WORKED");
 		}
+		*/
 	}
 
 	public static void POSTRequestTrackEventsByArticleId(String art_title, int article_id, String type, int dc_id,
@@ -152,7 +154,7 @@ public class WhatsAPITemplateMessage {
 		// sub_type =1
 		String fileProperties = "whatsapi.properties";
 		// set defalut template name
-		String templateName = "25feballcures";
+		String templateName = "article_2";
 		try {
 			Properties prop = new WAPICommon().readPropertiesFile(fileProperties);
 			templateName = prop.getProperty("subscriber_template_name");
@@ -160,7 +162,8 @@ public class WhatsAPITemplateMessage {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-		for (int i = 0; i < NSData.size(); i++) {
+//		for (int i = 0; i < NSData.size(); i++) {
+		for (int i = 0; i < 1; i++) {
 			String[] params = new String[10];
 			// params[0] = "dynamic_disease_template_kb";//
 			// "DAILY_NL_DISEASE_IDS";//"NEW_ARTICLE_PUBLISHED";
@@ -173,7 +176,8 @@ public class WhatsAPITemplateMessage {
 			} else if (type.contains("2")) {
 				params[1] = (String) ((HashMap) NSData.get(i)).get("nl_subscription_cures_id");// C_ID;
 			}
-			params[3] = (String) ((HashMap) NSData.get(i)).get("mobile"); // mobile
+	//		params[3] = (String) ((HashMap) NSData.get(i)).get("mobile"); // mobile
+			params[3] = "7006268978";
 			params[4] = article_location_relative_image; // article_image
 //			params[4] = "https://etheriumtech.com/images/illustrations/service-3.jpg"; // DC_NAMES
 			params[5] = "" + article_id; // dc name
@@ -182,8 +186,8 @@ public class WhatsAPITemplateMessage {
 			// disease #" + params[1];// detailing
 //			params[6] = "https://all-cures.com/cure/"+URLEncoder.encode(art_title,"UTF-8");
 			params[6] = article_id + "-" + art_title.replaceAll(" ", "-");
-			params[7] = "+" + (Integer) ((HashMap) NSData.get(i)).get("country_code"); // +countryCode
-
+	//		params[7] = "+" + (Integer) ((HashMap) NSData.get(i)).get("country_code"); // +countryCode
+			params[7] = "+91";
 			// }
 //			params[0] = "+91";// (String) ((HashMap) NSData.get(i)).get("mobile");//countryCode
 //			params[1] = (String) ((HashMap) NSData.get(i)).get("mobile"); // mobile
