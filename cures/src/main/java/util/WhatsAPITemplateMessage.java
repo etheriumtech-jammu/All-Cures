@@ -152,7 +152,7 @@ public class WhatsAPITemplateMessage {
 		// sub_type =1
 		String fileProperties = "whatsapi.properties";
 		// set defalut template name
-		String templateName = "25feballcures";
+		String templateName = "article_2";
 		try {
 			Properties prop = new WAPICommon().readPropertiesFile(fileProperties);
 			templateName = prop.getProperty("subscriber_template_name");
