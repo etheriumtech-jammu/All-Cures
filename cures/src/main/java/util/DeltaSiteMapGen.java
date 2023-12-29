@@ -100,10 +100,8 @@ public class DeltaSiteMapGen {
 	
 				Class.forName("com.mysql.jdbc.Driver");
 		con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db, user, pass);
-		
-			stmt = con.createStatement();
 			stmt2 = con.createStatement();
-
+	/*		stmt = con.createStatement();
 			rs_doc = stmt
 					.executeQuery("Select rowno,docname_first,docname_last from doctors ");
 			System.out.println(rs_doc.getFetchSize());
@@ -121,6 +119,7 @@ public class DeltaSiteMapGen {
 				updateSitemap(baseSitemap, final_string, "add");
 				
 			}
+	*/
 			str_add = "";
 			
 			rs2_cure = stmt2.executeQuery("Select article_id,title from article ");
@@ -187,9 +186,9 @@ public class DeltaSiteMapGen {
 		
 				Class.forName("com.mysql.jdbc.Driver");
 				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db, user, pass);
-				stmt = con.createStatement();
+				
 				stmt2 = con.createStatement();
-
+	/*			stmt = con.createStatement();
 				rs_doc = stmt
 						.executeQuery("Select rowno,docname_first,docname_last from doctors where create_date > '"
 								+ formattedDateTime + "'");
@@ -209,6 +208,7 @@ public class DeltaSiteMapGen {
 					updateSitemap(baseSitemap1, final_string, "update");
 					updateDeltaSitemap(deltaSitemap1, final_string);
 				}
+	*/
 				str_add = "";
 
 				rs2_cure = stmt2.executeQuery("Select article_id,title from article where create_time >  '"
