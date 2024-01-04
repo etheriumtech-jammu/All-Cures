@@ -35,7 +35,7 @@ import util.EnDeCryptor;
 import util.HibernateUtil;
 
 @Component
-public class DoctorsDaoImpl {
+public class DoctorsDaoImpl_New {
 
 	public static MemcachedClient mcc = null;
 
