@@ -48,16 +48,15 @@ public class Registration implements Serializable {
 	 @Column(name = Constant.LAST_LOGIN_DATETIME)
 	 private Date last_login_datatime;
 	
-	 @Column(name = Constant.ROWNO)
-	 private Long rowno;
-	
+	 @Column(name = "DocID")
+	 private int DocID;
 	public Registration() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public Registration(Integer registration_id, String first_name, String last_name, String email_address,
 			String pass_word, Integer registration_type, Boolean acceptance_condition, Boolean privacy_policy,
-			Integer account_state, Integer remember_me, Integer login_attempt, Date last_login_datatime, Long mobile_number, Long rowno) {
+			Integer account_state, Integer remember_me, Integer login_attempt, Date last_login_datatime, Long mobile_number, int DocID) {
 		super();
 		this.registration_id = registration_id;
 		this.first_name = first_name;
@@ -72,7 +71,7 @@ public class Registration implements Serializable {
 		this.login_attempt = login_attempt;
 		this.last_login_datatime = last_login_datatime;
 		this.mobile_number = mobile_number;
-		this.rowno = rowno;
+		this.DocID = DocID;
 	}
 	public Integer getRegistration_id() {
 		return registration_id;
@@ -153,12 +152,14 @@ public class Registration implements Serializable {
 		this.last_login_datatime = last_login_datatime;
 	}
 	
-	public Long getRowno() {
-		return rowno;
+	public int getDocID() {
+		return DocID;
 	}
-	public void setRowno(Long rowno) {
-		this.rowno = rowno;
+	public void setDocID(int DocID) {
+	
+		this.DocID = DocID;
 	}
+	
 	
 	
 
