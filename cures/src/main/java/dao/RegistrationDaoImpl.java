@@ -113,9 +113,9 @@ public class RegistrationDaoImpl {
 				RegistrationDaoImpl registerDao = new RegistrationDaoImpl();
 				user = registerDao.findUserByEmail(email);
 				doctor = new DoctorsDaoImpl();
-				doctor.saveDoctors(user.getRegistration_id(), f_name, l_name, email);
-				Long rowno = new DoctorsDaoImpl().findDoctorsByEmail(email).getRowno();
-				user.setRowno(rowno);
+//				doctor.saveDoctors(user.getRegistration_id(), f_name, l_name, email);
+//				Long rowno = new DoctorsDaoImpl().findDoctorsByEmail(email).getRowno();
+//				user.setRowno(rowno);
 				// sessionFactory.close();
 				// Now that the doctor is signed up, should we log her in as well?
 				// TODO: LogUserIn
@@ -205,7 +205,7 @@ public class RegistrationDaoImpl {
 				register.setRemember_me(obj[9] != null ? (Integer) obj[9] : 0);
 				register.setLogin_attempt(obj[10] != null ? (Integer) obj[10] : 0);
 				register.setLast_login_datatime((java.util.Date) obj[11]);
-				register.setRowno(obj[12] != null ? (Long) Long.valueOf( obj[12]+"" ): 0);
+//				register.setRowno(obj[12] != null ? (Long) Long.valueOf( obj[12]+"" ): 0);
 				Constant.log(Constant.PREFIX + obj[0], 0);
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
