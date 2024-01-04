@@ -36,21 +36,21 @@ public class DoctorsActionController extends HttpServlet {
 	}
 	
 	public void getProfile(HttpServletRequest request, HttpServletResponse response, boolean jsonResponse) throws ServletException, IOException {
-		String id=request.getParameter("rowno");
+		String id=request.getParameter("DocID");
 		String cacheString = null;
 		Constant.log("Got Req for Profile For DocID: "+id, 1);
-		int rowno = -1;
-		DoctorsDaoImpl doctorDao = null;
-		Doctors doctorObj = null;
+		int DocID = -1;
+		DoctorsDaoImpl_New doctorDao = null;
+		Doctor_New doctorObj = null;
 		if(id != null){
-			rowno = Integer.parseInt(id);
-			cacheString = findDocInCache(rowno);	
+			DocID = Integer.parseInt(id);
+			cacheString = findDocInCacheByDocID(DocID);	
 			String jsondata = null;
 			if(cacheString == null || "".equals(cacheString) || "null".equalsIgnoreCase(cacheString)){
 				//Doctor Not Found in MemCache
 				Constant.log("Got Null From MemCache on the Doc:"+id, 1);
-				doctorDao = new DoctorsDaoImpl();
-				doctorObj = doctorDao.getAllDoctorsInfo(rowno);
+				doctorDao = new DoctorsDaoImpl_New();
+				doctorObj = doctorDao.getAllDoctorsInfoByDocId(DocID);
 				//SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
 				//Date date = new Date(System.currentTimeMillis());
 				//Constant.log("Date:"+formatter.format(date), 0);
@@ -59,13 +59,13 @@ public class DoctorsActionController extends HttpServlet {
 				//Add the Doctor Found to the Cache since the ID was not there
 				Gson gson = new GsonBuilder().serializeNulls().create();	
 				jsondata = gson.toJson(doctorObj);
-				mcc.add(Constant.ROWNO+"_"+id,360000 ,jsondata).getStatus();
+				mcc.add(Constant.DOCID+"_"+id,360000 ,jsondata).getStatus();
 				//System.out.println("Adding up in docobj cache:"+ mcc.add("docObj",360000 ,doctorObj.toString()).getStatus());						
 			}else{
 				//Doctor Found in Memcache
 				//Date waitTime= (Date) mcc.get("waiting_time");
 				Constant.log("Found Doctor in Memcache and serving from there", 1);
-				jsondata = (String)mcc.get(Constant.ROWNO+"_"+id);
+				jsondata = (String)mcc.get(Constant.DOCID+"_"+id);
 				//doctorObj = new Doctors(jsondata);
 				Constant.log("Done Constructing Doctor JSON From Memcache", 1);
 			}
