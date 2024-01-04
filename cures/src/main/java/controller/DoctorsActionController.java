@@ -15,6 +15,8 @@ import com.google.gson.GsonBuilder;
 
 import dao.DoctorsDaoImpl;
 import model.Doctors;
+import dao.DoctorsDaoImpl_New;
+import model.Doctor_New;
 import net.spy.memcached.AddrUtil;
 import net.spy.memcached.ConnectionFactoryBuilder;
 import net.spy.memcached.FailureMode;
