@@ -36,8 +36,8 @@ public class RegistrationController {
 	@RequestMapping(value = "/add/new", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody String RegisterUser(@RequestBody HashMap RegisterMap,HttpServletRequest request,HttpServletResponse response ) throws Exception {
 
-//	return	RegistrationDaoImpl_New.RegisterUser(RegisterMap,request,response);
-	  return"Added";
+	return	RegistrationDaoImpl_New.RegisterUser(RegisterMap,request,response);
+	  
 	}
 	
 }
