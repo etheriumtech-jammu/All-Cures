@@ -434,32 +434,54 @@ public class DoctorsDaoImpl_New {
 		// String HQL= "from doctors INNER JOIN FETCH hospital.hospital_affliated
 		// where.";
 		Query query = session
-				.createNativeQuery("SELECT doctors.docid,doctors.gender,doctors.edu_training,doctors.insurance_accept,doctors.awards,doctors.telephone_nos,"
-						+ "doctors.other_spls,doctors.over_allrating,doctors.prefix, doctors.docname_first,doctors.docname_middle, "
-						+ "doctors.docname_last,doctors.email, doctors.waiting_time, doctors.verified,doctors.about,doctors.docactive,"
-						+ "doctors.website_url,doctors.featured_doctor_date,doctors.img_loc,doctors.Natl_Reg_Date,doctors.NatlRegNo,"
-						+ "doctors.CreatedDate,doctors.CreatedBy, doctors.Status, doctors.LastUpdatedDate,doctors.UpdatedBy,"
-						+ "h.hospital_affliated, s.spl_name, st.statename,mt.name,da.Address1,da.Address2, "
-						+ "c.cityname,states.statename,c.countryname,mat.AddressType,"
-						+ "mdd.DegDesc,dd.YearOfGrad,mun.UnivName,uc.cityname,us.statename,uco.countryname"
-						+ "FROM Doctors_New as doctors"
-						+"JOIN DoctorAddresses AS da ON doctors.docid = da.DocID"
-						+"LEFT JOIN DoctorDegrees AS dd ON doctors.docid = dd.DocID"
-						+"LEFT JOIN masterdocdegrees AS mdd ON dd.DegreeID = mdd.DegID"
-						+"LEFT JOIN masteruniversities AS mun ON dd.UnivID = mun.UnivID"
-						+ "LEFT JOIN hospital AS h ON doctors.hospital_affliated = h.hospitalid "
-						+ "LEFT JOIN specialties AS s ON doctors.primary_spl = s.splid "
-						+ "LEFT JOIN states AS st ON doctors.RegWithStateBoardID = st.codeid "
-						+ "LEFT JOIN medicinetype AS mt ON doctors.MedicineTypeID=mt.id "
-						+"LEFT JOIN city AS c ON da.City = c.citycode"
-						+"LEFT JOIN states  ON da.State = states.codeid"
-						+"LEFT JOIN countries AS co ON da.Country = co.countrycodeid"
-						+"LEFT JOIN city AS uc ON mun.UnivCity = uc.citycode"
-						+"LEFT JOIN states us ON mun.UnivState = us.codeid"
-						+"LEFT JOIN countries AS uco ON mun.UnivCountry = uco.countrycodeid"
-						+"LEFT JOIN masteraddresstype as mat  ON da.AddressTypeID = mat.ID"
-						
-						+ "WHERE docid=" + docid + ";");
+				.createNativeQuery("SELECT\r\n"
+						+ "    doctors.docid, doctors.gender, doctors.edu_training, doctors.insurance_accept,\r\n"
+						+ "    doctors.awards, doctors.telephone_nos, doctors.other_spls, doctors.over_allrating,\r\n"
+						+ "    doctors.prefix, doctors.docname_first, doctors.docname_middle, doctors.docname_last,\r\n"
+						+ "    doctors.email, doctors.waiting_time, doctors.verified, doctors.about, doctors.docactive,\r\n"
+						+ "    doctors.website_url, doctors.featured_doctor_date, doctors.img_loc, doctors.Natl_Reg_Date,\r\n"
+						+ "    doctors.NatlRegNo, doctors.CreatedDate, doctors.CreatedBy, doctors.Status,\r\n"
+						+ "    doctors.LastUpdatedDate, doctors.UpdatedBy, h.hospital_affliated, s.spl_name,\r\n"
+						+ "    st.statename AS state_name, mt.name AS MedicineTypeName,\r\n"
+						+ "    da.Address1, da.Address2, c.cityname, states.statename AS address_state,\r\n"
+						+ "    co.countryname AS address_country, mat.AddressType,\r\n"
+						+ "    mdd.DegDesc, dd.YearOfGrad, mun.UnivName,\r\n"
+						+ "    uc.cityname AS univ_city, us.statename AS univ_state, uco.countryname AS univ_country\r\n"
+						+ "FROM\r\n"
+						+ "    Doctors_New AS doctors\r\n"
+						+ "LEFT JOIN\r\n"
+						+ "    DoctorAddresses AS da ON doctors.docid = da.DocID\r\n"
+						+ "LEFT JOIN\r\n"
+						+ "    DoctorDegrees AS dd ON doctors.docid = dd.DocID\r\n"
+						+ "LEFT JOIN\r\n"
+						+ "    masterdocdegrees AS mdd ON dd.DegreeID = mdd.DegID\r\n"
+						+ "LEFT JOIN\r\n"
+						+ "    masteruniversities AS mun ON dd.UnivID = mun.UnivID\r\n"
+						+ "LEFT JOIN\r\n"
+						+ "    hospital AS h ON doctors.hospital_affliated = h.hospitalid\r\n"
+						+ "LEFT JOIN\r\n"
+						+ "    specialties AS s ON doctors.primary_spl = s.splid\r\n"
+						+ "LEFT JOIN\r\n"
+						+ "    states AS st ON doctors.RegWithStateBoardID = st.codeid\r\n"
+						+ "LEFT JOIN\r\n"
+						+ "    medicinetype AS mt ON doctors.MedicineTypeID = mt.id\r\n"
+						+ "LEFT JOIN\r\n"
+						+ "    city AS c ON da.City = c.citycode\r\n"
+						+ "LEFT JOIN\r\n"
+						+ "    states ON da.State = states.codeid\r\n"
+						+ "LEFT JOIN\r\n"
+						+ "    countries AS co ON da.Country = co.countrycodeid\r\n"
+						+ "LEFT JOIN\r\n"
+						+ "    city AS uc ON mun.UnivCity = uc.citycode\r\n"
+						+ "LEFT JOIN\r\n"
+						+ "    states us ON mun.UnivState = us.codeid\r\n"
+						+ "LEFT JOIN\r\n"
+						+ "    countries AS uco ON mun.UnivCountry = uco.countrycodeid\r\n"
+						+ "LEFT JOIN\r\n"
+						+ "    masteraddresstype AS mat ON da.AddressTypeID = mat.ID\r\n"
+						+ "WHERE\r\n"
+						+ "    doctors.docid ="
+						+ "" + docid + ";");
 		
 		// This should return in only 1 doctor so why the List?
 		// We should be using query.getSingleResult()
@@ -476,7 +498,7 @@ public class DoctorsDaoImpl_New {
 				doc.setDocId(obj[0] != null ? (Integer) obj[0] : 0);
 				doc.setGender(obj[1] != null ? (Integer) obj[1] : 0);
 				doc.setEduTraining(obj[2] != null ? (String) obj[2] : "");
-				doc.setInsuranceAccept(obj[3] != null && ((Number) obj[3]).intValue() != 0);
+				doc.setInsuranceAccept(obj[3] != null && (Boolean) obj[3]);
 				doc.setAwards(obj[4] != null ? (String) obj[4] : "");
 				doc.setTelephoneNos(obj[5] != null ? (String) obj[5] : "");
 				doc.setOtherSpecializations(obj[6] != null ? (String) obj[6] : "");
@@ -490,7 +512,7 @@ public class DoctorsDaoImpl_New {
 				doc.setWaitingTime(obj[13] != null ? (Integer) obj[13] : 0);
 				doc.setVerified(obj[14] != null ? (Integer) obj[14] : 0);
 				doc.setAbout(obj[15] != null ? (String) obj[15] : "");
-				doc.setDocActive(obj[16] != null && ((Number) obj[16]).intValue() != 0);
+				doc.setDocActive(obj[16] != null && (Boolean) obj[16]);
 				doc.setWebsiteUrl(obj[17] != null ? (String) obj[17] : "");
 				doc.setFeaturedDoctorDate(obj[18] != null ? (Date) obj[18] : null);
 				doc.setImageLocation(obj[19] != null ? (String) obj[19] : "");
