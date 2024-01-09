@@ -21,7 +21,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.Properties;
 import java.io.FileReader;
-import model.Employee;
 
 public class ExcelToMySQL {
 
