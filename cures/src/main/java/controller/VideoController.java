@@ -24,8 +24,8 @@ public class VideoController {
 	@RequestMapping(value = "/add/doctor/schedule", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody Integer AddSchedule(@RequestBody HashMap ScheduleMap,HttpServletRequest request ) throws Exception {
 
-	//	return VideoDaoImpl.InsertSchedule(ScheduleMap);
-		return 1;
+		return VideoDaoImpl.InsertSchedule(ScheduleMap);
+	//	return 1;
 	}
 	
 	@RequestMapping(value = "/get/all/schedules", produces = "application/json", method = RequestMethod.GET)
