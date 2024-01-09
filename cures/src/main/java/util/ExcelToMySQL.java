@@ -27,7 +27,7 @@ public class ExcelToMySQL {
 	public static void main(String[] args) {
 		String excelFilePath = "/home/Production/installers/data_divya/Shuchi.xlsx";
 		FileReader file_reader = new FileReader(
-				"/home/etheriumtechnologies/Production/installers/gitJava/All-Cures/cures/src/main/resources/whatsapi.properties");
+				"/home/new_uat/cures/src/main/resources/whatsapi.properties");
 
 		Properties p = new Properties();
 		p.load(file_reader);
