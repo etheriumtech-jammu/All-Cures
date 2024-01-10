@@ -24,8 +24,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import model.Employee;
-
 public class ExcelToMySQL {
 
 	public static void main(String[] args) throws IOException {
