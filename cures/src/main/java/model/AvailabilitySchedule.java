@@ -219,6 +219,7 @@ public class AvailabilitySchedule {
 
 	public void setDocname_last(String docname_last) {
 		this.docname_last = docname_last;
+	}
     // Constructors, getters, and setters
 
     // Constructors with parameters (if needed)
