@@ -187,7 +187,38 @@ public class AvailabilitySchedule {
 
     @Column(name = "UpdatedBy")
     private int UpdatedBy;
+	@Transient
+    private String docname_first;
+    
+    @Transient
+    private String docname_middle;
+    
+    @Transient
+    private String docname_last;
+    // Constructors, getters, and setters
 
+	public String getDocname_first() {
+		return docname_first;
+	}
+
+	public void setDocname_first(String docname_first) {
+		this.docname_first = docname_first;
+	}
+
+	public String getDocname_middle() {
+		return docname_middle;
+	}
+
+	public void setDocname_middle(String docname_middle) {
+		this.docname_middle = docname_middle;
+	}
+
+	public String getDocname_last() {
+		return docname_last;
+	}
+
+	public void setDocname_last(String docname_last) {
+		this.docname_last = docname_last;
     // Constructors, getters, and setters
 
     // Constructors with parameters (if needed)
