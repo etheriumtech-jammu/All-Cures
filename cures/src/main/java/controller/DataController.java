@@ -122,4 +122,9 @@ public class DataController {
 		return DataDaoImpl.file_Get_webStories();
 		
 	}
+
+	@RequestMapping(value = "/medicines", produces = "application/json", method = RequestMethod.GET)
+	public  List Medicines() {
+		return DataDaoImpl.viewMedicines();
+	}
 }
