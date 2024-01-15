@@ -224,7 +224,27 @@ public class DataDaoImpl {
 		return hmFinal; 
 		
 	}
+		public static List viewMedicines() {
+		Session session = HibernateUtil.buildSessionFactory();
+		
+		Query query = session.createNativeQuery("SELECT * FROM medicinetype;");
+		
+		List<Object[]> results = (List<Object[]>) query.getResultList();
+		
+		List hmFinal = new ArrayList();
+		
+		for (Object[] objects : results) {
+			HashMap hm = new HashMap();
+			
+			Integer med_id = (Integer) objects[0];
+			String med_type = (String) objects[1];
+			    hm.put("med_id",med_id);
+				hm.put("med_type",med_type);
+				hmFinal.add(hm);		
+		}	
+		return hmFinal;
 
+	}
 	
 
 
