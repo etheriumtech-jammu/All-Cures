@@ -435,7 +435,7 @@ public class DoctorsDaoImpl_New {
 		// where.";
 		Query query = session
 				.createNativeQuery("SELECT\r\n"
-						+ "    doctors.docid, doctors.gender, doctors.edu_training, doctors.insurance_accept,\r\n"
+						+ "    doctors.docid, doctors.gender, doctors.insurance_accept,\r\n"
 						+ "    doctors.awards, doctors.telephone_nos, doctors.other_spls, doctors.over_allrating,\r\n"
 						+ "    doctors.prefix, doctors.docname_first, doctors.docname_middle, doctors.docname_last,\r\n"
 						+ "    doctors.email, doctors.waiting_time, doctors.verified, doctors.about, doctors.docactive,\r\n"
@@ -497,48 +497,48 @@ public class DoctorsDaoImpl_New {
 				//doc.setDocid((Integer) obj[0]);
 				doc.setDocId(obj[0] != null ? (Integer) obj[0] : 0);
 				doc.setGender(obj[1] != null ? (Integer) obj[1] : 0);
-				doc.setEduTraining(obj[2] != null ? (String) obj[2] : "");
-				doc.setInsuranceAccept(obj[3] != null && (Boolean) obj[3]);
-				doc.setAwards(obj[4] != null ? (String) obj[4] : "");
-				doc.setTelephoneNos(obj[5] != null ? (String) obj[5] : "");
-				doc.setOtherSpecializations(obj[6] != null ? (String) obj[6] : "");
-				float overall = (float) (obj[7] != null ? (Float) obj[7] : 0.0);
+	//			doc.setEduTraining(obj[2] != null ? (String) obj[2] : "");
+				doc.setInsuranceAccept(obj[2] != null && ((Number) obj[2]).intValue() != 0);
+				doc.setAwards(obj[3] != null ? (String) obj[3] : "");
+				doc.setTelephoneNos(obj[4] != null ? (String) obj[4] : "");
+				doc.setOtherSpecializations(obj[5] != null ? (String) obj[5] : "");
+				float overall = (float) (obj[6] != null ? (Float) obj[6] : 0.0);
 				doc.setOverallRating(overall);
-				doc.setPrefix((String) obj[8] != null ? (String) obj[8] : "");
-				doc.setFirstName((String) obj[9] != null ? (String) obj[9] : "");
-				doc.setMiddleName(obj[10] != null ? (String) obj[10] : "");
-				doc.setLastName(obj[11] != null ? (String) obj[11] : "");
-				doc.setEmail(obj[12] != null ? (String) obj[12] : "");
-				doc.setWaitingTime(obj[13] != null ? (Integer) obj[13] : 0);
-				doc.setVerified(obj[14] != null ? (Integer) obj[14] : 0);
-				doc.setAbout(obj[15] != null ? (String) obj[15] : "");
-				doc.setDocActive(obj[16] != null && (Boolean) obj[16]);
-				doc.setWebsiteUrl(obj[17] != null ? (String) obj[17] : "");
-				doc.setFeaturedDoctorDate(obj[18] != null ? (Date) obj[18] : null);
-				doc.setImageLocation(obj[19] != null ? (String) obj[19] : "");
-				doc.setNationalRegistrationDate(obj[20] != null ? (Date) obj[20] : null);
-				doc.setNationalRegistrationNumber(obj[21] != null ? (String) obj[21] : "");
-				doc.setCreatedDate((Timestamp) (obj[22] != null ? obj[22] : null));
-				doc.setCreatedBy(obj[23] != null ? (Integer) obj[23] : 0);
-				doc.setStatus(obj[24] != null ? (Integer) obj[24] : 0);
-				doc.setLastUpdatedDate((Timestamp) (obj[25] != null ? obj[25] : null));
-				doc.setUpdatedBy(obj[26] != null ? (Integer) obj[26] : 0);
-				doc.setHospital_Affiliated(obj[27] != null ? (String) obj[27] : "");
-				doc.setPrimary_Spl(obj[28] != null ? (String) obj[28] : "");
-				doc.setRegBoardState(obj[29] != null ? (String) obj[29] : "");
-				doc.setMedicineType(obj[30] != null ? (String) obj[30] : "");
-				doc.setAddress1(obj[31] != null ? (String) obj[31] : "");
-				doc.setAddress2(obj[32] != null ? (String) obj[32] : "");
-				doc.setCity(obj[33] != null ? (String) obj[33] : "");
-				doc.setState(obj[34] != null ? (String) obj[34] : "");
-				doc.setCountry(obj[35] != null ? (String) obj[35] : "");
-				doc.setAddressType(obj[36] != null ? (String) obj[36] : "");
-				doc.setDegDesc(obj[37] != null ? (String) obj[37] : "");
-				doc.setYearofGrad(obj[38] != null ? (Integer) obj[38] : 0);
-				doc.setUnivName(obj[39] != null ? (String) obj[39] : "");
-				doc.setUnivCity(obj[40] != null ? (String) obj[40] : "");
-				doc.setUnivState(obj[41] != null ? (String) obj[41] : "");
-				doc.setUnivCountry(obj[42] != null ? (String) obj[42] : "");
+				doc.setPrefix((String) obj[7] != null ? (String) obj[7] : "");
+				doc.setFirstName((String) obj[8] != null ? (String) obj[8] : "");
+				doc.setMiddleName(obj[9] != null ? (String) obj[9] : "");
+				doc.setLastName(obj[10] != null ? (String) obj[10] : "");
+				doc.setEmail(obj[11] != null ? (String) obj[11] : "");
+				doc.setWaitingTime(obj[12] != null ? (Integer) obj[12] : 0);
+				doc.setVerified(obj[13] != null ? (Integer) obj[13] : 0);
+				doc.setAbout(obj[14] != null ? (String) obj[14] : "");
+				doc.setDocActive(obj[15] != null && ((Number) obj[15]).intValue() != 0);
+				doc.setWebsiteUrl(obj[16] != null ? (String) obj[16] : "");
+				doc.setFeaturedDoctorDate(obj[17] != null ? (Date) obj[17] : null);
+				doc.setImageLocation(obj[18] != null ? (String) obj[18] : "");
+				doc.setNationalRegistrationDate(obj[19] != null ? (Date) obj[19] : null);
+				doc.setNationalRegistrationNumber(obj[20] != null ? (String) obj[20] : "");
+				doc.setCreatedDate((Timestamp) (obj[21] != null ? obj[21] : null));
+				doc.setCreatedBy(obj[22] != null ? (Integer) obj[22] : 0);
+				doc.setStatus(obj[23] != null ? (Integer) obj[23] : 0);
+				doc.setLastUpdatedDate((Timestamp) (obj[24] != null ? obj[24] : null));
+				doc.setUpdatedBy(obj[25] != null ? (Integer) obj[25] : 0);
+				doc.setHospital_Affiliated(obj[26] != null ? (String) obj[26] : "");
+				doc.setPrimary_Spl(obj[27] != null ? (String) obj[27] : "");
+				doc.setRegBoardState(obj[28] != null ? (String) obj[28] : "");
+				doc.setMedicineType(obj[29] != null ? (String) obj[29] : "");
+				doc.setAddress1(obj[30] != null ? (String) obj[30] : "");
+				doc.setAddress2(obj[31] != null ? (String) obj[31] : "");
+				doc.setCity(obj[32] != null ? (String) obj[32] : "");
+				doc.setState(obj[33] != null ? (String) obj[33] : "");
+				doc.setCountry(obj[34] != null ? (String) obj[34] : "");
+				doc.setAddressType(obj[35] != null ? (String) obj[35] : "");
+				doc.setDegDesc(obj[36] != null ? (String) obj[36] : "");
+				doc.setYearofGrad(obj[37] != null ? (Integer) obj[37] : 0);
+				doc.setUnivName(obj[38] != null ? (String) obj[38] : "");
+				doc.setUnivCity(obj[39] != null ? (String) obj[39] : "");
+				doc.setUnivState(obj[40] != null ? (String) obj[40] : "");
+				doc.setUnivCountry(obj[41] != null ? (String) obj[41] : "");
 				
 			}
 			Constant.log("--Returning from DoctorsDao ", 1);
