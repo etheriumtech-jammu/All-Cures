@@ -38,7 +38,7 @@ public class DoctorsActionController extends HttpServlet {
 	}
 	
 	public void getProfile(HttpServletRequest request, HttpServletResponse response, boolean jsonResponse) throws ServletException, IOException {
-		String id=request.getParameter("docid");
+		String id=request.getParameter("DocID");
 		String cacheString = null;
 		Constant.log("Got Req for Profile For DocID: "+id, 1);
 		int DocID = -1;
