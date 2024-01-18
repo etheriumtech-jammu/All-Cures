@@ -188,8 +188,6 @@ public class PaymentDaoImpl {
 		    	payment.setServicePaymentMasterID(obj[0] != null ? (Integer) obj[0] : 0);
 		    	payment.setServicePaymentMasterName(obj[1] != null ? (String) obj[1] : "");
 		    	payment.setServicePaymentDesc(obj[2] != null ? (String) obj[2] : "");
-		    	
-		    	
 		    	payment.setCreatedBy(obj[3] != null ? (Integer) obj[3] : 0);
 		    	payment.setCreatedDate((Timestamp) (obj[4] != null ? obj[4] : null));
 		    	payment.setLastUpdatedDate((Timestamp) (obj[5] != null ? obj[5] : null));
@@ -259,14 +257,13 @@ public class PaymentDaoImpl {
 		    
 		    List<Object[]> resultList = query1.getResultList();
 		    Constant.log("Executed Query and Got: " + resultList.size() + " Schedule Lists back", 1);
-
+			
 		    for (Object[] obj : resultList) {
 		    	ServicePaymentMethod method = new ServicePaymentMethod();
 		    	
 		    	method.setServicePaymentMethodID(obj[0] != null ? (Integer) obj[0] : 0);
-		    	method.setServicePaymentMasterID(obj[1] != null ? (Integer) obj[1] : 0);
-		    	method.setServiceID(obj[2] != null ? (Integer) obj[2] : 0);
-		    	
+			method.setServiceID(obj[1] != null ? (Integer) obj[1] : 0);
+		    	method.setServicePaymentMasterID(obj[2] != null ? (Integer) obj[2] : 0);
 		    	method.setCreatedBy(obj[3] != null ? (Integer) obj[3] : 0);
 		    	method.setCreatedDate((Timestamp) (obj[4] != null ? obj[4] : null));
 		    	method.setLastUpdatedDate((Timestamp) (obj[5] != null ? obj[5] : null));
@@ -277,7 +274,6 @@ public class PaymentDaoImpl {
 			method.setPaymentName(obj[10] != null ? (String) obj[10] : "");
 			method.setServiceName(obj[11] != null ? (String) obj[11] : "");
 			
-		    	
 		    	PaymentMethodList.add(method);
 		    }
 
