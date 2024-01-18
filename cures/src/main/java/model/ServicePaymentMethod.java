@@ -35,6 +35,50 @@ public class ServicePaymentMethod {
     @Column(name = "UpdatedBy")
     private Integer UpdatedBy; // Assuming it can be null
 
+	@Transient
+    private String CreatedName;
+    
+    @Transient
+    private String UpdatedName;
+    
+    @Transient
+    private String ServiceName;
+    
+    @Transient
+    private String PaymentName;
+    
+	public String getServiceName() {
+		return ServiceName;
+	}
+
+	public void setServiceName(String serviceName) {
+		ServiceName = serviceName;
+	}
+
+	public String getPaymentName() {
+		return PaymentName;
+	}
+
+	public void setPaymentName(String paymentName) {
+		PaymentName = paymentName;
+	}
+
+	public String getCreated_Name() {
+		return CreatedName;
+	}
+
+	public void setCreated_Name(String Created_Name) {
+		CreatedName = Created_Name;
+	}
+
+	public String getUpdated_Name() {
+		return UpdatedName;
+	}
+
+	public void setUpdated_Name(String Updated_Name) {
+		UpdatedName = Updated_Name;
+	}
+
 	public int getServicePaymentMethodID() {
 		return ServicePaymentMethodID;
 	}
