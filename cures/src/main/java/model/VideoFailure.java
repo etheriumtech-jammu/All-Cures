@@ -113,6 +113,27 @@ public class VideoFailure {
 	public void setUpdatedBy(int updatedBy) {
 		UpdatedBy = updatedBy;
 	}
+@Transient
+    private String CreatedName;
+    
+    @Transient
+    private String UpdatedName;
+    
+    public String getCreated_Name() {
+		return CreatedName;
+	}
+
+	public void setCreated_Name(String Created_Name) {
+		CreatedName = Created_Name;
+	}
+
+	public String getUpdated_Name() {
+		return UpdatedName;
+	}
+
+	public void setUpdated_Name(String Updated_Name) {
+		UpdatedName = Updated_Name;
+	}
 
 	
 	
