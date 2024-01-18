@@ -1677,9 +1677,9 @@ public static List ListCampaigns() {
 		    		+ "FROM\r\n"
 		    		+ "    SponsoredServicesMaster s\r\n"
 		    		+ "JOIN\r\n"
-		    		+ "    Registration regCreated ON s.CreatedBy = regCreated.registration_id\r\n"
+		    		+ "    registration regCreated ON s.CreatedBy = regCreated.registration_id\r\n"
 		    		+ "LEFT JOIN\r\n"
-		    		+ "    Registration regUpdated ON s.UpdatedBy = regUpdated.registration_id;\r\n"
+		    		+ "    registration regUpdated ON s.UpdatedBy = regUpdated.registration_id;\r\n"
 		    		+ "");
 		    List<SponsoredServicesMaster> servicesList = new ArrayList<>();
 		    
