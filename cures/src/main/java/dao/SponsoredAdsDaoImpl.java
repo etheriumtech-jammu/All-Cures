@@ -1661,7 +1661,26 @@ public static List ListCampaigns() {
 	  
 	  public static List<SponsoredServicesMaster> getAllServices() {
 		    Session session = HibernateUtil.buildSessionFactory();
-		    Query query1 = session.createNativeQuery("SELECT * FROM SponsoredServicesMaster;");
+		    Query query1 = session.createNativeQuery("SELECT\r\n"
+		    		+ "    s.ServiceID,\r\n"
+		    		+ "    s.ServiceName,\r\n"
+		    		+ "    s.ServiceDesc,\r\n"
+		    		+ "    s.PaymentReq,\r\n"
+		    		+ "    s.ContractReq,\r\n"
+		    		+ "    s.CreatedBy,\r\n"
+		    		+ "    s.CreatedDate,\r\n"
+		    		+ "    s.LastUpdatedDate,\r\n"
+		    		+ "    s.Status,\r\n"
+		    		+ "    s.UpdatedBy,\r\n"
+		    		+ "    CONCAT(regCreated.first_name, ' ', regCreated.last_name) AS CreatedByName,\r\n"
+		    		+ "    CONCAT(regUpdated.first_name, ' ', regUpdated.last_name) AS UpdatedByName\r\n"
+		    		+ "FROM\r\n"
+		    		+ "    SponsoredServicesMaster s\r\n"
+		    		+ "JOIN\r\n"
+		    		+ "    Registration regCreated ON s.CreatedBy = regCreated.registration_id\r\n"
+		    		+ "LEFT JOIN\r\n"
+		    		+ "    Registration regUpdated ON s.UpdatedBy = regUpdated.registration_id;\r\n"
+		    		+ "");
 		    List<SponsoredServicesMaster> servicesList = new ArrayList<>();
 		    
 		    List<Object[]> resultList = query1.getResultList();
@@ -1680,6 +1699,8 @@ public static List ListCampaigns() {
 		        service.setLastUpdatedDate((Timestamp) (obj[7] != null ? obj[7] : null));
 		        service.setStatus(obj[8] != null ? (Integer) obj[8] : 0);
 		        service.setUpdatedBy(obj[9] != null ? (Integer) obj[9] : 0);
+			service.setCreated_Name(obj[10] != null ? (String) obj[10] : "");
+		    	service.setUpdated_Name(obj[11] != null ? (String) obj[11] : "");
 
 		        servicesList.add(service);
 		    }
