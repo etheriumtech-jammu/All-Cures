@@ -297,7 +297,25 @@ public class VideoDaoImpl {
 		  
 		  public static List<VideoFailure> getFailures() {
 			    Session session = HibernateUtil.buildSessionFactory();
-			    Query query1 = session.createNativeQuery("SELECT * FROM FailureMaster;");
+			    Query query1 = session.createNativeQuery("SELECT\r\n"
+			    		+ "    f.FailureID,\r\n"
+			    		+ "    f.Reasons,\r\n"
+			    		+ "    f.Refund,\r\n"
+			    		+ "    f.Penalty,\r\n"
+			    		+ "    f.CreatedBy,\r\n"
+			    		+ "    f.CreatedDate,\r\n"
+			    		+ "    f.LastUpdatedDate,\r\n"
+			    		+ "    f.UpdatedBy,\r\n"
+			    		+ "    f.Status,\r\n"
+			    		+ "    CONCAT(regCreated.first_name, ' ', regCreated.last_name) AS CreatedByName,\r\n"
+			    		+ "    CONCAT(regUpdated.first_name, ' ', regUpdated.last_name) AS UpdatedByName\r\n"
+			    		+ "FROM\r\n"
+			    		+ "    FailureMaster f\r\n"
+			    		+ "JOIN\r\n"
+			    		+ "    registration regCreated ON f.CreatedBy = regCreated.registration_id\r\n"
+			    		+ "LEFT JOIN\r\n"
+			    		+ "    registration regUpdated ON f.UpdatedBy = regUpdated.registration_id;\r\n"
+			    		+ "");
 			    List<VideoFailure> failureList = new ArrayList<>();
 			    
 			    List<Object[]> resultList = query1.getResultList();
@@ -317,7 +335,8 @@ public class VideoDaoImpl {
 			    	
 			    	failure.setUpdatedBy(obj[7] != null ? (Integer) obj[7] : 0);
 			    	failure.setStatus(obj[8] != null ? (Integer) obj[8] : 0);
-			    	
+			    	failure.setCreated_Name(obj[9] != null ? (String) obj[9] : "");
+			    	failure.setUpdated_Name(obj[10] != null ? (String) obj[10] : "");
 			    	failureList.add(failure);
 			    }
 
