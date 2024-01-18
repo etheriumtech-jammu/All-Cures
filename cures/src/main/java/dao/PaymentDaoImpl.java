@@ -212,7 +212,31 @@ public class PaymentDaoImpl {
 	
 	  public static List<ServicePaymentMethod> getPaymentMethods() {
 		    Session session = HibernateUtil.buildSessionFactory();
-		    Query query1 = session.createNativeQuery("SELECT * FROM ServicePaymentMethod;");
+		    Query query1 = session.createNativeQuery("SELECT\r\n"
+				+ "    spm.ServicePaymentMethodID,\r\n"
+				+ "    spm.ServiceID,\r\n"
+				+ "    spm.ServicePaymentMasterID,\r\n"
+				+ "    spm.CreatedBy,\r\n"
+				+ "    spm.CreatedDate,\r\n"
+				+ "    spm.LastUpdatedDate,\r\n"
+				+ "    spm.Status,\r\n"
+				+ "    spm.UpdatedBy,\r\n"
+				+ "    CONCAT(reg.first_name, ' ', reg.last_name) AS Created_Name,\r\n"
+				+ "    CONCAT(reg1.first_name, ' ', reg1.last_name) AS Updated_Name,\r\n"
+				+ "    spmm.ServicePaymentMasterName,\r\n"
+				+ "    ssm.ServiceName\r\n"
+				+ "FROM\r\n"
+				+ "    ServicePaymentMethod spm\r\n"
+				+ "JOIN\r\n"
+				+ "    registration reg ON spm.CreatedBy = reg.registration_id\r\n"
+				+ "LEFT JOIN\r\n"
+				+ "	ServicePaymentMaster spmm on spm.ServicePaymentMasterID = spmm.ServicePaymentMasterID\r\n"
+				+ "LEFT JOIN\r\n"
+				+ "	SponsoredServicesMaster ssm on spm.ServiceID=ssm.ServiceID\r\n"
+				+ "\r\n"
+				+ "LEFT JOIN\r\n"
+				+ "    registration reg1 ON spm.UpdatedBy = reg1.registration_id;\r\n"
+				+ "");
 		    List<ServicePaymentMethod> PaymentMethodList = new ArrayList<>();
 		    
 		    List<Object[]> resultList = query1.getResultList();
@@ -230,7 +254,11 @@ public class PaymentDaoImpl {
 		    	method.setLastUpdatedDate((Timestamp) (obj[5] != null ? obj[5] : null));
 		    	method.setStatus(obj[6] != null ? (Integer) obj[6] : 0);
 		    	method.setUpdatedBy(obj[7] != null ? (Integer) obj[7] : 0);
-		    	
+		    	method.setCreated_Name(obj[8] != null ? (String) obj[8] : "");
+			method.setUpdated_Name(obj[9] != null ? (String) obj[9] : "");
+			method.setPaymentName(obj[10] != null ? (String) obj[10] : "");
+			method.setServiceName(obj[11] != null ? (String) obj[11] : "");
+			
 		    	
 		    	PaymentMethodList.add(method);
 		    }
