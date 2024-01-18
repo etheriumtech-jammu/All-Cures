@@ -71,7 +71,7 @@ public class VideoDaoImpl {
 		    		+ "    a.LastUpdatedDate,\r\n"
 		    		+ "    a.Status,\r\n"
 		    		+ "    a.CreatedBy,\r\n"
-		    		+ "    a.UpdatedBy\r\n"
+		    		+ "    a.UpdatedBy,\r\n"
 				+"	CONCAT(reg.first_name, ' ', reg.last_name) AS Created_Name,\r\n"
 		    	 	+" 	CONCAT(reg1.first_name, ' ', reg1.last_name) AS Updated_Name\r\n"			     
 		    		+ "FROM\r\n"
