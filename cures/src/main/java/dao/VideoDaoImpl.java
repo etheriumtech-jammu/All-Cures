@@ -72,10 +72,16 @@ public class VideoDaoImpl {
 		    		+ "    a.Status,\r\n"
 		    		+ "    a.CreatedBy,\r\n"
 		    		+ "    a.UpdatedBy\r\n"
+				+"	CONCAT(reg.first_name, ' ', reg.last_name) AS Created_Name,\r\n"
+		    	 	+" 	CONCAT(reg1.first_name, ' ', reg1.last_name) AS Updated_Name\r\n"			     
 		    		+ "FROM\r\n"
 		    		+ "    DoctorAvailability a\r\n"
 		    		+ "JOIN\r\n"
-		    		+ "    doctors d ON a.DocID = d.docid;\r\n"
+		    		+ "    doctors d ON a.DocID = d.docid\r\n"
+				+"JOIN\r\n"
+		    		+" registration reg ON a.CreatedBy = reg.registration_id\r\n"
+		    		+"LEFT JOIN\r\n"
+		    	   	+" registration reg1 ON a.UpdatedBy = reg1.registration_id;\r\n"
 		    		+ "");
 		    List<AvailabilitySchedule> scheduleList = new ArrayList<>();
 		    
@@ -107,7 +113,8 @@ public class VideoDaoImpl {
 		    	schedule.setStatus(obj[16] != null ? (Integer) obj[16] : 0);
 		    	schedule.setCreatedBy(obj[17] != null ? (Integer) obj[17] : 0);
 		    	schedule.setUpdatedBy(obj[18] != null ? (Integer) obj[18] : 0);
-
+			schedule.setCreated_Name(obj[19] != null ? (String) obj[19] : "");
+		    	schedule.setUpdated_Name(obj[20] != null ? (String) obj[20] : "");
 		    	scheduleList.add(schedule);
 		    }
 
