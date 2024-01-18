@@ -1872,11 +1872,17 @@ public static List ListCampaigns() {
 		    		+ "    c.LastUpdatedDate,\r\n"
 		    		+ "    c.Status,\r\n"
 		    		+ "    c.UpdatedBy,\r\n"
-		    		+ "    r.last_name\r\n"
+		    		+ "    r.last_name,\r\n"
+		    		+"	CONCAT(reg.first_name, ' ', reg.last_name) AS Created_Name,\r\n"
+			    	+"      CONCAT(reg1.first_name, ' ', reg1.last_name) AS Updated_Name\r\n"
 		    		+ "FROM\r\n"
 		    		+ "    ServiceContractDetails c\r\n"
 		    		+ "JOIN\r\n"
 		    		+ "    SponsoredServicesMaster s ON c.ServiceID = s.ServiceID\r\n"
+				+"JOIN\r\n"
+		    		+" registration reg ON c.CreatedBy = reg.registration_id\r\n"
+		    		+"LEFT JOIN\r\n"
+		    	        +" registration reg1 ON c.UpdatedBy = reg1.registration_id\r\n"
 		    		+ "LEFT JOIN\r\n"
 		    		+ "    registration r ON c.UserID = r.registration_id\r\n"
 		    		+ "");
@@ -1905,7 +1911,8 @@ public static List ListCampaigns() {
 		    	contract.setLastUpdatedDate((Timestamp) (obj[14] != null ? obj[14] : null));
 		    	contract.setStatus(obj[15] != null ? (Integer) obj[15] : 0);
 		    	contract.setUpdatedBy(obj[16] != null ? (Integer) obj[16] : 0);
-		    	
+		    	contract.setCreated_Name(obj[18] != null ? (String) obj[18] : "");
+		    	contract.setUpdated_Name(obj[19] != null ? (String) obj[19] : "");
 
 		    	contractsList.add(contract);
 		    }
