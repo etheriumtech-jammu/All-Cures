@@ -42,7 +42,24 @@ public class PaymentDaoImpl {
 	
 	public static List<ServicePayment> getServicePayments() {
 	    Session session = HibernateUtil.buildSessionFactory();
-	    Query query1 = session.createNativeQuery("SELECT * FROM ServicePaymentMaster;");
+	    Query query1 = session.createNativeQuery("SELECT\r\n"
+				+ "    spm.ServicePaymentMasterID,\r\n"
+				+ "    spm.ServicePaymentMasterName,\r\n"
+				+ "    spm.ServicePaymentDesc,\r\n"
+				+ "    spm.CreatedBy,\r\n"
+				+ "    spm.CreatedDate,\r\n"
+				+ "    spm.LastUpdatedDate,\r\n"
+				+ "    spm.Status,\r\n"
+				+ "    spm.UpdatedBy,\r\n"
+				+ "    CONCAT(regCreated.first_name, ' ', regCreated.last_name) AS CreatedByName,\r\n"
+				+ "    CONCAT(regUpdated.first_name, ' ', regUpdated.last_name) AS UpdatedByName\r\n"
+				+ "FROM\r\n"
+				+ "    ServicePaymentMaster spm\r\n"
+				+ "JOIN\r\n"
+				+ "    registration regCreated ON spm.CreatedBy = regCreated.registration_id\r\n"
+				+ "LEFT JOIN\r\n"
+				+ "    registration regUpdated ON spm.UpdatedBy = regUpdated.registration_id;\r\n"
+				+ "");
 	    List<ServicePayment> ServicePaymentList = new ArrayList<>();
 	    
 	    List<Object[]> resultList = query1.getResultList();
@@ -62,7 +79,8 @@ public class PaymentDaoImpl {
 	    	payment.setStatus(obj[6] != null ? (Integer) obj[6] : 0);
 	    	payment.setUpdatedBy(obj[7] != null ? (Integer) obj[7] : 0);
 	    	
-	    	
+	    	payment.setCreated_Name(obj[8] != null ? (String) obj[8] : "");
+		payment.setUpdated_Name(obj[9] != null ? (String) obj[9] : "");
 	    	ServicePaymentList.add(payment);
 	    }
 
