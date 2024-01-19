@@ -401,8 +401,8 @@ public class PaymentDaoImpl {
 			    	ServicePaymentMethod method = new ServicePaymentMethod();
 			    	
 			    	method.setServicePaymentMethodID(obj[0] != null ? (Integer) obj[0] : 0);
-			    	method.setServicePaymentMasterID(obj[1] != null ? (Integer) obj[1] : 0);
-			    	method.setServiceID(obj[2] != null ? (Integer) obj[2] : 0);
+			    	method.setServicePaymentMasterID(obj[2] != null ? (Integer) obj[2] : 0);
+			    	method.setServiceID(obj[1] != null ? (Integer) obj[1] : 0);
 			    	
 			    	method.setCreatedBy(obj[3] != null ? (Integer) obj[3] : 0);
 			    	method.setCreatedDate((Timestamp) (obj[4] != null ? obj[4] : null));
