@@ -1818,7 +1818,7 @@ public static List ListCampaigns() {
 					+ "		JOIN\r\n"
 					+ "		SponsoredServicesMaster s ON c.ServiceID = s.ServiceID\r\n"
 					+ "		LEFT JOIN\r\n"
-					+ "	    registration r ON c.UserID = r.registration_id where r.registration_type=2;\r\n"
+					+ "	    registration r ON c.UserID = r.registration_id where r.registration_type=1;\r\n"
 					+ "");
 			List<Object[]> results = (List<Object[]>) query.getResultList();
 			List<Map<String, Object>> hmFinal = new ArrayList<>();
