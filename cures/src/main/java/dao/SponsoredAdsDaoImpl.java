@@ -1805,7 +1805,50 @@ public static List ListCampaigns() {
 
 		    return servicesList;
 		}
+	 public static List getServicesListDoc() {
+			Session session = HibernateUtil.buildSessionFactory();
+			Query query = session.createNativeQuery(
+					"SELECT	s.ServiceName,\r\n"
+					+ "		r.first_name,\r\n"
+					+ "		c.UserID,\r\n"
+					+ "		c.ServiceID,\r\n"
+					+ "		r.last_name\r\n"
+					+ "		FROM\r\n"
+					+ "		ServiceContractDetails c\r\n"
+					+ "		JOIN\r\n"
+					+ "		SponsoredServicesMaster s ON c.ServiceID = s.ServiceID\r\n"
+					+ "		LEFT JOIN\r\n"
+					+ "	    registration r ON c.UserID = r.registration_id where r.registration_type=2;\r\n"
+					+ "");
+			List<Object[]> results = (List<Object[]>) query.getResultList();
+			List<Map<String, Object>> hmFinal = new ArrayList<>();
+			Map<Integer, Map<String, Object>> resultMap = new HashMap<>();
 
+			for (Object[] objects : results) {
+			    Integer serviceID = (Integer) objects[3];
+
+			    // Check if the map already contains information for this serviceID
+			    Map<String, Object> hm = resultMap.get(serviceID);
+			    
+			    if (hm == null) {
+			        // If not, create a new map
+			        hm = new HashMap<>();
+			        resultMap.put(serviceID, hm);
+			        hm.put("ServiceID", serviceID);
+			    }
+
+			    // Add information for each object
+			    hm.put("ServiceName", (String) objects[0]);
+			    hm.put("UserID", (Integer) objects[2]);
+			    hm.put("DocName", hm.getOrDefault("DocName", "") + " " + (String) objects[1] + " " + (String) objects[4]);
+			}
+
+			// Convert the resultMap values to a list
+			hmFinal.addAll(resultMap.values());
+
+			System.out.println(hmFinal);
+			return hmFinal;
+		}
 	public static Integer InsertContract( HashMap<String, Object> ContractMap, CommonsMultipartFile document) { 
 		  Session session = HibernateUtil.buildSessionFactory();
 		  ServiceContract contract = new ServiceContract();
@@ -2138,5 +2181,6 @@ public static List ListCampaigns() {
 	        // Return the list of ServiceContracts
 	        return contractsList;
 	    }
-	    
+
+	
 }
