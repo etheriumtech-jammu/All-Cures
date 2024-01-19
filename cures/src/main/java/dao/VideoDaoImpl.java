@@ -20,10 +20,26 @@ public class VideoDaoImpl {
 	public static Integer InsertSchedule( HashMap<String, Object> ScheduleMap) { 
 		  Session session = HibernateUtil.buildSessionFactory();
 		  AvailabilitySchedule schedule= new AvailabilitySchedule();
-		  
+		   int ServiceID=(Integer) ScheduleMap.get("ServiceID");
+		  int DocID=(Integer) ScheduleMap.get("DocID");
+		  Query query = session.createNativeQuery(
+			        "SELECT ContractID FROM ServiceContractDetails " +
+			        "WHERE ServiceID =" + ServiceID + " AND UserID = " + DocID + ";");
+		  Integer ContractID=0;
 	        try {
 	            // Assuming your HashMap has keys matching the property names in Service
 	            // Adjust these names based on your actual Service class
+			try {
+	        	 ContractID = (Integer) query.getSingleResult();
+	        	 System.out.println(ContractID);
+	        	}
+	        	catch (NoResultException e) {
+	    			System.out.println("ContractID is null");
+	    			
+	    		}
+	        	
+	        	if(ContractID!=0)
+	        	{
 	        	Transaction tx = session.beginTransaction();
 	        	schedule.setDocId((Integer) ScheduleMap.get("DocID"));
 	        	schedule.setContractId((Integer) ScheduleMap.get("ContractID"));
@@ -42,6 +58,11 @@ public class VideoDaoImpl {
 	            tx.commit();
 	            // Return 1 if insertion is successful
 	            return 1;
+		}
+	         else
+        	{
+	            	return 0;
+        	}
 	        } catch (Exception e) {
 	            e.printStackTrace(); // Log the exception or handle it appropriately
 	            session.getTransaction().rollback();
