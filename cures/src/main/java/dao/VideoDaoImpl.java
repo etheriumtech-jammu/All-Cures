@@ -42,7 +42,7 @@ public class VideoDaoImpl {
 	        	{
 	        	Transaction tx = session.beginTransaction();
 	        	schedule.setDocId((Integer) ScheduleMap.get("DocID"));
-	        	schedule.setContractId((Integer) ScheduleMap.get("ContractID"));
+	        	schedule.setContractId(ContractID);
 	        	schedule.setMonAvailability((Integer) ScheduleMap.get("MonAvailability"));
 	        	schedule.setTueAvailability((Integer) ScheduleMap.get("TueAvailability"));
 	        	schedule.setWedAvailability((Integer) ScheduleMap.get("WedAvailability"));
