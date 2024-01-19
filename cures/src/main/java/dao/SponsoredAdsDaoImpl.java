@@ -1808,19 +1808,25 @@ public static List ListCampaigns() {
 	 public static List getServicesListDoc() {
 			Session session = HibernateUtil.buildSessionFactory();
 			Query query = session.createNativeQuery(
-					"SELECT	s.ServiceName,\r\n"
-					+ "		r.first_name,\r\n"
-					+ "		c.UserID,\r\n"
-					+ "		c.ServiceID,\r\n"
-					+ "		r.last_name\r\n"
-					+ "		FROM\r\n"
-					+ "		ServiceContractDetails c\r\n"
-					+ "		JOIN\r\n"
-					+ "		SponsoredServicesMaster s ON c.ServiceID = s.ServiceID\r\n"
-					+ "		LEFT JOIN\r\n"
-					+ "		DoctorAvailability d ON c.UserID != d.DocID\r\n"
-					+ "		LEFT JOIN\r\n"
-					+ "	    registration r ON c.UserID = r.registration_id where r.registration_type=1;\r\n"
+					"SELECT\r\n"
+					+ "    s.ServiceName,\r\n"
+					+ "    r.first_name,\r\n"
+					+ "    c.UserID,\r\n"
+					+ "    c.ServiceID,\r\n"
+					+ "    r.last_name\r\n"
+					+ "FROM\r\n"
+					+ "    ServiceContractDetails c\r\n"
+					+ "LEFT JOIN\r\n"
+					+ "    SponsoredServicesMaster s ON c.ServiceID = s.ServiceID\r\n"
+					+ "LEFT JOIN\r\n"
+					+ "    registration r ON c.UserID = r.registration_id\r\n"
+					+ "WHERE\r\n"
+					+ "    r.registration_type = 1\r\n"
+					+ "    AND NOT EXISTS (\r\n"
+					+ "        SELECT 1\r\n"
+					+ "        FROM DoctorAvailability d\r\n"
+					+ "        WHERE c.UserID = d.DocID\r\n"
+					+ "    );\r\n"
 					+ "");
 			List<Object[]> results = (List<Object[]>) query.getResultList();
 			List<Map<String, Object>> hmFinal = new ArrayList<>();
