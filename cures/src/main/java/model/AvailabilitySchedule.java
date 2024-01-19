@@ -137,8 +137,8 @@ public class AvailabilitySchedule {
 		this.UpdatedBy = updatedBy;
 	}
 
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ContractID")
     private int ContractID;
 
@@ -161,6 +161,7 @@ public class AvailabilitySchedule {
     @Column(name = "WeekDayOnly")
     private int WeekDayOnly;
 
+    @Id
     @Column(name = "DocID")
     private int DocID;
 
