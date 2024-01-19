@@ -262,6 +262,11 @@ public class SponsoredAdsController {
 		return SponsoredAdsDaoImpl.getService(ServiceID);
 	}
 
+	@RequestMapping(value = "/get/services/list/doc", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List servicesList(HttpServletRequest request) throws Exception {
+
+		return SponsoredAdsDaoImpl.getServicesListDoc();
+	}
 	@RequestMapping(value = "/create/contract", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody Integer addContract(@RequestParam(value = "document" , required = false) CommonsMultipartFile document,@RequestParam("Contract_Map") String ContractMap,
             HttpServletRequest request) throws Exception {
