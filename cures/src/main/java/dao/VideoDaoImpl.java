@@ -323,7 +323,7 @@ public class VideoDaoImpl {
             }
 
             Query query = session.createNativeQuery(queryStr);
-
+		  System.out.println(queryStr);
             List<Object[]> results = (List<Object[]>) query.getResultList();
             System.out.println(results.size());
             return results.size();
