@@ -259,8 +259,38 @@ public class VideoDaoImpl {
 
 		  public static List<AvailabilitySchedule> getSchedule(int DocID) {
 			    Session session = HibernateUtil.buildSessionFactory();
-			    Query query1 = session.createNativeQuery("SELECT * FROM DoctorAvailability where DocID =" + DocID + ";");
-			    		
+			    Query query1 = session.createNativeQuery("SELECT\r\n"
+			            + "    d.docname_first,\r\n"
+			            + "    d.docname_middle,\r\n"
+			            + "    d.docname_last,\r\n"
+			            + "    a.DocID,\r\n"
+			            + "    a.ContractID,\r\n"
+			            + "    a.MonAvailability,\r\n"
+			            + "    a.TueAvailability,\r\n"
+			            + "    a.WedAvailability,\r\n"
+			            + "    a.ThuAvailability,\r\n"
+			            + "    a.FriAvailability,\r\n"
+			            + "    a.WeekDayOnly,\r\n"
+			            + "    a.SlotDuration,\r\n"
+			            + "    a.FromTime,\r\n"
+			            + "    a.ToTime,\r\n"
+			            + "    a.CreatedDate,\r\n"
+			            + "    a.LastUpdatedDate,\r\n"
+			            + "    a.Status,\r\n"
+			            + "    a.CreatedBy,\r\n"
+			            + "    a.UpdatedBy,\r\n"
+			            + "    CONCAT(reg.first_name, ' ', reg.last_name) AS Created_Name,\r\n"
+			            + "    CONCAT(reg1.first_name, ' ', reg1.last_name) AS Updated_Name\r\n"
+			            + "FROM\r\n"
+			            + "    DoctorAvailability a\r\n"
+			            + "JOIN\r\n"
+			            + "    doctors d ON a.DocID = d.docid\r\n"
+			            + "JOIN\r\n"
+			            + "    registration reg ON a.CreatedBy = reg.registration_id\r\n"
+			            + "LEFT JOIN\r\n"
+			            + "    registration reg1 ON a.UpdatedBy = reg1.registration_id\r\n"
+			            + "WHERE a.DocID = " + DocID + ";");
+		
 			    List<AvailabilitySchedule> scheduleList = new ArrayList<>();
 			    
 			    List<Object[]> resultList = query1.getResultList();
@@ -269,25 +299,31 @@ public class VideoDaoImpl {
 			    for (Object[] obj : resultList) {
 			    	AvailabilitySchedule schedule = new AvailabilitySchedule();
 
-			    	schedule.setDocId(obj[0] != null ? (Integer) obj[0] : 0);
-			    	schedule.setContractId(obj[1] != null ? (Integer) obj[1] : 0);
-			    	schedule.setMonAvailability(obj[2] != null ? (Integer) obj[2] : 0);
-			    	schedule.setTueAvailability(obj[3] != null ? (Integer) obj[3] : 0);
-			    	schedule.setWedAvailability(obj[4] != null ? (Integer) obj[4] : 0);
-			    	schedule.setThuAvailability(obj[5] != null ? (Integer) obj[5] : 0);
-			    	schedule.setFriAvailability(obj[6] != null ? (Integer) obj[6] : 0);
-			    	schedule.setWeekDayOnly(obj[7] != null ? (Integer) obj[7] : 0);
-			    	schedule.setSlotDuration(obj[8] != null ? (Integer) obj[8] : 0);
-			    	schedule.setFromTime((Time) (obj[9] != null ? obj[9] : null));
-			    	schedule.setToTime((Time) (obj[10] != null ? obj[10] : null));
-			    	
-			    	schedule.setCreatedDate((Timestamp) (obj[11] != null ? obj[11] : null));
-			    	schedule.setLastUpdatedDate((Timestamp) (obj[12] != null ? obj[12] : null));
-			    	schedule.setStatus(obj[13] != null ? (Integer) obj[13] : 0);
-			    	schedule.setCreatedBy(obj[14] != null ? (Integer) obj[14] : 0);
-			    	schedule.setUpdatedBy(obj[15] != null ? (Integer) obj[15] : 0);
-
-			    	scheduleList.add(schedule);
+			    schedule.setDocname_first(obj[0] != null ? (String) obj[0] : "");
+		    	schedule.setDocname_middle(obj[1] != null ? (String) obj[1] : "");
+		    	schedule.setDocname_middle(obj[2] != null ? (String) obj[2] : "");
+		    	
+		    	schedule.setDocId(obj[3] != null ? (Integer) obj[3] : 0);
+		    	
+		    	schedule.setContractId(obj[4] != null ? (Integer) obj[4] : 0);
+		    	schedule.setMonAvailability(obj[5] != null ? (Integer) obj[5] : 0);
+		    	schedule.setTueAvailability(obj[6] != null ? (Integer) obj[6] : 0);
+		    	schedule.setWedAvailability(obj[7] != null ? (Integer) obj[7] : 0);
+		    	schedule.setThuAvailability(obj[8] != null ? (Integer) obj[8] : 0);
+		    	schedule.setFriAvailability(obj[9] != null ? (Integer) obj[9] : 0);
+		    	schedule.setWeekDayOnly(obj[10] != null ? (Integer) obj[10] : 0);
+		    	schedule.setSlotDuration(obj[11] != null ? (Integer) obj[11] : 0);
+		    	schedule.setFromTime((Time) (obj[12] != null ? obj[12] : null));
+		    	schedule.setToTime((Time) (obj[13] != null ? obj[13] : null));
+		    	
+		    	schedule.setCreatedDate((Timestamp) (obj[14] != null ? obj[14] : null));
+		    	schedule.setLastUpdatedDate((Timestamp) (obj[15] != null ? obj[15] : null));
+		    	schedule.setStatus(obj[16] != null ? (Integer) obj[16] : 0);
+		    	schedule.setCreatedBy(obj[17] != null ? (Integer) obj[17] : 0);
+		    	schedule.setUpdatedBy(obj[18] != null ? (Integer) obj[18] : 0);
+			schedule.setCreated_Name(obj[19] != null ? (String) obj[19] : "");
+		    	schedule.setUpdated_Name(obj[20] != null ? (String) obj[20] : "");
+		    	scheduleList.add(schedule);
 			    }
 
 			    return scheduleList;
