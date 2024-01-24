@@ -3,6 +3,8 @@ package dao;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import javax.persistence.NoResultException;
@@ -290,7 +292,60 @@ public class VideoDaoImpl {
 
 			    return scheduleList;
 			}
+//Method to check whether the doctor is available for video Chat
+	public static int getAvailability(int docID) {
+			// TODO Auto-generated method stub
+			Session session = HibernateUtil.buildSessionFactory();
+			// Get today's date and day of the week
+            LocalDate today = LocalDate.now();
+           DayOfWeek dayOfWeek = today.getDayOfWeek();
+  //          DayOfWeek dayOfWeek = DayOfWeek.SATURDAY;
 
+            String dayColumn = getAvailabilityColumn(dayOfWeek);
+           
+            String queryStr;
+
+            if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
+                // Weekend logic
+                queryStr = "SELECT *\r\n" +
+                        "FROM DoctorAvailability\r\n" +
+                        "WHERE\r\n" +
+                        "      WeekDayOnly = 0\r\n" +
+                        "      AND CURRENT_TIME BETWEEN FromTime AND ToTime AND DocID= " + docID + ";";
+            } else {
+                // Weekday logic
+                queryStr = "SELECT *\r\n" +
+                        "FROM DoctorAvailability\r\n" +
+                        "WHERE\r\n" +
+                        "      WeekDayOnly = 1\r\n" +
+                        "      AND " + dayColumn + " = 1\r\n" +
+                        "      AND CURRENT_TIME BETWEEN FromTime AND ToTime AND DocID=" + docID + ";";
+            }
+
+            Query query = session.createNativeQuery(queryStr);
+
+            List<Object[]> results = (List<Object[]>) query.getResultList();
+            System.out.println(results.size());
+            return results.size();
+		}
+
+		// Helper method to get the availability column based on the day of the week
+	    private static String getAvailabilityColumn(DayOfWeek dayOfWeek) {
+	        switch (dayOfWeek) {
+	            case MONDAY:
+	                return "MonAvailability";
+	            case TUESDAY:
+	                return "TueAvailability";
+	            case WEDNESDAY:
+	                return "WedAvailability";
+	            case THURSDAY:
+	                return "ThuAvailability";
+	            case FRIDAY:
+	                return "FriAvailability";
+	            default:
+	                return "WeekEnd";
+	        }
+	    }
 		public static Integer InsertFailure( HashMap<String, Object> FailureMap) { 
 			  Session session = HibernateUtil.buildSessionFactory();
 			  VideoFailure failure= new VideoFailure();
