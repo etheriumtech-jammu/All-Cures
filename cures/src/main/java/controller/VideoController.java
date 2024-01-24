@@ -54,6 +54,13 @@ public class VideoController {
 		return VideoDaoImpl.getSchedule(DocID);
 	}
 
+	@RequestMapping(value = "/get/{DocID}/availability", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody int getavailability(@PathVariable int DocID,HttpServletRequest request) throws Exception {
+
+		return VideoDaoImpl.getAvailability(DocID);
+		
+	}
+	
 	@RequestMapping(value = "/add/failure/reason", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody Integer AddFailure(@RequestBody HashMap FailureMap,HttpServletRequest request ) throws Exception {
 
