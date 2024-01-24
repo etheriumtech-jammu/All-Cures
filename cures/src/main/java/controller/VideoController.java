@@ -17,9 +17,13 @@ import dao.VideoDaoImpl;
 import model.AvailabilitySchedule;
 import model.ServiceContract;
 import model.VideoFailure;
+import service.DailyCoService;
 @RestController
 @RequestMapping(path = "/video")
 public class VideoController {
+
+	 @Autowired
+	    private DailyCoService dailyCoService;
 
 	@RequestMapping(value = "/add/doctor/schedule", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody Integer AddSchedule(@RequestBody HashMap ScheduleMap,HttpServletRequest request ) throws Exception {
@@ -93,6 +97,11 @@ public class VideoController {
 
 		return VideoDaoImpl.getFailure(FailureID);
 	}
-	
+
+	@RequestMapping(value = "/create/room", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody String CreateRoom(HttpServletRequest request) throws Exception {
+
+        return dailyCoService.createMeeting();
+    }
 	
 }
