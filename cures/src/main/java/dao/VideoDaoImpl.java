@@ -348,16 +348,13 @@ public class VideoDaoImpl {
                         "WHERE\r\n" +
                         "      WeekDayOnly = 0\r\n" +
                         "      AND CURRENT_TIME BETWEEN FromTime AND ToTime AND DocID= " + docID + ";";
-            } else {
+            }else {
                 // Weekday logic
-                queryStr = "SELECT *\r\n" +
-                        "FROM DoctorAvailability\r\n" +
-                        "WHERE\r\n" +
-                        "      WeekDayOnly = 1\r\n" +
-                        "      AND " + dayColumn + " = 1\r\n" +
-                        "      AND CURRENT_TIME BETWEEN FromTime AND ToTime AND DocID=" + docID + ";";
-            }
-
+            	 queryStr = "SELECT *\r\n" +
+                         "FROM DoctorAvailability \r\n" +
+                         "WHERE " + dayColumn + "=1" +
+                         " AND CURRENT_TIME BETWEEN FromTime AND ToTime AND DocID=" + docID + ";";
+             }
             Query query = session.createNativeQuery(queryStr);
 		  System.out.println(queryStr);
             List<Object[]> results = (List<Object[]>) query.getResultList();
