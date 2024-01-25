@@ -99,10 +99,11 @@ public class VideoController {
 		return VideoDaoImpl.getFailure(FailureID);
 	}
 
-	@RequestMapping(value = "/create/room", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody String CreateRoom(HttpServletRequest request) throws Exception {
-
-        return dailyCoService.createMeeting();
+	@RequestMapping(value = "/create/room/{DocID}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody int CreateRoom(@PathVariable int DocID,HttpServletRequest request) throws Exception {
+		String meeting=dailyCoService.createMeeting();
+		return VideoDaoImpl.SendEmail(DocID,meeting);
+   //     return dailyCoService.createMeeting();
     }
 	
 }
