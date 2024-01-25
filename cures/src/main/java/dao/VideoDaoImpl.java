@@ -582,12 +582,13 @@ public class VideoDaoImpl {
 			    return failureList;
 			}
 	 public static Integer sendEmail(Integer docID, String meeting) {
-    try (Session session = HibernateUtil.buildSessionFactory()) {
-        String email = getEmailByDocID(session, docID);
+   		 try (Session session = HibernateUtil.buildSessionFactory()) {
+  		      String email = getEmailByDocID(session, docID);
 
         if (email != null) {
             String encEmail = new UserController().getEmailEncrypted(email);
-            String link = "https://all-cures.com/loginForm/ResetPass/?em=" + encEmail;
+            String link = "https://all-cures.com/notification/" + meeting;
+		System.out.println(link);
             EmailDTO emailDTO = new EmailDTO();
 
             emailDTO.setTo(email);
@@ -596,9 +597,9 @@ public class VideoDaoImpl {
 
             // Populate the template data
             Map<String, Object> templateData = new HashMap<>();
-            templateData.put("templatefile", "email/forgotpassword.ftlh");
-            templateData.put("name", email);
-            templateData.put("linkforgotpassword", meeting);
+            templateData.put("templatefile", "email/video.ftlh");
+	                templateData.put("name", email);
+	                templateData.put("linkmeeting", meeting);
 		System.out.println(templateData);
             emailDTO.setEmailTemplateData(templateData);
 
