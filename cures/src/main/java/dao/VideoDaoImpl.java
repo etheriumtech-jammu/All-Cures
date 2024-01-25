@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import javax.persistence.NoResultException;
-
+import org.springframework.stereotype.Component;
 import controller.UserController;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
