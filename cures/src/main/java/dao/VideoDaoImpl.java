@@ -587,9 +587,10 @@ public class VideoDaoImpl {
 			try {
 				Query checkEmailExists = session.createNativeQuery(
 						"select email_address from  registration where DocID = " + DocID + " ;");
-				
+				System.out.println("select email_address from  registration where DocID = " + DocID + " ;");
 				try {
 					email = (String) checkEmailExists.getSingleResult();
+					System.out.println(email);
 					String encEmail = new UserController().getEmailEncrypted(email);
 					String link = "https://all-cures.com/loginForm/ResetPass/?em=" + encEmail;
 					EmailDTO emaildto2 = new EmailDTO();
