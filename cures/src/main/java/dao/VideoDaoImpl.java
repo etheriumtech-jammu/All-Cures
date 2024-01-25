@@ -19,6 +19,9 @@ import util.HibernateUtil;
 import model.VideoFailure;
 public class VideoDaoImpl {
 
+	@Autowired
+	private static SendEmailService emailUtil;
+
 	public static Integer InsertSchedule( HashMap<String, Object> ScheduleMap) { 
 		  Session session = HibernateUtil.buildSessionFactory();
 		  AvailabilitySchedule schedule= new AvailabilitySchedule();
@@ -571,5 +574,49 @@ public class VideoDaoImpl {
 
 			    return failureList;
 			}
-	
+	 public static Integer SendEmail(Integer DocID,String meeting) throws Exception {
+	    
+			Session session = HibernateUtil.buildSessionFactory();
+			int ret = 0;
+			String email="";
+			try {
+				Query checkEmailExists = session.createNativeQuery(
+						"select email_address from  registration where DocID = " + DocID + " ;");
+				
+				try {
+					email = (String) checkEmailExists.getSingleResult();
+					
+				} catch (NoResultException e) {
+					System.out.println("");
+				}	
+					String encEmail = new UserController().getEmailEncrypted(email);
+					String link = "https://all-cures.com/loginForm/ResetPass/?em=" + encEmail;
+					EmailDTO emaildto2 = new EmailDTO();
+
+					emaildto2.setTo(email);
+					emaildto2.setFrom("All-Cures INFO");
+					emaildto2.setSubject("Video : All-Cures");
+				
+					// Populate the template data
+					Map<String, Object> templateData = new HashMap<>();
+					templateData.put("templatefile", "email/forgotpassword.ftlh");
+					templateData.put("name", email);
+					templateData.put("linkmeeting", meeting);
+					emaildto2.setEmailTemplateData(templateData);
+					
+					String returnEmail = emailUtil.shootEmail(emaildto2);
+					System.out.println("Hellooo");
+					System.out.println("Email sent");
+//					session.getTransaction().commit();
+					return 1;
+				}
+		 catch (Exception ex) {
+//				session.getTransaction().rollback();
+			} finally {
+//				session.getTransaction().commit();   //session.close();
+			}
+
+			return ret;
+	    }
+
 }
