@@ -11,7 +11,9 @@ import javax.persistence.NoResultException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-
+import service.SendEmailService;
+import model.EmailDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import model.AvailabilitySchedule;
 import model.ServiceContract;
 import util.Constant;
