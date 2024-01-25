@@ -590,10 +590,6 @@ public class VideoDaoImpl {
 				
 				try {
 					email = (String) checkEmailExists.getSingleResult();
-					
-				} catch (NoResultException e) {
-					System.out.println("");
-				}	
 					String encEmail = new UserController().getEmailEncrypted(email);
 					String link = "https://all-cures.com/loginForm/ResetPass/?em=" + encEmail;
 					EmailDTO emaildto2 = new EmailDTO();
@@ -613,7 +609,12 @@ public class VideoDaoImpl {
 					System.out.println("Hellooo");
 					System.out.println("Email sent");
 //					session.getTransaction().commit();
-					return 1;
+					ret=1;
+					
+				} catch (NoResultException e) {
+					System.out.println("Email Address Not Found");
+				}	
+					
 				}
 		 catch (Exception ex) {
 //				session.getTransaction().rollback();
