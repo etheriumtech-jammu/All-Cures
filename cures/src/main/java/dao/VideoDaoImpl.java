@@ -599,6 +599,7 @@ public class VideoDaoImpl {
             templateData.put("templatefile", "email/forgotpassword.ftlh");
             templateData.put("name", email);
             templateData.put("linkmeeting", meeting);
+		System.out.println(templateData);
             emailDTO.setEmailTemplateData(templateData);
 
             String returnEmail = emailUtil.shootEmail(emailDTO);
@@ -617,10 +618,9 @@ public class VideoDaoImpl {
 
 private static String getEmailByDocID(Session session, Integer docID) {
     try {
-        Query checkEmailExists = session.createNativeQuery(
-                "SELECT email_address FROM registration WHERE DocID = :docID")
-                .setParameter("docID", docID);
-
+       Query checkEmailExists = session.createNativeQuery(
+	                    "SELECT email_address FROM registration WHERE DocID = " + docID + ";");
+	System.out.println("SELECT email_address FROM registration WHERE DocID = " + docID + ";");
         return (String) checkEmailExists.getSingleResult();
     } catch (NoResultException e) {
         return null;
