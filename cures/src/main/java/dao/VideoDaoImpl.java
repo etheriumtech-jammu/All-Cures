@@ -22,10 +22,12 @@ import model.ServiceContract;
 import util.Constant;
 import util.HibernateUtil;
 import model.VideoFailure;
+
+@Component
 public class VideoDaoImpl {
 
 	@Autowired
-	private static SendEmailService emailUtil;
+	private static SendEmailService emailUtil = new SendEmailService();
 
 	public static Integer InsertSchedule( HashMap<String, Object> ScheduleMap) { 
 		  Session session = HibernateUtil.buildSessionFactory();
@@ -579,51 +581,50 @@ public class VideoDaoImpl {
 
 			    return failureList;
 			}
-	 public static Integer SendEmail(Integer DocID,String meeting) throws Exception {
-	    
-			Session session = HibernateUtil.buildSessionFactory();
-			int ret = 0;
-			String email="";
-			try {
-				Query checkEmailExists = session.createNativeQuery(
-						"select email_address from  registration where DocID = " + DocID + " ;");
-				System.out.println("select email_address from  registration where DocID = " + DocID + " ;");
-				try {
-					email = (String) checkEmailExists.getSingleResult();
-					System.out.println(email);
-					String encEmail = new UserController().getEmailEncrypted(email);
-					String link = "https://all-cures.com/loginForm/ResetPass/?em=" + encEmail;
-					EmailDTO emaildto2 = new EmailDTO();
+	 public static Integer sendEmail(Integer docID, String meeting) {
+    try (Session session = HibernateUtil.buildSessionFactory()) {
+        String email = getEmailByDocID(session, docID);
 
-					emaildto2.setTo(email);
-					emaildto2.setFrom("All-Cures INFO");
-					emaildto2.setSubject("Video : All-Cures");
-				
-					// Populate the template data
-					Map<String, Object> templateData = new HashMap<>();
-					templateData.put("templatefile", "email/forgotpassword.ftlh");
-					templateData.put("name", email);
-					templateData.put("linkmeeting", meeting);
-					emaildto2.setEmailTemplateData(templateData);
-					
-					String returnEmail = emailUtil.shootEmail(emaildto2);
-					System.out.println("Hellooo");
-					System.out.println("Email sent");
-//					session.getTransaction().commit();
-					ret=1;
-					
-				} catch (NoResultException e) {
-					System.out.println("Email Address Not Found");
-				}	
-					
-				}
-		 catch (Exception ex) {
-//				session.getTransaction().rollback();
-			} finally {
-//				session.getTransaction().commit();   //session.close();
-			}
+        if (email != null) {
+            String encEmail = new UserController().getEmailEncrypted(email);
+            String link = "https://all-cures.com/loginForm/ResetPass/?em=" + encEmail;
+            EmailDTO emailDTO = new EmailDTO();
 
-			return ret;
-	    }
+            emailDTO.setTo(email);
+            emailDTO.setFrom("All-Cures INFO");
+            emailDTO.setSubject("Video : All-Cures");
+
+            // Populate the template data
+            Map<String, Object> templateData = new HashMap<>();
+            templateData.put("templatefile", "email/forgotpassword.ftlh");
+            templateData.put("name", email);
+            templateData.put("linkmeeting", meeting);
+            emailDTO.setEmailTemplateData(templateData);
+
+            String returnEmail = emailUtil.shootEmail(emailDTO);
+            System.out.println("Email sent");
+            return 1;
+        } else {
+            System.out.println("Email Address Not Found");
+            return 0;
+        }
+    } catch (Exception ex) {
+        // Log or handle the exception appropriately
+        ex.printStackTrace();
+        return 0;
+    }
+}
+
+private static String getEmailByDocID(Session session, Integer docID) {
+    try {
+        Query checkEmailExists = session.createNativeQuery(
+                "SELECT email_address FROM registration WHERE DocID = :docID")
+                .setParameter("docID", docID);
+
+        return (String) checkEmailExists.getSingleResult();
+    } catch (NoResultException e) {
+        return null;
+    }
+}
 
 }
