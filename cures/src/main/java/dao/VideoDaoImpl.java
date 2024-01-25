@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.Map;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -8,6 +9,8 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import javax.persistence.NoResultException;
+
+import controller.UserController;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
