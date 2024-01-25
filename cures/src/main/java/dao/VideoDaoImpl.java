@@ -591,14 +591,14 @@ public class VideoDaoImpl {
             EmailDTO emailDTO = new EmailDTO();
 
             emailDTO.setTo(email);
-            emailDTO.setFrom("All-Cures INFO");
+    //        emailDTO.setFrom("All-Cures INFO");
             emailDTO.setSubject("Video : All-Cures");
 
             // Populate the template data
             Map<String, Object> templateData = new HashMap<>();
             templateData.put("templatefile", "email/forgotpassword.ftlh");
             templateData.put("name", email);
-            templateData.put("linkmeeting", meeting);
+            templateData.put("linkforgotpassword", meeting);
 		System.out.println(templateData);
             emailDTO.setEmailTemplateData(templateData);
 
