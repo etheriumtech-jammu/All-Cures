@@ -19,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class DailyCoService {
 
-    private String dailyCoApiKey = "1e0c217a117ef0f076434b616c12ca6b9705cd92e9b24e5ce677df418332362e";
+    private String dailyCoApiKey = "cd370e4acc4f13598df4c87fcab72a2b4257c81a9e8bec9926481129d6d6f99d";
     private final String DAILY_CO_API_BASE_URL = "https://api.daily.co/v1";
     private final RestTemplate restTemplate;
 
