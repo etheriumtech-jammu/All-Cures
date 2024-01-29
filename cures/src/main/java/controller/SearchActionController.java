@@ -78,10 +78,10 @@ public class SearchActionController extends HttpServlet {
 
 			if(doc_details == null || city_pin == null || city_pin==null || lat == null || lon ==null )
 			{
-				Query query1 = session.createNativeQuery("SELECT rowno, country_code " +
-				        "FROM doctors " +
-				        "WHERE rowno >= 871 " +
-				        "ORDER BY rowno desc "  + ";");
+				Query query1 = session.createNativeQuery("SELECT docid, prefix " +
+				        "FROM Doctors_New " +
+				        
+				        "ORDER BY docid desc "  + ";");
 				
 		//		List<Integer> rownoList = query1.getResultList();
 				List<Object[]> resultList = query1.getResultList();
