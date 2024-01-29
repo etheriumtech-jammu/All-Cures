@@ -504,7 +504,7 @@ public class SearchDaoImpl {
 		
 		System.out.println("Found " + documents.getNumFound() + " documents");
 		for (SolrDocument document : documents) {
-			Integer doctorid = (Integer) document.getFirstValue(Constant.DOCID);
+			String doctorid = (String) document.getFirstValue(Constant.DOCID);
 			if (null!=doctorid) {
 				doc.setDoctorid(doctorid.toString());
 			}
