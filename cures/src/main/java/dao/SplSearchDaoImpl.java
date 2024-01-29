@@ -62,8 +62,8 @@ public class SplSearchDaoImpl {
 			// document.getFirstValue("docname_first");
 			Integer gender = (Integer) document.getFirstValue(Constant.GENDER);
 			doc.setGender(gender);
-			String edu_training = (String) document.getFirstValue(Constant.EDU_TRAINING);
-			doc.setEdu_training(edu_training);
+//			String edu_training = (String) document.getFirstValue(Constant.EDU_TRAINING);
+//			doc.setEdu_training(edu_training);
 			String hospital_affliated = (String) document.getFieldValue(Constant.HOSPITAL_AFFLIATED);
 			doc.setHospital_affliated(hospital_affliated);
 			Integer insurance_accept = (Integer) document.getFieldValue(Constant.INSURANCE_ACCEPT);
@@ -84,8 +84,8 @@ public class SplSearchDaoImpl {
 			doc.setPrimary_spl(primary_spl);
 //			String other_spls = (String) document.getFirstValue(Constant.OTHER_SPLS);
 //			doc.setOther_spls(other_spls);
-			String sub_spls = (String) document.getFieldValue(Constant.SUB_SPLS);
-			doc.setSub_spls(sub_spls);
+//String sub_spls = (String) document.getFieldValue(Constant.SUB_SPLS);
+//			doc.setSub_spls(sub_spls);
 			String address1 = (String) document.getFieldValue(Constant.ADDRESS1);
 			doc.setAddress1(address1);
 //			String address2 = (String) document.getFieldValue(Constant.ADDRESS2);
@@ -119,9 +119,9 @@ public class SplSearchDaoImpl {
 			String pincode = (String) document.getFieldValue(Constant.PIN);
 			doc.setPincode(pincode);
 			String latlon= (String) document.getFieldValue(Constant.LATITUDELONGITUDE);
-			doc.setLat(latlon);
-			String rowno= (String) document.getFieldValue(Constant.ROWNO);
-			doc.setRowno(rowno);
+//			doc.setLat(latlon);
+			String about= (String) document.getFieldValue("about");
+			doc.setAbout(about);
 			
 			
 			System.out.println("doctor" + doc.getPrimary_spl());
@@ -131,13 +131,13 @@ public class SplSearchDaoImpl {
 			// insurance_accept:"+insurance_accept+",primary_spl:"+primary_spl+",
 			// hospital_affliated:"+hospital_affliated+",docname_middle:
 			// "+docname_middle+"");
-			docarr.add(new Doctor(doc.getDoctorid(), doc.getGender(), doc.getEdu_training(),
-					doc.getHospital_affliated(),
-					doc.getTelephone_nos(), doc.getPrimary_spl(), doc.getSub_spls(),
+			docarr.add(new Doctor(doc.getDoctorid(), doc.getGender(), 
+					doc.getHospital_affliated(), 
+					doc.getTelephone_nos(), doc.getPrimary_spl(), 
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry_code(),
 					doc.getOver_allrating(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
-					doc.getEmail(), doc.getPincode(),doc.getLatlon(), doc.getRowno()));
+					doc.getEmail(), doc.getPincode(), doc.getAbout()));
 			//System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}
