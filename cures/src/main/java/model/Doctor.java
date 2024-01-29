@@ -273,14 +273,5 @@ public class Doctor {
 	public void setPincode(String pincode) {
 		this.pincode = pincode;
 	}
-
-	public String getAbout() {
-		return about;
-	}
-
-	public void setAbout(String about) {
-		this.about = about;
-	}
-	
 	
 }
