@@ -36,12 +36,12 @@ public class Doctor {
 	@Field public String waiting_time;
 	@Field public String pincode;
 	@Field public String about ;
-
-	
 	public Doctor(String doctorid, Integer gender, String hospital_affliated,
-			String telephone_nos, String primary_spl, String address1, String city, String state,
-			String country_code, String over_allrating, String prefix,
-			String docname_first, String docname_middle, String docname_last, String name, String email,
+			Integer insurance_accept, String board_certifcate, String membership, 
+			String availibity_for_appointment, String telephone_nos, String primary_spl,
+			String other_spls, String sub_spls, String address1, String address2, String city, String state,
+			String country_code, String over_allrating, String create_date, Integer docactive, String prefix,
+			String docname_first, String docname_middle, String docname_last, String name, String email, String waiting_time,
 			String pincode, String about) {
 		super();
 		this.doctorid = doctorid;
