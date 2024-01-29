@@ -103,8 +103,8 @@ public class SearchDaoImpl {
 			doc.setPrimary_spl(primary_spl);
 //			String other_spls = (String) document.getFirstValue(Constant.OTHER_SPLS);
 //			doc.setOther_spls(other_spls);
-			String sub_spls = (String) document.getFieldValue(Constant.SUB_SPLS);
-			doc.setSub_spls(sub_spls);
+//			String sub_spls = (String) document.getFieldValue(Constant.SUB_SPLS);
+//			doc.setSub_spls(sub_spls);
 			String address1 = (String) document.getFieldValue(Constant.ADDRESS1);
 			doc.setAddress1(address1);
 //			String address2 = (String) document.getFieldValue(Constant.ADDRESS2);
@@ -153,7 +153,7 @@ public class SearchDaoImpl {
 			// insurance_accept:"+insurance_accept+",primary_spl:"+primary_spl+",
 			// hospital_affliated:"+hospital_affliated+",docname_middle:
 			// "+docname_middle+"");
-//			docarr.add(new Doctor(doc.getDoctorid(), doc.getGender(), doc.getEdu_training(),
+//			docarr.add(new Doctor(doc.getDoctorid(), doc.getGender(), 
 //					doc.getHospital_affliated(), doc.getInsurance_accept(), doc.getBoard_certifcate(),
 //					doc.getMembership(), doc.getAwards(), doc.getAvailibity_for_appointment(), doc.getDoctor_location(),
 //					doc.getTelephone_nos(), doc.getPrimary_spl(), doc.getOther_spls(), doc.getSub_spls(),
@@ -163,9 +163,10 @@ public class SearchDaoImpl {
 //					doc.getEmail(), doc.getWaiting_time(), doc.getPincode(), doc.getLatlon(), doc.getRowno()));
 			
 			
-			docarr.add(new Doctor(doc.getDoctorid(), doc.getGender(), doc.getEdu_training(),
+			
+			docarr.add(new Doctor(doc.getDoctorid(), doc.getGender(), 
 					doc.getHospital_affliated(),
-					doc.getTelephone_nos(), doc.getPrimary_spl(), doc.getSub_spls(),
+					doc.getTelephone_nos(), doc.getPrimary_spl(), 
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry_code(),
 					doc.getOver_allrating(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
@@ -263,8 +264,8 @@ public class SearchDaoImpl {
 			doc.setPrimary_spl(primary_spl);
 //			String other_spls = (String) document.getFirstValue(Constant.OTHER_SPLS);
 //			doc.setOther_spls(other_spls);
-			String sub_spls = (String) document.getFieldValue(Constant.SUB_SPLS);
-			doc.setSub_spls(sub_spls);
+//			String sub_spls = (String) document.getFieldValue(Constant.SUB_SPLS);
+//			doc.setSub_spls(sub_spls);
 			String address1 = (String) document.getFieldValue(Constant.ADDRESS1);
 			doc.setAddress1(address1);
 			String address2 = (String) document.getFieldValue(Constant.ADDRESS2);
@@ -312,13 +313,14 @@ public class SearchDaoImpl {
 			// insurance_accept:"+insurance_accept+",primary_spl:"+primary_spl+",
 			// hospital_affliated:"+hospital_affliated+",docname_middle:
 			// "+docname_middle+"");
-			docarr.add(new Doctor(doc.getDoctorid(), doc.getGender(), doc.getEdu_training(),
+			
+			docarr.add(new Doctor(doc.getDoctorid(), doc.getGender(), 
 					doc.getHospital_affliated(),
-					doc.getTelephone_nos(), doc.getPrimary_spl(), doc.getSub_spls(),
+					doc.getTelephone_nos(), doc.getPrimary_spl(), 
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry_code(),
 					doc.getOver_allrating(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
-					doc.getEmail(), doc.getPincode(), doc.getAbout()));
+					doc.getEmail(),  doc.getPincode(), doc.getAbout()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}
@@ -387,16 +389,16 @@ public class SearchDaoImpl {
 //			doc.setAwards(awards);
 			String availibity_for_appointment = (String) document.getFirstValue(Constant.AVAILIBITY_FOR_APPOINTMENT);
 			doc.setAvailibity_for_appointment(availibity_for_appointment);
-			String doctor_location = (String) document.getFirstValue(Constant.DOCTOR_LOCATION);
-			doc.setDoctor_location(doctor_location);
+//			String doctor_location = (String) document.getFirstValue(Constant.DOCTOR_LOCATION);
+//			doc.setDoctor_location(doctor_location);
 			String telephone_nos = (String) document.getFieldValue(Constant.TELEPHONE_NOS);
 			doc.setTelephone_nos(telephone_nos);
 			String primary_spl = (String) document.getFieldValue(Constant.PRIMARY_SPL);
 			doc.setPrimary_spl(primary_spl);
 //			String other_spls = (String) document.getFirstValue(Constant.OTHER_SPLS);
 //			doc.setOther_spls(other_spls);
-			String sub_spls = (String) document.getFieldValue(Constant.SUB_SPLS);
-			doc.setSub_spls(sub_spls);
+//			String sub_spls = (String) document.getFieldValue(Constant.SUB_SPLS);
+//			doc.setSub_spls(sub_spls);
 			String address1 = (String) document.getFieldValue(Constant.ADDRESS1);
 			doc.setAddress1(address1);
 //			String address2 = (String) document.getFieldValue(Constant.ADDRESS2);
@@ -446,13 +448,14 @@ public class SearchDaoImpl {
 			// insurance_accept:"+insurance_accept+",primary_spl:"+primary_spl+",
 			// hospital_affliated:"+hospital_affliated+",docname_middle:
 			// "+docname_middle+"");
-			docarr.add(new Doctor(doc.getDoctorid(), doc.getGender(), doc.getEdu_training(),
-					doc.getHospital_affliated(), 
-					doc.getTelephone_nos(), doc.getPrimary_spl(), doc.getSub_spls(),
+			
+			docarr.add(new Doctor(doc.getDoctorid(), doc.getGender(), 
+					doc.getHospital_affliated(),
+					doc.getTelephone_nos(), doc.getPrimary_spl(), 
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry_code(),
 					doc.getOver_allrating(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
-					doc.getEmail(), doc.getPincode(), doc.getLatlon(),  doc.getAbout()));
+					doc.getEmail(),  doc.getPincode(), doc.getAbout()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}
@@ -524,16 +527,16 @@ public class SearchDaoImpl {
 //			doc.setAwards(awards);
 			String availibity_for_appointment = (String) document.getFirstValue(Constant.AVAILIBITY_FOR_APPOINTMENT);
 			doc.setAvailibity_for_appointment(availibity_for_appointment);
-			String doctor_location = (String) document.getFirstValue(Constant.DOCTOR_LOCATION);
-			doc.setDoctor_location(doctor_location);
+//			String doctor_location = (String) document.getFirstValue(Constant.DOCTOR_LOCATION);
+//			doc.setDoctor_location(doctor_location);
 			String telephone_nos = (String) document.getFieldValue(Constant.TELEPHONE_NOS);
 			doc.setTelephone_nos(telephone_nos);
 			String primary_spl = (String) document.getFieldValue(Constant.PRIMARY_SPL);
 			doc.setPrimary_spl(primary_spl);
 //			String other_spls = (String) document.getFirstValue(Constant.OTHER_SPLS);
 //			doc.setOther_spls(other_spls);
-			String sub_spls = (String) document.getFieldValue(Constant.SUB_SPLS);
-			doc.setSub_spls(sub_spls);
+//			String sub_spls = (String) document.getFieldValue(Constant.SUB_SPLS);
+//			doc.setSub_spls(sub_spls);
 			String address1 = (String) document.getFieldValue(Constant.ADDRESS1);
 			doc.setAddress1(address1);
 //			String address2 = (String) document.getFieldValue(Constant.ADDRESS2);
@@ -583,13 +586,14 @@ public class SearchDaoImpl {
 			// insurance_accept:"+insurance_accept+",primary_spl:"+primary_spl+",
 			// hospital_affliated:"+hospital_affliated+",docname_middle:
 			// "+docname_middle+"");
-			docarr.add(new Doctor(doc.getDoctorid(), doc.getGender(), doc.getEdu_training(),
-					doc.getHospital_affliated(), 
-					doc.getTelephone_nos(), doc.getPrimary_spl(), doc.getSub_spls(),
+			
+			docarr.add(new Doctor(doc.getDoctorid(), doc.getGender(), 
+					doc.getHospital_affliated(),
+					doc.getTelephone_nos(), doc.getPrimary_spl(), 
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry_code(),
 					doc.getOver_allrating(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
-					doc.getEmail(), doc.getPincode(), doc.getAbout()));
+					doc.getEmail(),  doc.getPincode(), doc.getAbout()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 			
 		}
