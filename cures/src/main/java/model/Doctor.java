@@ -37,23 +37,23 @@ public class Doctor {
 	@Field public String waiting_time;
 	@Field public String pincode;
 	@Field public String latlon;
-	@Field public String rowno ;
+	@Field public String about ;
 
 	
-	public Doctor(String doctorid, Integer gender, String edu_training, String hospital_affliated,
-			Integer insurance_accept, String board_certifcate, String membership, String awards,
+	public Doctor(String doctorid, Integer gender, String hospital_affliated,
+			Integer insurance_accept,  String membership, String awards,
 			String availibity_for_appointment, String doctor_location, String telephone_nos, String primary_spl,
 			String other_spls, String sub_spls, String address1, String address2, String city, String state,
 			String country_code, String over_allrating, String create_date, Integer docactive, String prefix,
 			String docname_first, String docname_middle, String docname_last, String name, String email, String waiting_time,
-			String pincode, String latlon, String rowno) {
+			String pincode, String about) {
 		super();
 		this.doctorid = doctorid;
 		this.gender = gender;
-		this.edu_training = edu_training;
+		
 		this.hospital_affliated = hospital_affliated;
 		this.insurance_accept = insurance_accept;
-		this.board_certifcate = board_certifcate;
+		
 		this.membership = membership;
 		this.awards = awards;
 		this.availibity_for_appointment = availibity_for_appointment;
@@ -78,8 +78,7 @@ public class Doctor {
 		this.email = email;
 		this.waiting_time = waiting_time;
 		this.pincode = pincode;
-		this.latlon = latlon;
-		this.rowno = rowno;
+		this.about = about;
 		
 	}
 	
@@ -89,7 +88,7 @@ public class Doctor {
 			String sub_spls, String address1, String city, String state,
 			String country_code, String over_allrating, String prefix,
 			String docname_first, String docname_middle, String docname_last, String name, String email,
-			String pincode, String latlon, String rowno) {
+			String pincode,  String about) {
 		super();
 		this.doctorid = doctorid;
 		this.gender = gender;
@@ -111,18 +110,18 @@ public class Doctor {
 		this.name = name;
 		this.email = email;
 		this.pincode = pincode;
-		this.latlon = latlon;
-		this.rowno = rowno;
+		this.about = about;
 		
 	}
 	
-	public String getRowno() {
-		return rowno;
+	public String getAbout() {
+		return about;
 	}
 
-	public void setRowno(String rowno) {
-		this.rowno = rowno;
+	public void setAbout(String about) {
+		this.about = about;
 	}
+
 
 	public Doctor() {
 		super();
