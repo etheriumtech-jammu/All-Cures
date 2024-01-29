@@ -8,18 +8,17 @@ public class Doctor {
 	
 	@Field public String doctorid ;
 	@Field public Integer gender;
-	@Field public String edu_training;
+	
 	@Field public String hospital_affliated;
 	@Field public Integer insurance_accept;
-	@Field public String board_certifcate;
-	@Field public String membership;
+	
 	@Field public String awards;
 	@Field public String availibity_for_appointment;
 	@Field public String doctor_location;
 	@Field public String telephone_nos;
 	@Field public String primary_spl;
 	@Field public String other_spls;
-	@Field public String sub_spls;
+	
 	@Field public String address1;
 	@Field public String address2;
 	@Field public String city;
@@ -36,16 +35,13 @@ public class Doctor {
 	@Field public String email;
 	@Field public String waiting_time;
 	@Field public String pincode;
-	@Field public String latlon;
 	@Field public String about ;
 
 	
 	public Doctor(String doctorid, Integer gender, String hospital_affliated,
-			Integer insurance_accept,  String membership, String awards,
-			String availibity_for_appointment, String doctor_location, String telephone_nos, String primary_spl,
-			String other_spls, String sub_spls, String address1, String address2, String city, String state,
-			String country_code, String over_allrating, String create_date, Integer docactive, String prefix,
-			String docname_first, String docname_middle, String docname_last, String name, String email, String waiting_time,
+			String telephone_nos, String primary_spl, String address1, String city, String state,
+			String country_code, String over_allrating, String prefix,
+			String docname_first, String docname_middle, String docname_last, String name, String email,
 			String pincode, String about) {
 		super();
 		this.doctorid = doctorid;
@@ -53,15 +49,12 @@ public class Doctor {
 		
 		this.hospital_affliated = hospital_affliated;
 		this.insurance_accept = insurance_accept;
-		
-		this.membership = membership;
-		this.awards = awards;
 		this.availibity_for_appointment = availibity_for_appointment;
-		this.doctor_location = doctor_location;
+		
 		this.telephone_nos = telephone_nos;
 		this.primary_spl = primary_spl;
 		this.other_spls = other_spls;
-		this.sub_spls = sub_spls;
+		
 		this.address1 = address1;
 		this.address2 = address2;
 		this.city = city;
@@ -83,21 +76,20 @@ public class Doctor {
 	}
 	
 	//new sor document with lesser fields
-	public Doctor(String doctorid, Integer gender, String edu_training, String hospital_affliated,
-			String telephone_nos, String primary_spl,
-			String sub_spls, String address1, String city, String state,
+	public Doctor(String doctorid, Integer gender, String hospital_affliated,
+			String telephone_nos, String primary_spl, String address1, String city, String state,
 			String country_code, String over_allrating, String prefix,
 			String docname_first, String docname_middle, String docname_last, String name, String email,
-			String pincode,  String about) {
+			String pincode, String about) {
 		super();
 		this.doctorid = doctorid;
 		this.gender = gender;
-		this.edu_training = edu_training;
+		
 		this.hospital_affliated = hospital_affliated;
 		this.insurance_accept = insurance_accept;
 		this.telephone_nos = telephone_nos;
 		this.primary_spl = primary_spl;
-		this.sub_spls = sub_spls;
+		
 		this.address1 = address1;
 		this.city = city;
 		this.state = state;
@@ -139,12 +131,7 @@ public class Doctor {
 	public void setGender(Integer gender) {
 		this.gender = gender;
 	}
-	public String getEdu_training() {
-		return edu_training;
-	}
-	public void setEdu_training(String edu_training) {
-		this.edu_training = edu_training;
-	}
+	
 	public String getHospital_affliated() {
 		return hospital_affliated;
 	}
@@ -157,18 +144,7 @@ public class Doctor {
 	public void setInsurance_accept(Integer insurance_accept) {
 		this.insurance_accept = insurance_accept;
 	}
-	public String getBoard_certifcate() {
-		return board_certifcate;
-	}
-	public void setBoard_certifcate(String board_certifcate) {
-		this.board_certifcate = board_certifcate;
-	}
-	public String getMembership() {
-		return membership;
-	}
-	public void setMembership(String membership) {
-		this.membership = membership;
-	}
+	
 	public String getAwards() {
 		return awards;
 	}
@@ -181,12 +157,7 @@ public class Doctor {
 	public void setAvailibity_for_appointment(String availibity_for_appointment) {
 		this.availibity_for_appointment = availibity_for_appointment;
 	}
-	public String getDoctor_location() {
-		return doctor_location;
-	}
-	public void setDoctor_location(String doctor_location) {
-		this.doctor_location = doctor_location;
-	}
+	
 	public String getTelephone_nos() {
 		return telephone_nos;
 	}
@@ -205,12 +176,7 @@ public class Doctor {
 	public void setOther_spls(String other_spls) {
 		this.other_spls = other_spls;
 	}
-	public String getSub_spls() {
-		return sub_spls;
-	}
-	public void setSub_spls(String sub_spls) {
-		this.sub_spls = sub_spls;
-	}
+	
 	public String getAddress1() {
 		return address1;
 	}
@@ -308,12 +274,13 @@ public class Doctor {
 		this.pincode = pincode;
 	}
 
-	public String getLatlon() {
-		return latlon;
+	public String getAbout() {
+		return about;
 	}
 
-	public void setLat(String lat) {
-		this.latlon = latlon;
+	public void setAbout(String about) {
+		this.about = about;
 	}
+	
 	
 }
