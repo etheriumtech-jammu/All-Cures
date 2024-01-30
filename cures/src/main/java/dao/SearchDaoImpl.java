@@ -194,7 +194,7 @@ public class SearchDaoImpl {
 		// MapSolrParams queryParams = new MapSolrParams(queryParamMap);
 		System.out.println("Lat" + lat);
 		System.out.println("Lon" + lon);
-		String docloc = lat + "," + lon;
+//		String docloc = lat + "," + lon;
 		SolrQuery query = new SolrQuery();
 		String[] dname = docdetails.split(" ");
 		System.out.println("length" + dname.length);
@@ -214,7 +214,7 @@ public class SearchDaoImpl {
 		}
 //		query.add("sort", "geodist() asc");
 		query.add("fq", "{!geofilt sfield=location}");
-		query.add("pt", docloc);
+//		query.add("pt", docloc);
 //		query.add("sfield", "docloc1");
 		query.add("d", "50");
 		QueryResponse response = null;
@@ -297,8 +297,7 @@ public class SearchDaoImpl {
 //			doc.setWaiting_time(waiting_time);
 			String pincode = (String) document.getFieldValue(Constant.PIN);
 			doc.setPincode(pincode);
-			String docid = (String) document.getFieldValue(Constant.DOCID);
-			doc.setDoctorid(docid);
+			
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
 			 * doc.setLatitude(latitude); String longitude = (String)
@@ -365,9 +364,9 @@ public class SearchDaoImpl {
 
 		System.out.println("Found " + documents.getNumFound() + " documents");
 		for (SolrDocument document : documents) {
-			Integer doctorid = (Integer) document.getFirstValue(Constant.DOCID);
-			if (null!=doctorid) {
-				doc.setDoctorid(doctorid.toString());
+			Integer docid = (Integer) document.getFirstValue(Constant.DOCID);
+			if (null!=docid) {
+				doc.setDoctorid(docid.toString());
 			}
 
 			// String firstname = (String)
@@ -432,8 +431,6 @@ public class SearchDaoImpl {
 			doc.setPincode(pincode);
 			String about = (String) document.getFieldValue("about");
 			doc.setAbout(about);
-			String docid = (String) document.getFieldValue(Constant.DOCID);
-			doc.setDoctorid(docid);
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
 			 * doc.setLatitude(latitude); String longitude = (String)
@@ -503,9 +500,9 @@ public class SearchDaoImpl {
 		
 		System.out.println("Found " + documents.getNumFound() + " documents");
 		for (SolrDocument document : documents) {
-			String doctorid = (String) document.getFirstValue(Constant.DOCID);
-			if (null!=doctorid) {
-				doc.setDoctorid(doctorid.toString());
+			String docid = (String) document.getFirstValue(Constant.DOCID);
+			if (null!=docid) {
+				doc.setDoctorid(docid.toString());
 			}
 	//		Object rowno_ = document.getFieldValue(Constant.ROWNO);
 			// String firstname = (String)
@@ -570,8 +567,7 @@ public class SearchDaoImpl {
 			doc.setPincode(pincode);
 			String about = (String) document.getFieldValue("about");
 			doc.setAbout(about);
-			String docid = (String) document.getFieldValue(Constant.DOCID);
-			doc.setDoctorid(docid);
+			
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
 			 * doc.setLatitude(latitude); String longitude = (String)
