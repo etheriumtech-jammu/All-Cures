@@ -118,10 +118,12 @@ public class SplSearchDaoImpl {
 //			doc.setWaiting_time(waiting_time);
 			String pincode = (String) document.getFieldValue(Constant.PIN);
 			doc.setPincode(pincode);
-			String latlon= (String) document.getFieldValue(Constant.LATITUDELONGITUDE);
+//			String latlon= (String) document.getFieldValue(Constant.LATITUDELONGITUDE);
 //			doc.setLat(latlon);
 			String about= (String) document.getFieldValue("about");
 			doc.setAbout(about);
+			String img_Loc = (String) document.getFieldValue("img_Loc");
+			doc.setimg_Loc(img_Loc);
 			
 			
 			System.out.println("doctor" + doc.getPrimary_spl());
@@ -137,7 +139,8 @@ public class SplSearchDaoImpl {
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry_code(),
 					doc.getOver_allrating(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
-					doc.getEmail(), doc.getPincode(), doc.getAbout()));
+					doc.getEmail(), doc.getPincode(), doc.getAbout(),doc.getimg_Loc()));
+
 			//System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}
