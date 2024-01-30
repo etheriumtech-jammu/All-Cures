@@ -120,10 +120,10 @@ public class Doctor {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public String getdocid() {
+	public String getDoctorid() {
 		return docid;
 	}
-	public void setdocid(String docid) {
+	public void setDoctorid(String docid) {
 		this.docid = docid;
 	}
 	public Integer getGender() {
