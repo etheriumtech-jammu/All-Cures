@@ -19,7 +19,7 @@ import dao.DoctorsDaoImpl;
 import dao.SpecialtiesDaoImpl;
 import dao.SubspecialtiesDaoImp;
 import model.Doctors;
-import model.DoctorsDaoImpl_New;
+
 import model.Registration;
 import model.Specialties;
 import model.Subspecialties;
@@ -49,7 +49,7 @@ public class IntegratedActionController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		DoctorsDaoImpl_New doctors = new DoctorsDaoImpl();
+		DoctorsDaoImpl doctors = new DoctorsDaoImpl();
 		ArrayList<String> doctorArray = new ArrayList<String>();
 		//ArrayList<String> cacheArray = new ArrayList<String>();
 		SpecialtiesDaoImpl spl = new SpecialtiesDaoImpl();
