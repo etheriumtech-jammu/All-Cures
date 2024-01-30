@@ -55,8 +55,8 @@ public class SplSearchDaoImpl {
 
 		System.out.println("Found " + documents.getNumFound() + " documents");
 		for (SolrDocument document : documents) {
-			Integer doctorid = (Integer) document.getFirstValue(Constant.DOCID);
-			doc.setDoctorid(doctorid.toString());
+			Integer docid = (Integer) document.getFirstValue(Constant.DOCID);
+			doc.setDoctorid(docid.toString());
 
 			// String firstname = (String)
 			// document.getFirstValue("docname_first");
