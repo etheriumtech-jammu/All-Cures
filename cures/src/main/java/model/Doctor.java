@@ -36,17 +36,18 @@ public class Doctor {
 	@Field public String waiting_time;
 	@Field public String pincode;
 	@Field public String about ;
+	@Field public String img_Loc ;
 	public Doctor(String doctorid, Integer gender, String hospital_affliated,
 			Integer insurance_accept, String board_certifcate, String membership, 
 			String availibity_for_appointment, String telephone_nos, String primary_spl,
 			String other_spls, String sub_spls, String address1, String address2, String city, String state,
 			String country_code, String over_allrating, String create_date, Integer docactive, String prefix,
 			String docname_first, String docname_middle, String docname_last, String name, String email, String waiting_time,
-			String pincode, String about) {
+			String pincode, String about,String img_Loc) {
 		super();
 		this.doctorid = doctorid;
 		this.gender = gender;
-		
+		this.img_Loc=img_Loc;
 		this.hospital_affliated = hospital_affliated;
 		this.insurance_accept = insurance_accept;
 		this.availibity_for_appointment = availibity_for_appointment;
@@ -80,7 +81,7 @@ public class Doctor {
 			String telephone_nos, String primary_spl, String address1, String city, String state,
 			String country_code, String over_allrating, String prefix,
 			String docname_first, String docname_middle, String docname_last, String name, String email,
-			String pincode, String about) {
+			String pincode, String about,String img_Loc) {
 		super();
 		this.doctorid = doctorid;
 		this.gender = gender;
@@ -89,7 +90,7 @@ public class Doctor {
 		this.insurance_accept = insurance_accept;
 		this.telephone_nos = telephone_nos;
 		this.primary_spl = primary_spl;
-		
+		this.img_Loc=img_Loc;
 		this.address1 = address1;
 		this.city = city;
 		this.state = state;
@@ -272,6 +273,14 @@ public class Doctor {
 	}
 	public void setPincode(String pincode) {
 		this.pincode = pincode;
+	}
+
+	public String getimg_Loc() {
+		return img_Loc;
+	}
+
+	public void setimg_Loc(String img_Loc) {
+		this.img_Loc = img_Loc;
 	}
 	
 }
