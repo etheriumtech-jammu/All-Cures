@@ -74,7 +74,7 @@ public class SearchDaoImpl {
 		for (SolrDocument document : documents) {
 			Integer docid = (Integer) document.getFirstValue(Constant.DOCID);
 			if (null!=docid) {
-				doc.setDoctorid(docid.toString());
+				doc.setDocid(docid.toString());
 			}
 
 			// String firstname = (String)
@@ -154,7 +154,7 @@ public class SearchDaoImpl {
 			// insurance_accept:"+insurance_accept+",primary_spl:"+primary_spl+",
 			// hospital_affliated:"+hospital_affliated+",docname_middle:
 			// "+docname_middle+"");
-//			docarr.add(new Doctor(doc.getDoctorid(), doc.getGender(), 
+//			docarr.add(new Doctor(doc.getDocid(), doc.getGender(), 
 //					doc.getHospital_affliated(), doc.getInsurance_accept(), doc.getBoard_certifcate(),
 //					doc.getMembership(), doc.getAwards(), doc.getAvailibity_for_appointment(), doc.getDoctor_location(),
 //					doc.getTelephone_nos(), doc.getPrimary_spl(), doc.getOther_spls(), doc.getSub_spls(),
@@ -165,7 +165,7 @@ public class SearchDaoImpl {
 			
 			
 			
-			docarr.add(new Doctor(doc.getDoctorid(), doc.getGender(), 
+			docarr.add(new Doctor(doc.getDocid(), doc.getGender(), 
 					doc.getHospital_affliated(),
 					doc.getTelephone_nos(), doc.getPrimary_spl(), 
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry_code(),
@@ -236,7 +236,7 @@ public class SearchDaoImpl {
 		for (SolrDocument document : documents) {
 			Integer docid = (Integer) document.getFirstValue(Constant.DOCID);
 			if (null!=docid) {
-				doc.setDoctorid(docid.toString());
+				doc.setDocid(docid.toString());
 			}
 
 			// String firstname = (String)
@@ -316,7 +316,7 @@ public class SearchDaoImpl {
 			// hospital_affliated:"+hospital_affliated+",docname_middle:
 			// "+docname_middle+"");
 			
-			docarr.add(new Doctor(doc.getDoctorid(), doc.getGender(), 
+			docarr.add(new Doctor(doc.getDocid(), doc.getGender(), 
 					doc.getHospital_affliated(),
 					doc.getTelephone_nos(), doc.getPrimary_spl(), 
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry_code(),
@@ -370,7 +370,7 @@ public class SearchDaoImpl {
 		for (SolrDocument document : documents) {
 			Integer docid = (Integer) document.getFirstValue(Constant.DOCID);
 			if (null!=docid) {
-				doc.setDoctorid(docid.toString());
+				doc.setDocid(docid.toString());
 			}
 
 			// String firstname = (String)
@@ -451,7 +451,7 @@ public class SearchDaoImpl {
 			// hospital_affliated:"+hospital_affliated+",docname_middle:
 			// "+docname_middle+"");
 			
-			docarr.add(new Doctor(doc.getDoctorid(), doc.getGender(), 
+			docarr.add(new Doctor(doc.getDocid(), doc.getGender(), 
 					doc.getHospital_affliated(),
 					doc.getTelephone_nos(), doc.getPrimary_spl(), 
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry_code(),
@@ -509,7 +509,7 @@ public class SearchDaoImpl {
 		for (SolrDocument document : documents) {
 			String docid = (String) document.getFirstValue(Constant.DOCID);
 			if (null!=docid) {
-				doc.setDoctorid(docid.toString());
+				doc.setDocid(docid.toString());
 			}
 	//		Object rowno_ = document.getFieldValue(Constant.ROWNO);
 			// String firstname = (String)
@@ -590,7 +590,7 @@ public class SearchDaoImpl {
 			// hospital_affliated:"+hospital_affliated+",docname_middle:
 			// "+docname_middle+"");
 			
-			docarr.add(new Doctor(doc.getDoctorid(), doc.getGender(), 
+			docarr.add(new Doctor(doc.getDocid(), doc.getGender(), 
 					doc.getHospital_affliated(),
 					doc.getTelephone_nos(), doc.getPrimary_spl(), 
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry_code(),
