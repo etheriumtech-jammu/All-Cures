@@ -309,7 +309,7 @@ public class DoctorsDaoImpl {
 //		session.beginTransaction();
 
 		Query query = session
-				.createNativeQuery("select prefix, docname_first, docname_middle , docname_last from doctors;");
+				.createNativeQuery("select prefix, docname_first, docname_middle , docname_last from Doctors_New;");
 		List<Doctors> list = (List<Doctors>) query.getResultList();
 
 		Constant.log("Got Results", 1);
