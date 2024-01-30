@@ -6,7 +6,7 @@ import org.apache.solr.client.solrj.beans.Field;
 
 public class Doctor {
 	
-	@Field public String doctorid ;
+	@Field public String docid ;
 	@Field public Integer gender;
 	
 	@Field public String hospital_affliated;
@@ -37,7 +37,7 @@ public class Doctor {
 	@Field public String pincode;
 	@Field public String about ;
 	@Field public String img_Loc ;
-	public Doctor(String doctorid, Integer gender, String hospital_affliated,
+	public Doctor(String docid, Integer gender, String hospital_affliated,
 			Integer insurance_accept, String board_certifcate, String membership, 
 			String availibity_for_appointment, String telephone_nos, String primary_spl,
 			String other_spls, String sub_spls, String address1, String address2, String city, String state,
@@ -45,7 +45,7 @@ public class Doctor {
 			String docname_first, String docname_middle, String docname_last, String name, String email, String waiting_time,
 			String pincode, String about,String img_Loc) {
 		super();
-		this.doctorid = doctorid;
+		this.docid = docid;
 		this.gender = gender;
 		this.img_Loc=img_Loc;
 		this.hospital_affliated = hospital_affliated;
@@ -77,13 +77,13 @@ public class Doctor {
 	}
 	
 	//new sor document with lesser fields
-	public Doctor(String doctorid, Integer gender, String hospital_affliated,
+	public Doctor(String docid, Integer gender, String hospital_affliated,
 			String telephone_nos, String primary_spl, String address1, String city, String state,
 			String country_code, String over_allrating, String prefix,
 			String docname_first, String docname_middle, String docname_last, String name, String email,
 			String pincode, String about,String img_Loc) {
 		super();
-		this.doctorid = doctorid;
+		this.docid = docid;
 		this.gender = gender;
 		
 		this.hospital_affliated = hospital_affliated;
@@ -120,11 +120,11 @@ public class Doctor {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public String getDoctorid() {
-		return doctorid;
+	public String getdocid() {
+		return docid;
 	}
-	public void setDoctorid(String doctorid) {
-		this.doctorid = doctorid;
+	public void setdocid(String docid) {
+		this.docid = docid;
 	}
 	public Integer getGender() {
 		return gender;
