@@ -494,7 +494,7 @@ public class SearchDaoImpl {
 		QueryResponse response = null;
 		try {
 			response = client.query(query);
-			System.out.println("Raw Solr Response: " + response.getResponse());
+//			System.out.println("Raw Solr Response: " + response.getResponse());
 		} catch (SolrServerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -598,7 +598,7 @@ public class SearchDaoImpl {
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
 					doc.getEmail(),  doc.getPincode(), doc.getAbout(),doc.getimg_Loc()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
-			System.out.println("docarr"+docarr);
+			
 		}
 		// System.out.println("SSSSSSSSSSSSSSSSSS" + docarr.size());
 		
