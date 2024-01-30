@@ -139,6 +139,8 @@ public class SearchDaoImpl {
 			doc.setPincode(pincode);
 			String about = (String) document.getFieldValue("about");
 			doc.setAbout(about);
+			String img_Loc = (String) document.getFirstValue("img_Loc");
+			doc.setimg_Loc(img_Loc);
 			
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
@@ -169,7 +171,7 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry_code(),
 					doc.getOver_allrating(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
-					doc.getEmail(),  doc.getPincode(), doc.getAbout()));
+					doc.getEmail(),  doc.getPincode(), doc.getAbout(),doc.getimg_Loc()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}
@@ -297,6 +299,8 @@ public class SearchDaoImpl {
 //			doc.setWaiting_time(waiting_time);
 			String pincode = (String) document.getFieldValue(Constant.PIN);
 			doc.setPincode(pincode);
+			String img_Loc = (String) document.getFieldValue("img_Loc");
+			doc.setimg_Loc(img_Loc);
 			
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
@@ -318,7 +322,7 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry_code(),
 					doc.getOver_allrating(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
-					doc.getEmail(),  doc.getPincode(), doc.getAbout()));
+					doc.getEmail(),  doc.getPincode(), doc.getAbout(),doc.getimg_Loc()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}
@@ -375,8 +379,8 @@ public class SearchDaoImpl {
 			doc.setGender(gender);
 //			String edu_training = (String) document.getFirstValue(Constant.EDU_TRAINING);
 //			doc.setEdu_training(edu_training);
-//			String hospital_affliated = (String) document.getFieldValue(Constant.HOSPITAL_AFFLIATED);
-//			doc.setHospital_affliated(hospital_affliated);
+			String hospital_affliated = (String) document.getFieldValue(Constant.HOSPITAL_AFFLIATED);
+			doc.setHospital_affliated(hospital_affliated);
 //			Integer insurance_accept = (Integer) document.getFieldValue(Constant.INSURANCE_ACCEPT);
 //			doc.setInsurance_accept(insurance_accept);
 //			String board_certifcate = (String) document.getFirstValue(Constant.BOARD_CERTIFICATION);
@@ -431,6 +435,8 @@ public class SearchDaoImpl {
 			doc.setPincode(pincode);
 			String about = (String) document.getFieldValue("about");
 			doc.setAbout(about);
+			String img_Loc = (String) document.getFieldValue("img_Loc");
+			doc.setimg_Loc(img_Loc);
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
 			 * doc.setLatitude(latitude); String longitude = (String)
@@ -451,7 +457,7 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry_code(),
 					doc.getOver_allrating(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
-					doc.getEmail(),  doc.getPincode(), doc.getAbout()));
+					doc.getEmail(),  doc.getPincode(), doc.getAbout(),doc.getimg_Loc()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}
@@ -511,8 +517,8 @@ public class SearchDaoImpl {
 			doc.setGender(gender);
 //			String edu_training = (String) document.getFirstValue(Constant.EDU_TRAINING);
 //			doc.setEdu_training(edu_training);
-//			String hospital_affliated = (String) document.getFieldValue(Constant.HOSPITAL_AFFLIATED);
-//			doc.setHospital_affliated(hospital_affliated);
+			String hospital_affliated = (String) document.getFieldValue(Constant.HOSPITAL_AFFLIATED);
+			doc.setHospital_affliated(hospital_affliated);
 //			Integer insurance_accept = (Integer) document.getFieldValue(Constant.INSURANCE_ACCEPT);
 //			doc.setInsurance_accept(insurance_accept);
 //			String board_certifcate = (String) document.getFirstValue(Constant.BOARD_CERTIFICATION);
@@ -567,7 +573,8 @@ public class SearchDaoImpl {
 			doc.setPincode(pincode);
 			String about = (String) document.getFieldValue("about");
 			doc.setAbout(about);
-			
+			String img_Loc = (String) document.getFieldValue("img_Loc");
+			doc.setimg_Loc(img_Loc);
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
 			 * doc.setLatitude(latitude); String longitude = (String)
@@ -588,7 +595,7 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry_code(),
 					doc.getOver_allrating(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
-					doc.getEmail(),  doc.getPincode(), doc.getAbout()));
+					doc.getEmail(),  doc.getPincode(), doc.getAbout(),doc.getimg_Loc()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 			
 		}
