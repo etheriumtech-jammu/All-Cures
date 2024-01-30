@@ -22,7 +22,7 @@ import model.ServiceContract;
 import util.Constant;
 import util.HibernateUtil;
 import model.VideoFailure;
-
+import java.io.IOException;
 @Component
 public class VideoDaoImpl {
 
