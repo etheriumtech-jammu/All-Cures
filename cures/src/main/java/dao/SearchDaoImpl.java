@@ -72,9 +72,9 @@ public class SearchDaoImpl {
 
 		System.out.println("Found " + documents.getNumFound() + " documents");
 		for (SolrDocument document : documents) {
-			Integer doctorid = (Integer) document.getFirstValue(Constant.DOCID);
-			if (null!=doctorid) {
-				doc.setDoctorid(doctorid.toString());
+			Integer docid = (Integer) document.getFirstValue(Constant.DOCID);
+			if (null!=docid) {
+				doc.setDoctorid(docid.toString());
 			}
 
 			// String firstname = (String)
@@ -139,8 +139,7 @@ public class SearchDaoImpl {
 			doc.setPincode(pincode);
 			String about = (String) document.getFieldValue("about");
 			doc.setAbout(about);
-			String docid = (String) document.getFieldValue(Constant.DOCID);
-			doc.setDoctorid(docid);
+			
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
 			 * doc.setLatitude(latitude); String longitude = (String)
