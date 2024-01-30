@@ -581,7 +581,7 @@ public class VideoDaoImpl {
 
 			    return failureList;
 			}
-	 public static Integer sendEmail(Integer docID, String meeting) {
+	 public static Integer sendEmail(Integer docID, String meeting) throws IOException {
    		Session session = HibernateUtil.buildSessionFactory();
   		      String email = getEmailByDocID(session, docID);
 
