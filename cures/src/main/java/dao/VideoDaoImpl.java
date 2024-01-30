@@ -582,7 +582,7 @@ public class VideoDaoImpl {
 			    return failureList;
 			}
 	 public static Integer sendEmail(Integer docID, String meeting) {
-   		 try (Session session = HibernateUtil.buildSessionFactory()) {
+   		Session session = HibernateUtil.buildSessionFactory();
   		      String email = getEmailByDocID(session, docID);
 
         if (email != null) {
@@ -610,11 +610,6 @@ public class VideoDaoImpl {
             System.out.println("Email Address Not Found");
             return 0;
         }
-    } catch (Exception ex) {
-        // Log or handle the exception appropriately
-        ex.printStackTrace();
-        return 0;
-    }
 }
 
 private static String getEmailByDocID(Session session, Integer docID) {
