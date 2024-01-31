@@ -65,8 +65,8 @@ public class SearchActionController extends HttpServlet {
 			String city_pin = request.getParameter(Constant.CITYVALUE)== null ? "": request.getParameter(Constant.CITYVALUE);
 			String doc_details = request.getParameter(Constant.DOCTORS)== null ? "": request.getParameter(Constant.DOCTORS);
 			Constant.log("************************"+doc_details, 0);
-			Constant.log("Latitude>>>>>>>>>>>>>>>>"+lat, 0);
-			Constant.log("Longitude>>>>>>>>>>>>>>>>"+lon, 0);
+	//		Constant.log("Latitude>>>>>>>>>>>>>>>>"+lat, 0);
+	//		Constant.log("Longitude>>>>>>>>>>>>>>>>"+lon, 0);
 			Constant.log("City>>>>>>>>>>>>>>>>"+city_pin, 0);
 			
 			SearchDaoImpl search = new SearchDaoImpl();
@@ -106,7 +106,7 @@ public class SearchActionController extends HttpServlet {
 					docSolr = search.searchByCityPin(city_pin);
 				}else if (!doc_details.equals("") && city_pin.equals("")) {
 					Constant.log("Searching By Doc Details:"+doc_details, 1);
-					docSolr = search.searchByDocSpl(doc_details,lat,lon);
+					docSolr = search.searchByDocSpl(doc_details);
 				}else {
 					Constant.log("Searching By Both City:"+city_pin, 1);
 					docSolr = search.searchByBoth(doc_details, city_pin);
