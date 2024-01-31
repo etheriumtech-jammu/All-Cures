@@ -60,8 +60,8 @@ public class SearchActionController extends HttpServlet {
 	public void getResults(HttpServletRequest request, HttpServletResponse response, boolean jsonResponse) throws ServletException, IOException {
 		String featuredDoctors="";
 		try{
-			String lat= request.getParameter("Latitude");
-			String lon = request.getParameter("Longitude");
+		//	String lat= request.getParameter("Latitude");
+	//		String lon = request.getParameter("Longitude");
 			String city_pin = request.getParameter(Constant.CITYVALUE)== null ? "": request.getParameter(Constant.CITYVALUE);
 			String doc_details = request.getParameter(Constant.DOCTORS)== null ? "": request.getParameter(Constant.DOCTORS);
 			Constant.log("************************"+doc_details, 0);
@@ -76,11 +76,10 @@ public class SearchActionController extends HttpServlet {
 	//		String featuredDoctors= request.getParameter("FeaturedDoctors");
 			Session session = HibernateUtil.buildSessionFactory();
 
-			if(doc_details == null || city_pin == null || city_pin==null || lat == null || lon ==null )
+			if(doc_details == null && city_pin == null )
 			{
 				Query query1 = session.createNativeQuery("SELECT docid, prefix " +
 				        "FROM Doctors_New " +
-				        
 				        "ORDER BY docid desc "  + ";");
 				
 		//		List<Integer> rownoList = query1.getResultList();
