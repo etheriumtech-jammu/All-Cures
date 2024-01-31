@@ -76,7 +76,7 @@ public class SearchActionController extends HttpServlet {
 	//		String featuredDoctors= request.getParameter("FeaturedDoctors");
 			Session session = HibernateUtil.buildSessionFactory();
 
-			if(doc_details == null && city_pin == null )
+			if(doc_details == "" && city_pin == "" )
 			{
 				Query query1 = session.createNativeQuery("SELECT docid, prefix " +
 				        "FROM Doctors_New " +
