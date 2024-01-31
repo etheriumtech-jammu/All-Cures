@@ -180,7 +180,7 @@ public class SearchDaoImpl {
 		return docarr;
 	}
 
-	public static List<Doctor> searchByDocSpl(String docdetails, String lat, String lon) {
+	public static List<Doctor> searchByDocSpl(String docdetails) {
 
 		SolrClient client = SolrUtil.buildSolrFactory();
 		Doctor doc = new Doctor();
@@ -194,8 +194,8 @@ public class SearchDaoImpl {
 		// //queryParamMap.put("fl", "id, name");
 		// //queryParamMap.put("sort", "id asc");
 		// MapSolrParams queryParams = new MapSolrParams(queryParamMap);
-		System.out.println("Lat" + lat);
-		System.out.println("Lon" + lon);
+//		System.out.println("Lat" + lat);
+//		System.out.println("Lon" + lon);
 //		String docloc = lat + "," + lon;
 		SolrQuery query = new SolrQuery();
 		String[] dname = docdetails.split(" ");
