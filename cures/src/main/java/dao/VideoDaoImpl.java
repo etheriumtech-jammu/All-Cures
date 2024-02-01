@@ -587,8 +587,9 @@ public class VideoDaoImpl {
 
         if (email != null) {
             String encEmail = new UserController().getEmailEncrypted(email);
-            String link = "https://all-cures.com/notification/" + meeting;
-		System.out.println(link);
+            String url = "https://all-cures.com/notification/" + meeting;
+	String link = url.replaceFirst("https://", "");
+	System.out.println(link);
             EmailDTO emailDTO = new EmailDTO();
 
             emailDTO.setTo(email);
