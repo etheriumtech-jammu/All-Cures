@@ -599,7 +599,7 @@ public class VideoDaoImpl {
             Map<String, Object> templateData = new HashMap<>();
             templateData.put("templatefile", "email/video.ftlh");
 	                templateData.put("name", email);
-	                templateData.put("linkmeeting", meeting);
+	                templateData.put("linkmeeting", link);
 		System.out.println(templateData);
             emailDTO.setEmailTemplateData(templateData);
 
