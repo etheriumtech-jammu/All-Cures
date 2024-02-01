@@ -584,11 +584,11 @@ public class VideoDaoImpl {
 	 public static Integer sendEmail(Integer docID, String meeting) throws IOException {
    		Session session = HibernateUtil.buildSessionFactory();
   		      String email = getEmailByDocID(session, docID);
-
+	String meeting_url = meeting.replaceFirst("https://", "");
         if (email != null) {
             String encEmail = new UserController().getEmailEncrypted(email);
-            String url = "https://all-cures.com/notification/" + meeting;
-	String link = url.replaceFirst("https://", "");
+            String link = "https://all-cures.com/notification/" + meeting_url;
+	
 	System.out.println(link);
             EmailDTO emailDTO = new EmailDTO();
 
