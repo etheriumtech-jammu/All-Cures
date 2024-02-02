@@ -15,7 +15,7 @@ import com.google.gson.GsonBuilder;
 
 import dao.DoctorsDaoImpl;
 import model.Doctors;
-import dao.DoctorsDaoImpl_New;
+//import dao.DoctorsDaoImpl_New;
 import model.Doctor_New;
 import net.spy.memcached.AddrUtil;
 import net.spy.memcached.ConnectionFactoryBuilder;
@@ -42,7 +42,7 @@ public class DoctorsActionController extends HttpServlet {
 		String cacheString = null;
 		Constant.log("Got Req for Profile For DocID: "+id, 1);
 		int DocID = -1;
-		DoctorsDaoImpl_New doctorDao = null;
+		DoctorsDaoImpl doctorDao = null;
 		Doctor_New doctorObj = null;
 		if(id != null){
 			DocID = Integer.parseInt(id);
@@ -51,7 +51,7 @@ public class DoctorsActionController extends HttpServlet {
 			if(cacheString == null || "".equals(cacheString) || "null".equalsIgnoreCase(cacheString)){
 				//Doctor Not Found in MemCache
 				Constant.log("Got Null From MemCache on the Doc:"+id, 1);
-				doctorDao = new DoctorsDaoImpl_New();
+				doctorDao = new DoctorsDaoImpl();
 				doctorObj = doctorDao.getAllDoctorsInfoByDocId(DocID);
 				//SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
 				//Date date = new Date(System.currentTimeMillis());
