@@ -494,7 +494,7 @@ public class SearchDaoImpl {
 		QueryResponse response = null;
 		try {
 			response = client.query(query);
-//			System.out.println("Raw Solr Response: " + response.getResponse());
+			System.out.println("Raw Solr Response: " + response.getResponse());
 		} catch (SolrServerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
