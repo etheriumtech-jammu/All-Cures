@@ -275,11 +275,11 @@ public class Doctor {
 		this.pincode = pincode;
 	}
 
-	public String getimg_Loc() {
+	public String getImg_Loc() {
 		return img_Loc;
 	}
 
-	public void setimg_Loc(String img_Loc) {
+	public void setImg_Loc(String img_Loc) {
 		this.img_Loc = img_Loc;
 	}
 	
