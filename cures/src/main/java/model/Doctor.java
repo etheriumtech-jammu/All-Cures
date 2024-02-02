@@ -23,7 +23,7 @@ public class Doctor {
 	@Field public String address2;
 	@Field public String city;
 	@Field public String state;
-	@Field public String country_code;
+	@Field public String country;
 	@Field public String over_allrating;
 	@Field public String create_date;
 	@Field public Integer docactive;
@@ -41,7 +41,7 @@ public class Doctor {
 			Integer insurance_accept, String board_certifcate, String membership, 
 			String availibity_for_appointment, String telephone_nos, String primary_spl,
 			String other_spls, String sub_spls, String address1, String address2, String city, String state,
-			String country_code, String over_allrating, String create_date, Integer docactive, String prefix,
+			String country, String over_allrating, String create_date, Integer docactive, String prefix,
 			String docname_first, String docname_middle, String docname_last, String name, String email, String waiting_time,
 			String pincode, String about,String img_Loc) {
 		super();
@@ -60,7 +60,7 @@ public class Doctor {
 		this.address2 = address2;
 		this.city = city;
 		this.state = state;
-		this.country_code = country_code;
+		this.country = country;
 		this.over_allrating = over_allrating;
 		this.create_date = create_date;
 		this.docactive = docactive;
@@ -79,7 +79,7 @@ public class Doctor {
 	//new sor document with lesser fields
 	public Doctor(String docid, Integer gender, String hospital_affliated,
 			String telephone_nos, String primary_spl, String address1, String city, String state,
-			String country_code, String over_allrating, String prefix,
+			String country, String over_allrating, String prefix,
 			String docname_first, String docname_middle, String docname_last, String name, String email,
 			String pincode, String about,String img_Loc) {
 		super();
@@ -94,7 +94,7 @@ public class Doctor {
 		this.address1 = address1;
 		this.city = city;
 		this.state = state;
-		this.country_code = country_code;
+		this.country = country;
 		this.over_allrating = over_allrating;
 		this.prefix = prefix;
 		this.docname_first = docname_first;
@@ -202,11 +202,11 @@ public class Doctor {
 	public void setState(String state) {
 		this.state = state;
 	}
-	public String getCountry_code() {
-		return country_code;
+	public String getcountry() {
+		return country;
 	}
-	public void setCountry_code(String country_code) {
-		this.country_code = country_code;
+	public void setcountry(String country) {
+		this.country = country;
 	}
 	public String getOver_allrating() {
 		return over_allrating;
