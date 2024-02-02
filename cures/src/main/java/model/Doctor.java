@@ -202,10 +202,10 @@ public class Doctor {
 	public void setState(String state) {
 		this.state = state;
 	}
-	public String getcountry() {
+	public String getCountry() {
 		return country;
 	}
-	public void setcountry(String country) {
+	public void setCountry(String country) {
 		this.country = country;
 	}
 	public String getOver_allrating() {
