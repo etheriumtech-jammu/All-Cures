@@ -114,7 +114,7 @@ public class SearchDaoImpl {
 			String state = (String) document.getFieldValue(Constant.STATE);
 			doc.setState(state);
 			String country = (String) document.getFieldValue("country");
-			doc.setcountry(country);
+			doc.setCountry(country);
 			String over_allrating = (String) document.getFieldValue(Constant.OVER_ALLRATING);
 			doc.setOver_allrating(over_allrating);
 //			String create_date = (String) document.getFieldValue(Constant.CREATE_DATE);
@@ -158,7 +158,7 @@ public class SearchDaoImpl {
 //					doc.getHospital_affliated(), doc.getInsurance_accept(), doc.getBoard_certifcate(),
 //					doc.getMembership(), doc.getAwards(), doc.getAvailibity_for_appointment(), doc.getDoctor_location(),
 //					doc.getTelephone_nos(), doc.getPrimary_spl(), doc.getOther_spls(), doc.getSub_spls(),
-//					doc.getAddress1(), doc.getAddress2(), doc.getCity(), doc.getState(), doc.getcountry(),
+//					doc.getAddress1(), doc.getAddress2(), doc.getCity(), doc.getState(), doc.getCountry(),
 //					doc.getOver_allrating(), doc.getCreate_date(), doc.getDocactive(), doc.getPrefix(),
 //					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
 //					doc.getEmail(), doc.getWaiting_time(), doc.getPincode(), doc.getLatlon(), doc.getRowno()));
@@ -168,7 +168,7 @@ public class SearchDaoImpl {
 			docarr.add(new Doctor(doc.getDocid(), doc.getGender(), 
 					doc.getHospital_affliated(),
 					doc.getTelephone_nos(), doc.getPrimary_spl(), 
-					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getcountry(),
+					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry(),
 					doc.getOver_allrating(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
 					doc.getEmail(),  doc.getPincode(), doc.getAbout(),doc.getimg_Loc()));
@@ -276,7 +276,7 @@ public class SearchDaoImpl {
 			String state = (String) document.getFieldValue(Constant.STATE);
 			doc.setState(state);
 			String country = (String) document.getFieldValue("country");
-			doc.setcountry(country);
+			doc.setCountry(country);
 			String over_allrating = (String) document.getFieldValue(Constant.OVER_ALLRATING);
 			doc.setOver_allrating(over_allrating);
 //			String create_date = (String) document.getFieldValue(Constant.CREATE_DATE);
@@ -319,7 +319,7 @@ public class SearchDaoImpl {
 			docarr.add(new Doctor(doc.getDocid(), doc.getGender(), 
 					doc.getHospital_affliated(),
 					doc.getTelephone_nos(), doc.getPrimary_spl(), 
-					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getcountry(),
+					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry(),
 					doc.getOver_allrating(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
 					doc.getEmail(),  doc.getPincode(), doc.getAbout(),doc.getimg_Loc()));
@@ -410,7 +410,7 @@ public class SearchDaoImpl {
 			String state = (String) document.getFieldValue(Constant.STATE);
 			doc.setState(state);
 			String country = (String) document.getFieldValue("country");
-			doc.setcountry(country);
+			doc.setCountry(country);
 			String over_allrating = (String) document.getFieldValue(Constant.OVER_ALLRATING);
 			doc.setOver_allrating(over_allrating);
 //			String create_date = (String) document.getFieldValue(Constant.CREATE_DATE);
@@ -454,7 +454,7 @@ public class SearchDaoImpl {
 			docarr.add(new Doctor(doc.getDocid(), doc.getGender(), 
 					doc.getHospital_affliated(),
 					doc.getTelephone_nos(), doc.getPrimary_spl(), 
-					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getcountry(),
+					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry(),
 					doc.getOver_allrating(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
 					doc.getEmail(),  doc.getPincode(), doc.getAbout(),doc.getimg_Loc()));
@@ -550,7 +550,7 @@ public class SearchDaoImpl {
 			doc.setState(state);
 			String country = (String) document.getFieldValue("country");
 			System.out.println("country"+country);
-			doc.setcountry(country);
+			doc.setCountry(country);
 			String over_allrating = (String) document.getFieldValue(Constant.OVER_ALLRATING);
 			doc.setOver_allrating(over_allrating);
 //			String create_date = (String) document.getFieldValue(Constant.CREATE_DATE);
@@ -595,7 +595,7 @@ public class SearchDaoImpl {
 			docarr.add(new Doctor(doc.getDocid(), doc.getGender(), 
 					doc.getHospital_affliated(),
 					doc.getTelephone_nos(), doc.getPrimary_spl(), 
-					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getcountry(),
+					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry(),
 					doc.getOver_allrating(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
 					doc.getEmail(),  doc.getPincode(), doc.getAbout(),doc.getimg_Loc()));
