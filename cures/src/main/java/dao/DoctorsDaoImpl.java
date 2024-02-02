@@ -501,7 +501,7 @@ public class DoctorsDaoImpl {
 				doc.setAbout(obj[26] != null ? (String) obj[26] : "");
 				doc.setCity_code(obj[27] != null ? (Integer) obj[27] : 0);
 				doc.setState_code(obj[28] != null ? (Integer) obj[28] : 0);
-				doc.setCountries_code(obj[29] != null ? (Integer) obj[29] : 0);
+	//			doc.setCountries_code(obj[29] != null ? (Integer) obj[29] : 0);
 				doc.setHospital_affliated_code(obj[30] != null ? (Integer) obj[30] : 0);
 				doc.setRowno((long) (obj[31] != null ? (Integer) obj[31] : 0));
 				doc.setWebsite_url((String) (obj[32]));
