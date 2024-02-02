@@ -37,12 +37,17 @@ public class VideoDaoImpl {
 		  Query query = session.createNativeQuery(
 			        "SELECT ContractID FROM ServiceContractDetails " +
 			        "WHERE ServiceID =" + ServiceID + " AND UserID = " + DocID + ";");
+		Query query1=session.createNativeQuery("SELECT sc.ContractID, r.RegistrationID\r\n"
+		  		+ "FROM ServiceContractDetails sc\r\n"
+		  		+ "INNER JOIN registration r ON sc.DocID = r.DocID\r\n"
+		  		+ "WHERE sc.ServiceID ="+ ServiceID +" AND sc.UserID =" + DocID + ";");
+		  		
 		  Integer ContractID=0;
 	        try {
 	            // Assuming your HashMap has keys matching the property names in Service
 	            // Adjust these names based on your actual Service class
 			try {
-	        	 ContractID = (Integer) query.getSingleResult();
+	        	 ContractID = (Integer) query1.getSingleResult();
 	        	 System.out.println(ContractID);
 	        	}
 	        	catch (NoResultException e) {
