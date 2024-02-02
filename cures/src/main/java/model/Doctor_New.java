@@ -62,20 +62,20 @@ public class Doctor_New {
 		this.telephoneNos = telephoneNos;
 	}
 
-	public int getPrimarySpecialization() {
-		return primarySpecialization;
+	public int getPrimary_spl() {
+		return primary_spl;
 	}
 
-	public void setPrimarySpecialization(int primarySpecialization) {
-		this.primarySpecialization = primarySpecialization;
+	public void setPrimary_spl(int primary_spl) {
+		this.primary_spl = primary_spl;
 	}
 
-	public String getOtherSpecializations() {
-		return otherSpecializations;
+	public String getOther_spls() {
+		return other_spls;
 	}
 
-	public void setOtherSpecializations(String otherSpecializations) {
-		this.otherSpecializations = otherSpecializations;
+	public void setOther_spls(String other_spls) {
+		this.other_spls = other_spls;
 	}
 
 	public float getOverallRating() {
@@ -278,10 +278,10 @@ public class Doctor_New {
     private String telephoneNos;
 
     @Column(name = "primary_spl")
-    private int primarySpecialization;
+    private int primary_spl;
 
     @Column(name = "other_spls")
-    private String otherSpecializations;
+    private String other_spls;
 
     @Column(name = "over_allrating")
     private float overallRating;
