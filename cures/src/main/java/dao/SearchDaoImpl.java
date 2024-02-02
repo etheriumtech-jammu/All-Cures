@@ -549,6 +549,7 @@ public class SearchDaoImpl {
 			String state = (String) document.getFieldValue(Constant.STATE);
 			doc.setState(state);
 			String country = (String) document.getFieldValue("country");
+			System.out.println("country"+country);
 			doc.setcountry(country);
 			String over_allrating = (String) document.getFieldValue(Constant.OVER_ALLRATING);
 			doc.setOver_allrating(over_allrating);
@@ -575,6 +576,7 @@ public class SearchDaoImpl {
 			String about = (String) document.getFieldValue("about");
 			doc.setAbout(about);
 			String img_Loc = (String) document.getFieldValue("img_Loc");
+			System.out.println("img_Loc"+img_Loc);
 			doc.setimg_Loc(img_Loc);
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
