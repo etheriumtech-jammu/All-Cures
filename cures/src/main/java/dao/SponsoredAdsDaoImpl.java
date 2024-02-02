@@ -1865,11 +1865,12 @@ public static List ListCampaigns() {
 		      + "    r.first_name,\r\n"
 		      + "    c.UserID,\r\n"
 		      + "    c.ServiceID,\r\n"
-		      + "    r.last_name\r\n"
+		     + "    r.last_name,\r\n"
+		      + "    r.DocID\r\n"
 		      + "FROM\r\n"
 		      + "    ServiceContractDetails c\r\n"
 		      + "LEFT JOIN\r\n"
-		      + "    SponsoredServicesMaster s ON c.ServiceID = s.ServiceID\r\n"
+		      + "    SponsoredServicesMaster s ON c.ServiceID = s.ServiceID And s.AvailabilityReq=1\r\n"
 		      + "LEFT JOIN\r\n"
 		      + "    registration r ON c.UserID = r.registration_id\r\n"
 		      + "WHERE\r\n"
@@ -1885,11 +1886,13 @@ public static List ListCampaigns() {
 				Integer UserID = (Integer) objects[2];
 				Integer ServiceID = (Integer) objects[3];
 				String DocName = (String) objects[1]+" " +(String) objects[4] ;
+			  	Integer DocID=(Integer) objects[5];
 				// Date date1=(Date)objects[4];
 				hm.put("ServiceName", ServiceName);
 				hm.put("ServiceID", ServiceID);
 				hm.put("UserID", UserID);
 				hm.put("DocName", DocName);
+			  	hm.put("DocID", DocID);
 				// hm.put("Date", date1);
 				hmFinal.add(hm);
 		  System.out.println(hmFinal);
