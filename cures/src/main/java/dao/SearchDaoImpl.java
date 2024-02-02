@@ -140,7 +140,7 @@ public class SearchDaoImpl {
 			String about = (String) document.getFieldValue("about");
 			doc.setAbout(about);
 			String img_Loc = (String) document.getFirstValue("img_Loc");
-			doc.setimg_Loc(img_Loc);
+			doc.setImg_Loc(img_Loc);
 			
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
@@ -171,7 +171,7 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry(),
 					doc.getOver_allrating(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
-					doc.getEmail(),  doc.getPincode(), doc.getAbout(),doc.getimg_Loc()));
+					doc.getEmail(),  doc.getPincode(), doc.getAbout(),doc.getImg_Loc()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}
@@ -300,7 +300,7 @@ public class SearchDaoImpl {
 			String pincode = (String) document.getFieldValue(Constant.PIN);
 			doc.setPincode(pincode);
 			String img_Loc = (String) document.getFieldValue("img_Loc");
-			doc.setimg_Loc(img_Loc);
+			doc.setImg_Loc(img_Loc);
 			
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
@@ -322,7 +322,7 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry(),
 					doc.getOver_allrating(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
-					doc.getEmail(),  doc.getPincode(), doc.getAbout(),doc.getimg_Loc()));
+					doc.getEmail(),  doc.getPincode(), doc.getAbout(),doc.getImg_Loc()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}
@@ -436,7 +436,7 @@ public class SearchDaoImpl {
 			String about = (String) document.getFieldValue("about");
 			doc.setAbout(about);
 			String img_Loc = (String) document.getFieldValue("img_Loc");
-			doc.setimg_Loc(img_Loc);
+			doc.setImg_Loc(img_Loc);
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
 			 * doc.setLatitude(latitude); String longitude = (String)
@@ -457,7 +457,7 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry(),
 					doc.getOver_allrating(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
-					doc.getEmail(),  doc.getPincode(), doc.getAbout(),doc.getimg_Loc()));
+					doc.getEmail(),  doc.getPincode(), doc.getAbout(),doc.getImg_Loc()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}
@@ -577,7 +577,7 @@ public class SearchDaoImpl {
 			doc.setAbout(about);
 			String img_Loc = (String) document.getFieldValue("img_Loc");
 			System.out.println("img_Loc"+img_Loc);
-			doc.setimg_Loc(img_Loc);
+			doc.setImg_Loc(img_Loc);
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
 			 * doc.setLatitude(latitude); String longitude = (String)
@@ -598,7 +598,7 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry(),
 					doc.getOver_allrating(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
-					doc.getEmail(),  doc.getPincode(), doc.getAbout(),doc.getimg_Loc()));
+					doc.getEmail(),  doc.getPincode(), doc.getAbout(),doc.getImg_Loc()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 			
 		}
