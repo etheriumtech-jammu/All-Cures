@@ -1813,7 +1813,8 @@ public static List ListCampaigns() {
 					+ "    r.first_name,\r\n"
 					+ "    c.UserID,\r\n"
 					+ "    c.ServiceID,\r\n"
-					+ "    r.last_name\r\n"
+					+ "    r.last_name,\r\n"
+					+ "    r.DocID\r\n"
 					+ "FROM\r\n"
 					+ "    ServiceContractDetails c\r\n"
 					+ "LEFT JOIN\r\n"
@@ -1821,7 +1822,7 @@ public static List ListCampaigns() {
 					+ "LEFT JOIN\r\n"
 					+ "    registration r ON c.UserID = r.registration_id\r\n"
 					+ "WHERE\r\n"
-					+ "    r.registration_type = 1\r\n"
+					+ "    r.registration_type = 1 AND s.AvailabilityReq=1 \r\n"
 					+ "    AND NOT EXISTS (\r\n"
 					+ "        SELECT 1\r\n"
 					+ "        FROM DoctorAvailability d\r\n"
@@ -1834,7 +1835,7 @@ public static List ListCampaigns() {
 
 			for (Object[] objects : results) {
 			    Integer serviceID = (Integer) objects[3];
-
+			     Integer DocID=(Integer) objects[5];
 			    // Check if the map already contains information for this serviceID
 			    Map<String, Object> hm = resultMap.get(serviceID);
 			    
@@ -1849,6 +1850,7 @@ public static List ListCampaigns() {
 			    hm.put("ServiceName", (String) objects[0]);
 			    hm.put("UserID", (Integer) objects[2]);
 			    hm.put("DocName", hm.getOrDefault("DocName", "") + " " + (String) objects[1] + " " + (String) objects[4]);
+			     hm.put("DocID", DocID);
 			}
 
 			// Convert the resultMap values to a list
