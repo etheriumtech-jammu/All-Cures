@@ -548,8 +548,8 @@ public class SearchDaoImpl {
 			doc.setCity(city);
 			String state = (String) document.getFieldValue(Constant.STATE);
 			doc.setState(state);
-			String country_code = (String) document.getFieldValue(Constant.COUNTRY_CODE);
-			doc.setCountry_code(country_code);
+			String country = (String) document.getFieldValue("country");
+			doc.setCountry(country);
 			String over_allrating = (String) document.getFieldValue(Constant.OVER_ALLRATING);
 			doc.setOver_allrating(over_allrating);
 //			String create_date = (String) document.getFieldValue(Constant.CREATE_DATE);
