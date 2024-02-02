@@ -94,8 +94,8 @@ public class SplSearchDaoImpl {
 			doc.setCity(city);
 			String state = (String) document.getFieldValue(Constant.STATE);
 			doc.setState(state);
-			String country_code = (String) document.getFieldValue(Constant.COUNTRY_CODE);
-			doc.setCountry_code(country_code);
+			String country = (String) document.getFieldValue("country");
+			doc.setcountry(country);
 			String over_allrating = (String) document.getFieldValue(Constant.OVER_ALLRATING);
 			doc.setOver_allrating(over_allrating);
 //			String create_date = (String) document.getFieldValue(Constant.CREATE_DATE);
@@ -127,7 +127,7 @@ public class SplSearchDaoImpl {
 			
 			
 			System.out.println("doctor" + doc.getPrimary_spl());
-			// docarr.add("gender:"+doc.getGender()+",city:"+doc.getCity()+",waiting_time:"+doc.getWaiting_time()+",prefix:"+doc.getPrefix()+",sub_spls:"+doc.getSub_spls()+",docactive:"+docactive+",telephone_nos:"+telephone_nos+",docname_last:"+docname_last+",country_code:"+country_code+",over_allrating:"+over_allrating+",
+			// docarr.add("gender:"+doc.getGender()+",city:"+doc.getCity()+",waiting_time:"+doc.getWaiting_time()+",prefix:"+doc.getPrefix()+",sub_spls:"+doc.getSub_spls()+",docactive:"+docactive+",telephone_nos:"+telephone_nos+",docname_last:"+docname_last+",country:"+country+",over_allrating:"+over_allrating+",
 			// doctorid:"+doctorid+", docname_first:"+doc.getDocname_first()+",
 			// state:"+state+"
 			// insurance_accept:"+insurance_accept+",primary_spl:"+primary_spl+",
@@ -136,7 +136,7 @@ public class SplSearchDaoImpl {
 			docarr.add(new Doctor(doc.getDocid(), doc.getGender(), 
 					doc.getHospital_affliated(), 
 					doc.getTelephone_nos(), doc.getPrimary_spl(), 
-					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry_code(),
+					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getcountry(),
 					doc.getOver_allrating(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
 					doc.getEmail(), doc.getPincode(), doc.getAbout(),doc.getimg_Loc()));
