@@ -39,7 +39,7 @@ public class VideoDaoImpl {
 			        "WHERE ServiceID =" + ServiceID + " AND UserID = " + DocID + ";");
 		Query query1=session.createNativeQuery("SELECT sc.ContractID, r.registration_id\r\n"
 		  		+ "FROM ServiceContractDetails sc\r\n"
-		  		+ "INNER JOIN registration r ON sc.DocID = r.DocID\r\n"
+		  		+ "INNER JOIN registration r ON sc.UserID = r.DocID\r\n"
 		  		+ "WHERE sc.ServiceID ="+ ServiceID +" AND sc.UserID =" + DocID + ";");
 		  		
 		  Integer ContractID=0;
