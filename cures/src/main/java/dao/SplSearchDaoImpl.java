@@ -123,7 +123,7 @@ public class SplSearchDaoImpl {
 			String about= (String) document.getFieldValue("about");
 			doc.setAbout(about);
 			String img_Loc = (String) document.getFieldValue("img_Loc");
-			doc.setimg_Loc(img_Loc);
+			doc.setImg_Loc(img_Loc);
 			
 			
 			System.out.println("doctor" + doc.getPrimary_spl());
@@ -139,7 +139,7 @@ public class SplSearchDaoImpl {
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry(),
 					doc.getOver_allrating(), doc.getPrefix(),
 					doc.getDocname_first(), doc.getDocname_middle(), doc.getDocname_last(), doc.getName(),
-					doc.getEmail(), doc.getPincode(), doc.getAbout(),doc.getimg_Loc()));
+					doc.getEmail(), doc.getPincode(), doc.getAbout(),doc.getImg_Loc()));
 
 			//System.out.println("id: " + doctorid + "; for: " + docname_first);
 
