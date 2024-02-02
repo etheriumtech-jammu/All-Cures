@@ -501,7 +501,7 @@ public class DoctorsDaoImpl_New {
 				doc.setInsuranceAccept(obj[2] != null && ((Number) obj[2]).intValue() != 0);
 				doc.setAwards(obj[3] != null ? (String) obj[3] : "");
 				doc.setTelephoneNos(obj[4] != null ? (String) obj[4] : "");
-				doc.setOtherSpecializations(obj[5] != null ? (String) obj[5] : "");
+				doc.setOther_spls(obj[5] != null ? (String) obj[5] : "");
 				float overall = (float) (obj[6] != null ? (Float) obj[6] : 0.0);
 				doc.setOverallRating(overall);
 				doc.setPrefix((String) obj[7] != null ? (String) obj[7] : "");
