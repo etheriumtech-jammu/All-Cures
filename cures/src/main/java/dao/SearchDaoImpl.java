@@ -72,11 +72,11 @@ public class SearchDaoImpl {
 
 		System.out.println("Found " + documents.getNumFound() + " documents");
 		for (SolrDocument document : documents) {
-			Integer docid = (Integer) document.getFirstValue(Constant.DOCID);
-			if (null!=docid) {
+			String docid = (String) document.getFirstValue(Constant.DOCID);
+/*			if (null!=docid) {
 				doc.setDocid(docid.toString());
 			}
-
+*/
 			// String firstname = (String)
 			// document.getFirstValue("docname_first");
 			Integer gender = (Integer) document.getFirstValue(Constant.GENDER);
@@ -234,10 +234,11 @@ public class SearchDaoImpl {
 
 		System.out.println("Found " + documents.getNumFound() + " documents");
 		for (SolrDocument document : documents) {
-			Integer docid = (Integer) document.getFirstValue(Constant.DOCID);
-			if (null!=docid) {
+			String docid = (String) document.getFirstValue(Constant.DOCID);
+/*			if (null!=docid) {
 				doc.setDocid(docid.toString());
 			}
+*/
 
 			// String firstname = (String)
 			// document.getFirstValue("docname_first");
@@ -368,11 +369,11 @@ public class SearchDaoImpl {
 
 		System.out.println("Found " + documents.getNumFound() + " documents");
 		for (SolrDocument document : documents) {
-			Integer docid = (Integer) document.getFirstValue(Constant.DOCID);
-			if (null!=docid) {
+			String docid = (String) document.getFirstValue(Constant.DOCID);
+/*			if (null!=docid) {
 				doc.setDocid(docid.toString());
 			}
-
+*/
 			// String firstname = (String)
 			// document.getFirstValue("docname_first");
 			Integer gender = (Integer) document.getFirstValue(Constant.GENDER);
@@ -508,9 +509,10 @@ public class SearchDaoImpl {
 		System.out.println("Found " + documents.getNumFound() + " documents");
 		for (SolrDocument document : documents) {
 			String docid = (String) document.getFirstValue(Constant.DOCID);
-			if (null!=docid) {
+/*				if (null!=docid) {
 				doc.setDocid(docid.toString());
 			}
+*/
 	//		Object rowno_ = document.getFieldValue(Constant.ROWNO);
 			// String firstname = (String)
 			// document.getFirstValue("docname_first");
