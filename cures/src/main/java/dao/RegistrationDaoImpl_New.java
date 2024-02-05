@@ -780,7 +780,7 @@ public class RegistrationDaoImpl_New {
 	        if (!errMsg.isEmpty()) {
        		 Gson gson = new GsonBuilder().serializeNulls().create();
                 String jsonData = gson.toJson(user);
-                return jsonData;
+                return "Success";
 	        }
        	 else
        	 {
