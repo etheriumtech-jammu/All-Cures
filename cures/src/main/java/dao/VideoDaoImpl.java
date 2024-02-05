@@ -592,7 +592,7 @@ public class VideoDaoImpl {
 	String fullName="";
 	    	String email="";
 	    	Query query = session.createNativeQuery(
-	                   "SELECT prefix,docname_first,docname_middle,docname_last,email FROM doctors_new WHERE DocID = " + docID + ";");
+	                   "SELECT prefix,docname_first,docname_middle,docname_last,email FROM Doctors_New WHERE DocID = " + docID + ";");
 	              
 	            List<Object[]> resultList = query.getResultList();
 	            
