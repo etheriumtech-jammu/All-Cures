@@ -83,7 +83,7 @@ public class RegistrationDaoImpl_New {
 	            user = registerPatient(session, email, f_name, l_name,reg);
 	        }
 
-	        sendRegistrationEmail(session, email, f_name, user);
+//	        sendRegistrationEmail(session, email, f_name, user);
 
 	        session.getTransaction().commit();
 	    } catch (Exception e) {
