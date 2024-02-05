@@ -80,7 +80,7 @@ public class RegistrationDaoImpl_New {
 	        if (type == 1) {
 	            int result = registerDoctor(session, email, f_name, l_name,reg);
 	        } else {
-	            user = registerPatient(session, email, f_name, l_name,reg);
+	            int result = registerPatient(session, email, f_name, l_name,reg);
 	        }
 
 //	        sendRegistrationEmail(session, email, f_name, user);
@@ -130,7 +130,7 @@ public class RegistrationDaoImpl_New {
 	}
 
 	
-	private static Registration registerPatient(Session session, String email, String f_name, String l_name, Registration user) {
+	private static int registerPatient(Session session, String email, String f_name, String l_name, Registration user) {
 	    Constant.log("Registering User is a Patient", 0);
 
 //	    Registration user = RegistrationDaoImpl_New.findUserByEmail(email);
@@ -140,7 +140,7 @@ public class RegistrationDaoImpl_New {
 
 	    System.out.println("Added Patient");
 
-	    return user; // Return the user object
+	    return 1; // Return the user object
 	}
 
 	@Transactional
