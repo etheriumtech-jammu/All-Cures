@@ -588,13 +588,45 @@ public class VideoDaoImpl {
 			}
 	 public static Integer sendEmail(Integer docID, String meeting) throws IOException {
    		Session session = HibernateUtil.buildSessionFactory();
-  		      String email = getEmailByDocID(session, docID);
 	String meeting_url = meeting.replaceFirst("https://", "");
+	String fullName="";
+	    	String email="";
+	    	Query query = session.createNativeQuery(
+	                   "SELECT prefix,docname_first,docname_middle,docname_last,email FROM doctors_new WHERE DocID = " + docID + ";");
+	              
+	            List<Object[]> resultList = query.getResultList();
+	            
+	            if (!resultList.isEmpty()) {
+	                // Assuming the result contains [prefix, docname_first, docname_middle, docname_last]
+	                Object[] result = resultList.get(0);
+	                
+	                String prefix = result[0].toString();
+	                String firstName = result[1].toString();
+	                String middleName = result[2].toString();
+	                String lastName = result[3].toString();
+	                email= result[4].toString();
+	                
+	              
+	                	 if (middleName.isEmpty()) {
+	                         // If middleName is empty, construct fullName without it
+	                         fullName = prefix + " " + firstName + " " + lastName;
+	                     } else if(middleName.isEmpty() && lastName.isEmpty()) {
+	                         // If middleName is not empty, include it in the fullName
+	                    	 fullName = prefix + " " + firstName;
+	                     }
+	                     else
+	                     {
+	                    	 fullName = prefix + " " + firstName + " " + middleName + " " + lastName;
+	                     }
+	               
+	            }
+
+	            System.out.println(email);
         if (email != null) {
             String encEmail = new UserController().getEmailEncrypted(email);
             String link = "https://all-cures.com/notification/" + meeting_url;
 	
-	System.out.println(link);
+		System.out.println(link);
             EmailDTO emailDTO = new EmailDTO();
 
             emailDTO.setTo(email);
@@ -603,9 +635,12 @@ public class VideoDaoImpl {
 
             // Populate the template data
             Map<String, Object> templateData = new HashMap<>();
-            templateData.put("templatefile", "email/video.ftlh");
+            templateData.put("templatefile", "email/video_new.ftlh");
 	                templateData.put("name", email);
 	                templateData.put("linkmeeting", link);
+			templateData.put("videoChatLink", link);
+	                templateData.put("supportEmail", "info@etheriumtech.com");
+	                templateData.put("doctorLastName", fullName);
 		System.out.println(templateData);
             emailDTO.setEmailTemplateData(templateData);
 
@@ -617,16 +652,4 @@ public class VideoDaoImpl {
             return 0;
         }
 }
-
-private static String getEmailByDocID(Session session, Integer docID) {
-    try {
-       Query checkEmailExists = session.createNativeQuery(
-	                    "SELECT email_address FROM registration WHERE DocID = " + docID + ";");
-	System.out.println("SELECT email_address FROM registration WHERE DocID = " + docID + ";");
-        return (String) checkEmailExists.getSingleResult();
-    } catch (NoResultException e) {
-        return null;
-    }
-}
-
 }
