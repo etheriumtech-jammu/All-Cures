@@ -108,7 +108,7 @@ public class RegistrationDaoImpl_New {
 
 	    int docid = DoctorsDaoImpl_New.findDoctorsByEmail(email).getDocId();
 	    System.out.println("docid" + docid);
-//	    session.beginTransaction();
+	    session.beginTransaction();
 	    Query query = session
 				.createNativeQuery("UPDATE  registration " + " SET DocID =" + docid + " WHERE registration_id = " + user1.getRegistration_id() + ";");
 		int ret = 0;
