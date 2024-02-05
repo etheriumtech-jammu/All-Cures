@@ -85,7 +85,7 @@ public class RegistrationDaoImpl_New {
 
 //	        sendRegistrationEmail(session, email, f_name, user);
 
-	        session.getTransaction().commit();
+//	        session.getTransaction().commit();
 	    } catch (Exception e) {
 	        handleException(session, e);
 	    } finally {
