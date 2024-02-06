@@ -631,7 +631,7 @@ public class VideoDaoImpl {
 
             emailDTO.setTo(email);
     //        emailDTO.setFrom("All-Cures INFO");
-            emailDTO.setSubject("Video : All-Cures");
+            emailDTO.setSubject("Video Consultation - Appointment Confirmation");
 
             // Populate the template data
             Map<String, Object> templateData = new HashMap<>();
