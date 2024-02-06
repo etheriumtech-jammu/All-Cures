@@ -602,8 +602,9 @@ public class VideoDaoImpl {
 	                
 	                String prefix = result[0].toString();
 	                String firstName = result[1].toString();
-	                String middleName = result[2].toString();
-	                String lastName = result[3].toString();
+	                String middleName = (result != null && result.length >= 3 && result[2] != null) ? result[2].toString() : "";
+	                String lastName = (result != null && result.length >= 4 && result[3] != null) ? result[3].toString() : "";
+
 	                email= result[4].toString();
 	                
 	              
