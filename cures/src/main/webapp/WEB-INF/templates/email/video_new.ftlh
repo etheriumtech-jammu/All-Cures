@@ -27,7 +27,7 @@
 
     <p><strong>Video Consultation Link:</strong> ${videoChatLink}</p>
 
-    <p>To connect now, simply click on the link above. Your prompt attention to this appointment is highly appreciated, and we trust that your expertise will contribute to a swift and effective consultation.</p>
+    <p>To connect, simply click on the link above. Your prompt attention to this appointment is highly appreciated, and we trust that your expertise will contribute to a swift and effective consultation.</p>
 
     <p><strong>Important Notes:</strong></p>
     <ol>
@@ -39,8 +39,7 @@
     <p>Thank you for your immediate attention. We look forward to your presence. </p>
 
     <p>If you have any questions or need further information, please reply to this email without changing the subject line.</p>
- 	<p>Thank you!</p>
-    <p>All-Cures Support Team</p>
+ 	<p>Thank you!<br>All-Cures Support Team</p>
 </body>
 
 </html>
