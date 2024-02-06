@@ -6,7 +6,7 @@
   
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Video Consultation Appointment Confirmation</title>
+    <title> Video Consultation - Appointment Confirmation</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Use the latest (edge) version of IE rendering engine -->
     <meta name="x-apple-disable-message-reformatting">  <!-- Disable auto-scale in iOS 10 Mail entirely -->
     <title></title> <!-- The title tag shows in email notifications, like Android 4.4. -->
@@ -19,11 +19,11 @@
 </head>
 <!-- Comment inside the head section -->
 <body>
-    <p><strong>Subject:</strong> Video Consultation Appointment Confirmation</p>
+    <p><strong>Subject:</strong> Video Consultation - Appointment Confirmation</p>
 
     <p>Dear ${doctorLastName},</p>
 
-    <p>I hope this message finds you well. An urgent video consultation appointment has been scheduled with you on All-Cures.com, and we are reaching out to confirm your availability.</p>
+    <p>We hope this message finds you well. A video consultation appointment has been scheduled with you on All-Cures.com, and we are reaching out to confirm your availability.</p>
 
     <p><strong>Video Consultation Link:</strong> ${videoChatLink}</p>
 
@@ -31,17 +31,16 @@
 
     <p><strong>Important Notes:</strong></p>
     <ol>
-        <li>Ensure your camera and microphone are in working order.</li>
-        <li>Familiarize yourself with the patient's medical history, if available.</li>
-        <li>For any technical assistance, our support team is ready to help at ${supportEmail}.</li>
+        <li>Please ensure that your camera and microphone are in working order.</li>
+        <li> Please familiarize yourself with the patient's medical history, if available.</li>
+        <li>For any technical assistance, our support team can be reached at ${supportEmail}.</li>
     </ol>
 
-    <p>Thank you for your immediate attention to this matter. Your dedication to providing timely and quality healthcare is invaluable.</p>
+    <p>Thank you for your immediate attention. We look forward to your presence. </p>
 
-    <p>If you have any questions or need further information, please reply to this email promptly.</p>
-
- 
-    <p>All-Cures.com Support Team</p>
+    <p>If you have any questions or need further information, please reply to this email without changing the subject line.</p>
+ 	<p>Thank you!</p>
+    <p>All-Cures Support Team</p>
 </body>
 
 </html>
