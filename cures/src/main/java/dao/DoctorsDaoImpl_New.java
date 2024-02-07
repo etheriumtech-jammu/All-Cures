@@ -548,53 +548,39 @@ public class DoctorsDaoImpl_New {
 	}
 
 	@Transactional
-	public static void saveDoctors( String f_name, String l_name, String email) {
-		// creating seession factory object
+	public static int saveDoctors( String f_name, String l_name, String email) {
+		// creating session factory object
 		Session session = HibernateUtil.buildSessionFactory();
 		Constant.log("Saving New Doctor with Firstname to DB:" + f_name, 0);
-
-		// creating session object
-		//Session session = factory;
-	//	session.beginTransaction();
-
-	//	Doctors doc = new Doctors();
-		session.beginTransaction();
-
-		//session.getTransaction().begin();
+		int docid = 0;
+		String prefix="Dr.";
 		Doctor_New doctorFound = findDoctorsByEmail(email);
-		if (null != doctorFound && null != doctorFound.getEmail()) {
-
-
-		} else {
-			try {
-				Query query = session
-						.createNativeQuery("insert into  Doctors_New ( docname_first,docname_last,email) values ('"
-								 + f_name + "','" + l_name + "','" + email + "');");
-				int ret = 0;
-				ret = query.executeUpdate();
-				// session.getTransaction().commit();
-				System.out.println("insert new doctor with email =  " + email + " ");
-//				session.getTransaction().commit();
-				session.getTransaction().commit();   //session.close();
-				// TODO: This implementation is wrong; Setting the RegistrationID as the Doctors
-				// DocId;
-//				doc.setDocid(docid);
-//				doc.setPrefix(Constant.DR);
-//				doc.setEmail(email);
-//				doc.setDocname_first(f_name);
-//				doc.setDocname_last(l_name);
-//				session.update(doc);
-//				session.getTransaction().commit();
-//				session.getTransaction().commit();   //session.close();
-				// sessionFactory.close();
-
+		if (null == doctorFound) {
+		try {
+			session.beginTransaction();
+			Query query = session.createNativeQuery("insert into  Doctors_New ( prefix,docname_first,docname_last,email) values ('" + prefix + "', '"
+							+ f_name + "','" + l_name + "','" + email + "');");
+	
+			 int affectedRows = query.executeUpdate();
+			if (affectedRows > 0) {
+			// If the query was executed successfully, retrieve the generated docid
+			docid = DoctorsDaoImpl_New.findDoctorsByEmail(email).getDocId();
+				}
+			System.out.println("insert new doctor with email =  " + email + " ");
+			session.getTransaction().commit(); // session.close();
 			} catch (Exception e) {
 				Constant.log(e.getStackTrace().toString(), 3);
-				session.getTransaction().commit(); //session.getTransaction().rollback();
+				session.getTransaction().commit(); // session.getTransaction().rollback();
 			} finally {
 //				session.getTransaction().commit();   //session.close();
 			}
+
+		} else if (null == doctorFound.getEmail()) {
+			System.out.println("Doctors's Email Address not found");
+		} else {
+			docid = DoctorsDaoImpl_New.findDoctorsByEmail(email).getDocId();
 		}
+			return docid;
 	}
 
 	public static Doctor_New findDoctorsByEmail(String email) {
