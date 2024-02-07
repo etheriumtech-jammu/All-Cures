@@ -49,18 +49,21 @@ public class RegistrationDaoImpl_New {
 
 //	@Transactional
 	public static Registration saveRegistration(String f_name, String l_name, String pwd, String email, Boolean accept,
-	        Integer type, Boolean policy, Integer state, Integer rem, Long mobile) {
-	    Registration user = null;
+	        Integer type, Boolean policy, Integer state, Integer rem, Long mobile,Integer Age) {
+	    int docid=0;
+	    Registration reg = new Registration();
 	    Session session = null;
-
 	    try {
 	        session = HibernateUtil.buildSessionFactory(); // Retrieve the current session
 
 	        Constant.log("Registering User with Firstname to DB:" + f_name, 0);
-
+	        
+	        if (type == 1) {
+	        docid=   DoctorsDaoImpl_New.saveDoctors( f_name, l_name, email);
+	        System.out.println("docid" +docid);
+	        if(docid!=0) {  
+	        
 	        session.beginTransaction();
-
-	        Registration reg = new Registration();
 	        reg.setEmail_address(email);
 	        reg.setPass_word(pwd);
 	        reg.setFirst_name(f_name);
@@ -71,31 +74,40 @@ public class RegistrationDaoImpl_New {
 	        reg.setAccount_state(state);
 	        reg.setRemember_me(rem);
 	        reg.setMobile_number(mobile);
-
+	        reg.setDocID(docid);
+	        reg.setAge(Age);
 	        session.save(reg);
 	        session.getTransaction().commit();
-
-	//        session.beginTransaction();
-
-	        if (type == 1) {
-	            int result = registerDoctor(session, email, f_name, l_name,reg);
-	        } else {
-	            int result = registerPatient(session, email, f_name, l_name,reg);
+	       
+	        }else {
+	        	System.out.println("Error in Creating doctor");
 	        }
+	//        sendRegistrationEmail(session, email, f_name, user);
 
-//	        sendRegistrationEmail(session, email, f_name, user);
-
-//	        session.getTransaction().commit();
-	    } catch (Exception e) {
-	        handleException(session, e);
-	    } finally {
-	        if (session != null && session.isOpen()) {
-	            session.close();
-	        }
-	    }
-
-	    return user;
-	}
+	//       session.getTransaction().commit();
+	    }else{
+	    	 session.beginTransaction();
+		        reg.setEmail_address(email);
+		        reg.setPass_word(pwd);
+		        reg.setFirst_name(f_name);
+		        reg.setLast_name(l_name);
+		        reg.setAcceptance_condition(accept);
+		        reg.setRegistration_type(type);
+		        reg.setprivacy_policy(policy);
+		        reg.setAccount_state(state);
+		        reg.setRemember_me(rem);
+		        reg.setMobile_number(mobile);
+		        reg.setDocID(docid);
+		        session.save(reg);
+		        session.getTransaction().commit();
+	    	
+	        	}} catch (Exception e) {
+	        		handleException(session, e);
+	  		  } finally {
+	        
+	  		      }
+		    return reg;
+		}
 
 	@Transactional
 	private static int registerDoctor( Session session,String email, String f_name, String l_name, Registration user) {
@@ -189,7 +201,7 @@ public class RegistrationDaoImpl_New {
 		Query query = session
 				.createNativeQuery("select registration_id, first_name, last_name, email_address, pass_word, "
 						+ "registration_type, acceptance_condition, privacy_policy, account_state, remember_me, login_attempt,last_login_datatime"
-						+ " ,select  DocID from registration "
+						+ " ,DocID,Age from registration "
 						+ "where email_address='" + email + "' and pass_word='" + pwd + "'");
 
 		ArrayList<Registration> regList = (ArrayList<Registration>) query.getResultList();
@@ -216,6 +228,7 @@ public class RegistrationDaoImpl_New {
 				register.setLogin_attempt(obj[10] != null ? (Integer) obj[10] : 0);
 				register.setLast_login_datatime((java.util.Date) obj[11]);
 				register.setDocID(obj[12] != null ? (Integer) obj[12] : 0);
+				register.setAge(obj[13] != null ? (Integer) obj[13] : 0);
 				Constant.log(Constant.PREFIX + obj[0], 0);
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
@@ -283,7 +296,7 @@ public class RegistrationDaoImpl_New {
 		Query query = session.createNativeQuery(
 				"select registration_id, first_name, last_name, email_address, pass_word, registration_type,"
 						+ " acceptance_condition, privacy_policy, account_state, remember_me, last_login_datetime, login_attempt, last_login_datatime,"
-						+ " concat(\"\",mobile_number), DocID from registration where registration_id=" + regid);
+						+ " concat(\"\",mobile_number), DocID,Age from registration where registration_id=" + regid);
 		ArrayList<Registration> list = (ArrayList<Registration>) query.getResultList();
 		Iterator itr = list.iterator();
 		if (itr.hasNext()) {
@@ -304,7 +317,8 @@ public class RegistrationDaoImpl_New {
 				register.setAccount_state(obj[8] != null ? (Integer) obj[8] : 3);
 				register.setRemember_me(obj[9] != null ? (Integer) obj[9] : 0);
 				register.setMobile_number(obj[13] != null ? Long.parseLong((String) obj[13]) : 0);
-//				register.Double setMobile_number = (Double) objects[13];
+//				register.setDocID(obj[14] != null ? (Integer) obj[14] : 0);
+				register.setAge(obj[15] != null ? (Integer) obj[15] : 0);
 
 				Constant.log(Constant.PREFIX + obj[0], 0);
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
@@ -726,14 +740,12 @@ public class RegistrationDaoImpl_New {
 
 	}
 	public static String RegisterUser( HashMap<String, Object> RegisterMap,HttpServletRequest request,HttpServletResponse response) { 
-		  Session session = HibernateUtil.buildSessionFactory();
 		  Registration user = null;
           String errMsg = "";
 	        try {
 	            // Assuming your HashMap has keys matching the property names in Service
 	            // Adjust these names based on your actual Service class
-	//        	Transaction tx = session.beginTransaction();
-	        	String firstname=(String) RegisterMap.get(Constant.FIRSTNAME);
+	       	     String firstname=(String) RegisterMap.get(Constant.FIRSTNAME);
 	             String lastname = (String) RegisterMap.get(Constant.LASTNAME);
 	             String email = (String) RegisterMap.get(Constant.EMAIL);
 	             String password = (String) RegisterMap.get(Constant.PSW);
@@ -751,12 +763,13 @@ public class RegistrationDaoImpl_New {
 	             Boolean accTerms = Constant.ON.equalsIgnoreCase(acceptTnC);
 	             Boolean accPolicy = Constant.ON.equalsIgnoreCase(acceptPolicy);
 	             Integer state = 1;
-	             
+	             String Age=(String)RegisterMap.get(Constant.Age)!= null ? (String)RegisterMap.get(Constant.Age) : "";
+	             Integer age=Integer.parseInt(Age);
 	             try { 
 	                 if (alreadyExists(email)) {
 	                     errMsg = "Email Address already exists in the system";
 	                 } else {
-	                     user = registerUser(firstname, lastname, password, email, accTerms, docOrPatient, accPolicy, state, rememberPassword, mobile);
+	                     user = registerUser(firstname, lastname, password, email, accTerms, docOrPatient, accPolicy, state, rememberPassword, mobile,age);
 	                     if (user != null) {
 	                         handleSuccessfulRegistration(request, response, user, rememberPassword);
 	                     } else {
@@ -764,12 +777,10 @@ public class RegistrationDaoImpl_New {
 	                     }
 	                 }
 
-	        //         sendResponse(request, response, user, errMsg);
 	             } catch (Exception e) {
 	                 Constant.log("Error processing registration request", 3);
 	                 e.printStackTrace();
 	                 errMsg = "Internal server error";
-	       //          sendErrorResponse(response, errMsg);
 	             }finally {
 	            	 // Code that will always be executed, whether an exception occurs or not
 	            	    // ...
@@ -777,51 +788,22 @@ public class RegistrationDaoImpl_New {
 	        }catch (Exception e) {
 	        	
 	        }
-	        if (!errMsg.isEmpty()) {
-       		 Gson gson = new GsonBuilder().serializeNulls().create();
-                String jsonData = gson.toJson(user);
-                return "Success";
-	        }
-       	 else
-       	 {
-       		 return errMsg;
-       	 }
-       	    
-	        }
-	             private static void sendResponse(HttpServletRequest request, HttpServletResponse response, Registration user, String errMsg) throws IOException {
-	                 if (request.getParameter("destinationUrl") != null) {
-	                     request.getSession().getServletContext().setAttribute("user", user);
-	                     if (!errMsg.isEmpty()) {
-	                         response.sendRedirect("/cures/registration.jsp?errMsg=" + errMsg);
-	                     } else {
-	                         response.sendRedirect(request.getParameter("destinationUrl"));
-	                     }
-	                 } else {
-	                     if (!errMsg.isEmpty()) {
-	                         response.setStatus(200);
-	                         response.setHeader("errMsg", errMsg);
-	                         PrintWriter out = response.getWriter();
-	                         out.write(errMsg);
-	                         out.flush();
-	                     } else {
-	                         response.setContentType("application/json");
-	                         Gson gson = new GsonBuilder().serializeNulls().create();
-	                         String jsonData = gson.toJson(user);
-	                         PrintWriter out = response.getWriter();
-	                         out.write(jsonData);
-	                         out.flush();
-	                     }
-	                 }
-	             }
-	        
-	        private static void sendErrorResponse(HttpServletResponse response, String errMsg) throws IOException {
-	            response.setStatus(500);
-	            response.setHeader("errMsg", errMsg);
-	            PrintWriter out = response.getWriter();
-	            out.write(errMsg);
-	            out.flush();
-	        }
+	  	     if (errMsg.isEmpty()) {
+	  	      Gson gson = new GsonBuilder().serializeNulls().create();
+          	      String jsonData = gson.toJson(user);
+          	      System.out.println("jsonData"+jsonData);
+         	       // Convert JSON string to JSON object
+         	       Object jsonObject = gson.fromJson(jsonData, Object.class);
+         	       return jsonData;
+	 	       }
+	        	else
+	        	{
+	        		return errMsg;
+	        	}
+	       	
+		}
 
+		//Method to handle cookies
 	        private static void handleSuccessfulRegistration(HttpServletRequest request, HttpServletResponse response, Registration user, Integer rememberPassword) {
 	            Constant.log("User Registered Successfully: " + user.getEmail_address(), 1);
 	            request.getSession().setAttribute(Constant.USER, user);
@@ -836,15 +818,13 @@ public class RegistrationDaoImpl_New {
 	            }
 	        }
 	        private static Registration registerUser(String fName, String lName, String pass, String email, Boolean acceptTerms, Integer docOrPat,
-	                Boolean acceptPolicy, Integer state, Integer remPwd, Long mobileNumber) {
+	                Boolean acceptPolicy, Integer state, Integer remPwd, Long mobileNumber,Integer Age) {
 	            Registration user = null;
 	            try {
 	                EnDeCryptor encryptor = new EnDeCryptor();
 	                final String secretKey = Constant.SECRETE;
 	                String hashedPass = encryptor.encrypt(pass, secretKey);
-	                System.out.println(docOrPat);
-	                		//, lName, hashedPass, email, acceptTerms, docOrPat, acceptPolicy, state, remPwd, mobileNumber);
-	                user = saveRegistration(fName, lName, hashedPass, email, acceptTerms, docOrPat, acceptPolicy, state, remPwd, mobileNumber);
+	                user = saveRegistration(fName, lName, hashedPass, email, acceptTerms, docOrPat, acceptPolicy, state, remPwd, mobileNumber,Age);
 	            } catch (Exception e) {
 	                Constant.log("Error while trying to register user", 3);
 	                e.printStackTrace();
