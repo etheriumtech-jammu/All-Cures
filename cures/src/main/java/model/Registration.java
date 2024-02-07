@@ -50,7 +50,16 @@ public class Registration implements Serializable {
 	
 	 @Column(name = "DocID")
 	 private int DocID;
-	public Registration() {
+
+	 @Column(name = "Age")
+	 private int Age;
+	 public int getAge() {
+		return Age;
+	 }
+	 public void setAge(Integer age) {
+		Age = age;
+	 }
+	 public Registration() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
