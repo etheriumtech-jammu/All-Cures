@@ -136,7 +136,7 @@ public class RegistrationDaoImpl_New {
 //	    Registration user = RegistrationDaoImpl_New.findUserByEmail(email);
 	    System.out.println("user" + user);
 
-	    PatientDaoImpl.savePatient(user.getRegistration_id(), f_name, l_name, email);
+//	    PatientDaoImpl.savePatient(user.getRegistration_id(), f_name, l_name, email);
 
 	    System.out.println("Added Patient");
 
