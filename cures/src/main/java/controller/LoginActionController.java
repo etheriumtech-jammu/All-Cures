@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import dao.RegistrationDaoImpl;
+import dao.RegistrationDaoImpl_New;
 import model.Registration;
 import util.Constant;
 import util.CookieManager;
@@ -63,7 +63,7 @@ public class LoginActionController extends HttpServlet {
 
 		String remme= (request.getParameter(Constant.REMPWD) == null || "".equals(request.getParameter(Constant.REMPWD))) ? Constant.OFF : (String) request.getParameter(Constant.REMPWD);
 		//ToDo: This implementation should not be static as this will cause overwrite issues in a multi user environment
-		Registration user = RegistrationDaoImpl.findAllUsers(email, hashedPassword);
+		Registration user = RegistrationDaoImpl_New.findAllUsers(email, hashedPassword);
 		if(user != null){
 
 			//Logging Password in Logs only in DEBUG Mode
@@ -76,7 +76,7 @@ public class LoginActionController extends HttpServlet {
 				out.flush();
 			}
 			
-			RegistrationDaoImpl.resetLoginDetails(user.getRegistration_id());
+			RegistrationDaoImpl_New.resetLoginDetails(user.getRegistration_id());
 
 			
 			//User should be logged in now
@@ -124,11 +124,11 @@ public class LoginActionController extends HttpServlet {
 				}
 			}
 		}else{
-			RegistrationDaoImpl.updateLoginDetails(email);
+			RegistrationDaoImpl_New.updateLoginDetails(email);
 			//No user found with credentials
 			Constant.log("Going to login page with error and destination url", 0);
 			//response.sendRedirect("/cures/login1.jsp?errMsg=99&destinationUrl="+destinationUrl);
-			Registration user2 =RegistrationDaoImpl.findUserByEmail(email);
+			Registration user2 =RegistrationDaoImpl_New.findUserByEmail(email);
 			Integer additionsMsg = 1;
 			if (null != user2) {
 				additionsMsg = user2.getLogin_attempt();
