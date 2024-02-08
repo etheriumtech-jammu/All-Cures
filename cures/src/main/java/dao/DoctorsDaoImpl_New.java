@@ -568,7 +568,7 @@ public class DoctorsDaoImpl_New {
 			 int affectedRows = query.executeUpdate();
 			if (affectedRows > 0) {
 			// If the query was executed successfully, retrieve the generated docid
-			docid = DoctorsDaoImpl_New.findDoctorsByEmail(email).getDocId();
+			docid = DoctorsDaoImpl_New.findDoctorsByEmail(email).getDocID();
 				}
 			System.out.println("insert new doctor with email =  " + email + " ");
 			session.getTransaction().commit(); // session.close();
@@ -582,7 +582,7 @@ public class DoctorsDaoImpl_New {
 		} else if (null == doctorFound.getEmail()) {
 			System.out.println("Doctors's Email Address not found");
 		} else {
-			docid = DoctorsDaoImpl_New.findDoctorsByEmail(email).getDocId();
+			docid = DoctorsDaoImpl_New.findDoctorsByEmail(email).getDocID();
 		}
 			return docid;
 	}
