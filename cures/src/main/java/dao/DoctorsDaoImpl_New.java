@@ -137,7 +137,7 @@ public class DoctorsDaoImpl_New {
 		session.beginTransaction();
 
 		Query query = session
-				.createNativeQuery("UPDATE doctors_new " + "SET " + updatestr + " WHERE docid = " + DocID + ";");
+				.createNativeQuery("UPDATE Doctors_New " + "SET " + updatestr + " WHERE docid = " + DocID + ";");
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
