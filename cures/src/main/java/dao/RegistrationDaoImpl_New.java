@@ -118,7 +118,7 @@ public class RegistrationDaoImpl_New {
 //	    session.beginTransaction();
 	    DoctorsDaoImpl_New.saveDoctors( f_name, l_name, email);
 
-	    int docid = DoctorsDaoImpl_New.findDoctorsByEmail(email).getDocId();
+	    int docid = DoctorsDaoImpl_New.findDoctorsByEmail(email).getDocID();
 	    System.out.println("docid" + docid);
 //	    session.beginTransaction();
 	    Query query = session
