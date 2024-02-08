@@ -499,7 +499,7 @@ public class DoctorsDaoImpl_New {
 			{
 				doc = new Doctor_New();
 				//doc.setDocid((Integer) obj[0]);
-				doc.setDocId(obj[0] != null ? (Integer) obj[0] : 0);
+				doc.setDocID(obj[0] != null ? (Integer) obj[0] : 0);
 				doc.setGender(obj[1] != null ? (Integer) obj[1] : 0);
 	//			doc.setEduTraining(obj[2] != null ? (String) obj[2] : "");
 				doc.setInsuranceAccept(obj[2] != null && ((Number) obj[2]).intValue() != 0);
@@ -608,7 +608,7 @@ public class DoctorsDaoImpl_New {
 			Constant.log(">>>>>>>>>>>>>>>>>>Doctors Found for Email:" + email, 1);
 			Object[] obj = (Object[]) itr.next();
 			{
-				doctors.setDocId(obj[0] != null ? (Integer) obj[0] : -1);
+				doctors.setDocID(obj[0] != null ? (Integer) obj[0] : -1);
 				doctors.setEmail((String) obj[1]);
 	//			doctors.setRowno(obj[2] != null ? (Long) Long.parseLong(""+obj[2]) : -1);
 
