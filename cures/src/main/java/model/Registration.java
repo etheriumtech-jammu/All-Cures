@@ -49,7 +49,7 @@ public class Registration implements Serializable {
 	 private Date last_login_datatime;
 	
 	 @Column(name = "DocID")
-	 private int DocID;
+	 private int docID;
 
 	 @Column(name = "Age")
 	 private int Age;
@@ -80,7 +80,7 @@ public class Registration implements Serializable {
 		this.login_attempt = login_attempt;
 		this.last_login_datatime = last_login_datatime;
 		this.mobile_number = mobile_number;
-		this.DocID = DocID;
+		this.docID = DocID;
 	}
 	public Integer getRegistration_id() {
 		return registration_id;
@@ -162,11 +162,11 @@ public class Registration implements Serializable {
 	}
 	
 	public int getDocID() {
-		return DocID;
+		return docID;
 	}
 	public void setDocID(int DocID) {
 	
-		this.DocID = DocID;
+		this.docID = DocID;
 	}
 	
 	
