@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import dao.DoctorsDaoImpl;
+import dao.DoctorsDaoImpl_New;
 
 @RestController
 @RequestMapping(path = "/doctors")
 public class DoctorsController {
 
 	@Autowired
-	private DoctorsDaoImpl doctorsDaoImpl;
+	private DoctorsDaoImpl_New doctorsDaoImpl;
 
 //	@RequestMapping(value = "/verification/{docid}/{verified}/{uprn}/{registration_number}", produces = "application/json", method = RequestMethod.GET)
 //	public @ResponseBody int verfiyDoctor(@PathVariable String docid, @PathVariable String verified,
