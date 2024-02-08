@@ -6,7 +6,7 @@ import org.apache.solr.client.solrj.beans.Field;
 
 public class Doctor {
 	
-	@Field public String DocID ;
+	@Field public String docID ;
 	@Field public Integer gender;
 	
 	@Field public String hospital_affliated;
@@ -45,7 +45,7 @@ public class Doctor {
 			String docname_first, String docname_middle, String docname_last, String name, String email, String waiting_time,
 			String pincode, String about,String img_Loc) {
 		super();
-		this.DocID = DocID;
+		this.docID = DocID;
 		this.gender = gender;
 		this.img_Loc=img_Loc;
 		this.hospital_affliated = hospital_affliated;
@@ -83,7 +83,7 @@ public class Doctor {
 			String docname_first, String docname_middle, String docname_last, String name, String email,
 			String pincode, String about,String img_Loc) {
 		super();
-		this.DocID = DocID;
+		this.docID = DocID;
 		this.gender = gender;
 		
 		this.hospital_affliated = hospital_affliated;
@@ -121,11 +121,11 @@ public class Doctor {
 		// TODO Auto-generated constructor stub
 	}
 	public String getDocID() {
-		return DocID;
+		return docID;
 	}
 
 	public void setDocID(String DocID) {
-		this.DocID = DocID;
+		this.docID = DocID;
 	}
 	public Integer getGender() {
 		return gender;
