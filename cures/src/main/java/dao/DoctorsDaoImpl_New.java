@@ -145,7 +145,7 @@ public class DoctorsDaoImpl_New {
 			Constant.log(">>>>>>>>>>>>>>>>>>updated doctors table for DocID =  " + DocID, 1);
 //			int check = new DoctorsDaoImpl().memcacheUpdateDoctor(docid);
 			if (mcc == null)
-				new DoctorsDaoImpl().initializeCacheClient();
+				new DoctorsDaoImpl_New().initializeCacheClient();
 			// Remove the Doctor Found to the Cache since the same ID will be updated in
 			// next fetch
 			// mcc.replace(Constant.DOCID + "_" + docid, 360000, jsondata).getStatus();
@@ -153,6 +153,7 @@ public class DoctorsDaoImpl_New {
 			session.getTransaction().commit();
 
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			session.getTransaction().rollback();
 		} finally {
 //			session.getTransaction().commit();   //session.close();
