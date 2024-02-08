@@ -7,11 +7,11 @@ import java.util.Date;
 public class Doctor_New {
 
     public int getDocID() {
-		return DocID;
+		return docID;
 	}
 
 	public void setDocID(int docID) {
-		DocID = docID;
+		this.docID = docID;
 	}
 
 	public int getGender() {
@@ -257,7 +257,7 @@ public class Doctor_New {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "docid")
-   private int DocID;
+   private int docID;
 
     @Column(name = "gender")
     private int gender;
