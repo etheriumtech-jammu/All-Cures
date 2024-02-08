@@ -46,7 +46,8 @@ public class DoctorsDaoImpl_New {
 	}
 
 	public static int updateProfile(HashMap profileMap) {
-		int DocID = 0;
+		
+		int DocID = (int) profileMap.get("DocID");
 		String updatestr = "";
 		
 		if (profileMap.containsKey("gender")) {
