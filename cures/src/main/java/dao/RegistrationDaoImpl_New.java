@@ -763,8 +763,8 @@ public class RegistrationDaoImpl_New {
 	             Boolean accTerms = Constant.ON.equalsIgnoreCase(acceptTnC);
 	             Boolean accPolicy = Constant.ON.equalsIgnoreCase(acceptPolicy);
 	             Integer state = 1;
-	             String Age=(String)RegisterMap.get(Constant.Age)!= null ? (String)RegisterMap.get(Constant.Age) : "";
-	             Integer age=Integer.parseInt(Age);
+	             Integer age=(Integer)RegisterMap.get(Constant.Age)!= null ? (Integer)RegisterMap.get(Constant.Age) : 0;
+	             
 	             try { 
 	                 if (alreadyExists(email)) {
 	                     errMsg = "Email Address already exists in the system";
