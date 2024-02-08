@@ -56,7 +56,7 @@ public class SplSearchDaoImpl {
 		System.out.println("Found " + documents.getNumFound() + " documents");
 		for (SolrDocument document : documents) {
 			Integer docid = (Integer) document.getFirstValue(Constant.DOCID);
-			doc.setDocid(docid.toString());
+			doc.setDocID(docid.toString());
 
 			// String firstname = (String)
 			// document.getFirstValue("docname_first");
@@ -133,7 +133,7 @@ public class SplSearchDaoImpl {
 			// insurance_accept:"+insurance_accept+",primary_spl:"+primary_spl+",
 			// hospital_affliated:"+hospital_affliated+",docname_middle:
 			// "+docname_middle+"");
-			docarr.add(new Doctor(doc.getDocid(), doc.getGender(), 
+			docarr.add(new Doctor(doc.getDocID(), doc.getGender(), 
 					doc.getHospital_affliated(), 
 					doc.getTelephone_nos(), doc.getPrimary_spl(), 
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry(),
