@@ -6,7 +6,7 @@ import org.apache.solr.client.solrj.beans.Field;
 
 public class Doctor {
 	
-	@Field public String docid ;
+	@Field public String DocID ;
 	@Field public Integer gender;
 	
 	@Field public String hospital_affliated;
@@ -37,7 +37,7 @@ public class Doctor {
 	@Field public String pincode;
 	@Field public String about ;
 	@Field public String img_Loc ;
-	public Doctor(String docid, Integer gender, String hospital_affliated,
+	public Doctor(String DocID, Integer gender, String hospital_affliated,
 			Integer insurance_accept, String board_certifcate, String membership, 
 			String availibity_for_appointment, String telephone_nos, String primary_spl,
 			String other_spls, String sub_spls, String address1, String address2, String city, String state,
@@ -45,7 +45,7 @@ public class Doctor {
 			String docname_first, String docname_middle, String docname_last, String name, String email, String waiting_time,
 			String pincode, String about,String img_Loc) {
 		super();
-		this.docid = docid;
+		this.DocID = DocID;
 		this.gender = gender;
 		this.img_Loc=img_Loc;
 		this.hospital_affliated = hospital_affliated;
@@ -77,13 +77,13 @@ public class Doctor {
 	}
 	
 	//new sor document with lesser fields
-	public Doctor(String docid, Integer gender, String hospital_affliated,
+	public Doctor(String DocID, Integer gender, String hospital_affliated,
 			String telephone_nos, String primary_spl, String address1, String city, String state,
 			String country, String over_allrating, String prefix,
 			String docname_first, String docname_middle, String docname_last, String name, String email,
 			String pincode, String about,String img_Loc) {
 		super();
-		this.docid = docid;
+		this.DocID = DocID;
 		this.gender = gender;
 		
 		this.hospital_affliated = hospital_affliated;
@@ -120,11 +120,12 @@ public class Doctor {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public String getDocid() {
-		return docid;
+	public String getDocID() {
+		return DocID;
 	}
-	public void setDocid(String docid) {
-		this.docid = docid;
+
+	public void setDocID(String DocID) {
+		this.DocID = DocID;
 	}
 	public Integer getGender() {
 		return gender;
