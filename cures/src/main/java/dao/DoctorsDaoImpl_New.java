@@ -127,7 +127,9 @@ public class DoctorsDaoImpl_New {
 		if (profileMap.containsKey("Status")) {
 			updatestr += " Status = " + profileMap.get("Status") + ",\r\n";
 		}
-		
+		if (profileMap.containsKey("UpdatedBy")) {
+			updatestr += " UpdatedBy = " + profileMap.get("UpdatedBy") + ",\r\n";
+		}
 		updatestr = updatestr.replaceAll(",$", "");
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
