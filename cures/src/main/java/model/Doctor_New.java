@@ -6,12 +6,12 @@ import java.util.Date;
 @Table(name = "Doctors_New")
 public class Doctor_New {
 
-    public int getDocId() {
-		return docId;
+    public int getDocID() {
+		return DocID;
 	}
 
-	public void setDocId(int docId) {
-		this.docId = docId;
+	public void setDocID(int docID) {
+		DocID = docID;
 	}
 
 	public int getGender() {
@@ -257,7 +257,7 @@ public class Doctor_New {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "docid")
-    private int docId;
+   private int DocID;
 
     @Column(name = "gender")
     private int gender;
