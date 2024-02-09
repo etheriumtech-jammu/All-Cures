@@ -81,6 +81,9 @@ public class SponsoredServicesMaster {
     @Column(name = "ContractReq")
     private int contractReq;
 
+    @Column(name = "AvailabilityReq")
+    private int availabilityReq;
+
     @Column(name = "CreatedBy")
     private int createdBy;
 
@@ -152,6 +155,14 @@ public class SponsoredServicesMaster {
 		UpdatedName = Updated_Name;
 	}
 
+	
+	public int getAvailabilityReq() {
+		return availabilityReq;
+	}
+
+	public void setAvailabilityReq(int availabilityReq) {
+		this.availabilityReq = availabilityReq;
+	}
     // Constructors, getters, and setters
 
     // Constructors with parameters (if needed)
