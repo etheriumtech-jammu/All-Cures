@@ -299,7 +299,7 @@ public class VideoDaoImpl {
 			            + "FROM\r\n"
 			            + "    DoctorAvailability a\r\n"
 			            + "JOIN\r\n"
-			            + "    doctors d ON a.DocID = d.docid\r\n"
+			            + "    Doctors_New d ON a.DocID = d.docid\r\n"
 			            + "JOIN\r\n"
 			            + "    registration reg ON a.CreatedBy = reg.registration_id\r\n"
 			            + "LEFT JOIN\r\n"
