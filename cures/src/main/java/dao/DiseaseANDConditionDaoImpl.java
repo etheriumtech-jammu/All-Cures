@@ -218,8 +218,7 @@ public class DiseaseANDConditionDaoImpl {
 			String content = (String) objects[22] ;
 			float over_allrating = objects[23] != null ? (float) objects[23] : 0;
 			String authors_name = (String) objects[24];
-			BigInteger rownoBigInteger = (BigInteger) objects[26];
-			int rowno = rownoBigInteger != null ? rownoBigInteger.intValue() : 0;
+			int docID = objects[26] != null ? (int) objects[26] : 0;
 
 			hm.put("article_id", article_id);
 			hm.put("title", title);
@@ -246,7 +245,7 @@ public class DiseaseANDConditionDaoImpl {
 			hm.put("content", content);
 			hm.put("over_allrating", over_allrating);
 			hm.put("authors_name", authors_name);
-			hm.put("rowno", rowno);
+			hm.put("docID", docID);
 			hmFinal.add(hm);
 			//System.out.println(hm);
 		}
@@ -327,8 +326,7 @@ public class DiseaseANDConditionDaoImpl {
 			String content = (String) objects[22] ;
 			float over_allrating = objects[23] != null ? (float) objects[23] : 0;
 			String authors_name = (String) objects[24];
-			BigInteger rownoBigInteger = (BigInteger) objects[25];
-			int rowno = rownoBigInteger != null ? rownoBigInteger.intValue() : 0;
+			int docID = objects[25] != null ? (int) objects[25] : 0;
 			hm.put("article_id", article_id);
 			hm.put("title", title);
 			hm.put("friendly_name", friendly_name);
@@ -354,7 +352,7 @@ public class DiseaseANDConditionDaoImpl {
 			hm.put("content", content);
 			hm.put("over_allrating", over_allrating);
 			hm.put("authors_name", authors_name);
-			hm.put("rowno", rowno);
+			hm.put("docID", docID);
 			hmFinal.add(hm);
 			//System.out.println(hm);
 		}
