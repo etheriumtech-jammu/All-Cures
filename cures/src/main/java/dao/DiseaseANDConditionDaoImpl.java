@@ -218,8 +218,8 @@ public class DiseaseANDConditionDaoImpl {
 			String content = (String) objects[22] ;
 			float over_allrating = objects[23] != null ? (float) objects[23] : 0;
 			String authors_name = (String) objects[24];
-			int docID = objects[26] != null ? (int) objects[26] : 0;
-
+			BigInteger DocID = (BigInteger) objects[26];
+			int docID = DocID != null ? DocID.intValue() : 0;
 			hm.put("article_id", article_id);
 			hm.put("title", title);
 			hm.put("friendly_name", friendly_name);
@@ -326,7 +326,8 @@ public class DiseaseANDConditionDaoImpl {
 			String content = (String) objects[22] ;
 			float over_allrating = objects[23] != null ? (float) objects[23] : 0;
 			String authors_name = (String) objects[24];
-			int docID = objects[25] != null ? (int) objects[25] : 0;
+			BigInteger DocID = (BigInteger) objects[25];
+			int docID = DocID != null ? DocID.intValue() : 0;
 			hm.put("article_id", article_id);
 			hm.put("title", title);
 			hm.put("friendly_name", friendly_name);
