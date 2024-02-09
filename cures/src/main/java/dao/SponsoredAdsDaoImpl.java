@@ -1647,6 +1647,7 @@ public static List ListCampaigns() {
 	            service.setContractReq((Integer) ServiceMap.get("ContractReq"));
 	            service.setCreatedBy((Integer) ServiceMap.get("CreatedBy"));
 	            service.setStatus((Integer) ServiceMap.get("Status"));
+		    service.setAvailabilityReq((Integer) ServiceMap.get("AvailabilityReq"));
 	            session.save(service);
 	            tx.commit();
 	            // Return 1 if insertion is successful
@@ -1667,6 +1668,7 @@ public static List ListCampaigns() {
 		    		+ "    s.ServiceDesc,\r\n"
 		    		+ "    s.PaymentReq,\r\n"
 		    		+ "    s.ContractReq,\r\n"
+				+ "    s.AvailabilityReq,\r\n"			     
 		    		+ "    s.CreatedBy,\r\n"
 		    		+ "    s.CreatedDate,\r\n"
 		    		+ "    s.LastUpdatedDate,\r\n"
@@ -1694,13 +1696,14 @@ public static List ListCampaigns() {
 		        service.setServiceDesc((String) obj[2] != null ? (String) obj[2] : "");
 		        service.setPaymentReq(obj[3] != null ? (Integer) obj[3] : 0);
 		        service.setContractReq(obj[4] != null ? (Integer) obj[4] : 0);
-		        service.setCreatedBy(obj[5] != null ? (Integer) obj[5] : 0);
-		        service.setCreatedDate((Timestamp) (obj[6] != null ? obj[6] : null));
-		        service.setLastUpdatedDate((Timestamp) (obj[7] != null ? obj[7] : null));
-		        service.setStatus(obj[8] != null ? (Integer) obj[8] : 0);
-		        service.setUpdatedBy(obj[9] != null ? (Integer) obj[9] : 0);
-			service.setCreated_Name(obj[10] != null ? (String) obj[10] : "");
-		    	service.setUpdated_Name(obj[11] != null ? (String) obj[11] : "");
+		        service.setAvailabilityReq(obj[5] != null ? (Integer) obj[5] : 0);
+		        service.setCreatedBy(obj[6] != null ? (Integer) obj[6] : 0);
+		        service.setCreatedDate((Timestamp) (obj[7] != null ? obj[7] : null));
+		        service.setLastUpdatedDate((Timestamp) (obj[8] != null ? obj[8] : null));
+		        service.setStatus(obj[9] != null ? (Integer) obj[9] : 0);
+		        service.setUpdatedBy(obj[10] != null ? (Integer) obj[10] : 0);
+		        service.setCreated_Name(obj[11] != null ? (String) obj[11] : "");
+		    	service.setUpdated_Name(obj[12] != null ? (String) obj[12] : "");
 
 		        servicesList.add(service);
 		    }
@@ -1721,6 +1724,9 @@ public static List ListCampaigns() {
 			}
 		  if (ServiceMap.containsKey("ContractReq")) {
 				updatestr += " ContractReq = " + ServiceMap.get("ContractReq") + ",\r\n";
+			}
+		   if (ServiceMap.containsKey("AvailabilityReq")) {
+				updatestr += " AvailabilityReq = " + ServiceMap.get("AvailabilityReq") + ",\r\n";
 			}
 		  if (ServiceMap.containsKey("UpdatedBy")) {
 				updatestr += " UpdatedBy = " + ServiceMap.get("UpdatedBy") + ",\r\n";
@@ -1794,12 +1800,12 @@ public static List ListCampaigns() {
 		        service.setServiceDesc((String) obj[2] != null ? (String) obj[2] : "");
 		        service.setPaymentReq(obj[3] != null ? (Integer) obj[3] : 0);
 		        service.setContractReq(obj[4] != null ? (Integer) obj[4] : 0);
-		        service.setCreatedBy(obj[5] != null ? (Integer) obj[5] : 0);
-		        service.setCreatedDate((Timestamp) (obj[6] != null ? obj[6] : null));
-		        service.setLastUpdatedDate((Timestamp) (obj[7] != null ? obj[7] : null));
-		        service.setStatus(obj[8] != null ? (Integer) obj[8] : 0);
-		        service.setUpdatedBy(obj[9] != null ? (Integer) obj[9] : 0);
-
+		       service.setAvailabilityReq(obj[5] != null ? (Integer) obj[5] : 0);
+		        service.setCreatedBy(obj[6] != null ? (Integer) obj[6] : 0);
+		        service.setCreatedDate((Timestamp) (obj[7] != null ? obj[7] : null));
+		        service.setLastUpdatedDate((Timestamp) (obj[8] != null ? obj[8] : null));
+		        service.setStatus(obj[9] != null ? (Integer) obj[9] : 0);
+		        service.setUpdatedBy(obj[10] != null ? (Integer) obj[10] : 0);
 		        servicesList.add(service);
 		    }
 
