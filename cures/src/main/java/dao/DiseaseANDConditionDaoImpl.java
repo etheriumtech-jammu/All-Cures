@@ -180,7 +180,7 @@ public class DiseaseANDConditionDaoImpl {
 						+" where a.author_id in (trim(trailing ']' from trim(leading '[' from a.authored_by))) " 
 						+" ) as authors_name "
 						+ ", medicine_type, "
-						+  " (select reg_doc_pat_id from author  where author_id in (trim(trailing ']' from trim(leading '[' from `a`.`authored_by`)))) as rowno \r\n"
+						+  " (select reg_doc_pat_id from author  where author_id in (trim(trailing ']' from trim(leading '[' from `a`.`authored_by`)))) as docID \r\n"
 						+ " FROM article a \r\n"
 						+ " inner join disease_condition dc on a.disease_condition_id = dc.dc_id\r\n"
 						+ " inner join languages l on a.language_id = l.language_id\r\n"
@@ -287,7 +287,7 @@ public class DiseaseANDConditionDaoImpl {
 						+" (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a "
 						+" where a.author_id in (trim(trailing ']' from trim(leading '[' from a.authored_by))) " 
 						+" ) as authors_name, \r\n "
-						+  " (select reg_doc_pat_id from author  where author_id in (trim(trailing ']' from trim(leading '[' from `a`.`authored_by`)))) as rowno \r\n"
+						+  " (select reg_doc_pat_id from author  where author_id in (trim(trailing ']' from trim(leading '[' from `a`.`authored_by`)))) as docID \r\n"
 						
 						+ " FROM article a \r\n"
 						+ " inner join disease_condition dc on a.disease_condition_id = dc.dc_id\r\n"
