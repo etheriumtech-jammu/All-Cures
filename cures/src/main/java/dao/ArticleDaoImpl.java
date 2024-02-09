@@ -750,7 +750,7 @@ public static MemcachedClient mcc = null;
 				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
 				+ " ) as authors_name, "
 				+ " (select count(*) from article) as count ,"
-				+ " (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))) as rowno \r\n" 
+				+ " (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))) as docID \r\n" 
 				+ " , `article`.`medicine_type`, \r\n"
 				+ "    (\r\n"
 				+ "        SELECT m.name\r\n"
@@ -795,7 +795,7 @@ public static MemcachedClient mcc = null;
 			float over_allrating = (float) (objects[22] != null ? (Float) objects[22] : 0.0);
 			String authors_name = (String) objects[23];
 			BigInteger count = (BigInteger) objects[24];
-			int rowno = objects[25] != null ? (int) objects[25] : 0;
+			int docID = objects[25] != null ? (int) objects[25] : 0;
 			int medicine_type = objects[26] != null ? (int) objects[26] : 0;
 			String med_type_name = (String) objects[27];
 						
@@ -824,7 +824,7 @@ public static MemcachedClient mcc = null;
 			hm.put("over_allrating", over_allrating);
 			hm.put("authors_name", authors_name);
 			hm.put("count", count);
-			hm.put("rowno", rowno);
+			hm.put("docID", docID);
 			hm.put("medicine_type", medicine_type);
 			hm.put("med_type_name", med_type_name);
 			hmFinal.add(hm);
@@ -881,7 +881,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
 				+ " ) as authors_name, "
 				+ " (select count(*) from article) as count , "
-				+ " (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))) as rowno \r\n" 
+				+ " (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))) as docID \r\n" 
 				+ " , `article`.`medicine_type`, \r\n"
 				+ "    (\r\n"
 				+ "        SELECT m.name\r\n"
@@ -925,7 +925,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 			float over_allrating = (float) (objects[22] != null ? (Float) objects[22] : 0.0);
 			String authors_name = (String) objects[23];
 			BigInteger count = (BigInteger) objects[24];
-			int rowno = objects[25] != null ? (int) objects[25] : 0;	
+			int docID = objects[25] != null ? (int) objects[25] : 0;	
 			int medicine_type = objects[26] != null ? (int) objects[26] : 0;
 			String med_type_name = (String) objects[27];
 			
@@ -954,7 +954,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 			hm.put("over_allrating", over_allrating);
 			hm.put("authors_name", authors_name);
 			hm.put("count", count);
-			hm.put("rowno", rowno);
+			hm.put("docID", docID);
 			hm.put("medicine_type", medicine_type);
 			hm.put("med_type_name", med_type_name);
 			hmFinal.add(hm);
@@ -1011,7 +1011,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 			+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
 			+ " ) as authors_name, "
 			+ " (select count(*) from article) as count , "
-			+ " (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))) as rowno \r\n" 
+			+ " (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))) as docID \r\n" 
 			+ " , `article`.`medicine_type` \r\n"
 			+ " FROM `article` \r\n"
 			+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
@@ -1050,7 +1050,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 		float over_allrating = (float) (objects[22] != null ? (Float) objects[22] : 0.0);
 		String authors_name = (String) objects[23];
 		BigInteger count = (BigInteger) objects[24];
-		int rowno = objects[25] != null ? (int) objects[25] : 0;	
+		int docID = objects[25] != null ? (int) objects[25] : 0;	
 		int medicine_type = objects[26] != null ? (int) objects[26] : 0;
 		
 		hm.put("article_id", article_id);
@@ -1078,7 +1078,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 		hm.put("over_allrating", over_allrating);
 		hm.put("authors_name", authors_name);
 		hm.put("count", count);
-		hm.put("rowno", rowno);
+		hm.put("docID", docID);
 		hm.put("medicine_type", medicine_type);
 		
 		hmFinal.add(hm);
@@ -1514,7 +1514,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
 				+ " ) as authors_name, "
 				+ " (select count(*) from article) as count ,"
-				+ " (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))) as rowno \r\n" 
+				+ " (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))) as docID \r\n" 
 				+ " , `article`.`medicine_type` \r\n"
 				+ " FROM `article`  \r\n"
 				
@@ -1556,7 +1556,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 			float over_allrating = (float) (objects[22] != null ? (Float) objects[22] : 0.0);
 			String authors_name = (String) objects[23];
 			BigInteger count = (BigInteger) objects[24];
-			int rowno = objects[25] != null ? (int) objects[25] : 0;
+			int docID = objects[25] != null ? (int) objects[25] : 0;
 			int medicine_type = objects[26] != null ? (int) objects[26] : 0;
 			
 			
@@ -1586,7 +1586,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 			hm.put("over_allrating", over_allrating);
 			hm.put("authors_name", authors_name);
 			hm.put("count", count);
-			hm.put("rowno", rowno);
+			hm.put("docID", docID);
 			hm.put("medicine_type", medicine_type);
 			
 			hmFinal.add(hm);
@@ -1678,7 +1678,7 @@ public static List getArticlesListAllKeysRanked(Integer limit, Integer offset, S
 					+ "`medicine_type_name`,\r\n"
 					+ "`authors_name`,\r\n"
 					+ "`count`,\r\n"
-					+ "`rowno`,\r\n"
+					+ "`docID`,\r\n"
 					
 					+ "`rnk`\r\n"
 					+ "\r\n"
@@ -1719,7 +1719,7 @@ public static List getArticlesListAllKeysRanked(Integer limit, Integer offset, S
 				String med_type_name = (String) objects[23];
 				String authors_name = (String) objects[24];
 				BigInteger count = (BigInteger) objects[25];
-				BigInteger rowno = (BigInteger) objects[26];
+				BigInteger docID = (BigInteger) objects[26];
 				hm.put("article_id", article_id);
 				hm.put("title", title);
 				hm.put("friendly_name", friendly_name);
@@ -1745,7 +1745,7 @@ public static List getArticlesListAllKeysRanked(Integer limit, Integer offset, S
 				hm.put("over_allrating", over_allrating);
 				hm.put("authors_name", authors_name);
 				hm.put("count", count);
-				hm.put("rowno", rowno);
+				hm.put("docID", docID);
 		
 				hm.put("med_type_name", med_type_name);
 				hmFinal.add(hm);
