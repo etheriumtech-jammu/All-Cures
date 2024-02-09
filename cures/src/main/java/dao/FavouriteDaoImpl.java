@@ -34,7 +34,7 @@ public class FavouriteDaoImpl {
 				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
 				+ " ) as authors_name, "
 				+ " (select count(*) from article) as count , "
-				+ " (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))) as rowno \r\n" 
+				+ " (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))) as docID \r\n" 
 				+ " , `article`.`medicine_type` \r\n" 
 				
 				
@@ -77,7 +77,7 @@ public class FavouriteDaoImpl {
 			String dc_name = (String) objects[24];
 			String authors_name = (String) objects[25];
 			BigInteger count = (BigInteger) objects[26];
-			int rowno = objects[27] != null ? (int) objects[27] : 0;	
+			int docID = objects[27] != null ? (int) objects[27] : 0;	
 			int medicine_type = objects[28] != null ? (int) objects[28] : 0;
 			
 			
@@ -109,7 +109,7 @@ public class FavouriteDaoImpl {
 			hm.put("dc_name", dc_name);
 			hm.put("authors_name", authors_name);
 			hm.put("count", count);
-			hm.put("rowno", rowno);
+			hm.put("docID", docID);
 			hm.put("medicine_type", medicine_type);
 			hm.put("status", status);
 		
@@ -143,7 +143,7 @@ public class FavouriteDaoImpl {
 				+ " where a.author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))  \r\n"
 				+ " ) as authors_name, "
 				+ " (select count(*) from article) as count , "
-				+ " (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))) as rowno \r\n" 
+				+ " (select reg_doc_pat_id from author where author_id in (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`)))) as docID \r\n" 
 				+ " , `article`.`medicine_type` \r\n"
 				
 				
@@ -186,7 +186,7 @@ public class FavouriteDaoImpl {
 			String dc_name = (String) objects[24];
 			String authors_name = (String) objects[25];
 			BigInteger count = (BigInteger) objects[26];
-			int rowno = objects[27] != null ? (int) objects[27] : 0;	
+			int docID = objects[27] != null ? (int) objects[27] : 0;	
 			int medicine_type = objects[28] != null ? (int) objects[28] : 0;
 			
 			
@@ -217,7 +217,7 @@ public class FavouriteDaoImpl {
 			hm.put("dc_name", dc_name);
 			hm.put("authors_name", authors_name);
 			hm.put("count", count);
-			hm.put("rowno", rowno);
+			hm.put("docID", docID);
 			hm.put("medicine_type", medicine_type);
 		
 
