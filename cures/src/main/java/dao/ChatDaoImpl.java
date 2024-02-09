@@ -558,7 +558,7 @@ public class ChatDaoImpl {
 		Session session = HibernateUtil.buildSessionFactory();
 		
 		Query query = session.createNativeQuery(
-				"SELECT reg.first_name, reg.last_name, reg.registration_type, (Select d.rowno FROM doctors as d where d.docid=m.user ), reg.registration_id AS user,\r\n"
+				"SELECT reg.first_name, reg.last_name, reg.registration_type, (Select d.docid FROM Doctors_New as d where d.docid=m.user ), reg.registration_id AS user,\r\n"
 						+ "       MAX(h.time) AS last_time, h.message AS last_message,\r\n"
 						+ "       h.chat_id, h.from_id, h.to_id\r\n" + "FROM dp_chat_history AS h\r\n"
 						+ "INNER JOIN (\r\n" + "    SELECT DISTINCT chat_id,  MAX(time) AS last_time,\r\n"
@@ -567,10 +567,10 @@ public class ChatDaoImpl {
 						+ "WHERE from_id = " + user_id + " OR to_id = " + user_id + "\r\n" + "GROUP BY chat_id\r\n"
 
 						+ ") AS m\r\n" + "\r\n" + "INNER JOIN (\r\n"
-						+ " Select r.first_name,r.last_name, r.registration_type ,r.registration_id, r.rowno FROM registration as r\r\n"
+						+ " Select r.first_name,r.last_name, r.registration_type ,r.registration_id, r.DocID FROM registration as r\r\n"
 						+ "   \r\n" + ") AS reg\r\n" + "\r\n" + "\r\n" + "\r\n"
 
-						+ "INNER JOIN (\r\n" + " Select  d.rowno FROM doctors as d\r\n" + "   \r\n" + ") AS doc\r\n"
+						+ "INNER JOIN (\r\n" + " Select  d.docid FROM Doctors_New as d\r\n" + "   \r\n" + ") AS doc\r\n"
 						+ "ON h.chat_id = m.chat_id AND h.time = m.last_time\r\n" + "WHERE (h.from_id = " + user_id
 						+ " OR h.to_id = " + user_id + ") AND reg.registration_id=m.user\r\n" + "GROUP BY h.chat_id\r\n"
 						+ "ORDER BY last_time DESC;\r\n" + "\r\n" + "");
@@ -586,7 +586,7 @@ public class ChatDaoImpl {
 			String last_name = (String) objects[1];
 			
 	
-			BigInteger row_no = (BigInteger) objects[3];
+			BigInteger docID = (BigInteger) objects[3];
 			
 			Integer user=(Integer) objects[4];
 					
@@ -604,7 +604,7 @@ public class ChatDaoImpl {
 			hm.put("First_name", first_name);
 			hm.put("Last_name",last_name);
 			hm.put("User",user);
-			hm.put("Rowno", row_no);
+			hm.put("docID", docID);
 			hm.put("Message", message);
 			hm.put("Time", time);
 			
