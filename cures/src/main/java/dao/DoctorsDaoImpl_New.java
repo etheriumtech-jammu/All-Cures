@@ -562,7 +562,8 @@ public class DoctorsDaoImpl_New {
 				doc.setWaitingTime(obj[12] != null ? (Integer) obj[12] : 0);
 				doc.setVerified(obj[13] != null ? (Integer) obj[13] : 0);
 				doc.setAbout(obj[14] != null ? (String) obj[14] : "");
-				doc.setDocActive(obj[15] != null && ((Number) obj[15]).intValue() != 0);
+//				doc.setDocActive(obj[15] != null && ((Number) obj[15]).intValue() != 0);
+				doc.setDocActive(obj[15] != null ? (Integer) obj[15] : 0);
 				doc.setWebsiteUrl(obj[16] != null ? (String) obj[16] : "");
 				doc.setFeaturedDoctorDate(obj[17] != null ? (Date) obj[17] : null);
 				doc.setImgLoc(obj[18] != null ? (String) obj[18] : "");
