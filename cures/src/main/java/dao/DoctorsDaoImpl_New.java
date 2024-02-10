@@ -49,87 +49,122 @@ public class DoctorsDaoImpl_New {
 		
 		int DocID = (int) profileMap.get("docID");
 		String updatestr = "";
-		
+		String updatestr_deg="";
+		String updatestr_address="";
 		if (profileMap.containsKey("gender")) {
 			updatestr += " gender = " + profileMap.get("gender") + ",\r\n";
 		}
-		if (profileMap.containsKey("edu_training")) {
-			updatestr += " edu_training = '" + profileMap.get("edu_training") + "',\r\n";
+		if (profileMap.containsKey("insuranceAccept")) {
+			updatestr += " insurance_accept = " + profileMap.get("insuranceAccept") + ",\r\n";
 		}
-		if (profileMap.containsKey("insurance_accept")) {
-			updatestr += " insurance_accept = " + profileMap.get("insurance_accept") + ",\r\n";
+		if (profileMap.containsKey("hospitalAffiliated")) {
+			updatestr += " hospital_affliated = " + profileMap.get("hospitalAffiliated") + ",\r\n";
 		}
-		if (profileMap.containsKey("hospital_affliated")) {
-			updatestr += " hospital_affliated = " + profileMap.get("hospital_affliated") + ",\r\n";
-		}
-		
+
 		if (profileMap.containsKey("awards")) {
 			updatestr += " awards = '" + profileMap.get("awards") + "',\r\n";
 		}
-		
-		if (profileMap.containsKey("telephone_nos")) {
-			updatestr += " telephone_nos = '" + profileMap.get("telephone_nos") + "',\r\n";
+
+		if (profileMap.containsKey("telephoneNos")) {
+			updatestr += " telephone_nos = '" + profileMap.get("telephoneNos") + "',\r\n";
 		}
-		if (profileMap.containsKey("primary_spl")) {
-			updatestr += " primary_spl = " + profileMap.get("primary_spl") + ",\r\n";
+		if (profileMap.containsKey("primarySpl")) {
+			updatestr += " primary_spl = " + profileMap.get("primarySpl") + ",\r\n";
 		}
-		if (profileMap.containsKey("other_spls")) {
-			updatestr += " other_spls = '" + profileMap.get("other_spls") + "',\r\n";
+		if (profileMap.containsKey("otherSpl")) {
+			updatestr += " other_spls = '" + profileMap.get("otherSpl") + "',\r\n";
 		}
-		
-		if (profileMap.containsKey("over_allrating")) {
-			updatestr += " over_allrating = " + profileMap.get("over_allrating") + ",\r\n";
+
+		if (profileMap.containsKey("overAllRating")) {
+			updatestr += " over_allrating = " + profileMap.get("overAllRating") + ",\r\n";
 		}
-		
+
 		if (profileMap.containsKey("prefix")) {
 			updatestr += " prefix = '" + profileMap.get("prefix") + "',\r\n";
 		}
-		if (profileMap.containsKey("docname_first")) {
-			updatestr += " docname_first = '" + profileMap.get("docname_first") + "',\r\n";
+		if (profileMap.containsKey("firstName")) {
+			updatestr += " docname_first = '" + profileMap.get("firstName") + "',\r\n";
 		}
-		if (profileMap.containsKey("docname_middle")) {
-			updatestr += " docname_middle = '" + profileMap.get("docname_middle") + "',\r\n";
+		if (profileMap.containsKey("middleName")) {
+			updatestr += " docname_middle = '" + profileMap.get("middleName") + "',\r\n";
 		}
-		if (profileMap.containsKey("docname_last")) {
-			updatestr += " docname_last = '" + profileMap.get("docname_last") + "',\r\n";
+		if (profileMap.containsKey("lastName")) {
+			updatestr += " docname_last = '" + profileMap.get("lastName") + "',\r\n";
 		}
 		if (profileMap.containsKey("email")) {
 			updatestr += " email = '" + profileMap.get("email") + "',\r\n";
 		}
-		if (profileMap.containsKey("waiting_time")) {
-			updatestr += " waiting_time = " + profileMap.get("waiting_time") + ",\r\n";
+		if (profileMap.containsKey("waitingTime")) {
+			updatestr += " waiting_time = " + profileMap.get("waitingTime") + ",\r\n";
 		}
-		
+
 		if (profileMap.containsKey("verified")) {
 			updatestr += " verified = " + profileMap.get("verified") + ",\r\n";
 		}
 		if (profileMap.containsKey("about")) {
 			updatestr += " about = '" + profileMap.get("about") + "',\r\n";
 		}
-		if (profileMap.containsKey("website_url")) {
-			updatestr += " website_url = '" + profileMap.get("website_url") + "',\r\n";
+		if (profileMap.containsKey("docActive")) {
+			updatestr += " docactive = " + profileMap.get("docActive") + ",\r\n";
 		}
-		if (profileMap.containsKey("featured_doctor_date")) {
-			updatestr += " featured_doctor_date = '" + profileMap.get("featured_doctor_date") + "',\r\n";
+		if (profileMap.containsKey("websiteUrl")) {
+			updatestr += " website_url = '" + profileMap.get("websiteUrl") + "',\r\n";
 		}
-		if (profileMap.containsKey("RegWithStateBoardID")) {
-			updatestr += " RegWithStateBoardID = " + profileMap.get("RegWithStateBoardID") + ",\r\n";
+		if (profileMap.containsKey("featuredDoctorDate")) {
+			updatestr += " featured_doctor_date = '" + profileMap.get("featuredDoctorDate") + "',\r\n";
 		}
-		if (profileMap.containsKey("NatlRegNo")) {
-			updatestr += " NatlRegNo = '" + profileMap.get("NatlRegNo") + "',\r\n";
+		if (profileMap.containsKey("registrationWithStateBoardID")) {
+			updatestr += " RegWithStateBoardID = " + profileMap.get("registrationWithStateBoardID") + ",\r\n";
 		}
-		if (profileMap.containsKey("Natl_Reg_Date")) {
-			updatestr += " Natl_Reg_Date = '" + profileMap.get("Natl_Reg_Date") + "',\r\n";
+		if (profileMap.containsKey("nationalRegistrationNumber")) {
+			updatestr += " NatlRegNo = '" + profileMap.get("nationalRegistrationNumber") + "',\r\n";
 		}
-		if (profileMap.containsKey("MedicineTypeID")) {
-			updatestr += " MedicineTypeID = " + profileMap.get("MedicineTypeID") + ",\r\n";
+		if (profileMap.containsKey("nationalRegistrationDate")) {
+			updatestr += " Natl_Reg_Date = '" + profileMap.get("nationalRegistrationDate") + "',\r\n";
 		}
-		if (profileMap.containsKey("Status")) {
-			updatestr += " Status = " + profileMap.get("Status") + ",\r\n";
+		if (profileMap.containsKey("medicineTypeID")) {
+			updatestr += " MedicineTypeID = " + profileMap.get("medicineTypeID") + ",\r\n";
 		}
-		if (profileMap.containsKey("UpdatedBy")) {
-			updatestr += " UpdatedBy = " + profileMap.get("UpdatedBy") + ",\r\n";
+		if (profileMap.containsKey("status")) {
+			updatestr += " Status = " + profileMap.get("status") + ",\r\n";
 		}
+
+		if (profileMap.containsKey("updatedBy")) {
+			updatestr += " UpdatedBy = " + profileMap.get("updatedBy") + ",\r\n";
+		}
+		
+		if (profileMap.containsKey("degreeID")) {
+			updatestr_deg += " DegreeID = " + profileMap.get("degreeID") + ",\r\n";
+		}
+		
+		if (profileMap.containsKey("yearOfGrad")) {
+			updatestr_deg += " YearOfGrad = " + profileMap.get("yearOfGrad") + ",\r\n";
+		}
+		
+
+		if (profileMap.containsKey("univID")) {
+			updatestr_deg += " UnivID = " + profileMap.get("univID") + ",\r\n";
+		}
+		
+		if (profileMap.containsKey("addressTypeID")) {
+			updatestr_address += " AddressTypeID = " + profileMap.get("addressTypeID") + ",\r\n";
+		}
+		if (profileMap.containsKey("address1")) {
+			updatestr_address += " Address1 = '" + profileMap.get("address1") + "',\r\n";
+		}
+		if (profileMap.containsKey("address2")) {
+			updatestr_address += " Address2 = '" + profileMap.get("address2") + "',\r\n";
+		}
+		if (profileMap.containsKey("city")) {
+			updatestr_address += " City = " + profileMap.get("city") + ",\r\n";
+		}
+		if (profileMap.containsKey("state")) {
+			updatestr_address += " state = " + profileMap.get("state") + ",\r\n";
+		}
+		if (profileMap.containsKey("country")) {
+			updatestr_address += " Country = " + profileMap.get("country") + ",\r\n";
+		}
+		
 		updatestr = updatestr.replaceAll(",$", "");
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
@@ -141,10 +176,21 @@ public class DoctorsDaoImpl_New {
 		Query query = session
 				.createNativeQuery("UPDATE Doctors_New " + "SET " + updatestr + " WHERE docid = " + DocID + ";");
 		int ret = 0;
+
+		Query query1 = session
+				.createNativeQuery("UPDATE DoctorDegrees " + "SET " + updatestr_deg + " WHERE DocID = " + docID + ";");
+		int ret1 = 0;
+		
+		Query query2 = session
+				.createNativeQuery("UPDATE DoctorAddresses " + "SET " + updatestr_address + " WHERE DocID = " + docID + ";");
+		int ret2 = 0;
+		
 		try {
 			ret = query.executeUpdate();
-//			System.out.println("updated doctors table for DocID =  " + DocID);
-			Constant.log(">>>>>>>>>>>>>>>>>>updated doctors table for DocID =  " + DocID, 1);
+			ret1 = query1.executeUpdate();
+			ret2 = query2.executeUpdate();
+//			System.out.println("updated all doctors table for DocID =  " + DocID);
+			Constant.log(">>>>>>>>>>>>>>>>>>updated all doctors table for DocID =  " + DocID, 1);
 //			int check = new DoctorsDaoImpl().memcacheUpdateDoctor(docid);
 			if (mcc == null)
 				new DoctorsDaoImpl_New().initializeCacheClient();
@@ -287,7 +333,7 @@ public class DoctorsDaoImpl_New {
 //		session.beginTransaction();
 
 		Query query = session
-				.createNativeQuery("select prefix, docname_first, docname_middle , docname_last from doctors;");
+				.createNativeQuery("select prefix, docname_first, docname_middle , docname_last from Doctors_New;");
 		List<Doctors> list = (List<Doctors>) query.getResultList();
 		Constant.log("Got Results", 1);
 		String docname;
@@ -455,9 +501,9 @@ public class DoctorsDaoImpl_New {
 						+ "    Doctors_New AS doctors\r\n"
 						+ "LEFT JOIN\r\n"
 						+ "    DoctorAddresses AS da ON doctors.docid = da.DocID\r\n"
-						+ "LEFT JOIN\r\n"
+						+ " JOIN\r\n"
 						+ "    DoctorDegrees AS dd ON doctors.docid = dd.DocID\r\n"
-						+ "LEFT JOIN\r\n"
+						+ " JOIN\r\n"
 						+ "    masterdocdegrees AS mdd ON dd.DegreeID = mdd.DegID\r\n"
 						+ "LEFT JOIN\r\n"
 						+ "    masteruniversities AS mun ON dd.UnivID = mun.UnivID\r\n"
@@ -505,9 +551,9 @@ public class DoctorsDaoImpl_New {
 				doc.setInsuranceAccept(obj[2] != null && ((Number) obj[2]).intValue() != 0);
 				doc.setAwards(obj[3] != null ? (String) obj[3] : "");
 				doc.setTelephoneNos(obj[4] != null ? (String) obj[4] : "");
-				doc.setOther_spls(obj[5] != null ? (String) obj[5] : "");
+				doc.setOtherSpl(obj[5] != null ? (String) obj[5] : "");
 				float overall = (float) (obj[6] != null ? (Float) obj[6] : 0.0);
-				doc.setOverallRating(overall);
+				doc.setOverAllRating(overall);
 				doc.setPrefix((String) obj[7] != null ? (String) obj[7] : "");
 				doc.setFirstName((String) obj[8] != null ? (String) obj[8] : "");
 				doc.setMiddleName(obj[9] != null ? (String) obj[9] : "");
@@ -519,7 +565,7 @@ public class DoctorsDaoImpl_New {
 				doc.setDocActive(obj[15] != null && ((Number) obj[15]).intValue() != 0);
 				doc.setWebsiteUrl(obj[16] != null ? (String) obj[16] : "");
 				doc.setFeaturedDoctorDate(obj[17] != null ? (Date) obj[17] : null);
-				doc.setImageLocation(obj[18] != null ? (String) obj[18] : "");
+				doc.setImgLoc(obj[18] != null ? (String) obj[18] : "");
 				doc.setNationalRegistrationDate(obj[19] != null ? (Date) obj[19] : null);
 				doc.setNationalRegistrationNumber(obj[20] != null ? (String) obj[20] : "");
 				doc.setCreatedDate((Timestamp) (obj[21] != null ? obj[21] : null));
@@ -527,8 +573,8 @@ public class DoctorsDaoImpl_New {
 				doc.setStatus(obj[23] != null ? (Integer) obj[23] : 0);
 				doc.setLastUpdatedDate((Timestamp) (obj[24] != null ? obj[24] : null));
 				doc.setUpdatedBy(obj[25] != null ? (Integer) obj[25] : 0);
-				doc.setHospital_Affiliated(obj[26] != null ? (String) obj[26] : "");
-				doc.setPrimary_Spl(obj[27] != null ? (String) obj[27] : "");
+				doc.setHospitalAffiliated(obj[26] != null ? (String) obj[26] : "");
+				doc.setPrimarySpl(obj[27] != null ? (String) obj[27] : "");
 				doc.setRegBoardState(obj[28] != null ? (String) obj[28] : "");
 				doc.setMedicineType(obj[29] != null ? (String) obj[29] : "");
 				doc.setAddress1(obj[30] != null ? (String) obj[30] : "");
@@ -538,7 +584,7 @@ public class DoctorsDaoImpl_New {
 				doc.setCountry(obj[34] != null ? (String) obj[34] : "");
 				doc.setAddressType(obj[35] != null ? (String) obj[35] : "");
 				doc.setDegDesc(obj[36] != null ? (String) obj[36] : "");
-				doc.setYearofGrad(obj[37] != null ? (Integer) obj[37] : 0);
+				doc.setYearOfGrad(obj[37] != null ? (Integer) obj[37] : 0);
 				doc.setUnivName(obj[38] != null ? (String) obj[38] : "");
 				doc.setUnivCity(obj[39] != null ? (String) obj[39] : "");
 				doc.setUnivState(obj[40] != null ? (String) obj[40] : "");
