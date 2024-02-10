@@ -6,7 +6,149 @@ import java.util.Date;
 @Table(name = "Doctors_New")
 public class Doctor_New {
 
-    public int getDocID() {
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "docid")
+    private int docID;
+
+    @Column(name = "gender")
+    private int gender;
+
+    @Column(name = "insurance_accept")
+    private boolean insuranceAccept;
+
+    @Column(name = "hospital_affiliated")
+    private int hospitalAffiliatedCode;
+
+    @Column(name = "awards")
+    private String awards;
+
+    @Column(name = "telephone_nos")
+    private String telephoneNos;
+
+    @Column(name = "primary_spl")
+    private int primarySplCode;
+
+    @Column(name = "other_spls")
+    private String otherSpl;
+
+    @Column(name = "over_allrating")
+    private float overAllRating;
+
+    @Column(name = "prefix")
+    private String prefix;
+
+    @Column(name = "docname_first")
+    private String firstName;
+
+    @Column(name = "docname_middle")
+    private String middleName;
+
+    @Column(name = "docname_last")
+    private String lastName;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "waiting_time")
+    private int waitingTime;
+
+    @Column(name = "verified")
+    private int verified;
+
+    @Column(name = "about", length = 3000)
+    private String about;
+
+    @Column(name = "docactive")
+    private int docActive;
+
+    @Column(name = "website_url")
+    private String websiteUrl;
+
+    @Column(name = "featured_doctor_date")
+    private Date featuredDoctorDate;
+
+    @Column(name = "Natl_Reg_Date")
+    private Date nationalRegistrationDate;
+
+    @Column(name = "RegWithStateBoardID")
+    private int registrationWithStateBoardID;
+
+    @Column(name = "NatlRegNo")
+    private String nationalRegistrationNumber;
+
+    @Column(name = "MedicineTypeID")
+    private int medicineTypeID;
+
+    @Column(name = "CreatedDate")
+    private Date createdDate;
+
+    @Column(name = "LastUpdatedDate")
+    private Date lastUpdatedDate;
+
+    @Column(name = "CreatedBy")
+    private int createdBy;
+
+    @Column(name = "UpdatedBy")
+    private int updatedBy;
+
+    @Column(name = "Status")
+    private int status;
+
+    @Column(name = "img_Loc")
+    private String imgLoc;
+
+    @Transient
+    private String hospitalAffiliated;
+	
+	@Transient
+    private String primarySpl;
+	
+	@Transient
+    private String regBoardState;
+	
+	@Transient
+    private String medicineType;
+	
+	@Transient
+    private String address1;
+	
+	@Transient
+    private String address2;
+	
+	@Transient
+    private String addressType;
+	
+	@Transient
+    private String city;
+	
+	@Transient
+    private String state;
+	
+	@Transient
+    private String country;
+	
+	@Transient
+    private String degDesc;
+	
+	@Transient
+    private int yearOfGrad;
+	
+	@Transient
+    private String univName;
+	
+	@Transient
+    private String univCity;
+	
+	@Transient
+    private String univState;
+	
+	@Transient
+    private String univCountry;
+
+
+	
+	public int getDocID() {
 		return docID;
 	}
 
@@ -22,14 +164,6 @@ public class Doctor_New {
 		this.gender = gender;
 	}
 
-	public String getEduTraining() {
-		return eduTraining;
-	}
-
-	public void setEduTraining(String eduTraining) {
-		this.eduTraining = eduTraining;
-	}
-
 	public boolean isInsuranceAccept() {
 		return insuranceAccept;
 	}
@@ -38,12 +172,176 @@ public class Doctor_New {
 		this.insuranceAccept = insuranceAccept;
 	}
 
-	public int getHospitalAffiliated() {
+	public int getHospitalAffiliatedCode() {
+		return hospitalAffiliatedCode;
+	}
+
+	public void setHospitalAffiliatedCode(int hospitalAffiliatedCode) {
+		this.hospitalAffiliatedCode = hospitalAffiliatedCode;
+	}
+
+	public int getPrimarySplCode() {
+		return primarySplCode;
+	}
+
+	public void setPrimarySplCode(int primarySplCode) {
+		this.primarySplCode = primarySplCode;
+	}
+
+	public String getOtherSpl() {
+		return otherSpl;
+	}
+
+	public void setOtherSpl(String otherSpl) {
+		this.otherSpl = otherSpl;
+	}
+
+	public float getOverAllRating() {
+		return overAllRating;
+	}
+
+	public void setOverAllRating(float overAllRating) {
+		this.overAllRating = overAllRating;
+	}
+
+	public int getMedicineTypeID() {
+		return medicineTypeID;
+	}
+
+	public void setMedicineTypeID(int medicineTypeID) {
+		this.medicineTypeID = medicineTypeID;
+	}
+
+	public String getImgLoc() {
+		return imgLoc;
+	}
+
+	public void setImgLoc(String imgLoc) {
+		this.imgLoc = imgLoc;
+	}
+
+	public int getDocActive() {
+		return docActive;
+	}
+
+	public String getHospitalAffiliated() {
 		return hospitalAffiliated;
 	}
 
-	public void setHospitalAffiliated(int hospitalAffiliated) {
+	public void setHospitalAffiliated(String hospitalAffiliated) {
 		this.hospitalAffiliated = hospitalAffiliated;
+	}
+
+	public String getPrimarySpl() {
+		return primarySpl;
+	}
+
+	public void setPrimarySpl(String primarySpl) {
+		this.primarySpl = primarySpl;
+	}
+
+	public String getRegBoardState() {
+		return regBoardState;
+	}
+
+	public void setRegBoardState(String regBoardState) {
+		this.regBoardState = regBoardState;
+	}
+
+	public String getMedicineType() {
+		return medicineType;
+	}
+
+	public void setMedicineType(String medicineType) {
+		this.medicineType = medicineType;
+	}
+
+	public String getAddress1() {
+		return address1;
+	}
+
+	public void setAddress1(String address1) {
+		this.address1 = address1;
+	}
+
+	public String getAddress2() {
+		return address2;
+	}
+
+	public void setAddress2(String address2) {
+		this.address2 = address2;
+	}
+
+	public String getAddressType() {
+		return addressType;
+	}
+
+	public void setAddressType(String addressType) {
+		this.addressType = addressType;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getDegDesc() {
+		return degDesc;
+	}
+
+	public void setDegDesc(String degDesc) {
+		this.degDesc = degDesc;
+	}
+
+	public String getUnivName() {
+		return univName;
+	}
+
+	public void setUnivName(String univName) {
+		this.univName = univName;
+	}
+
+	public String getUnivCity() {
+		return univCity;
+	}
+
+	public void setUnivCity(String univCity) {
+		this.univCity = univCity;
+	}
+
+	public String getUnivState() {
+		return univState;
+	}
+
+	public void setUnivState(String univState) {
+		this.univState = univState;
+	}
+
+	public String getUnivCountry() {
+		return univCountry;
+	}
+
+	public void setUnivCountry(String univCountry) {
+		this.univCountry = univCountry;
 	}
 
 	public String getAwards() {
@@ -62,30 +360,7 @@ public class Doctor_New {
 		this.telephoneNos = telephoneNos;
 	}
 
-	public int getPrimary_spl() {
-		return primary_spl;
-	}
-
-	public void setPrimary_spl(int primary_spl) {
-		this.primary_spl = primary_spl;
-	}
-
-	public String getOther_spls() {
-		return other_spls;
-	}
-
-	public void setOther_spls(String other_spls) {
-		this.other_spls = other_spls;
-	}
-
-	public float getOverallRating() {
-		return overallRating;
-	}
-
-	public void setOverallRating(float overallRating) {
-		this.overallRating = overallRating;
-	}
-
+	
 	public String getPrefix() {
 		return prefix;
 	}
@@ -150,11 +425,11 @@ public class Doctor_New {
 		this.about = about;
 	}
 
-	public boolean isDocActive() {
+	public int isDocActive() {
 		return docActive;
 	}
 
-	public void setDocActive(boolean docActive) {
+	public void setDocActive(int docActive) {
 		this.docActive = docActive;
 	}
 
@@ -172,14 +447,6 @@ public class Doctor_New {
 
 	public void setFeaturedDoctorDate(Date featuredDoctorDate) {
 		this.featuredDoctorDate = featuredDoctorDate;
-	}
-
-	public String getImageLocation() {
-		return imageLocation;
-	}
-
-	public void setImageLocation(String imageLocation) {
-		this.imageLocation = imageLocation;
 	}
 
 	public Date getNationalRegistrationDate() {
@@ -206,14 +473,7 @@ public class Doctor_New {
 		this.nationalRegistrationNumber = nationalRegistrationNumber;
 	}
 
-	public int getMedicineTypeId() {
-		return medicineTypeId;
-	}
-
-	public void setMedicineTypeId(int medicineTypeId) {
-		this.medicineTypeId = medicineTypeId;
-	}
-
+	
 	public Date getCreatedDate() {
 		return createdDate;
 	}
@@ -254,278 +514,13 @@ public class Doctor_New {
 		this.status = status;
 	}
 
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "docid")
-   private int docID;
-
-    @Column(name = "gender")
-    private int gender;
-
-    @Column(name = "edu_training")
-    private String eduTraining;
-
-    @Column(name = "insurance_accept")
-    private boolean insuranceAccept;
-
-    @Column(name = "hospital_affiliated")
-    private int hospitalAffiliated;
-
-    @Column(name = "awards")
-    private String awards;
-
-    @Column(name = "telephone_nos")
-    private String telephoneNos;
-
-    @Column(name = "primary_spl")
-    private int primary_spl;
-
-    @Column(name = "other_spls")
-    private String other_spls;
-
-    @Column(name = "over_allrating")
-    private float overallRating;
-
-    @Column(name = "prefix")
-    private String prefix;
-
-    @Column(name = "docname_first")
-    private String firstName;
-
-    @Column(name = "docname_middle")
-    private String middleName;
-
-    @Column(name = "docname_last")
-    private String lastName;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "waiting_time")
-    private int waitingTime;
-
-    @Column(name = "verified")
-    private int verified;
-
-    @Column(name = "about", length = 3000)
-    private String about;
-
-    @Column(name = "docactive")
-    private boolean docActive;
-
-    @Column(name = "website_url")
-    private String websiteUrl;
-
-    @Column(name = "featured_doctor_date")
-    private Date featuredDoctorDate;
-
-    @Column(name = "img_Loc")
-    private String imageLocation;
-
-    @Column(name = "Natl_Reg_Date")
-    private Date nationalRegistrationDate;
-
-    @Column(name = "RegWithStateBoardID")
-    private int registrationWithStateBoardID;
-
-    @Column(name = "NatlRegNo")
-    private String nationalRegistrationNumber;
-
-    @Column(name = "MedicineTypeID")
-    private int medicineTypeId;
-
-    @Column(name = "CreatedDate")
-    private Date createdDate;
-
-    @Column(name = "LastUpdatedDate")
-    private Date lastUpdatedDate;
-
-    @Column(name = "CreatedBy")
-    private int createdBy;
-
-    @Column(name = "UpdatedBy")
-    private int updatedBy;
-
-    @Column(name = "Status")
-    private int status;
-
-    @Transient
-    private String Hospital_Affiliated;
-	
-	@Transient
-    private String Primary_Spl;
-	
-	@Transient
-    private String RegBoardState;
-	
-	@Transient
-    private String MedicineType;
-	
-	@Transient
-    private String Address1;
-	
-	@Transient
-    private String Address2;
-	
-	@Transient
-    private String AddressType;
-	
-	@Transient
-    private String City;
-	
-	@Transient
-    private String State;
-	
-	@Transient
-    private String Country;
-	
-	@Transient
-    private String DegDesc;
-	
-	@Transient
-    private int YearofGrad;
-	
-	@Transient
-    private String UnivName;
-	
-	@Transient
-    private String UnivCity;
-	
-	@Transient
-    private String UnivState;
-	
-	@Transient
-    private String UnivCountry;
-
-	public String getHospital_Affiliated() {
-		return Hospital_Affiliated;
+	 public int getYearOfGrad() {
+		return yearOfGrad;
 	}
 
-	public void setHospital_Affiliated(String hospital_Affiliated) {
-		Hospital_Affiliated = hospital_Affiliated;
+	public void setYearOfGrad(int yearOfGrad) {
+		this.yearOfGrad = yearOfGrad;
 	}
-
-	public String getPrimary_Spl() {
-		return Primary_Spl;
-	}
-
-	public void setPrimary_Spl(String primary_Spl) {
-		Primary_Spl = primary_Spl;
-	}
-
-	public String getRegBoardState() {
-		return RegBoardState;
-	}
-
-	public void setRegBoardState(String regBoardState) {
-		RegBoardState = regBoardState;
-	}
-
-	public String getMedicineType() {
-		return MedicineType;
-	}
-
-	public void setMedicineType(String medicineType) {
-		MedicineType = medicineType;
-	}
-
-	public String getAddress1() {
-		return Address1;
-	}
-
-	public void setAddress1(String address1) {
-		Address1 = address1;
-	}
-
-	public String getAddress2() {
-		return Address2;
-	}
-
-	public void setAddress2(String address2) {
-		Address2 = address2;
-	}
-
-	public String getAddressType() {
-		return AddressType;
-	}
-
-	public void setAddressType(String addressType) {
-		AddressType = addressType;
-	}
-
-	public String getCity() {
-		return City;
-	}
-
-	public void setCity(String city) {
-		City = city;
-	}
-
-	public String getState() {
-		return State;
-	}
-
-	public void setState(String state) {
-		State = state;
-	}
-
-	public String getCountry() {
-		return Country;
-	}
-
-	public void setCountry(String country) {
-		Country = country;
-	}
-
-	public String getDegDesc() {
-		return DegDesc;
-	}
-
-	public void setDegDesc(String degDesc) {
-		DegDesc = degDesc;
-	}
-
-	public int getYearofGrad() {
-		return YearofGrad;
-	}
-
-	public void setYearofGrad(int yearofGrad) {
-		YearofGrad = yearofGrad;
-	}
-
-	public String getUnivName() {
-		return UnivName;
-	}
-
-	public void setUnivName(String univName) {
-		UnivName = univName;
-	}
-
-	public String getUnivCity() {
-		return UnivCity;
-	}
-
-	public void setUnivCity(String univCity) {
-		UnivCity = univCity;
-	}
-
-	public String getUnivState() {
-		return UnivState;
-	}
-
-	public void setUnivState(String univState) {
-		UnivState = univState;
-	}
-
-	public String getUnivCountry() {
-		return UnivCountry;
-	}
-
-	public void setUnivCountry(String univCountry) {
-		UnivCountry = univCountry;
-	}
-	
-	
     // Constructors, getters, setters, and other methods
 
 }
