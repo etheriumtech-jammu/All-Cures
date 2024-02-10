@@ -46,8 +46,14 @@ public class DoctorsDaoImpl_New {
 	}
 
 	public static int updateProfile(HashMap profileMap) {
-		
-		int DocID = (int) profileMap.get("docID");
+		int DocID = 0;
+		if (profileMap.containsKey("docID")) {
+			DocID = (int) profileMap.get("docID");
+		}
+		if (DocID == 0) {
+			Constant.log("docID is not provided in request", 3);
+			return 0;
+		} // return error
 		String updatestr = "";
 		String updatestr_deg="";
 		String updatestr_address="";
