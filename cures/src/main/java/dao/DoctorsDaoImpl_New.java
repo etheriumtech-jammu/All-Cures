@@ -184,11 +184,11 @@ public class DoctorsDaoImpl_New {
 		int ret = 0;
 
 		Query query1 = session
-				.createNativeQuery("UPDATE DoctorDegrees " + "SET " + updatestr_deg + " WHERE DocID = " + docID + ";");
+				.createNativeQuery("UPDATE DoctorDegrees " + "SET " + updatestr_deg + " WHERE DocID = " + DocID + ";");
 		int ret1 = 0;
 		
 		Query query2 = session
-				.createNativeQuery("UPDATE DoctorAddresses " + "SET " + updatestr_address + " WHERE DocID = " + docID + ";");
+				.createNativeQuery("UPDATE DoctorAddresses " + "SET " + updatestr_address + " WHERE DocID = " + DocID + ";");
 		int ret2 = 0;
 		
 		try {
