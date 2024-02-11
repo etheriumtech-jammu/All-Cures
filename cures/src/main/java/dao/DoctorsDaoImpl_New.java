@@ -172,6 +172,8 @@ public class DoctorsDaoImpl_New {
 		}
 		
 		updatestr = updatestr.replaceAll(",$", "");
+		updatestr_deg = updatestr_deg.replaceAll(",$", "");
+		updatestr_address = updatestr_address.replaceAll(",$", "");
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
 		// creating session object
