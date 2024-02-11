@@ -2,6 +2,7 @@
 package dao;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -9,7 +10,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,11 +46,11 @@ public class DoctorsDaoImpl_New {
 	}
 
 	public static int updateProfile(HashMap profileMap) {
-		int DocID = 0;
+		int docID = 0;
 		if (profileMap.containsKey("docID")) {
-			DocID = (int) profileMap.get("docID");
+			docID = (int) profileMap.get("docID");
 		}
-		if (DocID == 0) {
+		if (docID == 0) {
 			Constant.log("docID is not provided in request", 3);
 			return 0;
 		} // return error
@@ -137,6 +137,8 @@ public class DoctorsDaoImpl_New {
 
 		if (profileMap.containsKey("updatedBy")) {
 			updatestr += " UpdatedBy = " + profileMap.get("updatedBy") + ",\r\n";
+			updatestr_address += " UpdatedBy = " + profileMap.get("updatedBy") + ",\r\n";
+			updatestr_deg += " UpdatedBy = " + profileMap.get("updatedBy") + ",\r\n";	
 		}
 		
 		if (profileMap.containsKey("degreeID")) {
@@ -192,10 +194,21 @@ public class DoctorsDaoImpl_New {
 		Query query2 = session
 				.createNativeQuery("UPDATE DoctorAddresses " + "SET " + updatestr_address + " WHERE DocID = " + DocID + ";");
 		int ret2 = 0;
-		
 		try {
 			ret = query.executeUpdate();
-			ret1 = query1.executeUpdate();
+			// Update or insert into doctordegrees table
+	        if (!isDocIDPresentInDoctorDegrees(session, docID)) {
+	          String keysForDegrees = getKeysFromMap( updatestr_deg);
+	            String valuesForDegrees = getValuesFromMap( String.valueOf(docID),updatestr_deg);
+	            query1 = session.createNativeQuery("INSERT INTO DoctorDegrees (DocID, " + keysForDegrees + ") VALUES ("+  valuesForDegrees + ")");
+	        }
+	         ret1 = query1.executeUpdate();
+	      // Update or insert into doctoradresses table
+	         if (!isDocIDPresentInDoctorAddresses( session,docID) ) {
+		            String keysForAddress = getKeysFromMap( updatestr_address);
+		            String valuesForAddress = getValuesFromMap( String.valueOf(docID),updatestr_address);
+		            query2 = session.createNativeQuery("INSERT INTO DoctorAddresses (DocID, " + keysForAddress + ") VALUES ( "+ valuesForAddress + ")");
+		        }  
 			ret2 = query2.executeUpdate();
 //			System.out.println("updated all doctors table for DocID =  " + DocID);
 			Constant.log(">>>>>>>>>>>>>>>>>>updated all doctors table for DocID =  " + DocID, 1);
@@ -214,9 +227,78 @@ public class DoctorsDaoImpl_New {
 		} finally {
 //			session.getTransaction().commit();   //session.close();
 		}
-		return ret;
+		System.out.println(ret+ret1+ret2);
+		return ret+ret1+ret2;
 	}
 
+	private static boolean isDocIDPresentInDoctorDegrees(Session session, int docID) {
+	    Query query = session.createNativeQuery("SELECT COUNT(*) FROM DoctorDegrees WHERE DocID =" + docID);
+	  
+	    BigInteger count = (BigInteger) query.uniqueResult();
+	    return count.compareTo(BigInteger.ZERO) > 0;	
+	    }
+	
+	private static boolean isDocIDPresentInDoctorAddresses(Session session, int docID) {
+	    Query query = session.createNativeQuery("SELECT COUNT(*) FROM DoctorAddresses WHERE DocID =" + docID);
+	    
+	    BigInteger count = (BigInteger) query.uniqueResult();
+	    return count.compareTo(BigInteger.ZERO) > 0;
+	    }
+	
+	private static String getKeysFromMap( String updatestr) {
+		// Split the input string by comma and newline
+        String[] lines = updatestr.split(",\\r?\\n");
+
+        // Initialize lists to store keys and values
+        List<String> keys = new ArrayList<>();
+
+        // Iterate over each line
+        for (String line : lines) {
+            // Split the line by equal sign
+            String[] parts = line.trim().split("\\s*=\\s*");
+            if (parts.length == 2) {
+            	if(parts[0].trim().equals("UpdatedBy"))
+            	{
+            		keys.add("CreatedBy");
+            	}else {
+                keys.add(parts[0].trim());
+            	}
+            }     
+        }
+       
+        // Convert lists to strings
+        String keysString = String.join(",", keys);
+
+        // Print the keys and values
+        System.out.println("Keys: " + keysString);
+    
+        return keysString;
+	}
+
+	private static String getValuesFromMap(String docID, String updatestr) {
+		 String[] lines = updatestr.split(",\\r?\\n");
+
+	        // Initialize lists to store values
+	        List<String> values = new ArrayList<>();
+	        values.add(docID);
+	        // Iterate over each line
+	        for (String line : lines) {
+	            // Split the line by equal sign
+	            String[] parts = line.trim().split("\\s*=\\s*");
+	            if (parts.length == 2) {
+	                
+	                values.add(parts[1].trim());
+	            }
+	        }
+	        // Convert lists to strings
+	       
+	        String valuesString = String.join( ",", values);
+
+	        // Print the  values
+	        System.out.println("Values: " + valuesString);
+	    
+	        return valuesString;
+	}
 //	public static int memcacheUpdateDoctor(int docid) {
 //		// String id=request.getParameter("docid");
 //		Constant.log("Update memache Req for Profile For DocID: " + docid, 1);
