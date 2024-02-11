@@ -184,15 +184,15 @@ public class DoctorsDaoImpl_New {
 		session.beginTransaction();
 
 		Query query = session
-				.createNativeQuery("UPDATE Doctors_New " + "SET " + updatestr + " WHERE docid = " + DocID + ";");
+				.createNativeQuery("UPDATE Doctors_New " + "SET " + updatestr + " WHERE docid = " + docID + ";");
 		int ret = 0;
 
 		Query query1 = session
-				.createNativeQuery("UPDATE DoctorDegrees " + "SET " + updatestr_deg + " WHERE DocID = " + DocID + ";");
+				.createNativeQuery("UPDATE DoctorDegrees " + "SET " + updatestr_deg + " WHERE DocID = " + docID + ";");
 		int ret1 = 0;
 		
 		Query query2 = session
-				.createNativeQuery("UPDATE DoctorAddresses " + "SET " + updatestr_address + " WHERE DocID = " + DocID + ";");
+				.createNativeQuery("UPDATE DoctorAddresses " + "SET " + updatestr_address + " WHERE DocID = " + docID + ";");
 		int ret2 = 0;
 		try {
 			ret = query.executeUpdate();
@@ -211,14 +211,14 @@ public class DoctorsDaoImpl_New {
 		        }  
 			ret2 = query2.executeUpdate();
 //			System.out.println("updated all doctors table for DocID =  " + DocID);
-			Constant.log(">>>>>>>>>>>>>>>>>>updated all doctors table for DocID =  " + DocID, 1);
+			Constant.log(">>>>>>>>>>>>>>>>>>updated all doctors table for DocID =  " + docID, 1);
 //			int check = new DoctorsDaoImpl().memcacheUpdateDoctor(docid);
 			if (mcc == null)
 				new DoctorsDaoImpl_New().initializeCacheClient();
 			// Remove the Doctor Found to the Cache since the same ID will be updated in
 			// next fetch
 			// mcc.replace(Constant.DOCID + "_" + docid, 360000, jsondata).getStatus();
-			mcc.delete(Constant.DOCID + "_" + DocID);
+			mcc.delete(Constant.DOCID + "_" + docID);
 			session.getTransaction().commit();
 
 		} catch (Exception ex) {
