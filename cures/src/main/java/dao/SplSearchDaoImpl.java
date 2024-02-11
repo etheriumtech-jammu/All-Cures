@@ -125,7 +125,7 @@ public class SplSearchDaoImpl {
 			doc.setImgLoc(img_Loc);
 			
 			
-			System.out.println("doctor" + doc.getPrimary_spl());
+//			System.out.println("doctor" + doc.getPrimary_spl());
 			// docarr.add("gender:"+doc.getGender()+",city:"+doc.getCity()+",waiting_time:"+doc.getWaiting_time()+",prefix:"+doc.getPrefix()+",sub_spls:"+doc.getSub_spls()+",docactive:"+docactive+",telephone_nos:"+telephone_nos+",docname_last:"+docname_last+",country:"+country+",over_allrating:"+over_allrating+",
 			// doctorid:"+doctorid+", docname_first:"+doc.getDocname_first()+",
 			// state:"+state+"
