@@ -167,7 +167,7 @@ public class DoctorsDaoImpl_New {
 			updatestr_address += " City = " + profileMap.get("city") + ",\r\n";
 		}
 		if (profileMap.containsKey("state")) {
-			updatestr_address += " state = " + profileMap.get("state") + ",\r\n";
+			updatestr_address += " State = " + profileMap.get("state") + ",\r\n";
 		}
 		if (profileMap.containsKey("country")) {
 			updatestr_address += " Country = " + profileMap.get("country") + ",\r\n";
