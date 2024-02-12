@@ -271,7 +271,7 @@ public class RegistrationDaoImpl {
 		Registration register = null;
 		Query query = session.createNativeQuery("select registration_id, first_name, last_name, email_address, pass_word, registration_type,"
 				+ " acceptance_condition, privacy_policy, account_state, remember_me, last_login_datetime, login_attempt, last_login_datatime,"
-				+ " concat(\"\",mobile_number), rowno from registration where registration_id=" + regid);
+				+ " concat(\"\",mobile_number), DocID from registration where registration_id=" + regid);
 		ArrayList<Registration> list = (ArrayList<Registration>) query.getResultList();
 		Iterator itr = list.iterator();
 		if (itr.hasNext()) {
