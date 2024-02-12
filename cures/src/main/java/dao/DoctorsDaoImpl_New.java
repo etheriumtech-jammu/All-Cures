@@ -47,6 +47,12 @@ public class DoctorsDaoImpl_New {
 
 	public static int updateProfile(HashMap profileMap) {
 		int docID = 0;
+		Query query1=null;
+		Query query2=null;
+		Query query = null;
+		int ret=0;
+		int ret1=0;
+		int ret2=0;
 		if (profileMap.containsKey("docID")) {
 			docID = (int) profileMap.get("docID");
 		}
@@ -183,33 +189,41 @@ public class DoctorsDaoImpl_New {
 		// creating transaction object
 		session.beginTransaction();
 
-		Query query = session
-				.createNativeQuery("UPDATE Doctors_New " + "SET " + updatestr + " WHERE docid = " + docID + ";");
-		int ret = 0;
-
-		Query query1 = session
-				.createNativeQuery("UPDATE DoctorDegrees " + "SET " + updatestr_deg + " WHERE DocID = " + docID + ";");
-		int ret1 = 0;
-		
-		Query query2 = session
-				.createNativeQuery("UPDATE DoctorAddresses " + "SET " + updatestr_address + " WHERE DocID = " + docID + ";");
-		int ret2 = 0;
 		try {
-			ret = query.executeUpdate();
+		if(!updatestr.isEmpty()) {
+			query = session
+					.createNativeQuery("UPDATE Doctors_New " + "SET " + updatestr + " WHERE docid = " + docID + ";");
+			  ret = query.executeUpdate();
+		}
+		if(!updatestr_deg.isEmpty())
+		{
+			query1 = session
+				.createNativeQuery("UPDATE doctordegrees " + "SET " + updatestr_deg + " WHERE DocID = " + docID + ";");
 			// Update or insert into doctordegrees table
-	        if (!isDocIDPresentInDoctorDegrees(session, docID)) {
-	          String keysForDegrees = getKeysFromMap( updatestr_deg);
-	            String valuesForDegrees = getValuesFromMap( String.valueOf(docID),updatestr_deg);
-	            query1 = session.createNativeQuery("INSERT INTO DoctorDegrees (DocID, " + keysForDegrees + ") VALUES ("+  valuesForDegrees + ")");
-	        }
-	         ret1 = query1.executeUpdate();
-	      // Update or insert into doctoradresses table
-	         if (!isDocIDPresentInDoctorAddresses( session,docID) ) {
-		            String keysForAddress = getKeysFromMap( updatestr_address);
-		            String valuesForAddress = getValuesFromMap( String.valueOf(docID),updatestr_address);
-		            query2 = session.createNativeQuery("INSERT INTO DoctorAddresses (DocID, " + keysForAddress + ") VALUES ( "+ valuesForAddress + ")");
-		        }  
-			ret2 = query2.executeUpdate();
+			 if (!isDocIDPresentInDoctorDegrees(session, docID)) {
+		          String keysForDegrees = getKeysFromMap( updatestr_deg);
+		            String valuesForDegrees = getValuesFromMap( String.valueOf(docID),updatestr_deg);
+		            query1 = session.createNativeQuery("INSERT INTO DoctorDegrees (DocID, " + keysForDegrees + ") VALUES ("+  valuesForDegrees + ")");
+		        }
+			 ret1 = query1.executeUpdate(); 
+		}
+		if(!updatestr_address.isEmpty()) {
+		query2 = session
+				.createNativeQuery("UPDATE DoctorAddresses " + "SET " + updatestr_address + " WHERE DocID = " + docID + ";");
+		
+		// Update or insert into doctordegrees table
+        if (!isDocIDPresentInDoctorAddresses( session,docID) ) {
+	        	String keysForAddress = getKeysFromMap( updatestr_address);
+	            String valuesForAddress = getValuesFromMap( String.valueOf(docID),updatestr_address);
+	            query2 = session.createNativeQuery("INSERT INTO DoctorAddresses (DocID, " + keysForAddress + ") VALUES ( "+ valuesForAddress + ")");
+	        }  
+		ret2 = query2.executeUpdate();
+		}
+		
+	      
+			System.out.println("ret2"+ret2);
+			System.out.println("ret1"+ret1);
+			System.out.println("ret"+ret);
 //			System.out.println("updated all doctors table for DocID =  " + DocID);
 			Constant.log(">>>>>>>>>>>>>>>>>>updated all doctors table for DocID =  " + docID, 1);
 //			int check = new DoctorsDaoImpl().memcacheUpdateDoctor(docid);
