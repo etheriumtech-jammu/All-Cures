@@ -66,7 +66,7 @@ public class SearchDaoImpl {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		System.out.println("Raw Solr Response: " + response.getResponse());
 		final SolrDocumentList documents = response.getResults();
 
 		System.out.println("Found " + documents.getNumFound() + " documents");
