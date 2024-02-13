@@ -319,6 +319,7 @@ public class RegistrationDaoImpl_New {
 				register.setMobile_number(obj[13] != null ? Long.parseLong((String) obj[13]) : 0);
 				register.setDocID(obj[14] != null ? (Integer) obj[14] : 0);
 				System.out.println((Integer) obj[14]);
+				
 				register.setAge(obj[15] != null ? (Integer) obj[15] : 0);
 
 				Constant.log(Constant.PREFIX + obj[0], 0);
