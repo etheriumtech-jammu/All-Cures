@@ -317,7 +317,7 @@ public class RegistrationDaoImpl_New {
 				register.setAccount_state(obj[8] != null ? (Integer) obj[8] : 3);
 				register.setRemember_me(obj[9] != null ? (Integer) obj[9] : 0);
 				register.setMobile_number(obj[13] != null ? Long.parseLong((String) obj[13]) : 0);
-//				register.setDocID(obj[14] != null ? (Integer) obj[14] : 0);
+				register.setDocID(obj[14] != null ? (Integer) obj[14] : 0);
 				register.setAge(obj[15] != null ? (Integer) obj[15] : 0);
 
 				Constant.log(Constant.PREFIX + obj[0], 0);
