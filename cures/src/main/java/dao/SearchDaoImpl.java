@@ -201,6 +201,10 @@ public class SearchDaoImpl {
 		String[] dname = docdetails.split(" ");
 		System.out.println("length" + dname.length);
 		if (dname[0].contains("Dr")) {
+			if (dname.length == 2)
+			{ 
+				query.add("q", "docname_first:" + dname[1]) ;
+			}
 			if (dname.length <= 3) {
 				query.add("q", "docname_first:" + dname[1] + Constant.OR + "docname_last:" + dname[2]);
 			} else {
@@ -215,7 +219,7 @@ public class SearchDaoImpl {
 			// or sub_spls:"+ docdetails);
 		}
 //		query.add("sort", "geodist() asc");
-//		query.add("fq", "{!geofilt sfield=location}");
+		query.add("fq", "{!geofilt sfield=location}");
 //		query.add("pt", docloc);
 //		query.add("sfield", "docloc1");
 //		query.add("d", "50");
