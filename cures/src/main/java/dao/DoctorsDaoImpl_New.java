@@ -600,7 +600,7 @@ public class DoctorsDaoImpl_New {
 						+ "    da.Address1, da.Address2, c.cityname, states.statename AS address_state,\r\n"
 						+ "    co.countryname AS address_country, mat.AddressType,\r\n"
 						+ "    mdd.DegDesc, dd.YearOfGrad, mun.UnivName,\r\n"
-						+ "    uc.cityname AS univ_city, us.statename AS univ_state, uco.countryname AS univ_country\r\n"
+						+ "    uc.cityname AS univ_city, us.statename AS univ_state, uco.countryname AS univ_country,mt.id,states.codeid,uc.citycode,co.countrycodeid,mdd.DegID,s.splid,h.hospitalid\r\n"
 						+ "FROM\r\n"
 						+ "    Doctors_New AS doctors\r\n"
 						+ "LEFT JOIN\r\n"
@@ -694,6 +694,13 @@ public class DoctorsDaoImpl_New {
 				doc.setUnivCity(obj[39] != null ? (String) obj[39] : "");
 				doc.setUnivState(obj[40] != null ? (String) obj[40] : "");
 				doc.setUnivCountry(obj[41] != null ? (String) obj[41] : "");
+				doc.setMedicineTypeID(obj[42] != null ? (Integer) obj[42] : 0);
+				doc.setStateID(obj[43] != null ? (Integer) obj[43] : 0);
+				doc.setCityID(obj[44] != null ? (Integer) obj[44] : 0);
+				doc.setCountryID(obj[45] != null ? (Integer) obj[45] : 0);
+				doc.setDegreeID(obj[46] != null ? (Integer) obj[46] : 0);
+				doc.setPrimarySplCode(obj[47] != null ? (Integer) obj[47] : 0);
+				doc.setHospitalAffiliatedCode(obj[48] != null ? (Integer) obj[48] : 0);
 				
 			}
 			Constant.log("--Returning from DoctorsDao ", 1);
