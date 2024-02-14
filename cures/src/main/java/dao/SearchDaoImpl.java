@@ -222,7 +222,7 @@ public class SearchDaoImpl {
 //		query.add("fq", "{!geofilt sfield=location}");
 //		query.add("pt", docloc);
 //		query.add("sfield", "docloc1");
-		query.add("d", "50");
+//		query.add("d", "50");
 		QueryResponse response = null;
 		try {
 			response = client.query(query);
