@@ -496,7 +496,7 @@ public class SearchDaoImpl {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Raw Solr Response: " + response.getResponse());
+//		System.out.println("Raw Solr Response: " + response.getResponse());
 		final SolrDocumentList documents = response.getResults();
 		
 		System.out.println("Found " + documents.getNumFound() + " documents");
@@ -505,7 +505,7 @@ public class SearchDaoImpl {
 			if (null!=doctorid) {
 				doc.setDoctorid(doctorid.toString());
 			}
-			
+			System.out.println("DoctorID from Solr"+doctorid);
 			// String firstname = (String)
 			// document.getFirstValue("docname_first");
 			Integer gender = (Integer) document.getFirstValue(Constant.GENDER);
@@ -568,6 +568,7 @@ public class SearchDaoImpl {
 			doc.setPincode(pincode);
 			String rowno = (String) document.getFieldValue(Constant.ROWNO);
 			doc.setRowno(rowno);
+			System.out.println("rowno from Solr"+rowno);
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
 			 * doc.setLatitude(latitude); String longitude = (String)
