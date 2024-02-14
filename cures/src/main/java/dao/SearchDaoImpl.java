@@ -485,7 +485,7 @@ public class SearchDaoImpl {
 		SolrQuery query = new SolrQuery();
 		query.setRows(Integer.MAX_VALUE);
 		query.set("q",queryStr);
-		query.set("sort", "docid desc");
+//		query.set("sort", "docid desc");
 		QueryResponse response = null;
 		try {
 			response = client.query(query);
