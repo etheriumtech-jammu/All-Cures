@@ -110,7 +110,7 @@ public class Doctors implements Serializable {
 	private Integer state_code;
 	private Integer countries_code;
 	private Integer hospital_affliated_code;
-	private Long rowno;
+//	private Long rowno;
 	
 	private Integer subscription;
 
@@ -303,7 +303,7 @@ public class Doctors implements Serializable {
 		this.state_code = state_code;
 		this.countries_code = countries_code;
 		this.hospital_affliated_code = hospital_affliated_code;
-		this.rowno = rowno;
+//		this.rowno = rowno;
 		this.website_url = website_url;
 	}
 
@@ -634,14 +634,6 @@ public class Doctors implements Serializable {
 
 	public void setHospital_affliated_code(Integer hospital_affliated_code) {
 		this.hospital_affliated_code = hospital_affliated_code;
-	}
-
-	public Long getRowno() {
-		return rowno;
-	}
-
-	public void setRowno(Long rowno) {
-		this.rowno = rowno;
 	}
 	
 	public String getWebsite_url() {
