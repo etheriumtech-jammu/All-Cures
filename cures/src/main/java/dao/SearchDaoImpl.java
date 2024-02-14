@@ -179,7 +179,7 @@ public class SearchDaoImpl {
 	}
 
 	public static List<Doctor> searchByDocSpl(String docdetails) {
-
+		
 		SolrClient client = SolrUtil.buildSolrFactory();
 		Doctor doc = new Doctor();
 		List<Doctor> docarr = new ArrayList<Doctor>();
@@ -194,7 +194,9 @@ public class SearchDaoImpl {
 		// MapSolrParams queryParams = new MapSolrParams(queryParamMap);
 //		System.out.println("Lat" + lat);
 //		System.out.println("Lon" + lon);
-//		String docloc = lat + "," + lon;
+		String lat="74.8570";
+		String lon="74.8570";
+		String docloc = lat + "," + lon;
 		SolrQuery query = new SolrQuery();
 		String[] dname = docdetails.split(" ");
 		System.out.println("length" + dname.length);
@@ -214,7 +216,7 @@ public class SearchDaoImpl {
 		}
 //		query.add("sort", "geodist() asc");
 		query.add("fq", "{!geofilt sfield=location}");
-//		query.add("pt", docloc);
+		query.add("pt", docloc);
 //		query.add("sfield", "docloc1");
 		query.add("d", "50");
 		QueryResponse response = null;
