@@ -74,7 +74,7 @@ public class SearchDaoImpl {
 		for (SolrDocument document : documents) {
 			String docid = (String) document.getFirstValue(Constant.DOCID);
 			if (null!=docid) {
-				doc.setDocID(docid.toString());
+				doc.setDocID(docid);
 			}
 
 			// String firstname = (String)
@@ -236,7 +236,7 @@ public class SearchDaoImpl {
 		for (SolrDocument document : documents) {
 			String docid = (String) document.getFirstValue(Constant.DOCID);
 			if (null!=docid) {
-				doc.setDocID(docid.toString());
+				doc.setDocID(docid);
 			}
 			// String firstname = (String)
 			// document.getFirstValue("docname_first");
@@ -368,7 +368,7 @@ public class SearchDaoImpl {
 		for (SolrDocument document : documents) {
 			String docid = (String) document.getFirstValue(Constant.DOCID);
 			if (null!=docid) {
-				doc.setDocID(docid.toString());
+				doc.setDocID(docid);
 			}
 			// String firstname = (String)
 			// document.getFirstValue("docname_first");
@@ -489,7 +489,7 @@ public class SearchDaoImpl {
 		QueryResponse response = null;
 		try {
 			response = client.query(query);
-			System.out.println("Raw Solr Response: " + response.getResponse());
+//			System.out.println("Raw Solr Response: " + response.getResponse());
 		} catch (SolrServerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -504,7 +504,7 @@ public class SearchDaoImpl {
 		for (SolrDocument document : documents) {
 			String docid = (String) document.getFirstValue(Constant.DOCID);
 				if (null!=docid) {
-				doc.setDocID(docid.toString());
+				doc.setDocID(docid);
 				System.out.println("DocID from Solr:" +docid);
 			}
 
