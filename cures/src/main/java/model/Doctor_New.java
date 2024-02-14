@@ -146,6 +146,51 @@ public class Doctor_New {
 	@Transient
     private String univCountry;
 
+	@Transient
+    private int cityID;
+	
+	@Transient
+    private int stateID;
+
+	@Transient
+    private int countryID;
+
+	@Transient
+    private int degreeID;
+
+	public int getCityID() {
+		return cityID;
+	}
+
+	public void setCityID(int cityID) {
+		this.cityID = cityID;
+	}
+
+	public int getStateID() {
+		return stateID;
+	}
+
+	public void setStateID(int stateID) {
+		this.stateID = stateID;
+	}
+
+	public int getCountryID() {
+		return countryID;
+	}
+
+	public void setCountryID(int countryID) {
+		this.countryID = countryID;
+	}
+
+	public int getDegreeID() {
+		return degreeID;
+	}
+
+	public void setDegreeID(int degreeID) {
+		this.degreeID = degreeID;
+	}
+
+
 
 	
 	public int getDocID() {
