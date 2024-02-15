@@ -577,16 +577,30 @@ public class DoctorsDaoImpl_New {
 		// creating seession factory object
 	public static Doctor_New getAllDoctorsInfoByDocId(int docid) {
 		Session session = HibernateUtil.buildSessionFactory();
-		
+		int chatService=0;
+		int videoService=0;
 		Constant.log("In DoctorsDAO, Getting Doctors Info For:" + docid, 1);
+		Query query1 = session.createNativeQuery(
+			    "SELECT sr.ServiceID " +
+			    "FROM Doctors_New d " +
+			    "JOIN registration r ON d.docid = r.DocID " +
+			    "JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID " +
+			    "WHERE d.docid = " +docid + ";");
 		
-		// creating session object
-		//Session session = factory;
+		List<Integer> serviceIDs = query1.getResultList();
 
-		// creating transaction object
-//		session.beginTransaction();
-		// String HQL= "from doctors INNER JOIN FETCH hospital.hospital_affliated
-		// where.";
+		// Iterate through the list of serviceIDs and check for specific service IDs
+		for (Integer serviceID : serviceIDs) {
+		    if (serviceID == 2) {
+		        chatService = 1;
+		    }
+		    if (serviceID == 19) {
+		        videoService = 1;
+		    }
+		}
+		System.out.println(serviceIDs);
+		// Print the result array
+		System.out.println("Service IDs for doctor with docid " + docid + ": " + serviceIDs);
 		Query query = session
 				.createNativeQuery("SELECT\r\n"
 						+ "    doctors.docid, doctors.gender, doctors.insurance_accept,\r\n"
@@ -701,6 +715,8 @@ public class DoctorsDaoImpl_New {
 				doc.setDegreeID(obj[46] != null ? (Integer) obj[46] : 0);
 				doc.setPrimarySplCode(obj[47] != null ? (Integer) obj[47] : 0);
 				doc.setHospitalAffiliatedCode(obj[48] != null ? (Integer) obj[48] : 0);
+				doc.setChatService(chatService);
+				doc.setVideoService(videoService);
 				
 			}
 			Constant.log("--Returning from DoctorsDao ", 1);
