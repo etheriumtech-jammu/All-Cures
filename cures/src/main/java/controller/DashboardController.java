@@ -28,6 +28,7 @@ import model.Article_dc_name;
 import model.Registration;
 import util.ArticleUtils;
 import util.Constant;
+import org.hibernate.query.Query;
 
 @RestController
 @RequestMapping(path = "/dashboard")
@@ -134,11 +135,15 @@ public class DashboardController {
 			hm.put("success", 1);
 			HashMap hm2 = new HashMap();
 			String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).build().toUriString();
-
+			Session session1 = HibernateUtil.buildSessionFactory();
+			
+			session1.beginTransaction();
+			Query query2 = session1.createNativeQuery("UPDATE Doctors_New SET img_Loc = '/cures_articleimages/doctors/" + id + ".png' WHERE docid = " + id);
+			int ret2 = query2.executeUpdate();
 			System.out.println(baseUrl);
 			hm2.put("url", baseUrl + "/"+cures_articleimages+"/" + filename);
 			hm.put("file", hm2);
-			return 1;
+			return ret2;
 		}
 
 }
