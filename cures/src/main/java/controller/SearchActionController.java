@@ -79,7 +79,7 @@ public class SearchActionController extends HttpServlet {
 			if(doc_details == "" && city_pin == "" )
 			{
 				Query query1 = session.createNativeQuery("SELECT docid, prefix " +
-				        "FROM Doctors_New " +
+				        "FROM Doctors_New  where MedicineTypeID is Not NULL" +
 				        "ORDER BY docid desc "  + ";");
 				
 		//		List<Integer> rownoList = query1.getResultList();
