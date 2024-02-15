@@ -158,6 +158,29 @@ public class Doctor_New {
 	@Transient
     private int degreeID;
 
+	@Transient
+    private int chatService;
+
+	@Transient
+    private int videoService;
+
+	
+	public int getChatService() {
+		return chatService;
+	}
+
+	public void setChatService(int chatService) {
+		this.chatService = chatService;
+	}
+
+	public int getVideoService() {
+		return videoService;
+	}
+
+	public void setVideoService(int videoService) {
+		this.videoService = videoService;
+	}
+
 	public int getCityID() {
 		return cityID;
 	}
