@@ -505,7 +505,7 @@ public class SearchDaoImpl {
 			if (null!=doctorid) {
 				doc.setDoctorid(doctorid);
 			}
-			System.out.println("DoctorID from Solr"+doctorid);
+	
 			// String firstname = (String)
 			// document.getFirstValue("docname_first");
 			Integer gender = (Integer) document.getFirstValue(Constant.GENDER);
