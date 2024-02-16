@@ -219,8 +219,6 @@ public class DoctorsDaoImpl_New {
 	        }  
 		ret2 = query2.executeUpdate();
 		}
-		
-	      
 			System.out.println("ret2"+ret2);
 			System.out.println("ret1"+ret1);
 			System.out.println("ret"+ret);
@@ -584,7 +582,7 @@ public class DoctorsDaoImpl_New {
 			    "SELECT sr.ServiceID " +
 			    "FROM Doctors_New d " +
 			    "JOIN registration r ON d.docid = r.DocID " +
-			    "JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID " +
+			    "JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID and sr.Status=1 " +
 			    "WHERE d.docid = " +docid + ";");
 		
 		List<Integer> serviceIDs = query1.getResultList();
