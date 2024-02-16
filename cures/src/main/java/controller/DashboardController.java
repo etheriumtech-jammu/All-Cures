@@ -135,11 +135,20 @@ public class DashboardController {
 			hm.put("success", 1);
 			HashMap hm2 = new HashMap();
 			String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).build().toUriString();
-			Session session1 = HibernateUtil.buildSessionFactory();
-			
-			session1.beginTransaction();
-			Query query2 = session1.createNativeQuery("UPDATE Doctors_New SET img_Loc = '/cures_articleimages/doctors/" + id + ".png' WHERE docid = " + id);
-			int ret2 = query2.executeUpdate();
+			Session session1 = null;
+			int ret2=0;
+			try {
+			    session1 = HibernateUtil.buildSessionFactory();
+			    session1.beginTransaction();
+			    Query query2 = session1.createNativeQuery("UPDATE Doctors_New SET img_Loc = '/cures_articleimages/doctors/" + id + ".png' WHERE docid = " + id);
+			    ret2 = query2.executeUpdate();
+			    session1.getTransaction().commit(); // Commit the transaction
+			} catch (Exception e) {
+			    if (session1 != null && session1.getTransaction().isActive()) {
+			        session1.getTransaction().rollback(); // Rollback the transaction if an exception occurs
+			    }
+			    e.printStackTrace(); // Handle the exception appropriately
+			}
 			System.out.println(baseUrl);
 			hm2.put("url", baseUrl + "/"+cures_articleimages+"/" + filename);
 			hm.put("file", hm2);
