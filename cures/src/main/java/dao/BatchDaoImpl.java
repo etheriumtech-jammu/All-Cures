@@ -64,13 +64,13 @@ public class BatchDaoImpl {
 		// creating transaction object
 		session.beginTransaction();
 
-		String SQL = "UPDATE doctors dest, ( SELECT \r\n" + "    `doctors`.`rowno`,\r\n" + "    `doctors`.`docid`,\r\n"
+		String SQL = "UPDATE Doctors_New dest, ( SELECT \r\n" + "    `Doctors_New`.`docid`,\r\n"
 				+ "    group_concat(`doctorsrating`.`ratingVal`),\r\n"
 				+ "    AVG(IFNULL(`doctorsrating`.`ratingVal`, 0)) AS ratingValAVG,\r\n" + "    COUNT(*)\r\n"
-				+ "FROM\r\n" + "    `doctors`\r\n" + "        right JOIN\r\n"
-				+ "    `doctorsrating` ON `doctorsrating`.`target_id` = `doctors`.`rowno`\r\n"
-				+ "        AND `doctorsrating`.`target_type_id` = 1\r\n" + "GROUP BY rowno\r\n" + ") src\r\n"
-				+ "SET dest.over_allrating = src.ratingValAVG\r\n" + "where dest.rowno = src.rowno ; ";
+				+ "FROM\r\n" + "    `Doctors_New`\r\n" + "        right JOIN\r\n"
+				+ "    `doctorsrating` ON `doctorsrating`.`target_id` = `Doctors_New`.`docid`\r\n"
+				+ "        AND `doctorsrating`.`target_type_id` = 1\r\n" + "GROUP BY docid\r\n" + ") src\r\n"
+				+ "SET dest.over_allrating = src.ratingValAVG\r\n" + "where dest.docid = src.docid ; ";
 
 		Query query = session.createNativeQuery(SQL);
 
