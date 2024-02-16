@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import dao.RegistrationDaoImpl_New;
+import dao.RegistrationDaoImpl;
 import model.EmailDTO;
 import service.SendEmailService;
 import util.Constant;
@@ -30,7 +30,7 @@ import util.Test;
 public class UserController {
 
 	@Autowired
-	private RegistrationDaoImpl_New registrationDaoImpl;
+	private RegistrationDaoImpl registrationDaoImpl;
 	@Autowired
 	private SendEmailService emailUtil;
 
