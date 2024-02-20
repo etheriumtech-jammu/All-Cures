@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import dao.RegistrationDaoImpl;
+import dao.RegistrationDaoImpl_New;
 import model.Registration;
 
 @RestController
@@ -15,7 +15,7 @@ import model.Registration;
 public class ProfileController {
 
 	@Autowired
-	private RegistrationDaoImpl registrationDaoImpl;
+	private RegistrationDaoImpl_New registrationDaoImpl;
 
 	@RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody Registration getProfile(@PathVariable Integer id) {
