@@ -64,7 +64,9 @@ public class DiseaseANDConditionDaoImpl {
 						+" (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a "
 						+" where a.author_id in (trim(trailing ']' from trim(leading '[' from a.authored_by))) " 
 						+" ) as authors_name "
-						+ ", medicine_type "
+						+ ", medicine_type, "
+						+  " (select reg_doc_pat_id from author  where author_id in (trim(trailing ']' from trim(leading '[' from `a`.`authored_by`)))) as docID \r\n"
+						
 						+ " FROM article a \r\n"
 						+ " inner join disease_condition dc on a.disease_condition_id = dc.dc_id\r\n"
 						+ " inner join languages l on a.language_id = l.language_id\r\n"
@@ -108,7 +110,7 @@ public class DiseaseANDConditionDaoImpl {
 			float over_allrating = objects[23] != null ? (float) objects[23] : 0;
 			String authors_name = (String) objects[24];
 			int medicine_type = objects[25] != null ? (int) objects[25] : 0;
-
+			int docID=objects[26] != null ? (int) objects[26] : 0;
 			hm.put("article_id", article_id);
 			hm.put("title", title);
 			hm.put("friendly_name", friendly_name);
@@ -135,6 +137,7 @@ public class DiseaseANDConditionDaoImpl {
 			hm.put("over_allrating", over_allrating);
 			hm.put("authors_name", authors_name);
 			hm.put("medicine_type", medicine_type);
+			hm.put("docID", docID);
 			hmFinal.add(hm);
 			//System.out.println(hm);
 		}
