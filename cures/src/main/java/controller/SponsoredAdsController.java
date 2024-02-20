@@ -2,6 +2,7 @@ package controller;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,6 +20,8 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.SponsoredAdsDaoImpl;
+import model.SponsoredServicesMaster;
+import model.ServiceContract;
 @RestController
 @RequestMapping(path = "/sponsored")
 public class SponsoredAdsController {
@@ -40,12 +43,12 @@ public class SponsoredAdsController {
 	}
 	
 	@RequestMapping(value = "/create/ad", produces = "application/json", method = RequestMethod.POST)
-	public @ResponseBody Integer addcampaignsads(@RequestParam("image") CommonsMultipartFile image,
+	public @ResponseBody Integer addcampaignsads(@RequestParam("image") CommonsMultipartFile image,@RequestParam(value = "mobile_image", required = false) CommonsMultipartFile mobile_image,
             @RequestParam("AdMap") String adMapJson,
             HttpServletRequest request) throws Exception {
 		ObjectMapper objectMapper = new ObjectMapper();
 		HashMap<String, Object> AdMap = objectMapper.readValue(adMapJson, new TypeReference<HashMap<String, Object>>() {});
-		return SponsoredAdsDaoImpl.InsertAdDetails(AdMap, image);
+		return SponsoredAdsDaoImpl.InsertAdDetails(AdMap, image,mobile_image);
 	}
 	@RequestMapping(value = "/add/stats", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody Integer addstats(@RequestBody HashMap StatsMap,HttpServletRequest request ) throws Exception {
@@ -185,7 +188,7 @@ public class SponsoredAdsController {
 		}
 
 	       Res= SponsoredAdsDaoImpl.AdsURL(AdType,DC_Cond);
-	       request.setAttribute("customData", Res );
+//	       request.setAttribute("customData", Res );
 		
 		
 		  
@@ -209,4 +212,100 @@ public class SponsoredAdsController {
 		return SponsoredAdsDaoImpl.getnameParentDisease();
 	}
 	
+	@RequestMapping(value="/search/companies",produces = "application/json", method = RequestMethod.POST )
+	public List<LinkedHashMap<String,Object>>  searchCompanies_byCompanyName(@RequestBody HashMap companies){
+		
+		return SponsoredAdsDaoImpl.searchCompanies_byCompanyName(companies);
+	}
+	
+	@RequestMapping(value="/search/campaigns",produces = "application/json", method = RequestMethod.POST )
+	public List<LinkedHashMap<String,Object>>  searchCompanies_bycampaigns(@RequestBody HashMap campaigns){
+		
+		return SponsoredAdsDaoImpl.searchCompanies_bycampaigns(campaigns);
+	}
+	
+	@RequestMapping(value="/search/campaignsads",produces = "application/json", method = RequestMethod.POST )
+	public List<LinkedHashMap<String,Object>>  searchCompanies_bycampaignsAds(@RequestBody HashMap campaignsAds){
+		
+		return SponsoredAdsDaoImpl.searchCompanies_bycampaignsAds(campaignsAds);
+	}
+
+	@RequestMapping(value = "/create/service", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody Integer addservice(@RequestBody HashMap Service_Map,HttpServletRequest request ) throws Exception {
+
+		return SponsoredAdsDaoImpl.InsertServices(Service_Map);
+	}
+	
+	@RequestMapping(value = "/get/all/services", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List<SponsoredServicesMaster> allservices(HttpServletRequest request) throws Exception {
+
+		return SponsoredAdsDaoImpl.getAllServices();
+	}
+	
+	@RequestMapping(value = "update/service/{ServiceID}", produces = "application/json", method = RequestMethod.PUT)
+	public @ResponseBody int updateService(@PathVariable(name = "ServiceID") Integer ServiceID, @RequestBody HashMap ServiceMap, HttpServletRequest request) {
+	
+	return SponsoredAdsDaoImpl.updateService(ServiceID, ServiceMap);
+		
+	}
+	
+	@RequestMapping(value = "delete/service/{ServiceID}", produces = "application/json", method = RequestMethod.DELETE)
+	public @ResponseBody int deleteService(@PathVariable int ServiceID,  HttpServletRequest request) {
+	
+	return SponsoredAdsDaoImpl.deleteService(ServiceID);
+	
+	}
+	
+	@RequestMapping(value = "/get/service/{ServiceID}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List<SponsoredServicesMaster> getservice(@PathVariable int ServiceID,HttpServletRequest request) throws Exception {
+
+		return SponsoredAdsDaoImpl.getService(ServiceID);
+	}
+
+	@RequestMapping(value = "/get/services/list/doc", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List servicesList(HttpServletRequest request) throws Exception {
+
+		return SponsoredAdsDaoImpl.getServicesListDoc();
+	}
+
+	@RequestMapping(value = "/get/services/list/doctor", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List servicesListDoctor(HttpServletRequest request) throws Exception {
+
+		return SponsoredAdsDaoImpl.getServicesListDoctor();
+	}
+	@RequestMapping(value = "/create/contract", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody Integer addContract(@RequestParam(value = "document" , required = false) CommonsMultipartFile document,@RequestParam("Contract_Map") String ContractMap,
+            HttpServletRequest request) throws Exception {
+		ObjectMapper objectMapper = new ObjectMapper();
+		HashMap<String, Object> Contract_Map = objectMapper.readValue(ContractMap, new TypeReference<HashMap<String, Object>>() {});
+		
+		return SponsoredAdsDaoImpl.InsertContract(Contract_Map, document);
+	}
+	@RequestMapping(value = "/get/all/contracts", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List<ServiceContract> allcontracts(HttpServletRequest request) throws Exception {
+
+		return SponsoredAdsDaoImpl.getAllContracts();
+	}
+	
+	@RequestMapping(value = "/update/contract/{ContractID}", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody Integer updateContract(@PathVariable int ContractID,@RequestParam(value = "document" , required = false) CommonsMultipartFile document,@RequestParam("Contract_Map") String ContractMap,
+            HttpServletRequest request) throws Exception {
+		ObjectMapper objectMapper = new ObjectMapper();
+		HashMap<String, Object> Contract_Map = objectMapper.readValue(ContractMap, new TypeReference<HashMap<String, Object>>() {});
+	
+		return SponsoredAdsDaoImpl.updateContract(ContractID, Contract_Map, document);
+	}
+	
+	@RequestMapping(value = "delete/contract/{ContractID}", produces = "application/json", method = RequestMethod.DELETE)
+	public @ResponseBody int deleteContract(@PathVariable int ContractID,  HttpServletRequest request) {
+	
+	return SponsoredAdsDaoImpl.deleteContract(ContractID);
+	
+	}
+	
+	@RequestMapping(value = "/get/contract/{ContractID}", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List<ServiceContract> getcontract(@PathVariable int ContractID,HttpServletRequest request) throws Exception {
+
+		return SponsoredAdsDaoImpl.getContract(ContractID);
+	}
 }
