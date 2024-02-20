@@ -175,7 +175,7 @@ public class DiseaseANDConditionDaoImpl {
 						+" where a.author_id in (trim(trailing ']' from trim(leading '[' from a.authored_by))) " 
 						+" ) as authors_name "
 						+ ", medicine_type, "
-						+  " (select reg_doc_pat_id from author  where author_id in (trim(trailing ']' from trim(leading '[' from `a`.`authored_by`)))) as rowno \r\n"
+						+  " (select reg_doc_pat_id from author  where author_id in (trim(trailing ']' from trim(leading '[' from `a`.`authored_by`)))) as docID  \r\n"
 						
 						+ " FROM article a \r\n"
 						+ " inner join disease_condition dc on a.disease_condition_id = dc.dc_id\r\n"
@@ -214,9 +214,8 @@ public class DiseaseANDConditionDaoImpl {
 			String content = (String) objects[22] ;
 			float over_allrating = objects[23] != null ? (float) objects[23] : 0;
 			String authors_name = (String) objects[24];
-			BigInteger rownoBigInteger = (BigInteger) objects[26];
-			int rowno = rownoBigInteger != null ? rownoBigInteger.intValue() : 0;
-
+			BigInteger DocID = (BigInteger) objects[26];
+			int docID = DocID != null ? DocID.intValue() : 0;
 			hm.put("article_id", article_id);
 			hm.put("title", title);
 			hm.put("friendly_name", friendly_name);
@@ -242,7 +241,7 @@ public class DiseaseANDConditionDaoImpl {
 			hm.put("content", content);
 			hm.put("over_allrating", over_allrating);
 			hm.put("authors_name", authors_name);
-			hm.put("rowno", rowno);
+			hm.put("docID", docID);
 			hmFinal.add(hm);
 			//System.out.println(hm);
 		}
@@ -282,7 +281,7 @@ public class DiseaseANDConditionDaoImpl {
 						+" (select group_concat(a.author_firstname,\" \",a.author_lastname) from author a "
 						+" where a.author_id in (trim(trailing ']' from trim(leading '[' from a.authored_by))) " 
 						+" ) as authors_name, \r\n "
-						+  " (select reg_doc_pat_id from author  where author_id in (trim(trailing ']' from trim(leading '[' from `a`.`authored_by`)))) as rowno \r\n"
+						+  " (select reg_doc_pat_id from author  where author_id in (trim(trailing ']' from trim(leading '[' from `a`.`authored_by`)))) as docID  \r\n"
 						
 						+ " FROM article a \r\n"
 						+ " inner join disease_condition dc on a.disease_condition_id = dc.dc_id\r\n"
@@ -321,8 +320,8 @@ public class DiseaseANDConditionDaoImpl {
 			String content = (String) objects[22] ;
 			float over_allrating = objects[23] != null ? (float) objects[23] : 0;
 			String authors_name = (String) objects[24];
-			BigInteger rownoBigInteger = (BigInteger) objects[25];
-			int rowno = rownoBigInteger != null ? rownoBigInteger.intValue() : 0;
+			BigInteger DocID = (BigInteger) objects[26];
+			int docID = DocID != null ? DocID.intValue() : 0;
 			hm.put("article_id", article_id);
 			hm.put("title", title);
 			hm.put("friendly_name", friendly_name);
@@ -348,7 +347,7 @@ public class DiseaseANDConditionDaoImpl {
 			hm.put("content", content);
 			hm.put("over_allrating", over_allrating);
 			hm.put("authors_name", authors_name);
-			hm.put("rowno", rowno);
+			hm.put("docID", docID);
 			hmFinal.add(hm);
 			//System.out.println(hm);
 		}
