@@ -60,13 +60,13 @@ public class SearchActionController extends HttpServlet {
 	public void getResults(HttpServletRequest request, HttpServletResponse response, boolean jsonResponse) throws ServletException, IOException {
 		String featuredDoctors="";
 		try{
-			String lat= request.getParameter("Latitude");
-			String lon = request.getParameter("Longitude");
+		//	String lat= request.getParameter("Latitude");
+	//		String lon = request.getParameter("Longitude");
 			String city_pin = request.getParameter(Constant.CITYVALUE)== null ? "": request.getParameter(Constant.CITYVALUE);
 			String doc_details = request.getParameter(Constant.DOCTORS)== null ? "": request.getParameter(Constant.DOCTORS);
 			Constant.log("************************"+doc_details, 0);
-			Constant.log("Latitude>>>>>>>>>>>>>>>>"+lat, 0);
-			Constant.log("Longitude>>>>>>>>>>>>>>>>"+lon, 0);
+	//		Constant.log("Latitude>>>>>>>>>>>>>>>>"+lat, 0);
+	//		Constant.log("Longitude>>>>>>>>>>>>>>>>"+lon, 0);
 			Constant.log("City>>>>>>>>>>>>>>>>"+city_pin, 0);
 			
 			SearchDaoImpl search = new SearchDaoImpl();
@@ -76,12 +76,11 @@ public class SearchActionController extends HttpServlet {
 	//		String featuredDoctors= request.getParameter("FeaturedDoctors");
 			Session session = HibernateUtil.buildSessionFactory();
 
-			if(doc_details == null || city_pin == null || city_pin==null || lat == null || lon ==null )
+			if(doc_details == "" && city_pin == "" )
 			{
-				Query query1 = session.createNativeQuery("SELECT rowno, country_code " +
-				        "FROM doctors " +
-				        "WHERE rowno >= 871 " +
-				        "ORDER BY rowno desc "  + ";");
+				Query query1 = session.createNativeQuery("SELECT docid, prefix " +
+				        "FROM Doctors_New  where MedicineTypeID is Not NULL " +
+				        "ORDER BY docid desc "  + ";");
 				
 		//		List<Integer> rownoList = query1.getResultList();
 				List<Object[]> resultList = query1.getResultList();
@@ -96,16 +95,18 @@ public class SearchActionController extends HttpServlet {
 				        .collect(Collectors.joining(","));
 				System.out.println(featuredDoctors);
 			}
+			
 			if (null !=featuredDoctors && featuredDoctors.length() != 0) {
 				System.out.println("In Featured doctor..");
 				docSolr = search.featuredDoctors(featuredDoctors);
+				System.out.println("docSolr" + docSolr);
 			}else {		
 				if(!city_pin.equals("") && doc_details.equals("")){
 					Constant.log("Searching By City Pin:"+city_pin, 1);
 					docSolr = search.searchByCityPin(city_pin);
 				}else if (!doc_details.equals("") && city_pin.equals("")) {
 					Constant.log("Searching By Doc Details:"+doc_details, 1);
-					docSolr = search.searchByDocSpl(doc_details,lat,lon);
+					docSolr = search.searchByDocSpl(doc_details);
 				}else {
 					Constant.log("Searching By Both City:"+city_pin, 1);
 					docSolr = search.searchByBoth(doc_details, city_pin);
