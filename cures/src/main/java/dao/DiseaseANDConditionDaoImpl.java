@@ -320,7 +320,7 @@ public class DiseaseANDConditionDaoImpl {
 			String content = (String) objects[22] ;
 			float over_allrating = objects[23] != null ? (float) objects[23] : 0;
 			String authors_name = (String) objects[24];
-			BigInteger DocID = (BigInteger) objects[26];
+			BigInteger DocID = (BigInteger) objects[25];
 			int docID = DocID != null ? DocID.intValue() : 0;
 			hm.put("article_id", article_id);
 			hm.put("title", title);
