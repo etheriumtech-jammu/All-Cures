@@ -15,7 +15,7 @@ import org.json.JSONObject;
 
 import com.google.gson.Gson;
 
-import dao.DoctorsDaoImpl;
+import dao.DoctorsDaoImpl_New;
 import dao.SpecialtiesDaoImpl;
 import dao.SubspecialtiesDaoImp;
 import model.Doctors;
@@ -48,7 +48,7 @@ public class IntegratedActionController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		DoctorsDaoImpl doctors = new DoctorsDaoImpl();
+		DoctorsDaoImpl_New doctors = new DoctorsDaoImpl_New();
 		ArrayList<String> doctorArray = new ArrayList<String>();
 		//ArrayList<String> cacheArray = new ArrayList<String>();
 		SpecialtiesDaoImpl spl = new SpecialtiesDaoImpl();
