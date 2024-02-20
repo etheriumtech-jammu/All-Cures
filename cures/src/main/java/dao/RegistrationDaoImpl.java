@@ -113,9 +113,9 @@ public class RegistrationDaoImpl {
 				RegistrationDaoImpl registerDao = new RegistrationDaoImpl();
 				user = registerDao.findUserByEmail(email);
 				doctor = new DoctorsDaoImpl();
-				doctor.saveDoctors(user.getRegistration_id(), f_name, l_name, email);
-				Long rowno = new DoctorsDaoImpl().findDoctorsByEmail(email).getRowno();
-				user.setRowno(rowno);
+//				doctor.saveDoctors(user.getRegistration_id(), f_name, l_name, email);
+//				Long rowno = new DoctorsDaoImpl().findDoctorsByEmail(email).getRowno();
+//				user.setRowno(rowno);
 				// sessionFactory.close();
 				// Now that the doctor is signed up, should we log her in as well?
 				// TODO: LogUserIn
@@ -205,7 +205,7 @@ public class RegistrationDaoImpl {
 				register.setRemember_me(obj[9] != null ? (Integer) obj[9] : 0);
 				register.setLogin_attempt(obj[10] != null ? (Integer) obj[10] : 0);
 				register.setLast_login_datatime((java.util.Date) obj[11]);
-				register.setRowno(obj[12] != null ? (Long) Long.valueOf( obj[12]+"" ): 0);
+	//			register.setRowno(obj[12] != null ? (Long) Long.valueOf( obj[12]+"" ): 0);
 				Constant.log(Constant.PREFIX + obj[0], 0);
 				Constant.log(Constant.FIRST_NAME + obj[1], 0);
 			}
@@ -271,7 +271,7 @@ public class RegistrationDaoImpl {
 		Registration register = null;
 		Query query = session.createNativeQuery("select registration_id, first_name, last_name, email_address, pass_word, registration_type,"
 				+ " acceptance_condition, privacy_policy, account_state, remember_me, last_login_datetime, login_attempt, last_login_datatime,"
-				+ " concat(\"\",mobile_number), rowno from registration where registration_id=" + regid);
+				+ " concat(\"\",mobile_number), DocID  from registration where registration_id=" + regid);
 		ArrayList<Registration> list = (ArrayList<Registration>) query.getResultList();
 		Iterator itr = list.iterator();
 		if (itr.hasNext()) {
