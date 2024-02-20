@@ -309,7 +309,7 @@ public class DoctorsDaoImpl {
 //		session.beginTransaction();
 
 		Query query = session
-				.createNativeQuery("select prefix, docname_first, docname_middle , docname_last from doctors;");
+				.createNativeQuery("select prefix, docname_first, docname_middle , docname_last from Doctors_New;");
 		List<Doctors> list = (List<Doctors>) query.getResultList();
 
 		Constant.log("Got Results", 1);
@@ -421,11 +421,11 @@ public class DoctorsDaoImpl {
 				doc.setState_code(obj[28] != null ? (Integer) obj[28] : 0);
 				doc.setCountries_code(obj[29] != null ? (Integer) obj[29] : 0);
 				doc.setHospital_affliated_code(obj[30] != null ? (Integer) obj[30] : 0);
-				doc.setRowno((long) (obj[31] != null ? (Integer) obj[31] : 0));
+//				doc.setRowno((long) (obj[31] != null ? (Integer) obj[31] : 0));
 				doc.setWebsite_url((String) (obj[32]));
 				doc.setSubscription(obj[33] != null ? (Integer) obj[33] : 0);
 			}
-			Constant.log("--Returning from DoctorsDao, Doc Object for ID:" + doc.getDocid() +" rowno:" + doc.getRowno(), 1);
+//			Constant.log("--Returning from DoctorsDao, Doc Object for ID:" + doc.getDocid() +" rowno:" + doc.getRowno(), 1);
 		}
 //		session.getTransaction().commit();   //session.close();
 		return doc;
@@ -502,13 +502,13 @@ public class DoctorsDaoImpl {
 				doc.setAbout(obj[26] != null ? (String) obj[26] : "");
 				doc.setCity_code(obj[27] != null ? (Integer) obj[27] : 0);
 				doc.setState_code(obj[28] != null ? (Integer) obj[28] : 0);
-				doc.setCountries_code(obj[29] != null ? (Integer) obj[29] : 0);
+//				doc.setCountries_code(obj[29] != null ? (Integer) obj[29] : 0);
 				doc.setHospital_affliated_code(obj[30] != null ? (Integer) obj[30] : 0);
-				doc.setRowno((long) (obj[31] != null ? (Integer) obj[31] : 0));
+//				doc.setRowno((long) (obj[31] != null ? (Integer) obj[31] : 0));
 				doc.setWebsite_url((String) (obj[32]));
 				doc.setSubscription(obj[33] != null ? (Integer) obj[33] : 0);
 			}
-			Constant.log("--Returning from DoctorsDao, Doc Object for ID:" + doc.getDocid() +" rowno:" + doc.getRowno(), 1);
+//			Constant.log("--Returning from DoctorsDao, Doc Object for ID:" + doc.getDocid() +" rowno:" + doc.getRowno(), 1);
 		}
 //		session.getTransaction().commit();   //session.close();
 		return doc;
@@ -590,7 +590,7 @@ public class DoctorsDaoImpl {
 		int docid = 0;
 
 		Doctors doctors = null;
-		Query query = session.createNativeQuery("select docid,email,rowno from doctors where email='" + email.trim() + "'");
+		Query query = session.createNativeQuery("select docid,email from Doctors_New where email='" + email.trim() + "'");
 		ArrayList<Doctors> list = (ArrayList<Doctors>) query.getResultList();
 		Iterator itr = list.iterator();
 		if (itr.hasNext()) {
@@ -600,7 +600,7 @@ public class DoctorsDaoImpl {
 			{
 				doctors.setDocid(obj[0] != null ? (Integer) obj[0] : -1);
 				doctors.setEmail((String) obj[1]);
-				doctors.setRowno(obj[2] != null ? (Long) Long.parseLong(""+obj[2]) : -1);
+//				doctors.setRowno(obj[2] != null ? (Long) Long.parseLong(""+obj[2]) : -1);
 
 			}
 		}
