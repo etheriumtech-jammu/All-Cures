@@ -1,6 +1,9 @@
 package dao;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +14,8 @@ import java.util.Map;
 import java.util.Set;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.apache.commons.io.FilenameUtils;
 import javax.persistence.NoResultException;
@@ -29,6 +34,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import util.DailyTaskScheduler;
 import util.TargetAds;
 import org.springframework.scheduling.annotation.Async;
+import model.SponsoredServicesMaster;
+import model.ServiceContract;
 public class SponsoredAdsDaoImpl {
 
 	public static Set<String> keySet = new HashSet<>();
@@ -144,7 +151,7 @@ public class SponsoredAdsDaoImpl {
 		return ret;
 	}
 
-	public static Integer InsertAdDetails( HashMap<String, Object> AdMap ,CommonsMultipartFile image) {
+	public static Integer InsertAdDetails( HashMap<String, Object> AdMap ,CommonsMultipartFile image, CommonsMultipartFile mobile_image) {
 
 		Session session = HibernateUtil.buildSessionFactory();
 
@@ -183,7 +190,7 @@ public class SponsoredAdsDaoImpl {
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
 			System.out.println("Admap " + AdMap);
-			ret=uploadFile(image);
+			ret=uploadFile(image,mobile_image);
 			
 
 		} catch (Exception e) {
@@ -195,7 +202,7 @@ public class SponsoredAdsDaoImpl {
 		return ret;
 	}
 
-	public static int uploadFile( CommonsMultipartFile image) {
+	public static int uploadFile( CommonsMultipartFile image, CommonsMultipartFile mobile_image) {
 		
 		Session session = HibernateUtil.buildSessionFactory();
 		Query query = session.createNativeQuery(
@@ -229,7 +236,21 @@ public class SponsoredAdsDaoImpl {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		
+		if(mobile_image!=null)
+		{
+			String mobile_path = System.getProperty( "catalina.base" ) + "/webapps"+ "/cures_articleimages/"+ "cures_adsimages/mobile";
+			String mobile_filename = mobile_image.getOriginalFilename();
+			String mobile_Filename = "Ad_" + res + "." + FilenameUtils.getExtension(mobile_filename);
+			try {
+				byte barr[] = mobile_image.getBytes();
+				BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(mobile_path + "/" + mobile_Filename));
+				bout.write(barr);
+				bout.flush();
+				bout.close();
+			} catch (Exception e) {
+				System.out.println(e);
+			} 
+		}
 		Query query1 = session.createNativeQuery(
 				  "Update CampaignAds set ImageLocation='" + finalPath + "' where AdID=" + res);
 		int ret = 0;
@@ -1151,6 +1172,7 @@ public static List ListCampaigns() {
 		{
 			int count = LeftCountMap.getOrDefault(currentDate, 0);
 			key="Left_0_"+String.valueOf(count);
+			System.out.println("Key" + key);
 			 URL=(String) mcc.get(key);
 			 if (lastRequestDate == null || !lastRequestDate.equals(currentDate)) {
 		            LeftCountMap.clear();
@@ -1376,4 +1398,848 @@ public static List ListCampaigns() {
 		}
 		return mcc;
 	}
+
+	
+	public static List<LinkedHashMap<String,Object>>  searchCompanies_byCompanyName(HashMap companies)  {
+
+		Session session = HibernateUtil.buildSessionFactory();
+        
+        Query query=null;
+        
+         try {
+        	 
+            
+        
+        if(companies.containsKey("CompanyName")) { 
+        	String CompanyName = (String) companies.get("CompanyName");
+        	query = session.createNativeQuery(
+    				"SELECT * "
+    				+ " FROM Companies where CompanyName= '"+CompanyName + "';");
+        }else if(companies.containsKey("CreateDate")) {
+        	java.sql.Date sqlDate= string_to_Date((String)companies.get("CreateDate"));
+        	query = session.createNativeQuery(
+                    "SELECT * FROM Companies WHERE CreateDate= :createDate"
+                );
+                query.setParameter("createDate", sqlDate);
+        }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        
+		List<LinkedHashMap<String,Object>> list= new ArrayList<LinkedHashMap<String,Object>>();
+		try {
+			List<Object[]> results = (List<Object[]>) query.getResultList();
+			System.out.println(results);
+			for (Object[] res: results) {
+				LinkedHashMap<String,Object> hm= new LinkedHashMap<String, Object>();
+				hm.put("CompanyID", res[0]);
+				hm.put("CompanyName", res[1]);
+				hm.put("CompanyWebsite", res[2]);
+				hm.put("ContactPerson", res[3]);
+				hm.put("Email", res[4]);
+				hm.put("Phone", res[5]);
+				hm.put("CreateDate", res[6]);
+				hm.put("LastUpdateddate", res[7]);
+				hm.put("Status", res[8]);
+				list.add(hm);
+			}
+			
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+		
+		return list;
+	}
+	
+	public static List<LinkedHashMap<String,Object>>  searchCompanies_bycampaigns(HashMap campaigns)  {
+
+		Session session = HibernateUtil.buildSessionFactory();
+        
+        Query query=null;
+        
+
+        try {
+           
+            if(campaigns.containsKey("CampaignName")) { 
+            	System.out.println(campaigns.containsKey("CampaignName"));
+            	String CampaignName = (String) campaigns.get("CampaignName");
+            	query = session.createNativeQuery(
+        				"SELECT * "
+        				+ " FROM Campaign where CampaignName= '"+CampaignName + "';");
+            }else if(campaigns.containsKey("CreateDate")) {
+            	java.sql.Date sqlDate= string_to_Date((String)campaigns.get("CreateDate"));
+            	query = session.createNativeQuery(
+                        "SELECT * FROM Campaign WHERE CreateDate= :createDate"
+                    );
+                    query.setParameter("createDate", sqlDate);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        
+        
+        
+         
+        
+        
+		List<LinkedHashMap<String,Object>> list= new ArrayList<LinkedHashMap<String,Object>>();
+		try {
+			List<Object[]> results = (List<Object[]>) query.getResultList();
+			for (Object[] res: results) {
+				LinkedHashMap<String,Object> hm= new LinkedHashMap<String, Object>();
+				hm.put("CampaignID", res[0]);
+				hm.put("CompanyID", res[1]);
+				hm.put("CampaignName", res[2]);
+				hm.put("StartDate", res[3]);
+				hm.put("EndDate", res[4]);
+				hm.put("CreateDate", res[5]);
+				hm.put("LastUpdatedDate", res[6]);
+				hm.put("Status", res[7]);
+				
+				list.add(hm);
+			}
+			
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+		
+		return list;
+	}
+	
+	public static List<LinkedHashMap<String,Object>>  searchCompanies_bycampaignsAds(HashMap campaignsAds)  {
+
+		Session session = HibernateUtil.buildSessionFactory();
+        
+        Query query=null;
+        
+        String common_str= "SELECT\n"
+				+ "    c.CampaignName,\n"
+				+ "    at.AdTypeName,\n"
+				+ "    ast.SlotName,\n"
+				+ "    ca.*\n"
+				+ "FROM\n"
+				+ "    Campaign c\n"
+				+ "JOIN\n"
+				+ "    CampaignAds ca ON c.CampaignID = ca.CampaignID\n"
+				+ "JOIN\n"
+				+ "    AdsTypes at ON ca.AdTypeID = at.AdTypeID\n"
+				+ "JOIN\n"
+				+ "    AdsSlotTypes ast ON ca.SlotID = ast.SlotID\n";
+        
+        
+         
+
+        try {
+        	             
+            if(campaignsAds.containsKey("CampaignName")) { 
+            	String CampaignName = (String) campaignsAds.get("CampaignName");
+            	query = session.createNativeQuery(
+            			common_str + "where CampaignName = '" + CampaignName +"' ;");
+            	
+            }else if(campaignsAds.containsKey("AdTypeName")) {
+            	  String AdTypeName = (String) campaignsAds.get("AdTypeName");
+            	
+            	
+            	query = session.createNativeQuery(
+            			common_str + "where AdTypeName = '" + AdTypeName +"' ;");
+            	
+            }else if(campaignsAds.containsKey("SlotName")) {
+          	  String SlotName = (String) campaignsAds.get("SlotName");
+          	
+          	
+          	query = session.createNativeQuery(
+          			common_str + "where SlotName = '" + SlotName +"' ;");
+          	
+          }else if(campaignsAds.containsKey("StartDate")) {
+        	  java.sql.Date sqlDate= string_to_Date((String)campaignsAds.get("StartDate"));
+        	  query = session.createNativeQuery(
+        			  common_str + "WHERE ca.StartDate= :StartDate"
+                  );
+                  query.setParameter("StartDate", sqlDate);
+          	
+          }else if(campaignsAds.containsKey("EndDate")) {
+        	  java.sql.Date sqlDate= string_to_Date((String)campaignsAds.get("EndDate"));
+        	  query = session.createNativeQuery(
+        			  common_str + "WHERE ca.EndDate= :EndDate"
+                  );
+                  query.setParameter("EndDate", sqlDate);
+          	
+          }else if(campaignsAds.containsKey("CreateDate")) {
+        	  java.sql.Date sqlDate= string_to_Date((String)campaignsAds.get("CreateDate"));
+        	  query = session.createNativeQuery(
+        			  common_str + "WHERE ca.CreateDate= :createDate"
+                  );
+                  query.setParameter("createDate", sqlDate);
+                  
+          }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        
+        
+        
+         
+        
+        
+		List<LinkedHashMap<String,Object>> list= new ArrayList<LinkedHashMap<String,Object>>();
+		try {
+			List<Object[]> results = (List<Object[]>) query.getResultList();
+			for (Object[] res: results) {
+				LinkedHashMap<String,Object> hm= new LinkedHashMap<String, Object>();
+				hm.put("CampaignName", res[0]);
+				hm.put("AdTypeName", res[1]);
+				hm.put("SlotName", res[2]);
+				hm.put("AdID", res[3]);
+				hm.put("CampaignID", res[4]);
+				hm.put("DiseaseCondition", res[5]);
+				hm.put("SlotID", res[6]);
+				hm.put("AdTitle", res[7]);
+				hm.put("AdDescription", res[8]);
+				hm.put("AdCount", res[9]);
+				hm.put("AdDelivered", res[10]);
+				hm.put("ImageLocation", res[11]);
+				hm.put("ImageAltText", res[12]);
+				hm.put("StartDate", res[13]);
+				hm.put("EndDate", res[14]);
+				hm.put("CreateDate", res[15]);
+				hm.put("LastUpdatedDate", res[16]);
+				hm.put("ReviewStatus", res[17]);
+				hm.put("PaymentStatus", res[18]);
+				hm.put("AdTypeID", res[19]);
+				
+				
+				list.add(hm);
+			}
+			
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 
+		
+		return list;
+	}
+	
+	public static java.sql.Date string_to_Date(String date) throws ParseException {
+		String inputDateString = date;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date utilDate = dateFormat.parse(inputDateString);
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        return sqlDate;
+	}
+
+	public static Integer InsertServices( HashMap<String, Object> ServiceMap) { 
+		  Session session = HibernateUtil.buildSessionFactory();
+		  SponsoredServicesMaster service = new SponsoredServicesMaster();
+		  
+	        try {
+	            // Assuming your HashMap has keys matching the property names in Service
+	            // Adjust these names based on your actual Service class
+	        	Transaction tx = session.beginTransaction();
+				
+	            service.setServiceName((String) ServiceMap.get("ServiceName"));
+	            service.setServiceDesc((String) ServiceMap.get("ServiceDesc"));
+	            service.setPaymentReq((Integer) ServiceMap.get("PaymentReq"));
+	            service.setContractReq((Integer) ServiceMap.get("ContractReq"));
+	            service.setCreatedBy((Integer) ServiceMap.get("CreatedBy"));
+	            service.setStatus((Integer) ServiceMap.get("Status"));
+		    service.setAvailabilityReq((Integer) ServiceMap.get("AvailabilityReq"));
+	            session.save(service);
+	            tx.commit();
+	            // Return 1 if insertion is successful
+	            return 1;
+	        } catch (Exception e) {
+	            e.printStackTrace(); // Log the exception or handle it appropriately
+
+	            // Return 0 if insertion fails
+	            return 0;
+	        }
+	    }
+	  
+	  public static List<SponsoredServicesMaster> getAllServices() {
+		    Session session = HibernateUtil.buildSessionFactory();
+		    Query query1 = session.createNativeQuery("SELECT\r\n"
+		    		+ "    s.ServiceID,\r\n"
+		    		+ "    s.ServiceName,\r\n"
+		    		+ "    s.ServiceDesc,\r\n"
+		    		+ "    s.PaymentReq,\r\n"
+		    		+ "    s.ContractReq,\r\n"
+				+ "    s.AvailabilityReq,\r\n"			     
+		    		+ "    s.CreatedBy,\r\n"
+		    		+ "    s.CreatedDate,\r\n"
+		    		+ "    s.LastUpdatedDate,\r\n"
+		    		+ "    s.Status,\r\n"
+		    		+ "    s.UpdatedBy,\r\n"
+		    		+ "    CONCAT(regCreated.first_name, ' ', regCreated.last_name) AS CreatedByName,\r\n"
+		    		+ "    CONCAT(regUpdated.first_name, ' ', regUpdated.last_name) AS UpdatedByName\r\n"
+		    		+ "FROM\r\n"
+		    		+ "    SponsoredServicesMaster s\r\n"
+		    		+ "JOIN\r\n"
+		    		+ "    registration regCreated ON s.CreatedBy = regCreated.registration_id\r\n"
+		    		+ "LEFT JOIN\r\n"
+		    		+ "    registration regUpdated ON s.UpdatedBy = regUpdated.registration_id;\r\n"
+		    		+ "");
+		    List<SponsoredServicesMaster> servicesList = new ArrayList<>();
+		    
+		    List<Object[]> resultList = query1.getResultList();
+		    Constant.log("Executed Query and Got: " + resultList.size() + " services back", 1);
+
+		    for (Object[] obj : resultList) {
+		        SponsoredServicesMaster service = new SponsoredServicesMaster();
+
+		        service.setServiceId(obj[0] != null ? (Integer) obj[0] : 0);
+		        service.setServiceName((String) obj[1] != null ? (String) obj[1] : "");
+		        service.setServiceDesc((String) obj[2] != null ? (String) obj[2] : "");
+		        service.setPaymentReq(obj[3] != null ? (Integer) obj[3] : 0);
+		        service.setContractReq(obj[4] != null ? (Integer) obj[4] : 0);
+		        service.setAvailabilityReq(obj[5] != null ? (Integer) obj[5] : 0);
+		        service.setCreatedBy(obj[6] != null ? (Integer) obj[6] : 0);
+		        service.setCreatedDate((Timestamp) (obj[7] != null ? obj[7] : null));
+		        service.setLastUpdatedDate((Timestamp) (obj[8] != null ? obj[8] : null));
+		        service.setStatus(obj[9] != null ? (Integer) obj[9] : 0);
+		        service.setUpdatedBy(obj[10] != null ? (Integer) obj[10] : 0);
+		        service.setCreated_Name(obj[11] != null ? (String) obj[11] : "");
+		    	service.setUpdated_Name(obj[12] != null ? (String) obj[12] : "");
+
+		        servicesList.add(service);
+		    }
+
+		    return servicesList;
+		}
+
+	  public static int updateService(Integer ServiceID, HashMap ServiceMap) {
+		  String updatestr = "";
+		  if (ServiceMap.containsKey("ServiceName")) {
+			    updatestr += "ServiceName = '" + ServiceMap.get("ServiceName") + "',\r\n";
+			}
+			if (ServiceMap.containsKey("ServiceDesc")) {
+			    updatestr += "ServiceDesc = '" + ServiceMap.get("ServiceDesc") + "',\r\n";
+			}
+		  if (ServiceMap.containsKey("PaymentReq")) {
+				updatestr += " PaymentReq = " + ServiceMap.get("PaymentReq") + ",\r\n";
+			}
+		  if (ServiceMap.containsKey("ContractReq")) {
+				updatestr += " ContractReq = " + ServiceMap.get("ContractReq") + ",\r\n";
+			}
+		   if (ServiceMap.containsKey("AvailabilityReq")) {
+				updatestr += " AvailabilityReq = " + ServiceMap.get("AvailabilityReq") + ",\r\n";
+			}
+		  if (ServiceMap.containsKey("UpdatedBy")) {
+				updatestr += " UpdatedBy = " + ServiceMap.get("UpdatedBy") + ",\r\n";
+			}
+		  if (ServiceMap.containsKey("Status")) {
+				updatestr += " Status = " + ServiceMap.get("Status") + ",\r\n";
+			}
+		  updatestr = updatestr.replaceAll(",$", "");
+		  Session session = HibernateUtil.buildSessionFactory();
+		  session.beginTransaction();
+
+			Query query = session
+					.createNativeQuery("UPDATE SponsoredServicesMaster " + "SET " + updatestr + " WHERE ServiceID = " + ServiceID + ";");
+			int ret = 0;
+			try {
+				ret = query.executeUpdate();
+				
+				Constant.log(">>>>>>updated Services table for ServiceID =  " + ServiceID, 1);
+
+				session.getTransaction().commit();
+
+			} catch (Exception ex) {
+				session.getTransaction().rollback();
+			} finally {
+//				session.getTransaction().commit();   //session.close();
+			}
+			return ret;
+	  }
+
+	  public static int deleteService(int ServiceID) {
+			
+			Session session = HibernateUtil.buildSessionFactory();
+
+			// creating session object
+			//Session session = factory;
+			// creating transaction object
+			session.beginTransaction();
+			
+			 String updatestr = " status = 0  ";
+			 
+			 System.out.println(updatestr);
+				Query query = session.createNativeQuery(
+						"UPDATE `SponsoredServicesMaster`\r\n" + "SET\r\n" + updatestr + "WHERE `ServiceID` = " + ServiceID + ";");
+				int ret = 0;
+				try {
+				ret = query.executeUpdate();
+				session.getTransaction().commit();
+				System.out.println("deleted entry for ServiceID =  " + ServiceID);
+			
+			}catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return ret;
+			 	 
+		}
+  
+	  public static List<SponsoredServicesMaster> getService(int ServiceID) {
+		    Session session = HibernateUtil.buildSessionFactory();
+		    Query query1 = session.createNativeQuery("SELECT * FROM SponsoredServicesMaster where ServiceID ="+ ServiceID + ";");
+		    List<SponsoredServicesMaster> servicesList = new ArrayList<>();
+		    
+		    List<Object[]> resultList = query1.getResultList();
+		    
+		    for (Object[] obj : resultList) {
+		        SponsoredServicesMaster service = new SponsoredServicesMaster();
+
+		        service.setServiceId(obj[0] != null ? (Integer) obj[0] : 0);
+		        service.setServiceName((String) obj[1] != null ? (String) obj[1] : "");
+		        service.setServiceDesc((String) obj[2] != null ? (String) obj[2] : "");
+		        service.setPaymentReq(obj[3] != null ? (Integer) obj[3] : 0);
+		        service.setContractReq(obj[4] != null ? (Integer) obj[4] : 0);
+		       service.setAvailabilityReq(obj[5] != null ? (Integer) obj[5] : 0);
+		        service.setCreatedBy(obj[6] != null ? (Integer) obj[6] : 0);
+		        service.setCreatedDate((Timestamp) (obj[7] != null ? obj[7] : null));
+		        service.setLastUpdatedDate((Timestamp) (obj[8] != null ? obj[8] : null));
+		        service.setStatus(obj[9] != null ? (Integer) obj[9] : 0);
+		        service.setUpdatedBy(obj[10] != null ? (Integer) obj[10] : 0);
+		        servicesList.add(service);
+		    }
+
+		    return servicesList;
+		}
+	 public static List getServicesListDoc() {
+			Session session = HibernateUtil.buildSessionFactory();
+			Query query = session.createNativeQuery(
+					"SELECT\r\n"
+					+ "    s.ServiceName,\r\n"
+					+ "    r.first_name,\r\n"
+					+ "    c.UserID,\r\n"
+					+ "    c.ServiceID,\r\n"
+					+ "    r.last_name,\r\n"
+					+ "    r.DocID\r\n"
+					+ "FROM\r\n"
+					+ "    ServiceContractDetails c\r\n"
+					+ "LEFT JOIN\r\n"
+					+ "    SponsoredServicesMaster s ON c.ServiceID = s.ServiceID\r\n"
+					+ "LEFT JOIN\r\n"
+					+ "    registration r ON c.UserID = r.registration_id\r\n"
+					+ "WHERE\r\n"
+					+ "    r.registration_type = 1 AND s.AvailabilityReq=1 \r\n"
+					+ "    AND NOT EXISTS (\r\n"
+					+ "        SELECT 1\r\n"
+					+ "        FROM DoctorAvailability d\r\n"
+					+ "        WHERE c.UserID = d.DocID\r\n"
+					+ "    );\r\n"
+					+ "");
+			List<Object[]> results = (List<Object[]>) query.getResultList();
+			List<Map<String, Object>> hmFinal = new ArrayList<>();
+			Map<Integer, Map<String, Object>> resultMap = new HashMap<>();
+
+			for (Object[] objects : results) {
+			    Integer serviceID = (Integer) objects[3];
+			     Integer DocID=(Integer) objects[5];
+			    // Check if the map already contains information for this serviceID
+			    Map<String, Object> hm = resultMap.get(serviceID);
+			    
+			    if (hm == null) {
+			        // If not, create a new map
+			        hm = new HashMap<>();
+			        resultMap.put(serviceID, hm);
+			        hm.put("ServiceID", serviceID);
+			    }
+
+			    // Add information for each object
+			    hm.put("ServiceName", (String) objects[0]);
+			    hm.put("UserID", (Integer) objects[2]);
+			    hm.put("DocName", hm.getOrDefault("DocName", "") + " " + (String) objects[1] + " " + (String) objects[4]);
+			     hm.put("DocID", DocID);
+			}
+
+			// Convert the resultMap values to a list
+			hmFinal.addAll(resultMap.values());
+
+			System.out.println(hmFinal);
+			return hmFinal;
+		}
+	public static List getServicesListDoctor() {
+		  Session session = HibernateUtil.buildSessionFactory();
+		  Query query = session.createNativeQuery(
+		      "SELECT\r\n"
+		      + "    s.ServiceName,\r\n"
+		      + "    r.first_name,\r\n"
+		      + "    c.UserID,\r\n"
+		      + "    c.ServiceID,\r\n"
+		     + "    r.last_name,\r\n"
+		      + "    r.DocID\r\n"
+		      + "FROM\r\n"
+		      + "    ServiceContractDetails c\r\n"
+		      + "LEFT JOIN\r\n"
+		      + "    SponsoredServicesMaster s ON c.ServiceID = s.ServiceID \r\n"
+		      + "LEFT JOIN\r\n"
+		      + "    registration r ON c.UserID = r.registration_id\r\n"
+		      + "WHERE\r\n"
+		      + "    r.registration_type = 1 And s.AvailabilityReq=1;\r\n"
+		  );
+		  List<Object[]> results = (List<Object[]>) query.getResultList();
+		  List<Map<String, Object>> hmFinal = new ArrayList<>();
+		  Map<Integer, Map<String, Object>> resultMap = new HashMap<>();
+
+		  for (Object[] objects : results) {
+			  HashMap hm = new HashMap();
+				String ServiceName = (String) objects[0];
+				Integer UserID = (Integer) objects[2];
+				Integer ServiceID = (Integer) objects[3];
+				String DocName = (String) objects[1]+" " +(String) objects[4] ;
+			  	Integer DocID=(Integer) objects[5];
+				// Date date1=(Date)objects[4];
+				hm.put("ServiceName", ServiceName);
+				hm.put("ServiceID", ServiceID);
+				hm.put("UserID", UserID);
+				hm.put("DocName", DocName);
+			  	hm.put("DocID", DocID);
+				// hm.put("Date", date1);
+				hmFinal.add(hm);
+		  System.out.println(hmFinal);
+		  }
+		  return hmFinal;
+
+		}
+	public static Integer InsertContract( HashMap<String, Object> ContractMap, CommonsMultipartFile document) { 
+		  Session session = HibernateUtil.buildSessionFactory();
+		  ServiceContract contract = new ServiceContract();
+		   int result=0;
+		  String filename="";
+		  if(document!=null)
+		  {
+			  result=uploadContractFile(document);
+			  filename=document.getOriginalFilename();
+			  System.out.println("Filename"+filename);
+		  }
+		  
+		  if(result==0)
+		  {
+			 System.out.println("Not uploading the document"); 
+		  }
+			  try {
+		            // Assuming your HashMap has keys matching the property names in Service
+		            // Adjust these names based on your actual Service class
+		        	Transaction tx = session.beginTransaction();
+		        	contract.setServiceId((Integer) ContractMap.get("ServiceID"));
+		        	contract.setUserId((Integer) ContractMap.get("UserID"));
+		        	contract.setContactFirstName((String) ContractMap.get("ContactFirstName"));
+		        	contract.setContactLastName((String) ContractMap.get("ContactLastName"));
+		        	contract.setDocumentPath(filename);
+		        	contract.setStartDate((String) ContractMap.get("StartDate"));
+		        	contract.setEndDate((String) ContractMap.get("EndDate"));
+		        	contract.setFee((String) ContractMap.get("Fee"));
+		        	contract.setCurrency((String) ContractMap.get("Currency"));
+		        	contract.setCreatedBy((Integer) ContractMap.get("CreatedBy"));
+		        	contract.setStatus((Integer) ContractMap.get("Status"));
+		            session.save(contract);
+		            tx.commit();
+				System.out.println("Contract added");
+		            // Return 1 if insertion is successful
+		            return 1;
+		        } catch (Exception e) {
+		            e.printStackTrace(); // Log the exception or handle it appropriately
+
+		            // Return 0 if insertion fails
+		            return 0;
+		        }  
+		  
+	    }
+	  
+	    public static int uploadContractFile( CommonsMultipartFile image) {
+	
+	    	String path = System.getProperty( "catalina.base" ) + "/webapps/"+ "cures_articleimages/"+ "contracts";
+
+		String filename = image.getOriginalFilename();
+		String finalPath=path + "/" + filename;
+	        System.out.println(path + "/" + filename);
+			int ret=0;	
+			try {
+				byte barr[] = image.getBytes();
+				BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(path + "/" + filename));
+				bout.write(barr);
+				bout.flush();
+				bout.close();
+				ret=1;
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+			
+	    	return ret;
+	    	
+	    }
+	  public static List<ServiceContract> getAllContracts() {
+		    Session session = HibernateUtil.buildSessionFactory();
+		    Query query1 = session.createNativeQuery("SELECT\r\n"
+		    		+ "    c.ContractID,\r\n"
+		    		+ "    c.ServiceID,\r\n"
+		    		+ "    s.ServiceName,\r\n"
+		    		+ "    r.first_name,\r\n"
+		    		+ "    c.UserID,\r\n"
+		    		+ "    c.ContactFirstName,\r\n"
+		    		+ "    c.ContactLastName,\r\n"
+		    		+ "    c.CreatedBy,\r\n"
+		    		+ "    c.DocumentPath,\r\n"
+		    		+ "    c.StartDate,\r\n"
+		    		+ "    c.EndDate,\r\n"
+		    		+ "    c.Fee,\r\n"
+		    		+ "    c.Currency,\r\n"
+		    		+ "    c.CreatedDate,\r\n"
+		    		+ "    c.LastUpdatedDate,\r\n"
+		    		+ "    c.Status,\r\n"
+		    		+ "    c.UpdatedBy,\r\n"
+		    		+ "    r.last_name,\r\n"
+		    		+"	CONCAT(reg.first_name, ' ', reg.last_name) AS Created_Name,\r\n"
+			    	+"      CONCAT(reg1.first_name, ' ', reg1.last_name) AS Updated_Name\r\n"
+		    		+ "FROM\r\n"
+		    		+ "    ServiceContractDetails c\r\n"
+		    		+ "JOIN\r\n"
+		    		+ "    SponsoredServicesMaster s ON c.ServiceID = s.ServiceID\r\n"
+				+"JOIN\r\n"
+		    		+" registration reg ON c.CreatedBy = reg.registration_id\r\n"
+		    		+"LEFT JOIN\r\n"
+		    	        +" registration reg1 ON c.UpdatedBy = reg1.registration_id\r\n"
+		    		+ "LEFT JOIN\r\n"
+		    		+ "    registration r ON c.UserID = r.registration_id\r\n"
+		    		+ "");
+		    List<ServiceContract> contractsList = new ArrayList<>();
+		    
+		    List<Object[]> resultList = query1.getResultList();
+		    Constant.log("Executed Query and Got: " + resultList.size() + " Services Contracts back", 1);
+
+		    for (Object[] obj : resultList) {
+		    	ServiceContract contract = new ServiceContract();
+
+		    	contract.setContractId(obj[0] != null ? (Integer) obj[0] : 0);
+		    	contract.setServiceId(obj[1] != null ? (Integer) obj[1] : 0);
+		    	contract.setServiceName((String) obj[2] != null ? (String) obj[2] : "");
+		    	contract.setUserName((String) obj[3] != null? ((String) obj[17] != null? (String) obj[3] + " " + (String) obj[17]: (String) obj[3]) : "");
+		    	contract.setUserId(obj[4] != null ? (Integer) obj[4] : 0);
+		    	contract.setContactFirstName((String) obj[5] != null ? (String) obj[5] : "");
+		    	contract.setContactLastName((String) obj[6] != null ? (String) obj[6] : "");
+		    	contract.setCreatedBy(obj[7] != null ? (Integer) obj[7] : 0);
+		    	contract.setDocumentPath((String) obj[8] != null ? (String) obj[8] : "");
+		    	contract.setStartDate((obj[9] != null ? obj[9].toString() : null));
+		    	contract.setEndDate( (obj[10] != null ? obj[10].toString() : null));
+		    	contract.setFee( (obj[11] != null ? obj[11].toString() : null));
+		    	contract.setCurrency((String) (obj[12] != null ? obj[12] : null));
+		    	contract.setCreatedDate((Timestamp) (obj[13] != null ? obj[13] : null));
+		    	contract.setLastUpdatedDate((Timestamp) (obj[14] != null ? obj[14] : null));
+		    	contract.setStatus(obj[15] != null ? (Integer) obj[15] : 0);
+		    	contract.setUpdatedBy(obj[16] != null ? (Integer) obj[16] : 0);
+		    	contract.setCreated_Name(obj[18] != null ? (String) obj[18] : "");
+		    	contract.setUpdated_Name(obj[19] != null ? (String) obj[19] : "");
+
+		    	contractsList.add(contract);
+		    }
+
+		    return contractsList;
+		}
+
+
+	// Method to update a ServiceContract based on ContractID and provided ContractMap
+	    
+	  public static int updateContract(Integer ContractID, HashMap ContractMap,CommonsMultipartFile document) {
+		// String to store the update clauses
+	        	String updatestr = "";
+			int result=0;
+			String filename="";
+			if(document!=null)
+			  {
+				  result=uploadContractFile(document);
+				  filename=document.getOriginalFilename();
+				  System.out.println("Filename"+filename);
+				  updatestr += " DocumentPath = '" +filename +"',\r\n";
+			  }
+			  
+			  if(result==0)
+			  {
+				 System.out.println("Not uploading the image"); 
+			  }
+	        // Construct the update clauses based on the keys in ContractMap
+	       
+		  if (ContractMap.containsKey("ServiceID")) {
+			    updatestr += "ServiceID = " + ContractMap.get("ServiceID") + ",\r\n";
+			}
+			if (ContractMap.containsKey("UserID")) {
+			    updatestr += "UserID = " + ContractMap.get("UserID") + ",\r\n";
+			}
+		  if (ContractMap.containsKey("ContactFirstName")) {
+				updatestr +=" ContactFirstName = '" + ContractMap.get("ContactFirstName") + "',\r\n";
+			}
+		  if (ContractMap.containsKey("ContactLastName")) {
+				updatestr += " ContactLastName =' " + ContractMap.get("ContactLastName") + "',\r\n";
+			}
+		  if (ContractMap.containsKey("UpdatedBy")) {
+				updatestr += " UpdatedBy = " + ContractMap.get("UpdatedBy") + ",\r\n";
+			}		  
+		  if (ContractMap.containsKey("StartDate")) {
+				updatestr += " StartDate = '" + ContractMap.get("StartDate") + "',\r\n";
+			}
+		  if (ContractMap.containsKey("EndDate")) {
+				updatestr += " EndDate =' " + ContractMap.get("EndDate") + "',\r\n";
+			}
+		  if (ContractMap.containsKey("Fee")) {
+				updatestr += " Fee = '" + ContractMap.get("Fee") + "',\r\n";
+			}
+		  if (ContractMap.containsKey("Currency")) {
+				updatestr += " Currency = '" + ContractMap.get("Currency") + "',\r\n";
+			}
+		  
+		  
+		  if (ContractMap.containsKey("Status")) {
+				updatestr += " Status = " + ContractMap.get("Status") + ",\r\n";
+			}
+		// Remove trailing comma from the update string
+	        updatestr = updatestr.replaceAll(",$", "");
+
+	        // Create a Hibernate session
+	        Session session = HibernateUtil.buildSessionFactory();
+
+	        // Begin a transaction
+	        session.beginTransaction();
+
+	        // Create a native SQL query to update servicecontractdetails table
+	        Query query = session.createNativeQuery("UPDATE ServiceContractDetails SET " + updatestr + " WHERE ContractID = " + ContractID + ";");
+
+	        int ret = 0;  // Variable to store the result of the update
+
+	        try {
+	            // Execute the update query
+	            ret = query.executeUpdate();
+
+	            // Log success message
+	            Constant.log(" Updated servicecontractdetails table for ContractID = " + ContractID, 1);
+
+	            // Commit the transaction
+	            session.getTransaction().commit();
+	        } catch (Exception ex) {
+	            // Rollback the transaction if an exception occurs
+	            session.getTransaction().rollback();
+	        } finally {
+	            // Uncomment the line below if you want to close the session here
+	            // session.close();
+	        }
+
+	        // Return the result of the update
+	        return ret;
+	    }
+
+	  public static int deleteContract(int ContractID) {
+			
+			Session session = HibernateUtil.buildSessionFactory();
+
+			// creating session object
+			//Session session = factory;
+			// creating transaction object
+			session.beginTransaction();
+			
+			 String updatestr = " status = 0  ";
+			 
+			 System.out.println(updatestr);
+				Query query = session.createNativeQuery(
+						"UPDATE `ServiceContractDetails`\r\n" + "SET\r\n" + updatestr + "WHERE `ContractID` = " + ContractID + ";");
+				int ret = 0;
+				try {
+				ret = query.executeUpdate();
+				session.getTransaction().commit();
+				System.out.println("deleted entry for ContractID =  " + ContractID);
+			
+			}catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return ret;
+			 	 
+		}
+
+	// Method to retrieve a list of ServiceContracts based on ContractID
+	    public static List<ServiceContract> getContract(int ContractID) {
+	        // Create a Hibernate session
+	        Session session = HibernateUtil.buildSessionFactory();
+
+	        // Create a native SQL query to retrieve ServiceContract details
+	        Query query1 = session.createNativeQuery("SELECT\r\n"
+	        		+ "    c.ContractID,\r\n"
+	        		+ "    c.ServiceID,\r\n"
+	        		+ "    s.ServiceName,\r\n"
+	        		+ "    r.first_name,\r\n"
+	        		+ "    c.UserID,\r\n"
+	        		+ "    c.ContactFirstName,\r\n"
+	        		+ "    c.ContactLastName,\r\n"
+	        		+ "    c.CreatedBy,\r\n"
+	        		+ "    c.DocumentPath,\r\n"
+	        		+ "    c.StartDate,\r\n"
+	        		+ "    c.EndDate,\r\n"
+	        		+ "    c.Fee,\r\n"
+	        		+ "    c.Currency,\r\n"
+	        		+ "    c.CreatedDate,\r\n"
+	        		+ "    c.LastUpdatedDate,\r\n"
+	        		+ "    c.Status,\r\n"
+	        		+ "    c.UpdatedBy,\r\n"
+	        		+ "    r.last_name\r\n"
+	        		+ "FROM\r\n"
+	        		+ "    ServiceContractDetails c\r\n"
+	        		+ "JOIN\r\n"
+	        		+ "    SponsoredServicesMaster s ON c.ServiceID = s.ServiceID\r\n"
+	        		+ "LEFT JOIN\r\n"
+	        		+ "    registration r ON c.UserID = r.registration_id\r\n"
+	        		+ "WHERE\r\n"
+	//        		+ "    c.ContractID = s.ServiceID AND \r\n"
+	        		+ " ContractID =" + ContractID + ";");
+
+	        // List to store the resulting ServiceContracts
+	        List<ServiceContract> contractsList = new ArrayList<>();
+
+	        // Retrieve the results as a list of Object arrays
+	        List<Object[]> resultList = query1.getResultList();
+
+	        // Log the number of Service Contracts retrieved
+	        Constant.log("Executed Query and Got: " + resultList.size() + " Services Contracts back", 1);
+
+	        // Iterate through each Object array and create ServiceContract objects
+	        for (Object[] obj : resultList) {
+	            ServiceContract contract = new ServiceContract();
+
+	            // Set ContractId, ServiceId, UserId, etc. for each ServiceContract
+	            contract.setContractId(obj[0] != null ? (Integer) obj[0] : 0);
+	            contract.setServiceId(obj[1] != null ? (Integer) obj[1] : 0);
+	            contract.setServiceName((String) obj[2] != null ? (String) obj[2] : "");
+		    	contract.setUserName((String) obj[3] != null? ((String) obj[17] != null? (String) obj[3] + " " + (String) obj[17]: (String) obj[3]) : "");
+		    	
+	            contract.setUserId(obj[4] != null ? (Integer) obj[4] : 0);
+	            contract.setContactFirstName((String) obj[5] != null ? (String) obj[5] : "");
+	            contract.setContactLastName((String) obj[6] != null ? (String) obj[6] : "");
+	            contract.setCreatedBy(obj[7] != null ? (Integer) obj[7] : 0);
+	            contract.setDocumentPath((String) obj[8] != null ? (String) obj[8] : "");
+
+	            // Convert obj[7] and obj[8] to String, assuming they are Date fields
+	            contract.setStartDate((obj[9] != null ? obj[9].toString() : null));
+	            contract.setEndDate((obj[10] != null ? obj[10].toString() : null));
+
+	            // Convert obj[9] to String, assuming it's a DECIMAL field
+	            contract.setFee((obj[11] != null ? obj[11].toString() : null));
+
+	            contract.setCurrency((String) (obj[12] != null ? obj[12] : null));
+	            contract.setCreatedDate((Timestamp) (obj[13] != null ? obj[13] : null));
+	            contract.setLastUpdatedDate((Timestamp) (obj[14] != null ? obj[14] : null));
+	            contract.setStatus(obj[15] != null ? (Integer) obj[15] : 0);
+	            contract.setUpdatedBy(obj[16] != null ? (Integer) obj[16] : 0);
+
+	            // Add the ServiceContract to the list
+	            contractsList.add(contract);
+	        }
+	        // Return the list of ServiceContracts
+	        return contractsList;
+	    }
+
+	
 }
