@@ -77,6 +77,7 @@ public class SendEmailService {
 
 		// Recipient's email ID needs to be mentioned.
 		String to = email.getTo();
+		System.out.println("to"+to);
 		if (null == to) {
 			// HttpServletRequest req = (HttpServletRequest) request;
 			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
@@ -90,6 +91,7 @@ public class SendEmailService {
 				reg_id = user.getRegistration_id();
 				System.out.println(reg_id);
 				to = user.getEmail_address();
+				
 			}
 		}
 
