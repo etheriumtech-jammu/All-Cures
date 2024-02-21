@@ -391,6 +391,7 @@ public class RegistrationDaoImpl_New {
 			} else {
 				
 				String encEmail = new UserController().getEmailEncrypted(email);
+				System.out.println("encEmail"+encEmail);
 				// String link = "http://localhost:3000/loginForm/ResetPass/?em=" + encEmail;
 				String link = "https://all-cures.com/loginForm/ResetPass/?em=" + encEmail;
 				// new SendEmailUtil().shootEmail(email, "Test subject", "Password reset link
@@ -416,7 +417,7 @@ public class RegistrationDaoImpl_New {
 				templateData.put("name", email);
 				templateData.put("linkforgotpassword", link);
 				emaildto2.setEmailTemplateData(templateData);
-				
+				System.out.println("Template is ready");
 				String returnEmail = emailUtil.shootEmail(emaildto2);
 				System.out.println("Hellooo");
 				System.out.println("Email sent");
