@@ -56,7 +56,7 @@ public class RegistrationDaoImpl_New {
 	    try {
 	        session = HibernateUtil.buildSessionFactory(); // Retrieve the current session
 
-//	        Constant.log("Registering User with Firstname to DB:" + f_name, 0);
+	        Constant.log("Registering User with Firstname to DB:" + f_name, 0);
 	        
 	        if (type == 1) {
 	        docid=   DoctorsDaoImpl_New.saveDoctors( f_name, l_name, email);
