@@ -74,7 +74,7 @@ public class SendEmailService {
 	// public String shootEmail(String to, String subject, String
 	// mailContentHtml,Map<String, Object> templateData) throws IOException {
 	public String shootEmail(EmailDTO email) throws IOException {
-		Syste,.out.println("email"+email);
+		System.out.println("email"+email);
 		// Recipient's email ID needs to be mentioned.
 		String to = email.getTo();
 		System.out.println("to"+to);
