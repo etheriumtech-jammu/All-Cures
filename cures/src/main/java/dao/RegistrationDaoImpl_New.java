@@ -45,7 +45,7 @@ import dao.DeleteDaoImpl;
 public class RegistrationDaoImpl_New {
 
 	@Autowired
-	private static SendEmailService emailUtil;
+	private static SendEmailService emailUtil = new SendEmailService();
 
 //	@Transactional
 	public static Registration saveRegistration(String f_name, String l_name, String pwd, String email, Boolean accept,
