@@ -135,6 +135,7 @@ public class DashboardController {
 			hm.put("success", 1);
 			HashMap hm2 = new HashMap();
 			String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).build().toUriString();
+			if(type.equalsIgnoreCase("doctor")) {
 			Session session1 = null;
 			int ret2=0;
 			try {
@@ -153,6 +154,8 @@ public class DashboardController {
 			hm2.put("url", baseUrl + "/"+cures_articleimages+"/" + filename);
 			hm.put("file", hm2);
 			return ret2;
+			}
+		return 1;
 		}
 
 }
