@@ -18,7 +18,7 @@ import java.util.TreeMap;
 @RequestMapping(path = "/make")
 public class PaymentGatewayController {
 
-	private static final String MERCHANT_ID = "3119096";
+//	private static final String MERCHANT_ID = "3119096";
     private static final String ACCESS_CODE = "AVNH05LB56CF25HNFC";   
     private static final String ENCRYPTION_KEY = "039AE11691FCF783D1539D35C6188AF9";
     private RestTemplate restTemplate; // Assuming RestTemplate is configured
@@ -33,7 +33,7 @@ public class PaymentGatewayController {
             String checksum = generateChecksum(paymentForm);
             // Encrypt the request parameters
             StringBuilder ccaRequestBuilder = new StringBuilder();
-            ccaRequestBuilder.append("merchantId=").append(MERCHANT_ID).append("&");
+//            ccaRequestBuilder.append("merchantId=").append(MERCHANT_ID).append("&");
             ccaRequestBuilder.append("accessCode=").append(ACCESS_CODE).append("&");
             ccaRequestBuilder.append("orderId=").append(paymentForm.getOrderId()).append("&");
             ccaRequestBuilder.append("amount=").append(paymentForm.getAmount()).append("&");
@@ -57,7 +57,7 @@ public class PaymentGatewayController {
     
     private String generateChecksum(PaymentForm paymentForm) throws NoSuchAlgorithmException {
         TreeMap<String, String> params = new TreeMap<>();
-        params.put("merchantId", MERCHANT_ID);
+//        params.put("merchantId", MERCHANT_ID);
         params.put("orderId", paymentForm.getOrderId());
         params.put("amount", paymentForm.getAmount());
         // Add other required parameters
