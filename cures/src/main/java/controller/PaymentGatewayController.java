@@ -16,13 +16,13 @@ import model.Registration;
 import service.TokenValidationInterceptor;
 
 @RestController
-//@RequestMapping(path = "/city")
+@RequestMapping(path = "/make")
 public class PaymentGatewayController {
 
 	@Autowired
 	private CityDaoImpl cityDaoImpl;
 
-	@RequestMapping(value = "/makePayment", produces = "application/json", method = RequestMethod.GET)
+	@RequestMapping(value = "/Payment", produces = "application/json", method = RequestMethod.GET)
 	
 	public @ResponseBody String getCityDetails() {
 		
