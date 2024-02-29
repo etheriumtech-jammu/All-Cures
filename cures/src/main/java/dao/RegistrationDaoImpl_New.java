@@ -389,10 +389,10 @@ public class RegistrationDaoImpl_New {
 			if (results.size() == 0) {
 				return 0;
 			} else {
-				
 				String encEmail = new UserController().getEmailEncrypted(email);
 				// String link = "http://localhost:3000/loginForm/ResetPass/?em=" + encEmail;
 				String link = "https://all-cures.com/loginForm/ResetPass/?em=" + encEmail;
+				System.out.println("link"+link);
 				// new SendEmailUtil().shootEmail(email, "Test subject", "Password reset link
 				// here...\n" + link);
 //				EmailDTO emaildto = new EmailDTO();
