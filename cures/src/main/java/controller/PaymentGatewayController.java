@@ -42,10 +42,12 @@ public class PaymentGatewayController {
             // Encrypt the request parameters
             AesCryptUtil aesUtil = new AesCryptUtil(ENCRYPTION_KEY);
             String encRequest = aesUtil.encrypt(ccaRequestBuilder.toString());
+	    System.out.println("encRequest"+encRequest);
             // Construct the URL for CCAvenue payment page
             String paymentUrl = "https://secure.ccavenue.com/transaction.do?command=initiateTransaction";
             String redirectUrl = paymentUrl + "&encRequest=" + URLEncoder.encode(encRequest, "UTF-8")
                     + "&access_code=" + ACCESS_CODE;
+	    System.out.println("redirectUrl"+redirectUrl);
             // Redirect the user to the CCAvenue payment page
             return "redirect:" + redirectUrl;
         } catch (Exception e) {
