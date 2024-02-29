@@ -408,7 +408,7 @@ public class RegistrationDaoImpl_New {
 				EmailDTO emaildto2 = new EmailDTO();
 
 				emaildto2.setTo(email);
-				emaildto2.setFrom("All-Cures INFO");
+				emaildto2.setFrom("All-Cures INFO <info@allcures.com>");
 				emaildto2.setSubject("Forgot password: All-Cures");
 			
 				// Populate the template data
