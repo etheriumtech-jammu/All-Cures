@@ -60,7 +60,7 @@ public class RegistrationDaoImpl_New {
 	        
 	        if (type == 1) {
 	        docid=   DoctorsDaoImpl_New.saveDoctors( f_name, l_name, email);
-//	        System.out.println("docid" +docid);
+	        System.out.println("docid" +docid);
 	        if(docid!=0) {  
 	        
 	        session.beginTransaction();
