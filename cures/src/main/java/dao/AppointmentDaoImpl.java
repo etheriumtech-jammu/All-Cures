@@ -144,7 +144,7 @@ public class AppointmentDaoImpl {
 	        if (!resultList.isEmpty()) {
 	            // Doctor found
 	            LocalDate today = LocalDate.now();
-	            LocalDate end = today.plusDays(3); // Next 30 days
+	            LocalDate end = today.plusDays(30); // Next 30 days
 
 	            for (LocalDate date = today; !date.isAfter(end); date = date.plusDays(1)) {
 	                DayOfWeek dayOfWeek = date.getDayOfWeek();
