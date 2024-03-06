@@ -68,7 +68,7 @@ public class AppointmentDaoImpl {
 	public static List<Appointment> getAppointments() {
 		Session session = HibernateUtil.buildSessionFactory();
 		Query query1 = session.createNativeQuery(
-				"SELECT * FROM appointment ;");
+				"SELECT * FROM Appointment ;");
 		List<Appointment> AppointmentList = new ArrayList<>();
 
 		List<Object[]> resultList = query1.getResultList();
@@ -99,7 +99,7 @@ public class AppointmentDaoImpl {
 	public static List<Appointment> getAppointmentsOfDoc(Integer docID) {
 		Session session = HibernateUtil.buildSessionFactory();
 		Query query1 = session.createNativeQuery(
-				"SELECT * FROM appointment where DocID=" +docID + ";");
+				"SELECT * FROM Appointment where DocID=" +docID + ";");
 		List<Appointment> AppointmentList = new ArrayList<>();
 
 		List<Object[]> resultList = query1.getResultList();
@@ -137,7 +137,7 @@ public class AppointmentDaoImpl {
 	        Transaction tx = session.beginTransaction();
 
 	        // Check if the doctor exists
-	        Query query = session.createNativeQuery("SELECT docid FROM doctors_new WHERE docid = :doctorId");
+	        Query query = session.createNativeQuery("SELECT docid FROM Doctors_New WHERE docid = :doctorId");
 	        query.setParameter("doctorId", doctorId);
 	        List<Object[]> resultList = query.getResultList();
 
@@ -185,7 +185,7 @@ public class AppointmentDaoImpl {
 
 	private static boolean isDoctorAvailableOnDay(Session session, int doctorId, DayOfWeek dayOfWeek) {
 	    String sql = "SELECT COUNT(*) " +
-	                 "FROM doctoravailability " +
+	                 "FROM DoctorAvailability " +
 	                 "WHERE DocID = :doctorId " +
 	                 "AND " + getColumnName(dayOfWeek) + " = 1";
 
