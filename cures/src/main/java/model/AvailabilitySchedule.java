@@ -137,13 +137,14 @@ public class AvailabilitySchedule {
 		this.UpdatedBy = updatedBy;
 	}
 
-	
+//	@Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ContractID")
+//	@JsonProperty("ContractID")
     private int ContractID;
 
-	
-    @Column(name = "MonAvailability")
+	@JsonProperty("MonAvailability")
+  //  @Column(name = "MonAvailability")
     private int MonAvailability;
 
     @Column(name = "TueAvailability")
@@ -181,14 +182,16 @@ public class AvailabilitySchedule {
     private Timestamp LastUpdatedDate;
 
     @Column(name = "Status")
-    private int Status;
+    private Integer Status;
 
     @Column(name = "CreatedBy")
-    private int CreatedBy;
+    private Integer CreatedBy;
 
     @Column(name = "UpdatedBy")
-    private int UpdatedBy;
-	@Transient
+    private Integer UpdatedBy;
+
+    
+    @Transient
     private String docname_first;
     
     @Transient
@@ -197,6 +200,28 @@ public class AvailabilitySchedule {
     @Transient
     private String docname_last;
     // Constructors, getters, and setters
+
+    @Transient
+    private String CreatedName;
+    
+    @Transient
+    private String UpdatedName;
+    
+	public String getCreated_Name() {
+		return CreatedName;
+	}
+
+	public void setCreated_Name(String Created_Name) {
+		CreatedName = Created_Name;
+	}
+
+	public String getUpdated_Name() {
+		return UpdatedName;
+	}
+
+	public void setUpdated_Name(String Updated_Name) {
+		UpdatedName = Updated_Name;
+	}
 
 	public String getDocname_first() {
 		return docname_first;
@@ -221,30 +246,6 @@ public class AvailabilitySchedule {
 	public void setDocname_last(String docname_last) {
 		this.docname_last = docname_last;
 	}
-
-	@Transient
-    private String CreatedName;
-    
-   	 @Transient
-    private String UpdatedName;
-    
-	public String getCreated_Name() {
-		return CreatedName;
-	}
-
-	public void setCreated_Name(String Created_Name) {
-		CreatedName = Created_Name;
-	}
-
-	public String getUpdated_Name() {
-		return UpdatedName;
-	}
-
-	public void setUpdated_Name(String Updated_Name) {
-		UpdatedName = Updated_Name;
-	}
-
-    // Constructors, getters, and setters
 
     // Constructors with parameters (if needed)
 
