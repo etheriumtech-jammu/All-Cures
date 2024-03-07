@@ -34,6 +34,10 @@ public class AesCryptUtil {
     }
 	
     public String decrypt(String pEncryptedText) throws Exception{
+	    	 if (pEncryptedText.length() < 24) {
+              throw new IllegalArgumentException("Input string length is insufficient");
+   		 }
+    		System.out.println("pEncryptedText.length()"+pEncryptedText.length());
 		String encodedIV = pEncryptedText.substring(0,24);
 		IV = hexToByte(encodedIV);
 		pEncryptedText = pEncryptedText.substring(24, pEncryptedText.length());
