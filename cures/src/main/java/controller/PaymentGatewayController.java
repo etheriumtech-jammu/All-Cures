@@ -41,6 +41,8 @@ public class PaymentGatewayController {
             ccaRequestBuilder.append("accessCode=").append(ACCESS_CODE).append("&");
             ccaRequestBuilder.append("orderId=").append(paymentForm.getOrderId()).append("&");
             ccaRequestBuilder.append("amount=").append(paymentForm.getAmount()).append("&");
+	    ccaRequestBuilder.append("reference_no=").append(paymentForm.getReferenceNo()).append("&");
+            
             // Add other required parameters
             ccaRequestBuilder.append("checksum=").append(checksum);
             // Encrypt the request parameters
@@ -67,6 +69,7 @@ public class PaymentGatewayController {
 //        params.put("merchantId", MERCHANT_ID);
         params.put("orderId", paymentForm.getOrderId());
         params.put("amount", paymentForm.getAmount());
+	  params.put("reference_no", paymentForm.getReferenceNo());
         // Add other required parameters
         StringBuilder paramsBuilder = new StringBuilder();
         for (Map.Entry<String, String> entry : params.entrySet()) {
@@ -88,7 +91,7 @@ public class PaymentGatewayController {
 class PaymentForm {
     private String orderId;
     private String amount;
-    // Add other fields
+    private String referenceNo;
 
     public String getOrderId() {
         return orderId;
@@ -106,5 +109,11 @@ class PaymentForm {
         this.amount = amount;
     }
 
-    // Add getters and setters for other fields
+    public String getReferenceNo() {
+        return referenceNo;
+    }
+
+    public void setReferenceNo(String referenceNo) {
+        this.referenceNo = referenceNo;
+    }
 }
