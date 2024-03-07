@@ -35,34 +35,44 @@ public class AppointmentDaoImpl {
 	
 	//To add a new Appointment
 	public static Integer SetAppointment(HashMap<String, Object> AppointmentMap) {
-		Session session = HibernateUtil.buildSessionFactory();
-		Appointment appointment = new Appointment();
-		try {
-			// Assuming your HashMap has keys matching the property names in Service
-			// Adjust these names based on your actual Service class
-			Transaction tx = session.beginTransaction();
-			appointment.setDocID((Integer) AppointmentMap.get("docID"));
-			appointment.setUserID((Integer) AppointmentMap.get("userID"));
-			String dateString = (String) AppointmentMap.get("appointmentDate");
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			java.util.Date parsedDate = dateFormat.parse(dateString);
-			java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
-			appointment.setAppointmentDate(sqlDate);
-			appointment.setStartTime((String) AppointmentMap.get("startTime"));
-			appointment.setEndTime((String) AppointmentMap.get("endTime"));
-			appointment.setPaymentStatus((Integer) AppointmentMap.get("paymentStatus"));
-			appointment.setStatus(2);
-			session.save(appointment);
-			tx.commit();
-			// Return 1 if insertion is successful
-			return 1;
-		} catch (Exception e) {
-			e.printStackTrace(); // Log the exception or handle it appropriately
-			session.getTransaction().rollback();
-			// Return 0 if insertion fails
-			return 0;
-		}
+	    Session session = HibernateUtil.buildSessionFactory();
+	    Appointment appointment = new Appointment();
+	    try {
+	        Transaction tx = session.beginTransaction();
+	        appointment.setDocID((Integer) AppointmentMap.get("docID"));
+	        appointment.setUserID((Integer) AppointmentMap.get("userID"));
+	        String dateString = (String) AppointmentMap.get("appointmentDate");
+	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	        java.util.Date parsedDate = dateFormat.parse(dateString);
+	        java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
+	        appointment.setAppointmentDate(sqlDate);
+
+	        // Retrieve doctor's availability to get the slot duration
+	        AvailabilitySchedule doctorAvailability = session.get(AvailabilitySchedule.class, (Integer) AppointmentMap.get("docID"));
+	        if (doctorAvailability != null) {
+	            int slotDuration = doctorAvailability.getSlotDuration();
+	            LocalTime startTime = LocalTime.parse((String) AppointmentMap.get("startTime"));
+	            // Calculate end time by adding start time and slot duration
+	            LocalTime endTime = startTime.plusMinutes(slotDuration);
+
+	            appointment.setStartTime(startTime.toString());
+	            appointment.setEndTime(endTime.toString());
+	        } else {
+	            throw new Exception("Doctor availability not found for docID: " + AppointmentMap.get("docID"));
+	        }
+
+	        appointment.setPaymentStatus((Integer) AppointmentMap.get("paymentStatus"));
+	        appointment.setStatus(2);
+	        session.save(appointment);
+	        tx.commit();
+	        return 1; // Return 1 if insertion is successful
+	    } catch (Exception e) {
+	        e.printStackTrace(); // Log the exception or handle it appropriately
+	        session.getTransaction().rollback();
+	        return 0; // Return 0 if insertion fails
+	    }
 	}
+
 	
 	//To get all the Appointments
 	public static List<Appointment> getAppointments() {
@@ -159,7 +169,8 @@ public class AppointmentDaoImpl {
 	                    Set<LocalTime> unbookedSlotsTime = new HashSet<>(slotStartTimes);
 	                    unbookedSlotsTime.removeAll(bookedSlotsTime);
 	                    unbookedSlots.put(date, unbookedSlotsTime);
-
+			    System.out.println("slotStartTimes.size()"+slotStartTimes.size());
+			    System.out.println("bookedSlotsTime.size()"+bookedSlotsTime.size());
 	                    if (bookedSlotsTime.size() >= slotStartTimes.size()) {
 	                        completelyBookedDates.add(date);
 	                    }
