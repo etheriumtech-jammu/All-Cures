@@ -26,6 +26,7 @@ public class AesCryptUtil {
 		   vRandom.nextBytes(IV);
 		   encCipher.init(Cipher.ENCRYPT_MODE, secretKey, new GCMParameterSpec(GCM_TAG_LENGTH * 8, IV));
 		   byte[] encData = encCipher.doFinal(pPlainText.getBytes());
+		    System.out.println("encData"+encData);
            return asHex(IV)+asHex(encData);
 	     } catch (Exception e) {
 			e.printStackTrace();
@@ -44,6 +45,7 @@ public class AesCryptUtil {
 		decCipher.init(Cipher.DECRYPT_MODE, secretKey, new GCMParameterSpec(GCM_TAG_LENGTH * 8, IV));
 		byte[] decodedBytes = hexToByte(pEncryptedText);
 		byte[] decryptedData = decCipher.doFinal(decodedBytes);
+	    	System.out.println("String(decryptedData)"+String(decryptedData));
 		return new String(decryptedData);
     }
 
