@@ -27,11 +27,11 @@
 			</tr>
 			<tr>
 				<td>Merchant Id</td>
-				<td><input type="text" name="merchant_id" id="merchant_id" value="3119096" /> </td>
+				<td><input type="text" name="merchant_id" id="merchant_id" value="3119096" /></td>
 			</tr>
 			<tr>
 				<td>Order Id</td>
-				<td><input type="text" name="order_id" value="123456789" /></td>
+				<td><input type="text" name="order_id" value="12345" /></td>
 			</tr>
 			<tr>
 				<td>Currency</td>
@@ -66,8 +66,7 @@
 			</tr>
 			<tr>
 				<td>Billing Address:</td>
-				<td><input type="text" name="billing_address"
-					value="Santacruz" /></td>
+				<td><input type="text" name="billing_address" value="Santacruz" /></td>
 			</tr>
 			<tr>
 				<td>Billing City:</td>
@@ -83,41 +82,34 @@
 			</tr>
 			<tr>
 				<td>Billing Country:</td>
-				<td><input type="text" name="billing_country" value="India" />
-				</td>
+				<td><input type="text" name="billing_country" value="India" /></td>
 			</tr>
 			<tr>
 				<td>Billing Tel:</td>
-				<td><input type="text" name="billing_tel" value="0229874789" />
-				</td>
+				<td><input type="text" name="billing_tel" value="0229874789" /></td>
 			</tr>
 			<tr>
 				<td>Billing Email:</td>
-				<td><input type="text" name="billing_email"
-					value="testing@domain.com" /></td>
+				<td><input type="text" name="billing_email" value="testing@domain.com" /></td>
 			</tr>
 			<tr>
 				<td colspan="2">Shipping information(optional):</td>
 			</tr>
 			<tr>
 				<td>Shipping Name</td>
-				<td><input type="text" name="delivery_name" value="Sam" />
-				</td>
+				<td><input type="text" name="delivery_name" value="Sam" /></td>
 			</tr>
 			<tr>
 				<td>Shipping Address:</td>
-				<td><input type="text" name="delivery_address"
-					value="Vile Parle" /></td>
+				<td><input type="text" name="delivery_address" value="Vile Parle" /></td>
 			</tr>
 			<tr>
 				<td>Shipping City:</td>
-				<td><input type="text" name="delivery_city" value="Mumbai" />
-				</td>
+				<td><input type="text" name="delivery_city" value="Mumbai" /></td>
 			</tr>
 			<tr>
 				<td>Shipping State:</td>
-				<td><input type="text" name="delivery_state" value="Maharashtra" />
-				</td>
+				<td><input type="text" name="delivery_state" value="Maharashtra" /></td>
 			</tr>
 			<tr>
 				<td>Shipping Zip:</td>
@@ -125,44 +117,31 @@
 			</tr>
 			<tr>
 				<td>Shipping Country:</td>
-				<td><input type="text" name="delivery_country" value="India" />
-				</td>
+				<td><input type="text" name="delivery_country" value="India" /></td>
 			</tr>
 			<tr>
 				<td>Shipping Tel:</td>
-				<td><input type="text" name="delivery_tel" value="0221234321" />
-				</td>
+				<td><input type="text" name="delivery_tel" value="0221234321" /></td>
 			</tr>
 			<tr>
 				<td>Merchant Param1</td>
-				<td><input type="text" name="merchant_param1"
-					value="additional Info." /></td>
+				<td><input type="text" name="merchant_param1" value="additional Info." /></td>
 			</tr>
 			<tr>
 				<td>Merchant Param2</td>
-				<td><input type="text" name="merchant_param2"
-					value="additional Info." /></td>
+				<td><input type="text" name="merchant_param2" value="additional Info." /></td>
 			</tr>
 			<tr>
 				<td>Merchant Param3</td>
-				<td><input type="text" name="merchant_param3"
-					value="additional Info." /></td>
+				<td><input type="text" name="merchant_param3" value="additional Info." /></td>
 			</tr>
 			<tr>
 				<td>Merchant Param4</td>
-				<td><input type="text" name="merchant_param4"
-					value="additional Info." /></td>
+				<td><input type="text" name="merchant_param4" value="additional Info." /></td>
 			</tr>
 			<tr>
 				<td>Merchant Param5</td>
-				<td><input type="text" name="merchant_param5"
-					value="additional Info." /></td>
-			</tr>
-			<tr>
-				<td>Integration Type:</td>
-				<td><select name="integration_type">
-						<option value="iframe_normal">iframe_normal</option>
-				</select></td>
+				<td><input type="text" name="merchant_param5" value="additional Info." /></td>
 			</tr>
 			<tr>
 				<td>Promo Code:</td>
