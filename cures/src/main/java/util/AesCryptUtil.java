@@ -63,7 +63,7 @@ public class AesCryptUtil {
     }
 
     public static void main(String[] args) {
-		String encKey="8302CA285D2A97085D39DF03880C50EA";
+		String encKey="039AE11691FCF783D1539D35C6188AF9";
 		String plainText="4111111111111111";
 		try {
 			AesCryptUtil AesGcmCryptUtil=new AesCryptUtil(encKey);
