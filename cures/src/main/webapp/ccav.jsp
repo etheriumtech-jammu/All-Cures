@@ -27,11 +27,11 @@
 			</tr>
 			<tr>
 				<td>Merchant Id</td>
-				<td><input type="text" name="merchant_id" id="merchant_id" value="" /> </td>
+				<td><input type="text" name="merchant_id" id="3119096" value="" /> </td>
 			</tr>
 			<tr>
 				<td>Order Id</td>
-				<td><input type="text" name="order_id" value="" /></td>
+				<td><input type="text" name="order_id" value="123456789" /></td>
 			</tr>
 			<tr>
 				<td>Currency</td>
@@ -44,13 +44,13 @@
 			<tr>
 				<td>Redirect URL</td>
 				<td><input type="text" name="redirect_url"
-					value="http://192.168.2.49:8081/MCPG_JSP_KIT/ccavResponseHandler.jsp" />
+					value="success.jsp" />
 				</td>
 			</tr>
 			<tr>
 				<td>Cancel URL</td>
 				<td><input type="text" name="cancel_url"
-					value="http://192.168.2.49:8081/MCPG_JSP_KIT/ccavResponseHandler.jsp" />
+					value="Error.jsp" />
 				</td>
 			</tr>
 			<tr>
