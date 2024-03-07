@@ -29,7 +29,7 @@
 	<center>
 		<br><br>
       	<!-- width required mininmum 482px -->
-       	<iframe  width="482" height="500" scrolling="No" frameborder="0"  id="paymentFrame" src="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=<%= merchantId %>&encRequest=<%=  encRequest %>&access_code=<%= accessCode %>">
+       	<iframe  width="482" height="500" scrolling="No" frameborder="0"  id="paymentFrame" src="https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction&merchant_id=<%= merchantId %>&encRequest=<%=  encRequest %>&access_code=<%= accessCode %>">
 	  	</iframe>
 	</center>
 	
