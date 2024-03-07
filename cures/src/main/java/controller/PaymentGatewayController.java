@@ -37,9 +37,9 @@ public class PaymentGatewayController {
             String checksum = generateChecksum(paymentForm);
             // Encrypt the request parameters
             StringBuilder ccaRequestBuilder = new StringBuilder();
-            ccaRequestBuilder.append("merchantId=").append(MERCHANT_ID).append("&");
-            ccaRequestBuilder.append("accessCode=").append(ACCESS_CODE).append("&");
-            ccaRequestBuilder.append("orderId=").append(paymentForm.getOrderId()).append("&");
+//            ccaRequestBuilder.append("merchantId=").append(MERCHANT_ID).append("&");
+//            ccaRequestBuilder.append("accessCode=").append(ACCESS_CODE).append("&");
+//            ccaRequestBuilder.append("orderId=").append(paymentForm.getOrderId()).append("&");
             ccaRequestBuilder.append("amount=").append(paymentForm.getAmount()).append("&");
 	    ccaRequestBuilder.append("reference_no=").append(paymentForm.getReferenceNo()).append("&");
             
@@ -67,7 +67,7 @@ public class PaymentGatewayController {
     private String generateChecksum(PaymentForm paymentForm) throws NoSuchAlgorithmException {
         TreeMap<String, String> params = new TreeMap<>();
 //        params.put("merchantId", MERCHANT_ID);
-        params.put("orderId", paymentForm.getOrderId());
+//        params.put("orderId", paymentForm.getOrderId());
         params.put("amount", paymentForm.getAmount());
 	  params.put("reference_no", paymentForm.getReferenceNo());
         // Add other required parameters
