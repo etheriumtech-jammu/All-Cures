@@ -21,6 +21,10 @@ public class PaymentGatewayController {
 	private static final String MERCHANT_ID = "3119096";
     private static final String ACCESS_CODE = "AVNH05LB56CF25HNFC";   
     private static final String ENCRYPTION_KEY = "039AE11691FCF783D1539D35C6188AF9";
+    private static final String COMMAND="confirmOrder";
+    private static final String Request_Type="XML";
+    private static final String Response_Type="XML";
+    private static final String Version="1.1";
     private RestTemplate restTemplate; // Assuming RestTemplate is configured
     @Autowired
     public PaymentGatewayController(RestTemplate restTemplate) {
@@ -46,7 +50,8 @@ public class PaymentGatewayController {
             // Construct the URL for CCAvenue payment page
             String paymentUrl = "https://test.ccavenue.com/transaction.do?command=initiateTransaction";
             String redirectUrl = paymentUrl + "&encRequest=" + URLEncoder.encode(encRequest, "UTF-8")
-                    + "&access_code=" + ACCESS_CODE;
+                    + "&access_code=" + ACCESS_CODE  + "&command=" + COMMAND  + "&request_type=" + Request_Type
+                    + "&response_type=" + Response_Type + "&version=" + Version;
 	    System.out.println("redirectUrl"+redirectUrl);
             // Redirect the user to the CCAvenue payment page
             return "redirect:" + redirectUrl;
