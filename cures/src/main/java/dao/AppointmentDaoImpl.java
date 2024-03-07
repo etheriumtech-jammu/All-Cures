@@ -277,7 +277,7 @@ public class AppointmentDaoImpl {
 	    Session session = HibernateUtil.buildSessionFactory();
 	    try {
 	        Query query = session.createNativeQuery(
-	            "SELECT StartTime FROM appointment WHERE docid = " + docID + "   AND AppointmentDate = '"  + date +  "' AND status IN (1, 2)");
+	            "SELECT StartTime FROM Appointment WHERE docid = " + docID + "   AND AppointmentDate = '"  + date +  "' AND status IN (1, 2)");
 	        
 	        List<Object> resultList = query.getResultList();
 	        for (Object startTimeObj : resultList) {
