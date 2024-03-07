@@ -242,7 +242,7 @@ public class AppointmentDaoImpl {
 	            
 	            // Calculate the start time of each slot and add it to the map
 	            for (int i = 0; i < totalSlots; i++) {
-	                LocalTime slotStartTime = startTime.plusMinutes(i * slotDuration);
+	                LocalTime slotStartTime = startTime.plusMinutes(i * slotDuration +15);
 	                slotStartTimes.add(slotStartTime);
 	            }
 	            System.out.println(slotStartTimes);
