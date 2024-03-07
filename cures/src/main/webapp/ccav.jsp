@@ -27,7 +27,7 @@
 			</tr>
 			<tr>
 				<td>Merchant Id</td>
-				<td><input type="text" name="merchant_id" id="3119096" value="" /> </td>
+				<td><input type="text" name="merchant_id" id="merchant_id" value="3119096" /> </td>
 			</tr>
 			<tr>
 				<td>Order Id</td>
