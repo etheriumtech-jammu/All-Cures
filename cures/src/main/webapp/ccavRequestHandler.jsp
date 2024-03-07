@@ -3,7 +3,7 @@
    This is the sample Checkout Page JSP script. It can be directly used for integration with CCAvenue if your application is developed in JSP. You need to simply change the variables to match your variables as well as insert routines (if any) for handling a successful or unsuccessful transaction.
 */
 %>
-<%@ page import = "java.io.*,java.util.*,com.ccavenue.security.*" %>
+<%@ page import = "java.io.*,java.util.*,util.AesCryptUtil,com.ccavenue.security.*" %>
 <html>
 <head>
 	<title>Sub-merchant checkout page</title>
