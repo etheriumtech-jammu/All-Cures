@@ -45,13 +45,13 @@
 				
 				<td>Redirect URL</td>
 				<td><input type="text" name="redirect_url"
-					value="http://192.168.2.49:8081/MCPG_JSP_KIT_2/ccavResponseHandler.jsp" />
+					value="https://uat.all-cures.com:444/cures/success.jsp" />
 				</td>
 			</tr>
 			<tr>
 				<td>Cancel URL</td>
 				<td><input type="text" name="cancel_url"
-					value="http://192.168.2.49:8081/MCPG_JSP_KIT_2/ccavResponseHandler.jsp" />
+					value="https://uat.all-cures.com:444/cures/Error.jsp" />
 				</td>
 
 			</tr>
