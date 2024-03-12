@@ -24,7 +24,7 @@
 	 String encRequest = aesUtil.encrypt(ccaRequest);
 	%>
 	
-	<form id="nonseamless" method="post" name="redirect" action="https://test.ccavenue.com/transaction.do?command=initiateTransaction"/> 
+	<form id="nonseamless" method="post" name="redirect" action="https://secure.ccavenue.com/transaction.do?command=initiateTransaction"/> 
 		<input type="hidden" id="encRequest" name="encRequest" value="<%= encRequest %>">
 		<input type="hidden" name="access_code" id="access_code" value="<%= accessCode %>">
 		<script language='javascript'>document.redirect.submit();</script>
