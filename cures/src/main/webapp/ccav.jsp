@@ -42,16 +42,18 @@
 				<td><input type="text" name="amount" value="1.00" /></td>
 			</tr>
 			<tr>
+				
 				<td>Redirect URL</td>
 				<td><input type="text" name="redirect_url"
-					value="ccavResponsehandler.jsp" />
+					value="http://192.168.2.49:8081/MCPG_JSP_KIT_2/ccavResponseHandler.jsp" />
 				</td>
 			</tr>
 			<tr>
 				<td>Cancel URL</td>
 				<td><input type="text" name="cancel_url"
-					value="ccavResponsehandler.jsp" />
+					value="http://192.168.2.49:8081/MCPG_JSP_KIT_2/ccavResponseHandler.jsp" />
 				</td>
+
 			</tr>
 			<tr>
 				<td>Language</td>
