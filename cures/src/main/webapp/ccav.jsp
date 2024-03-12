@@ -45,7 +45,7 @@
 				
 				<td>Redirect URL</td>
 				<td><input type="text" name="redirect_url"
-					value="https://uat.all-cures.com:444/cures/success.jsp" />
+					value="https://uat.all-cures.com:444/cures/ccavResponsehandler.jsp" />
 				</td>
 			</tr>
 			<tr>
