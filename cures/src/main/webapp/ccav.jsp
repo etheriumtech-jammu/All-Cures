@@ -44,13 +44,13 @@
 			<tr>
 				<td>Redirect URL</td>
 				<td><input type="text" name="redirect_url"
-					value="success.jsp" />
+					value="ccavResponsehandler.jsp" />
 				</td>
 			</tr>
 			<tr>
 				<td>Cancel URL</td>
 				<td><input type="text" name="cancel_url"
-					value="Error.jsp" />
+					value="ccavResponsehandler.jsp" />
 				</td>
 			</tr>
 			<tr>
