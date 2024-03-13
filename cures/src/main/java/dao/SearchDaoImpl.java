@@ -480,8 +480,6 @@ public class SearchDaoImpl {
 		String[] featuredDocArr = featureddocdetails.split(",");
 int chunkSize = 100; // Adjust the chunk size as needed
 
-List<Doctor> docarr = new ArrayList<>(); // Initialize the list here
-
 for (int i = 0; i < featuredDocArr.length; i += chunkSize) {
     int end = Math.min(featuredDocArr.length, i + chunkSize);
     StringBuilder queryBuilder = new StringBuilder();
