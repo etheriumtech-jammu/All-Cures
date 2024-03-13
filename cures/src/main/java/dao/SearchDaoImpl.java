@@ -490,8 +490,8 @@ for (int i = 0; i < featuredDocArr.length; i += chunkSize) {
         queryBuilder.append(Constant.DOCID).append(":").append(featuredDocArr[j]);
     }
     String queryStr = queryBuilder.toString();
-    System.out.println("Length: " + queryStr.length());
-    Constant.log(queryStr, 0);
+//    System.out.println("Length: " + queryStr.length());
+//    Constant.log(queryStr, 0);
     Constant.log("Length: " + queryStr.length(), 0);
 
     SolrQuery query = new SolrQuery();
