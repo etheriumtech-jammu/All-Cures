@@ -20,6 +20,7 @@
 	      pvalue = request.getParameter(pname);
 	      ccaRequest = ccaRequest + pname + "=" + pvalue + "&";
 	 }
+	System.out.println("ccaRequest"+ccaRequest);
 	 AesCryptUtil aesUtil=new AesCryptUtil(workingKey);
 	 String encRequest = aesUtil.encrypt(ccaRequest);
 	%>
