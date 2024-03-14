@@ -478,27 +478,18 @@ public class SearchDaoImpl {
 		// //queryParamMap.put("sort", "id asc");
 		// MapSolrParams queryParams = new MapSolrParams(queryParamMap);
 		String[] featuredDocArr = featureddocdetails.split(",");
-int chunkSize = 100; // Adjust the chunk size as needed
+		String queryStr = "";
+		for (String featuredDoc : featuredDocArr) {
+			queryStr = queryStr + Constant.DOCID + ":" + featuredDoc + Constant.OR;
+		}
 
-for (int i = 0; i < featuredDocArr.length; i += chunkSize) {
-    int end = Math.min(featuredDocArr.length, i + chunkSize);
-    StringBuilder queryBuilder = new StringBuilder();
-    for (int j = i; j < end; j++) {
-        if (j > i) {
-            queryBuilder.append(" OR ");
-        }
-        queryBuilder.append(Constant.DOCID).append(":").append(featuredDocArr[j]);
-    }
-    String queryStr = queryBuilder.toString();
-//    System.out.println("Length: " + queryStr.length());
-//    Constant.log(queryStr, 0);
-    Constant.log("Length: " + queryStr.length(), 0);
+//		Constant.log(queryStr,0);
 
-    SolrQuery query = new SolrQuery();
-    query.setRows(Integer.MAX_VALUE);
-    query.set("q", queryStr);
-
-    QueryResponse response = null;
+		SolrQuery query = new SolrQuery();
+		query.setRows(Integer.MAX_VALUE);
+		query.set("q",queryStr);
+//		query.set("sort", "docid desc");
+		QueryResponse response = null;	
 		try {
 			response = client.query(query);
 //			System.out.println("Raw Solr Response: " + response.getResponse());
@@ -610,7 +601,7 @@ for (int i = 0; i < featuredDocArr.length; i += chunkSize) {
 		}
 	
 		// System.out.println("SSSSSSSSSSSSSSSSSS" + docarr.size());
-}	
+	
 		return docarr;
 	}
 
