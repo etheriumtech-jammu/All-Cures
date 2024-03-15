@@ -239,7 +239,7 @@ public class AppointmentDaoImpl {
 	        
 	        if (doctor != null) {
 	            // Get the slot duration in minutes
-	            int slotDuration = doctor.getSlotDuration();
+	            int slotDuration = doctor.getSlotDuration() + 15;
 	            
 	            // Get the start and end time of the doctor's availability
 	            LocalTime startTime = doctor.getFromTime().toLocalTime();
@@ -253,7 +253,7 @@ public class AppointmentDaoImpl {
 	            
 	            // Calculate the start time of each slot and add it to the map
 	            for (int i = 0; i < totalSlots; i++) {
-	                LocalTime slotStartTime = startTime.plusMinutes(i * (slotDuration + 15));
+	                LocalTime slotStartTime = startTime.plusMinutes(i * (slotDuration));
 	                slotStartTimes.add(slotStartTime);
 	            }
 	            System.out.println(slotStartTimes);
