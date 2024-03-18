@@ -477,18 +477,23 @@ public class SearchDaoImpl {
 		// //queryParamMap.put("fl", "id, name");
 		// //queryParamMap.put("sort", "id asc");
 		// MapSolrParams queryParams = new MapSolrParams(queryParamMap);
-		String[] featuredDocArr = featureddocdetails.split(",");
-		String queryStr = "";
-		for (String featuredDoc : featuredDocArr) {
-			queryStr = queryStr + Constant.DOCID + ":" + featuredDoc + Constant.OR;
-		}
-
-		Constant.log(queryStr,0);
-		System.out.println(queryStr);
 		SolrQuery query = new SolrQuery();
 		query.setRows(Integer.MAX_VALUE);
-		query.set("q",queryStr);
-//		query.set("sort", "docid desc");
+
+		// Construct the query string
+		StringBuilder queryBuilder = new StringBuilder();
+		for (String featuredDoc : featuredDocArr) {
+		    queryBuilder.append(Constant.DOCID).append(":").append(featuredDoc).append(" OR ");
+			}
+			String queryStr = queryBuilder.toString();
+		queryStr = queryStr.substring(0, queryStr.length() - 4); // Remove the trailing " OR "
+		query.set("q", queryStr);
+
+		// Specify the sorting order based on the order of featuredDocArr
+		String sortOrder = Arrays.stream(featuredDocArr)
+                         .map(docId -> "docid:" + docId)
+                         .collect(Collectors.joining(","));
+		query.set("sort", sortOrder);
 		QueryResponse response = null;	
 		try {
 			response = client.query(query);
