@@ -26,7 +26,7 @@
         <p><strong>Doctor's Name:</strong> ${doctorName}</p>
         <p><strong>Date & Time:</strong> ${appointmentDate}</p>
         <p><strong>Video Chat Link:</strong> <a href="${videoChatLink}">${videoChatLink}</a></p>
-        <p>Please use the link above to join the video call at the scheduled time.</p>
+        <p>Please use the above link to join the video call at the scheduled time.</p>
         <p>If you have any questions or need further assistance, please feel free to contact us at ${supportEmail}.</p>
         <p>We look forward to assisting you during the consultation.</p>
         <p>Best regards,</p>
