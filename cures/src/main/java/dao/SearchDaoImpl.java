@@ -503,7 +503,7 @@ public class SearchDaoImpl {
 	    boostQueryString.append(Constant.DOCID).append(":").append(docid).append("^").append(boostValue).append(" ");
 	});
 
-//		query.set("q",queryStr);
+		query.set("q",queryStr);
 		query.set("bq", boostQueryString.toString().trim());  
 		QueryResponse response = null;	
 		try {
