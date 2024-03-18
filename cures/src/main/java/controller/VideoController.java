@@ -102,7 +102,7 @@ public class VideoController {
 	@RequestMapping(value = "/create/room/{DocID}", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody String CreateRoom(@PathVariable int DocID,HttpServletRequest request) throws Exception {
 		String meeting=dailyCoService.createMeeting();
-		int res= VideoDaoImpl.sendEmail(DocID,meeting);
+		int res= VideoDaoImpl.sendEmail(DocID,0,meeting,null,null);
 		if(res==1) {
 			return meeting;
 		}
