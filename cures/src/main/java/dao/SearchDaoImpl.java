@@ -484,7 +484,7 @@ public class SearchDaoImpl {
 		}
 
 		Constant.log(queryStr,0);
-
+		System.out.println(queryStr);
 		SolrQuery query = new SolrQuery();
 		query.setRows(Integer.MAX_VALUE);
 		query.set("q",queryStr);
