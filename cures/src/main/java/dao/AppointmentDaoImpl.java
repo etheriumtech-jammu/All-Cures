@@ -67,8 +67,10 @@ public class AppointmentDaoImpl {
 	        appointment.setStatus(2);
 	        session.save(appointment);
 	        tx.commit();
+		System.out.println("Appointment booked");
 		//create the meeting room
 	        String meeting =dailyCoService.createMeeting();
+		System.out.println("Room Created");
 	     // Parse the appointment time
 	        String startTime=(String) AppointmentMap.get("startTime");
 	        SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm");
