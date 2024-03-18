@@ -31,12 +31,11 @@ import model.Doctor_New;
 import model.ServicePayment;
 import util.Constant;
 import util.HibernateUtil;
-import service.DailyCoService;
+
 public class AppointmentDaoImpl {
-	 @Autowired
-	    private static  DailyCoService dailyCoService=new DailyCoService(null);
+	 
 	//To add a new Appointment
-	public static Integer SetAppointment(HashMap<String, Object> AppointmentMap) {
+	public static Integer SetAppointment(HashMap<String, Object> AppointmentMap, String meeting) {
 	    Session session = HibernateUtil.buildSessionFactory();
 	    Appointment appointment = new Appointment();
 	    try {
@@ -68,9 +67,7 @@ public class AppointmentDaoImpl {
 	        session.save(appointment);
 	        tx.commit();
 		System.out.println("Appointment booked");
-		//create the meeting room
-	        String meeting =dailyCoService.createMeeting();
-		System.out.println("Room Created");
+		
 	     // Parse the appointment time
 	        String startTime=(String) AppointmentMap.get("startTime");
 	        SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm");
