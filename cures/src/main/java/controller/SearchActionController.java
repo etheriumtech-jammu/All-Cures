@@ -80,7 +80,16 @@ public class SearchActionController extends HttpServlet {
 			{
 				Query query1 = session.createNativeQuery("SELECT docid, prefix " +
 				        "FROM Doctors_New  where MedicineTypeID is Not NULL and docid<=63 " +
-				        "ORDER BY docid desc "  + ";");
+				        "ORDER BY CASE
+     					       WHEN docid = 11 THEN 1
+     					       WHEN docid = 23 THEN 2
+     					       WHEN docid = 37 THEN 3
+     					       WHEN docid = 44 THEN 4
+    					        WHEN docid = 4 THEN 5
+    					        WHEN docid = 20 THEN 6
+   					         WHEN docid = 58 THEN 7
+  					          ELSE 8
+ 						END "  + ";");
 				
 		//		List<Integer> rownoList = query1.getResultList();
 				List<Object[]> resultList = query1.getResultList();
