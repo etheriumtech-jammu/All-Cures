@@ -628,7 +628,7 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
 
 	        // Fetch user details
 	        Query userQuery = session.createNativeQuery(
-	            "SELECT first_name, last_name, email FROM registration WHERE registration_id = " + userID + ";");
+	            "SELECT first_name, last_name, email_address FROM registration WHERE registration_id = " + userID + ";");
 	        List<Object[]> userResultList = userQuery.getResultList();
 
 	        if (!userResultList.isEmpty()) {
