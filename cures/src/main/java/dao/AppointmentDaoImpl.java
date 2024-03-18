@@ -33,8 +33,8 @@ import util.Constant;
 import util.HibernateUtil;
 import service.DailyCoService;
 public class AppointmentDaoImpl {
-	@Autowired
-	    private static DailyCoService dailyCoService;
+	 @Autowired
+	    private static  DailyCoService dailyCoService=new DailyCoService(null);
 	//To add a new Appointment
 	public static Integer SetAppointment(HashMap<String, Object> AppointmentMap) {
 	    Session session = HibernateUtil.buildSessionFactory();
