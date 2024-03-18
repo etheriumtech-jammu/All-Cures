@@ -30,7 +30,7 @@ import model.Doctor_New;
 import model.ServicePayment;
 import util.Constant;
 import util.HibernateUtil;
-
+import service.DailyCoService;
 public class AppointmentDaoImpl {
 	@Autowired
 	    private static DailyCoService dailyCoService;
