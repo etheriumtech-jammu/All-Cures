@@ -644,7 +644,7 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
 	            docEmailDTO.setSubject("Video Consultation Appointment Confirmation");
 
 	            Map<String, Object> docTemplateData = new HashMap<>();
-	            docTemplateData.put("templatefile", email/video.ftlh);
+	            docTemplateData.put("templatefile", "email/video.ftlh");
 	            docTemplateData.put("videoChatLink", docLink);
 	            docTemplateData.put("supportEmail", "info@etheriumtech.com");
 	            docTemplateData.put("name", docEmail);
