@@ -490,9 +490,21 @@ public class SearchDaoImpl {
 		System.out.println(queryStr);
 		SolrQuery query = new SolrQuery();
 		query.setRows(Integer.MAX_VALUE);
-		
-		query.set("sort", "field(docid, 11, 23, 37, 44, 4, 20, 58) asc");
+		// Define the list of docid values and their corresponding boost values
+	Map<String, Double> boostMap = new HashMap<>();
+	boostMap.put("11", 10.0);  // Boost docid 11 with a boost value of 10
+		boostMap.put("23", 9.0);   // Boost docid 23 with a boost value of 9
+	boostMap.put("37", 8.0);   // Boost docid 37 with a boost value of 8
+	// Add more docid values and their boost values as needed
+
+	// Build the boost query string
+	StringBuilder boostQueryString = new StringBuilder();
+		boostMap.forEach((docid, boostValue) -> {
+	    boostQueryString.append(Constant.DOCID).append(":").append(docid).append("^").append(boostValue).append(" ");
+	});
+
 		query.set("q",queryStr);
+		query.set("bq", boostQueryString.toString().trim());  
 		QueryResponse response = null;	
 		try {
 			response = client.query(query);
