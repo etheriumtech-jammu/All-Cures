@@ -596,13 +596,7 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
 	        String template_name="";
 	        String userReturnEmail="";
 	        String docReturnEmail="";
-	        if(userID!=0)
-	        {
-	        	  template_name="email/video.ftlh";	
-	        }
-	        else {
-	        	 template_name="email/video_new.ftlh";
-	        }
+	      
 	       
 	        // Fetch doctor details
 	        Query docQuery = session.createNativeQuery(
@@ -650,7 +644,7 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
 	            docEmailDTO.setSubject("Video Consultation Appointment Confirmation");
 
 	            Map<String, Object> docTemplateData = new HashMap<>();
-	            docTemplateData.put("templatefile", template_name);
+	            docTemplateData.put("templatefile", email/video.ftlh);
 	            docTemplateData.put("videoChatLink", docLink);
 	            docTemplateData.put("supportEmail", "info@etheriumtech.com");
 	            docTemplateData.put("name", docEmail);
@@ -673,7 +667,7 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
 	            userEmailDTO.setSubject("Video Consultation Appointment Confirmation");
 
 	            Map<String, Object> userTemplateData = new HashMap<>();
-	            userTemplateData.put("templatefile", "template_name");
+	            userTemplateData.put("templatefile", "email/video_user.ftlh");
 	            userTemplateData.put("videoChatLink", userLink);
 	            userTemplateData.put("supportEmail", "info@etheriumtech.com");
 	            userTemplateData.put("patientName", userFullName);
