@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 //import org.apache.solr.client.solrj.SolrQuery;
@@ -479,7 +482,7 @@ public class SearchDaoImpl {
 		// MapSolrParams queryParams = new MapSolrParams(queryParamMap);
 		SolrQuery query = new SolrQuery();
 		query.setRows(Integer.MAX_VALUE);
-
+		String[] featuredDocArr = featureddocdetails.split(",");
 		// Construct the query string
 		StringBuilder queryBuilder = new StringBuilder();
 		for (String featuredDoc : featuredDocArr) {
