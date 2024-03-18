@@ -32,7 +32,8 @@ import util.Constant;
 import util.HibernateUtil;
 
 public class AppointmentDaoImpl {
-	
+	@Autowired
+	    private static DailyCoService dailyCoService;
 	//To add a new Appointment
 	public static Integer SetAppointment(HashMap<String, Object> AppointmentMap) {
 	    Session session = HibernateUtil.buildSessionFactory();
@@ -65,6 +66,21 @@ public class AppointmentDaoImpl {
 	        appointment.setStatus(2);
 	        session.save(appointment);
 	        tx.commit();
+		//create the meeting room
+	        String meeting =dailyCoService.createMeeting();
+	     // Parse the appointment time
+	        String startTime=(String) AppointmentMap.get("startTime");
+	        SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm");
+	        SimpleDateFormat outputFormat = new SimpleDateFormat("hh:mm a"); // 12-hour pattern with AM/PM
+	        outputFormat.setDateFormatSymbols(new DateFormatSymbols(Locale.ENGLISH)); // Set symbols to English to ensure AM/PM is in English
+
+	        java.util.Date time = inputFormat.parse(startTime);
+	        String formattedTime = outputFormat.format(time).toUpperCase(); // Convert AM/PM to uppercase
+
+	        System.out.println(formattedTime);
+	        System.out.println(dateString);
+	      VideoDaoImpl.sendEmail((Integer) AppointmentMap.get("docID"),(Integer) AppointmentMap.get("userID"),meeting, dateString,formattedTime);
+	       
 	        return 1; // Return 1 if insertion is successful
 	    } catch (Exception e) {
 	        e.printStackTrace(); // Log the exception or handle it appropriately
