@@ -22,6 +22,7 @@
     <p><strong>Subject:</strong> Video Consultation - Appointment Confirmation</p>
 <div>
         <p>Dear ${patientName},</p>
+         <p>Greetings from All-Cures!</p>
         <p>Your video consultation appointment has been confirmed successfully.</p>
         <p><strong>Doctor's Name:</strong> ${doctorName}</p>
         <p><strong>Date & Time:</strong> ${appointmentDate}</p>
