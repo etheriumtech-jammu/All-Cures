@@ -587,8 +587,11 @@ public class SearchDaoImpl {
 			String img_Loc = (String) document.getFieldValue("img_Loc");
 			System.out.println("img_Loc"+img_Loc);
 			doc.setImgLoc(img_Loc);
-			Integer MedicineTypeID=(Integer) document.getFieldValue("MedicineTypeID");
-			doc.setMedicineTypeID(MedicineTypeID);
+			String MedicineTypeIDStr = (String) document.getFieldValue("MedicineTypeID");
+			if (MedicineTypeIDStr != null) {
+			    Integer MedicineTypeID = Integer.parseInt(MedicineTypeIDStr);
+			    doc.setMedicineTypeID(MedicineTypeID);
+			} 
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
 			 * doc.setLatitude(latitude); String longitude = (String)
