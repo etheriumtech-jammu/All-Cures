@@ -591,9 +591,11 @@ public class SearchDaoImpl {
 			String MedicineTypeIDStr = (String) document.getFieldValue("MedicineTypeID");
 			if (MedicineTypeIDStr != null) {
 			    Integer MedicineTypeID = Integer.parseInt(MedicineTypeIDStr);
-			    System.out.println("MedicineTypeID"+MedicineTypeID);
+			   
 			    doc.setMedicineTypeID(MedicineTypeID);
 			} 
+
+			 System.out.println("MedicineTypeID"+doc.getMedicineTypeID());
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
 			 * doc.setLatitude(latitude); String longitude = (String)
