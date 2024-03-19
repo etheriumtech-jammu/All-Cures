@@ -312,7 +312,7 @@ public class Doctor {
 	public void setMedicineType(String MedicineType) {
 		
 		medicineType = MedicineType;
-		System.out.println("medicineTypeID"+medicineTypeID);
+		
 	}
 
 	
