@@ -226,6 +226,8 @@ public class SearchDaoImpl {
 //		query.add("pt", docloc);
 //		query.add("sfield", "docloc1");
 //		query.add("d", "50");
+		String queryString = query.getParams("q").toString();
+		System.out.println("Query: " + queryString);
 		QueryResponse response = null;
 		try {
 			response = client.query(query);
