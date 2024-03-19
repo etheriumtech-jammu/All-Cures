@@ -31,14 +31,14 @@ public class Doctor {
 	@Field public String about ;
 	@Field public String imgLoc ;
 	@Field public Integer docActive ;
-	@Field public String medicineTypeID ;
+	@Field public String medicineType ;
 	public Doctor(String DocID, Integer gender, String hospital_affliated,
 			Integer insurance_accept, String board_certifcate, String membership, 
 			String telephone_nos, String primary_spl,
 			String other_spls, String sub_spls, String address1, String address2, String city, String state,
 			String country_code, String over_allrating, String create_date, Integer docactive, String prefix,
 			String docname_first, String docname_middle, String docname_last, String name, String email, String waiting_time,
-		 String about,String img_Loc,String MedicineTypeID) {
+		 String about,String img_Loc,String MedicineType) {
 		super();
 		this.docID = DocID;
 		this.gender = gender;
@@ -65,7 +65,7 @@ public class Doctor {
 		this.fullName = name;
 		this.email = email;
 		this.waitingTime = waiting_time;
-		this.medicineTypeID=MedicineTypeID;
+		this.medicineType=MedicineType;
 		this.about = about;
 		
 	}
@@ -75,7 +75,7 @@ public class Doctor {
 			String telephone_nos, String primary_spl, String address1, String city, String state,
 			String country_code, String over_allrating, String prefix,
 			String docname_first, String docname_middle, String docname_last, String name, String email,
-			 String about,String img_Loc,String MedicineTypeID) {
+			 String about,String img_Loc,String MedicineType) {
 		super();
 		this.docID = DocID;
 		this.gender = gender;
@@ -97,7 +97,7 @@ public class Doctor {
 		this.fullName = name;
 		this.email = email;
 		this.about = about;
-		this.medicineTypeID=MedicineTypeID;
+		this.medicineType=MedicineType;
 	}
 	
 	
@@ -305,13 +305,13 @@ public class Doctor {
 	}
 	
 	
-	public String getMedicineTypeID() {
-		return medicineTypeID;
+	public String getMedicineType() {
+		return medicineType;
 	}
 
-	public void setMedicineTypeID(String MedicineTypeID) {
+	public void setMedicineType(String MedicineType) {
 		
-		medicineTypeID = MedicineTypeID;
+		medicineType = MedicineType;
 		System.out.println("medicineTypeID"+medicineTypeID);
 	}
 
