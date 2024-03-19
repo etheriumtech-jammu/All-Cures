@@ -22,7 +22,7 @@
     <p><strong>Subject:</strong> Video Consultation - Appointment Confirmation</p>
 
     <p>Dear ${doctorLastName},</p>
-
+    <p>Greetings from All-Cures!</p>
     <p>We hope this message finds you well. A video consultation appointment has been scheduled with you on All-Cures.com, and we are reaching out to confirm your availability.</p>
      <p><strong>Patient Name:</strong> ${patientName}</p>
     <p><strong>Date & Time:</strong> ${appointmentDate}</p>
