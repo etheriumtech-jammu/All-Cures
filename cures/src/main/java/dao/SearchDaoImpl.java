@@ -588,12 +588,9 @@ public class SearchDaoImpl {
 			String img_Loc = (String) document.getFieldValue("img_Loc");
 			System.out.println("img_Loc"+img_Loc);
 			doc.setImgLoc(img_Loc);
-			String MedicineTypeIDStr = (String) document.getFieldValue("MedicineTypeID");
-			if (MedicineTypeIDStr != null) {
-			    Integer MedicineTypeID = Integer.parseInt(MedicineTypeIDStr);
-			   
-			    doc.setMedicineTypeID(MedicineTypeID);
-			} 
+			String MedicineTypeID = (String) document.getFieldValue("MedicineTypeID");
+			 doc.setMedicineTypeID(MedicineTypeID);
+		
 
 			 System.out.println("MedicineTypeID"+doc.getMedicineTypeID());
 			/*
