@@ -31,7 +31,7 @@
         <p>If you have any questions or need further assistance, please feel free to contact us at ${supportEmail}.</p>
         <p>We look forward to assisting you during the consultation.</p>
         <p>Best regards,</p>
-        <p>[All-Cures Support Team]</p>
+        <p>All-Cures Support Team</p>
     </div>
 </body>
 
