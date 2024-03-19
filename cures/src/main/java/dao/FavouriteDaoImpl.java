@@ -188,7 +188,7 @@ public class FavouriteDaoImpl {
 			BigInteger count = (BigInteger) objects[26];
 			int docID = objects[27] != null ? (int) objects[27] : 0;	
 			int medicine_type = objects[28] != null ? (int) objects[28] : 0;
-			String img_Loc=content.replace(".json", ".png");
+			String img_Loc=content_location.replace(".json", ".png");
 			
 			hm.put("user_id", user_id);
 			hm.put("article_id",article_id);
