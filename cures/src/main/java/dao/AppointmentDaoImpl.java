@@ -152,6 +152,38 @@ public class AppointmentDaoImpl {
 
 		return AppointmentList;
 	}
+
+	//To get Appointments of a particular User
+		public static List<Appointment> getAppointmentsOfUser(Integer docID,Integer userID) {
+			Session session = HibernateUtil.buildSessionFactory();
+			Query query1 = session.createNativeQuery(
+					"SELECT * FROM Appointment where DocID=" +docID + " AND UserID= " + userID + ";");
+			List<Appointment> AppointmentList = new ArrayList<>();
+
+			List<Object[]> resultList = query1.getResultList();
+			Constant.log("Executed Query and Got: " + resultList.size() + " Appointment Lists back", 1);
+
+			for (Object[] obj : resultList) {
+				Appointment appointment = new Appointment();
+				appointment.setAppointmentID(obj[0] != null ? (Integer) obj[0] : 0);
+				appointment.setDocID(obj[1] != null ? (Integer) obj[1] : 0);
+				appointment.setUserID(obj[2] != null ? (Integer) obj[2] : 0);
+				Date date=(Date)obj[3];
+				appointment.setAppointmentDate(date);
+				appointment.setStartTime(obj[4] != null ? (String) obj[4] : "");
+				appointment.setEndTime(obj[5] != null ? (String) obj[5] : "");
+				appointment.setRequestStatus(obj[6] != null ? (Integer) obj[6] : 0);
+				appointment.setPaymentStatus(obj[7] != null ? (Integer) obj[7] : 0);
+				appointment.setFailureID(obj[8] != null ? (Integer) obj[8] : 0);
+				appointment.setCreatedDate((Timestamp) (obj[9] != null ? obj[9] : null));
+				appointment.setLastUpdatedDate((Timestamp) (obj[10] != null ? obj[10] : null));
+				appointment.setStatus(obj[11] != null ? (Integer) obj[11] : 0);
+				
+				AppointmentList.add(appointment);
+			}
+
+			return AppointmentList;
+		}
 	//To get Total , unbooked slots and Completely Booked Dates of a particular doctor
 	public static Map<String, Object> findCompletelyBookedAndAvailableDates(int doctorId) {
 	    Map<String, Object> datesMap = new HashMap<>();
