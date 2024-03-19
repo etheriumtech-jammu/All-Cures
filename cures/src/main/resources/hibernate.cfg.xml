@@ -70,7 +70,7 @@
 		<mapping class="model.VideoFailure"/>
 		<mapping class="model.ServicePayment"/>
 		<mapping class="model.ServicePaymentMethod"/>
-		
+		<mapping class="model.Appointment"/>
 		
 		
 	
