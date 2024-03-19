@@ -586,71 +586,105 @@ public class VideoDaoImpl {
 
 			    return failureList;
 			}
-	 public static Integer sendEmail(Integer docID, String meeting) throws IOException {
-   		Session session = HibernateUtil.buildSessionFactory();
-	String meeting_url = meeting.replaceFirst("https://", "");
-	String fullName="";
-	    	String email="";
-	    	Query query = session.createNativeQuery(
-	                   "SELECT prefix,docname_first,docname_middle,docname_last,email FROM Doctors_New WHERE DocID = " + docID + ";");
-	              
-	            List<Object[]> resultList = query.getResultList();
-	            
-	            if (!resultList.isEmpty()) {
-	                // Assuming the result contains [prefix, docname_first, docname_middle, docname_last]
-	                Object[] result = resultList.get(0);
-	                
-	                String prefix = result[0].toString();
-	                String firstName = result[1].toString();
-	                String middleName = (result != null && result.length >= 3 && result[2] != null) ? result[2].toString() : "";
-	                String lastName = (result != null && result.length >= 4 && result[3] != null) ? result[3].toString() : "";
+	public static Integer sendEmail(int docID, int userID, String meeting, String date, String time) throws IOException {
+	        Session session = HibernateUtil.buildSessionFactory();
+	        String meeting_url = meeting.replaceFirst("https://", "");
+	        String docFullName = "";
+	        String docEmail = "";
+	        String userFullName = "";
+	        String userEmail = "";
+	        String template_name="";
+	        String userReturnEmail="";
+	        String docReturnEmail="";
+	      
+	       
+	        // Fetch doctor details
+	        Query docQuery = session.createNativeQuery(
+	            "SELECT prefix, docname_first, docname_middle, docname_last, email FROM Doctors_New WHERE DocID = " + docID + ";");
+	        List<Object[]> docResultList = docQuery.getResultList();
 
-	                email= result[4].toString();
-	                
-	              
-	                	 if (middleName.isEmpty()) {
-	                         // If middleName is empty, construct fullName without it
-	                         fullName = prefix + " " + firstName + " " + lastName;
-	                     } else if(middleName.isEmpty() && lastName.isEmpty()) {
-	                         // If middleName is not empty, include it in the fullName
-	                    	 fullName = prefix + " " + firstName;
-	                     }
-	                     else
-	                     {
-	                    	 fullName = prefix + " " + firstName + " " + middleName + " " + lastName;
-	                     }
-	               
+	        if (!docResultList.isEmpty()) {
+	            Object[] docResult = docResultList.get(0);
+	            String prefix = docResult[0].toString();
+	            String firstName = docResult[1].toString();
+	            String middleName = (docResult != null && docResult.length >= 3 && docResult[2] != null) ? docResult[2].toString() : "";
+	            String lastName = (docResult != null && docResult.length >= 4 && docResult[3] != null) ? docResult[3].toString() : "";
+	            docEmail = docResult[4].toString();
+
+	            if (middleName.isEmpty()) {
+	                docFullName = prefix + " " + firstName + " " + lastName;
+	            } else if (middleName.isEmpty() && lastName.isEmpty()) {
+	                docFullName = prefix + " " + firstName;
+	            } else {
+	                docFullName = prefix + " " + firstName + " " + middleName + " " + lastName;
 	            }
+	        }
 
-	            System.out.println(email);
-        if (email != null) {
-            String encEmail = new UserController().getEmailEncrypted(email);
-            String link = "https://all-cures.com/notification/" + meeting_url;
-	
-		System.out.println(link);
-            EmailDTO emailDTO = new EmailDTO();
+	        // Fetch user details
+	        Query userQuery = session.createNativeQuery(
+	            "SELECT first_name, last_name, email_address FROM registration WHERE registration_id = " + userID + ";");
+	        List<Object[]> userResultList = userQuery.getResultList();
 
-            emailDTO.setTo(email);
-    //        emailDTO.setFrom("All-Cures INFO");
-            emailDTO.setSubject("Video Consultation - Appointment Confirmation");
+	        if (!userResultList.isEmpty()) {
+	            Object[] userResult = userResultList.get(0);
+	            String firstName = userResult[0].toString();
+	            String lastName = userResult[1].toString();
+	            userEmail = userResult[2].toString();
+	            userFullName = firstName + " " + lastName;
+	        }
+	        
+	        // Send email to doctor
+	        if (docEmail != null) {
+	            // Construct doctor email
+	            String encDocEmail = new UserController().getEmailEncrypted(docEmail);
+	            String docLink = "https://all-cures.com/notification/" + meeting_url;
 
-            // Populate the template data
-            Map<String, Object> templateData = new HashMap<>();
-            templateData.put("templatefile", "email/video_new.ftlh");
-	                templateData.put("name", email);
-	                templateData.put("linkmeeting", link);
-			templateData.put("videoChatLink", link);
-	                templateData.put("supportEmail", "info@etheriumtech.com");
-	                templateData.put("doctorLastName", fullName);
-		System.out.println(templateData);
-            emailDTO.setEmailTemplateData(templateData);
+	            EmailDTO docEmailDTO = new EmailDTO();
+	            docEmailDTO.setTo(docEmail);
+	            docEmailDTO.setSubject("Video Consultation Appointment Confirmation");
 
-            String returnEmail = emailUtil.shootEmail(emailDTO);
-            System.out.println("Email sent");
-            return 1;
-        } else {
-            System.out.println("Email Address Not Found");
-            return 0;
-        }
-}
+	            Map<String, Object> docTemplateData = new HashMap<>();
+	            docTemplateData.put("templatefile", "email/video.ftlh");
+	            docTemplateData.put("videoChatLink", docLink);
+	            docTemplateData.put("supportEmail", "info@etheriumtech.com");
+	            docTemplateData.put("name", docEmail);
+	            docTemplateData.put("doctorLastName", docFullName);
+	            docTemplateData.put("patientName", userFullName);
+	            docTemplateData.put("appointmentDate", date + " " + time);
+	            docEmailDTO.setEmailTemplateData(docTemplateData);
+
+	            docReturnEmail = emailUtil.shootEmail(docEmailDTO);
+	        }
+
+	        // Send email to user
+	        if (userEmail != null) {
+	            // Construct user email
+	            String encUserEmail = new UserController().getEmailEncrypted(userEmail);
+	            String userLink = "https://all-cures.com/notification/" + meeting_url;
+
+	            EmailDTO userEmailDTO = new EmailDTO();
+	            userEmailDTO.setTo(userEmail);
+	            userEmailDTO.setSubject("Video Consultation Appointment Confirmation");
+
+	            Map<String, Object> userTemplateData = new HashMap<>();
+	            userTemplateData.put("templatefile", "email/video_user.ftlh");
+	            userTemplateData.put("videoChatLink", userLink);
+	            userTemplateData.put("supportEmail", "info@etheriumtech.com");
+	            userTemplateData.put("patientName", userFullName);
+	            userTemplateData.put("doctorName", docFullName);
+	            userTemplateData.put("appointmentDate", date + " " + time);
+	            userTemplateData.put("name", userEmail);
+	            userEmailDTO.setEmailTemplateData(userTemplateData);
+
+	            userReturnEmail = emailUtil.shootEmail(userEmailDTO);
+	        }
+
+	        if (userReturnEmail != null || docReturnEmail != null) {
+	            System.out.println("Email(s) sent");
+	            return 1;
+	        } else {
+	            System.out.println("Email Address(es) Not Found");
+	            return 0;
+	        }
+	    }
 }
