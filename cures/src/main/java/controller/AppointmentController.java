@@ -44,7 +44,13 @@ public class AppointmentController {
 		     return AppointmentDaoImpl.getAppointmentsOfDoc(docID);
 				
     }
-	
+
+	//To get Appointments of a particular user with a doctor
+		@RequestMapping(value = "/get/{docID}/{userID}", produces = "application/json", method = RequestMethod.GET)  
+		public @ResponseBody List<Appointment> getAppointmentsOfUser(@PathVariable int docID,@PathVariable int userID) {
+			     return AppointmentDaoImpl.getAppointmentsOfUser(docID,userID);
+					
+	    }
 	//To get Total , unbooked slots and Completely Booked Dates of a particular doctor
 	@RequestMapping(value = "/get/Slots/{DocID}", produces = "application/json", method = RequestMethod.GET)  
 	public @ResponseBody Map<String, Object> findCompletelyBookedAndAvailableDates(@PathVariable int DocID) {
