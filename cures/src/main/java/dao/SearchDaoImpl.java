@@ -143,6 +143,7 @@ public class SearchDaoImpl {
 			String img_Loc = (String) document.getFirstValue("img_Loc");
 			doc.setImgLoc(img_Loc);
 			
+			
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
 			 * doc.setLatitude(latitude); String longitude = (String)
@@ -590,6 +591,7 @@ public class SearchDaoImpl {
 			String MedicineTypeIDStr = (String) document.getFieldValue("MedicineTypeID");
 			if (MedicineTypeIDStr != null) {
 			    Integer MedicineTypeID = Integer.parseInt(MedicineTypeIDStr);
+			    System.out.println("MedicineTypeID"+MedicineTypeID);
 			    doc.setMedicineTypeID(MedicineTypeID);
 			} 
 			/*
