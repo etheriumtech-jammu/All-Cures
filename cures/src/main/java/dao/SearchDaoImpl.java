@@ -203,8 +203,8 @@ public class SearchDaoImpl {
 		SolrQuery query = new SolrQuery();
 		String[] dname = docdetails.split(" ");
 		System.out.println("length" + dname.length);
+		StringBuilder queryStringBuilder = new StringBuilder();
 		if (dname[0].contains("Dr") || dname[0].contains("Dr.")) {
-		    StringBuilder queryStringBuilder = new StringBuilder();
 		    
 		    // Append the field name and the first name
 		    queryStringBuilder.append("docname_first:").append(dname[1]);
