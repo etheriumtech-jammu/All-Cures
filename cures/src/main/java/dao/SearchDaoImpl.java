@@ -201,23 +201,29 @@ public class SearchDaoImpl {
 		SolrQuery query = new SolrQuery();
 		String[] dname = docdetails.split(" ");
 		System.out.println("length" + dname.length);
-		if ((dname[0].contains("Dr"))|| (dname[0].contains("Dr."))) {
-			if (dname.length == 2)
-			{ 
-				query.add("q", "docname_first:" + dname[1]) ;
-			}
-			else if (dname.length <= 3) {
-				query.add("q", "docname_first:" + dname[1] + Constant.OR + "docname_last:" + dname[2]);
-			} else {
-				query.add("q", "docname_first:" + dname[1] + Constant.OR + "docname_middle:" + dname[2] + Constant.OR
-						+ "docname_last:" + dname[3]);
-			}
+		StringBuilder queryStringBuilder = new StringBuilder();
+		if (dname[0].contains("Dr") || dname[0].contains("Dr.")) {
+		    
+		    // Append the field name and the first name
+		    queryStringBuilder.append("docname_first:").append(dname[1]);
+		    
+		    // Append OR clauses for middle and last names if they exist
+		    for (int i = 2; i < dname.length; i++) {
+		        queryStringBuilder.append(" OR ");
+		        if (i == dname.length - 1) {
+		            // Last name
+		            queryStringBuilder.append("docname_last:").append(dname[i]);
+		        } else {
+		            // Middle name
+		            queryStringBuilder.append("docname_middle:").append(dname[i]);
+		        }
+		    }
+		    
+		    // Add the constructed query to the Solr query object
+		    query.add("q", queryStringBuilder.toString());
 		} else {
-			query.add("q", Constant.NAME + ":" + docdetails + Constant.OR + Constant.PRIMARY_SPL + ":" + docdetails
-					+ Constant.OR + Constant.SUB_SPLS + ":" + docdetails);
-			// query.set("q", "city:"+cityname +" or pincode:"+ cityname );
-			// query.set("q", "name:"+docdetails +" or primary_spl:"+ docdetails +"
-			// or sub_spls:"+ docdetails);
+		    // Handle cases where the name doesn't contain "Dr" or "Dr."
+		    query.add("q", Constant.NAME + ":" + docdetails + Constant.OR + Constant.PRIMARY_SPL + ":" + docdetails + Constant.OR + Constant.SUB_SPLS + ":" + docdetails);
 		}
 //		query.add("sort", "geodist() asc");
 //		query.add("fq", "{!geofilt sfield=location}");
