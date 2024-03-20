@@ -222,6 +222,7 @@ public class SearchDaoImpl {
                    
                 }
             }
+			 query.add("q", queryStringBuilder.toString());
         }else {
 		    // Handle cases where the name doesn't contain "Dr" or "Dr."
 		    query.add("q", Constant.NAME + ":" + docdetails + Constant.OR + Constant.PRIMARY_SPL + ":" + docdetails + Constant.OR + Constant.SUB_SPLS + ":" + docdetails);
