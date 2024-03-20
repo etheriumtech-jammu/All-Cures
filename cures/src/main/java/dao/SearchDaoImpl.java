@@ -219,7 +219,7 @@ public class SearchDaoImpl {
                         queryStringBuilder.append(" OR ");
                         queryStringBuilder.append("docname_middle:").append(dname[i]);
                     }
-                    addedMiddleOrLastName = true;
+                   
                 }
             }
         }else {
