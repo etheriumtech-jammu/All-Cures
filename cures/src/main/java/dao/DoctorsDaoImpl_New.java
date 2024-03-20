@@ -589,10 +589,10 @@ public class DoctorsDaoImpl_New {
 
 		// Iterate through the list of serviceIDs and check for specific service IDs
 		for (Integer serviceID : serviceIDs) {
-		    if (serviceID == 2) {
+		    if (serviceID == 1) {
 		        chatService = 1;
 		    }
-		    if (serviceID == 19) {
+		    if (serviceID == 2) {
 		        videoService = 1;
 		    }
 		}
