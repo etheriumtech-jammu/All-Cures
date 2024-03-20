@@ -195,33 +195,31 @@ public class SearchDaoImpl {
 		// MapSolrParams queryParams = new MapSolrParams(queryParamMap);
 //		System.out.println("Lat" + lat);
 //		System.out.println("Lon" + lon);
-		String lat="74.8570";
-		String lon="74.8570";
-		String docloc = lat + "," + lon;
 		SolrQuery query = new SolrQuery();
 		String[] dname = docdetails.split(" ");
 		System.out.println("length" + dname.length);
 		StringBuilder queryStringBuilder = new StringBuilder();
 		if (dname[0].contains("Dr") || dname[0].contains("Dr.")) {
-		    
-		    // Append the field name and the first name
-		    queryStringBuilder.append("docname_first:").append(dname[1]);
-		    
-		    // Append OR clauses for middle and last names if they exist
-		    for (int i = 2; i < dname.length; i++) {
-		        queryStringBuilder.append(" OR ");
-		        if (i == dname.length - 1) {
-		            // Last name
-		            queryStringBuilder.append("docname_last:").append(dname[i]);
-		        } else {
-		            // Middle name
-		            queryStringBuilder.append("docname_middle:").append(dname[i]);
-		        }
-		    }
-		    
-		    // Add the constructed query to the Solr query object
-		    query.add("q", queryStringBuilder.toString());
-		} else {
+            // Append the field name and the first name
+            queryStringBuilder.append("docname_first:").append(dname[1]);
+
+            // Append OR clauses for middle and last names if they exist
+            for (int i = 2; i < dname.length; i++) {
+                if (!dname[i].trim().isEmpty()) {
+                    if (i == dname.length - 1) {
+                        // Last name
+                        queryStringBuilder.append(" OR ");
+                        queryStringBuilder.append("docname_last:").append(dname[i]);
+                    } else {
+                        // Middle name
+                        queryStringBuilder.append(" OR ");
+                        queryStringBuilder.append("docname_middle:").append(dname[i]);
+                    }
+                   
+                }
+            }
+			 query.add("q", queryStringBuilder.toString());
+        } else {
 		    // Handle cases where the name doesn't contain "Dr" or "Dr."
 		    query.add("q", Constant.NAME + ":" + docdetails + Constant.OR + Constant.PRIMARY_SPL + ":" + docdetails + Constant.OR + Constant.SUB_SPLS + ":" + docdetails);
 		}
