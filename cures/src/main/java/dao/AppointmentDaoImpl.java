@@ -85,7 +85,7 @@ public class AppointmentDaoImpl {
 	    } catch (Exception e) {
 	        e.printStackTrace(); // Log the exception or handle it appropriately
 	        session.getTransaction().rollback();
-	        return 0; // Return 0 if insertion fails
+	        return ""; // Return 0 if insertion fails
 	    }
 	}
 
