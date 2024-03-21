@@ -23,6 +23,7 @@
 	System.out.println("ccaRequest"+ccaRequest);
 	 AesCryptUtil aesUtil=new AesCryptUtil(workingKey);
 	 String encRequest = aesUtil.encrypt(ccaRequest);
+System.out.println("encRequest"+encRequest);
 	%>
 	
 	<form id="nonseamless" method="post" name="redirect" action="https://test.ccavenue.com/transaction.do?command=initiateTransaction"/> 
