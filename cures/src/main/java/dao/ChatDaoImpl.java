@@ -572,7 +572,7 @@ public class ChatDaoImpl {
 
 						+ "INNER JOIN (\r\n" + " Select  d.docid FROM Doctors_New as d\r\n" + "   \r\n" + ") AS doc\r\n"
 						+ "ON h.chat_id = m.chat_id AND h.time = m.last_time\r\n" + "WHERE (h.from_id = " + user_id
-						+ " OR h.to_id = " + user_id + ") AND reg.registration_id=m.user\r\n" + "GROUP BY h.chat_id\r\n"
+						+ " OR h.to_id = " + user_id + ") AND (reg.registration_id=m.user OR doc.docid=m.user)\r\n" + "GROUP BY h.chat_id\r\n"
 						+ "ORDER BY last_time DESC;\r\n" + "\r\n" + "");
 
 		List<Object[]> results = (List<Object[]>) query.getResultList();
