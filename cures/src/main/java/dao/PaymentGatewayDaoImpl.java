@@ -18,15 +18,13 @@ public class PaymentGatewayDaoImpl {
 		String orderId="";
 		Integer i=1;
 		Query query = session.createNativeQuery("SELECT MAX(order_id) FROM orders");
-		Integer highestOrderId = (Integer) query.uniqueResult();
-		if(highestOrderId==null)
-		{
-			orderId=i.toString();
-		}else {
-			i=highestOrderId + 1;
-			orderId=i.toString();
-		}
-		
+		BigInteger highestOrderId = (BigInteger) query.uniqueResult();
+		if(highestOrderId == null) {
+		    orderId = i.toString();
+		} else {
+	    i = highestOrderId.intValue() + 1;
+		    orderId = Integer.toString(i);
+			}
 		
 		String currency=(String) AppointmentMap.get("currency");
 		String workingKey="80923CFC322F5875BA18A25A84B3F05B";
