@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-
+import java.math.BigInteger;
 import model.AvailabilitySchedule;
 import util.AesCryptUtil;
 import util.HibernateUtil;
