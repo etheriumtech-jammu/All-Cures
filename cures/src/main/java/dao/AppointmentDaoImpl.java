@@ -79,8 +79,8 @@ public class AppointmentDaoImpl {
 
 	        System.out.println(formattedTime);
 	        System.out.println(dateString);
-	      VideoDaoImpl.sendEmail((Integer) AppointmentMap.get("docID"),(Integer) AppointmentMap.get("userID"),meeting, dateString,formattedTime);
-	       
+//	      VideoDaoImpl.sendEmail((Integer) AppointmentMap.get("docID"),(Integer) AppointmentMap.get("userID"),meeting, dateString,formattedTime);
+	       PaymentGatewayDaoImpl.SetPayment(AppointmentMap);
 	        return 1; // Return 1 if insertion is successful
 	    } catch (Exception e) {
 	        e.printStackTrace(); // Log the exception or handle it appropriately
