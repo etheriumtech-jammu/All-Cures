@@ -1126,7 +1126,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 		// creating session object
 		//Session session = factory;
 		// creating transaction object
-		session.beginTransaction();
+	//	session.beginTransaction();
 
 		String updatestr = "";
 		if (articleMap.containsKey("title")) {
