@@ -1760,4 +1760,61 @@ public static List getArticlesListAllKeysRanked(Integer limit, Integer offset, S
 		return hmFinal;
 	}
 
+	public static int updateLikes(Long articleId, boolean isLike) {
+    String columnName = isLike ? "likes" : "dislikes";
+    int ret=0;
+ // creating seession factory object
+ 			Session session = HibernateUtil.buildSessionFactory();
+ 			
+    try  {
+        Transaction transaction = session.beginTransaction();
+        
+        // Check if the record for the article exists
+        boolean articleExists = session.createNativeQuery("SELECT 1 FROM article_likes WHERE article_id = :articleId")
+                .setParameter("articleId", articleId)
+                .uniqueResult() != null;
+
+        if (articleExists) {
+        Query query=    session.createNativeQuery("UPDATE article_likes SET " + columnName + " = " + columnName + " + 1 WHERE article_id = :articleId")
+                    .setParameter("articleId", articleId);
+              ret= query.executeUpdate();
+        } else {
+            Query query = session.createNativeQuery("INSERT INTO article_likes (article_id, " + columnName + ") VALUES (:articleId, 1)")
+                    .setParameter("articleId", articleId);
+             ret = query.executeUpdate();
+        }
+        
+        transaction.commit();
+        
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return ret;
+}
+	
+
+public static Map<String, Integer> getLikesAndDislikesCount(Long articleId) {
+    Map<String, Integer> likesAndDislikes = new HashMap<>();
+    Session session = HibernateUtil.buildSessionFactory();
+    try {
+        // Query to retrieve likes count
+        NativeQuery<Integer> likesQuery = session.createNativeQuery(
+                "SELECT likes FROM article_likes WHERE article_id = :articleId")
+                .setParameter("articleId", articleId);
+        Integer likesCount = (Integer) likesQuery.uniqueResult();
+        likesAndDislikes.put("likes", likesCount != null ? likesCount : 0);
+
+        // Query to retrieve dislikes count
+        NativeQuery<Integer> dislikesQuery = session.createNativeQuery(
+                "SELECT dislikes FROM article_likes WHERE article_id = :articleId")
+                .setParameter("articleId", articleId);
+        Integer dislikesCount = (Integer) dislikesQuery.uniqueResult();
+        likesAndDislikes.put("dislikes", dislikesCount != null ? dislikesCount : 0);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return likesAndDislikes;
+}
+
+
 }
