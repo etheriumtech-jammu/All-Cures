@@ -27,7 +27,7 @@ public class PaymentGatewayDaoImpl {
 			}
 		
 		String currency=(String) AppointmentMap.get("currency");
-		String workingKey="80923CFC322F5875BA18A25A84B3F05B";
+		String workingKey="039AE11691FCF783D1539D35C6188AF9";
 		String amount=(String) AppointmentMap.get("amount");
 		String redirect_url="https://uat.all-cures.com:444/cures/ccavResponsehandler.jsp";
 		String cancel_url="https://uat.all-cures.com:444/cures/Error.jsp";
