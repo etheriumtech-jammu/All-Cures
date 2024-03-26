@@ -1768,7 +1768,7 @@ public static List getArticlesListAllKeysRanked(Integer limit, Integer offset, S
  			Session session = HibernateUtil.buildSessionFactory();
  			
     try  {
-        Transaction transaction = session.beginTransaction();
+//        Transaction transaction = session.beginTransaction();
         
         // Check if the record for the article exists
         boolean articleExists = session.createNativeQuery("SELECT 1 FROM article_likes WHERE article_id = :articleId")
@@ -1785,7 +1785,7 @@ public static List getArticlesListAllKeysRanked(Integer limit, Integer offset, S
              ret = query.executeUpdate();
         }
         
-        transaction.commit();
+//        transaction.commit();
         
     } catch (Exception e) {
         e.printStackTrace();
