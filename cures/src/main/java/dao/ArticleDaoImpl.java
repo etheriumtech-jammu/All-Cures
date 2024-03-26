@@ -1788,7 +1788,10 @@ public static List getArticlesListAllKeysRanked(Integer limit, Integer offset, S
 session.getTransaction().commit();
         
     } catch (Exception e) {
-        e.printStackTrace();
+        if (session.getTransaction() != null && session.getTransaction().isActive()) {
+        	session.getTransaction().rollback();
+        }
+        throw e;
     }
     return ret;
 }
