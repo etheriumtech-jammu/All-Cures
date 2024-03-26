@@ -224,6 +224,29 @@ return articleDaoImpl.updateArticleId(article_id, articleMap, baseUrl);
 		return hm;
 	}
 
+	// Endpoint for liking an article
+	@RequestMapping(value = "/like/{articleId}", method = RequestMethod.POST, produces = "application/json")
+	public @ResponseBody int likeArticle(@PathVariable Long articleId)
+	
+	{
+       return  ArticleDaoImpl.updateLikes(articleId, true);
+    }
+
+    // Endpoint for disliking an article
+	@RequestMapping(value = "/dislike/{articleId}", method = RequestMethod.POST, produces = "application/json")
+	public @ResponseBody int dislikeArticle(@PathVariable Long articleId)
+	
+	{
+		return ArticleDaoImpl.updateLikes(articleId, false);
+    }
+	
+	@RequestMapping(value = "/like/count/{articleId}", method = RequestMethod.POST, produces = "application/json")
+	public @ResponseBody Map<String, Integer> getlikesanddislikescount(@PathVariable Long articleId)
+	
+	{
+		return ArticleDaoImpl.getLikesAndDislikesCount(articleId);
+    }
+	
 	
 
 }
