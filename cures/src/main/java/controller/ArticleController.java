@@ -240,7 +240,7 @@ return articleDaoImpl.updateArticleId(article_id, articleMap, baseUrl);
 		return ArticleDaoImpl.updateLikes(articleId, false);
     }
 	
-	@RequestMapping(value = "/like/count/{articleId}", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/like/count/{articleId}", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody Map<String, Integer> getlikesanddislikescount(@PathVariable Long articleId)
 	
 	{
