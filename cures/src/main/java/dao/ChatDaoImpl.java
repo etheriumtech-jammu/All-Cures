@@ -560,7 +560,7 @@ public class ChatDaoImpl {
 		Query query = session.createNativeQuery(
 				"SELECT \r\n"
 				+ "reg_doc.first_name AS doc_first_name,\r\n"
-				+ "    reg_doc.last_name AS doc_last_name,\r\n"
+				+ "    reg_doc.last_name AS doc_last_name,reg_doc.DocID,\r\n"
 				+ "    reg_pat.first_name as patient_first_name,\r\n"
 				+ "    reg_pat.last_name as patient_last_name,\r\n"
 				+ "    \r\n"
@@ -607,14 +607,15 @@ public class ChatDaoImpl {
 			String doc_first_name = (String) objects[0];
 			
 			String doc_last_name = (String) objects[1];
-			String patient_first_name = (String) objects[2];
+			Integer docID=(Integer) objects[5];
+			String patient_first_name = (String) objects[3];
 			
-			String patient_last_name = (String) objects[3];			
-			Integer user=(Integer) objects[4];
+			String patient_last_name = (String) objects[4];			
+			Integer user=(Integer) objects[5];
 					
-			String time=(String) objects[5];
+			String time=(String) objects[6];
 			
-			String demsg = (String) objects[6];
+			String demsg = (String) objects[7];
 			if(demsg!=null) {
 			final String secretKey = Constant.SECRETE;
 			Encryption encrypt = new Encryption();
