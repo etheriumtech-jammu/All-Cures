@@ -15,6 +15,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.HashMap;
+import java.util.StringTokenizer;
+import java.util.Hashtable;
 @RestController
 @RequestMapping(path = "/make")
 public class PaymentGatewayController {
@@ -66,8 +68,34 @@ public class PaymentGatewayController {
     }
 
 	@RequestMapping(value = "/ccavenue-payment-udpates", method = RequestMethod.POST)
-    public String PaymentUpdates(HttpServletRequest request, HashMap<String, Object> PaymentMap) {
-		System.out.println("PaymentMap"+ PaymentMap);
+    public String PaymentUpdates(HttpServletRequest request) {
+	String workingKey = ""; // Enter your 32 Bit Alphanumeric Working Key here
+        String encResp = request.getParameter("encResp");; // Get the encrypted response from the request parameter
+        AesCryptUtil aesUtil = new AesCryptUtil(workingKey);
+        String decResp = aesUtil.decrypt(encResp);
+        Hashtable<String, String> hs = new Hashtable<>();
+        StringTokenizer tokenizer = new StringTokenizer(decResp, "&");
+        while (tokenizer.hasMoreTokens()) {
+            String pair = tokenizer.nextToken();
+            if (pair != null) {
+                StringTokenizer strTok = new StringTokenizer(pair, "=");
+                String pname = "";
+                String pvalue = "";
+                if (strTok.hasMoreTokens()) {
+                    pname = strTok.nextToken();
+                    if (strTok.hasMoreTokens())
+                        pvalue = strTok.nextToken();
+                    hs.put(pname, pvalue);
+                }
+            }
+        }
+        
+        // Access the key-value pairs in the Hashtable
+        for (String key : hs.keySet()) {
+            String value = hs.get(key);
+            System.out.println("Parameter Name: " + key + ", Value: " + value);
+        }
+    
 	    return "Success";
     }
     private String generateChecksum(PaymentForm paymentForm) throws NoSuchAlgorithmException {
