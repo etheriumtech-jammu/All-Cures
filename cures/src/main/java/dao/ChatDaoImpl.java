@@ -606,11 +606,11 @@ public class ChatDaoImpl {
 			
 			String last_name = (String) objects[1];
 					
-			BigInteger user=(BigInteger) objects[5];
+			BigInteger user=(BigInteger) objects[2];
 					
-			String time=(String) objects[6];
+			String time=(String) objects[3];
 			
-			String demsg = (String) objects[7];
+			String demsg = (String) objects[4];
 			if(demsg!=null) {
 			final String secretKey = Constant.SECRETE;
 			Encryption encrypt = new Encryption();
