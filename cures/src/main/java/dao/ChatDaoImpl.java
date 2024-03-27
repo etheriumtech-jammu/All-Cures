@@ -558,22 +558,45 @@ public class ChatDaoImpl {
 		Session session = HibernateUtil.buildSessionFactory();
 		
 		Query query = session.createNativeQuery(
-				"SELECT reg.first_name, reg.last_name, reg.registration_type, (Select d.docid FROM Doctors_New as d where d.docid=m.user ), reg.registration_id AS user,\r\n"
-						+ "       MAX(h.time) AS last_time, h.message AS last_message,\r\n"
-						+ "       h.chat_id, h.from_id, h.to_id\r\n" + "FROM dp_chat_history AS h\r\n"
-						+ "INNER JOIN (\r\n" + "    SELECT DISTINCT chat_id,  MAX(time) AS last_time,\r\n"
-						+ "       CASE \r\n" + "         WHEN from_id = " + user_id + " THEN to_id \r\n"
-						+ "         ELSE from_id \r\n" + "       END AS user \r\n" + "FROM dp_chat_history \r\n"
-						+ "WHERE from_id = " + user_id + " OR to_id = " + user_id + "\r\n" + "GROUP BY chat_id\r\n"
-
-						+ ") AS m\r\n" + "\r\n" + "INNER JOIN (\r\n"
-						+ " Select r.first_name,r.last_name, r.registration_type ,r.registration_id, r.DocID FROM registration as r\r\n"
-						+ "   \r\n" + ") AS reg\r\n" + "\r\n" + "\r\n" + "\r\n"
-
-						+ "INNER JOIN (\r\n" + " Select  d.docid FROM Doctors_New as d\r\n" + "   \r\n" + ") AS doc\r\n"
-						+ "ON h.chat_id = m.chat_id AND h.time = m.last_time\r\n" + "WHERE (h.from_id = " + user_id
-						+ " OR h.to_id = " + user_id + ") AND (reg.registration_id=m.user OR doc.docid=m.user)\r\n" + "GROUP BY h.chat_id\r\n"
-						+ "ORDER BY last_time DESC;\r\n" + "\r\n" + "");
+				"SELECT \r\n"
+				+ "reg_doc.first_name AS doc_first_name,\r\n"
+				+ "    reg_doc.last_name AS doc_last_name,\r\n"
+				+ "    reg_pat.first_name as patient_first_name,\r\n"
+				+ "    reg_pat.last_name as patient_last_name,\r\n"
+				+ "    \r\n"
+				+ "    COALESCE(d.docid, reg.registration_id) AS user_id, \r\n"
+				+ "    MAX(h.time) AS last_time, \r\n"
+				+ "    h.message AS last_message,\r\n"
+				+ "    h.chat_id, \r\n"
+				+ "    h.from_id, \r\n"
+				+ "    h.to_id\r\n"
+				+ "    \r\n"
+				+ "FROM dp_chat_history AS h\r\n"
+				+ "INNER JOIN (\r\n"
+				+ "    SELECT \r\n"
+				+ "        DISTINCT chat_id,  \r\n"
+				+ "        MAX(time) AS last_time,\r\n"
+				+ "        CASE \r\n"
+				+ "            WHEN from_id = 3 THEN to_id \r\n"
+				+ "            ELSE from_id \r\n"
+				+ "        END AS user \r\n"
+				+ "    FROM dp_chat_history \r\n"
+				+ "    WHERE from_id = 3 OR to_id = 3\r\n"
+				+ "    GROUP BY chat_id\r\n"
+				+ ") AS m ON h.chat_id = m.chat_id AND h.time = m.last_time\r\n"
+				+ "LEFT JOIN registration AS reg ON \r\n"
+				+ "    m.user = CASE \r\n"
+				+ "        WHEN reg.registration_type = 1 THEN reg.registration_id \r\n"
+				+ "        WHEN reg.registration_type = 2 THEN reg.DocID \r\n"
+				+ "        ELSE NULL \r\n"
+				+ "    END\r\n"
+				+ "LEFT JOIN Doctors_New AS d ON m.user = d.docid\r\n"
+				+ "LEFT JOIN registration AS reg_doc ON d.docid = reg_doc.docid\r\n"
+				+ "LEFT JOIN registration AS reg_pat On m.user=reg_pat.registration_id\r\n"
+				+ "WHERE (h.from_id = 3 OR h.to_id = 3) \r\n"
+				+ "GROUP BY h.chat_id\r\n"
+				+ "ORDER BY last_time DESC;\r\n"
+				+ "");
 
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println(results.size());
@@ -581,13 +604,12 @@ public class ChatDaoImpl {
 		for (Object[] objects : results) {
 			LinkedHashMap<String, Object> hm = new LinkedHashMap<>();   
 			// add linkedhashmap to preserve the order
-			String first_name = (String) objects[0];
+			String doc_first_name = (String) objects[0];
 			
-			String last_name = (String) objects[1];
+			String doc_last_name = (String) objects[1];
+			String patient_first_name = (String) objects[2];
 			
-	
-			BigInteger docID = (BigInteger) objects[3];
-			
+			String patient_last_name = (String) objects[3];			
 			Integer user=(Integer) objects[4];
 					
 			String time=(String) objects[5];
@@ -601,8 +623,10 @@ public class ChatDaoImpl {
 			message = encrypt.decrypt(demsg, secretKey);
 			}
 			
-			hm.put("First_name", first_name);
-			hm.put("Last_name",last_name);
+			hm.put("doc_first_name", doc_first_name);
+			hm.put("doc_last_name",doc_last_name);
+			hm.put("patient_first_name", patient_first_name);
+			hm.put("patient_last_name",patient_last_name);
 			hm.put("User",user);
 			hm.put("docID", docID);
 			hm.put("Message", message);
