@@ -63,7 +63,12 @@ public class PaymentGatewayController {
             return "error"; // Redirect to an error page
         }
     }
-    
+
+	@RequestMapping(value = "/ccavenue-payment-udpates", method = RequestMethod.POST)
+    public String makePayment(HttpServletRequest request, @ModelAttribute PaymentForm paymentForm) {
+		System.out.println("Reached by CCAvenue");
+	    return "Success";
+    }
     private String generateChecksum(PaymentForm paymentForm) throws NoSuchAlgorithmException {
         TreeMap<String, String> params = new TreeMap<>();
         params.put("merchantId", MERCHANT_ID);
