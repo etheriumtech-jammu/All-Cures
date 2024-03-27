@@ -2,7 +2,7 @@ package dao;
 
 import java.util.Date;
 import java.util.HashMap;
-
+import java.util.UUID;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import java.math.BigInteger;
@@ -15,17 +15,9 @@ public class PaymentGatewayDaoImpl {
 	
 	public static String SetPayment(HashMap<String, Object> AppointmentMap) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		String orderId="";
-		Integer i=1;
-		Query query = session.createNativeQuery("SELECT MAX(order_id) FROM orders");
-		BigInteger highestOrderId = (BigInteger) query.uniqueResult();
-		if(highestOrderId == null) {
-		    orderId = i.toString();
-		} else {
-	    i = highestOrderId.intValue() + 1;
-		    orderId = Integer.toString(i);
-			}
-		
+		UUID uuid = UUID.randomUUID();
+        	String orderId= uuid.toString();
+        
 		String currency=(String) AppointmentMap.get("currency");
 		String workingKey="0C8A93B072D45A598061718B364E36B5";
 		String amount=(String) AppointmentMap.get("amount");
