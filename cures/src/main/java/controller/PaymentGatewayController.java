@@ -69,7 +69,7 @@ public class PaymentGatewayController {
 
 	@RequestMapping(value = "/ccavenue-payment-udpates", method = RequestMethod.POST)
     public String PaymentUpdates(HttpServletRequest request) {
-	String workingKey = ""; // Enter your 32 Bit Alphanumeric Working Key here
+	String workingKey = "039AE11691FCF783D1539D35C6188AF9"; // Enter your 32 Bit Alphanumeric Working Key here
         String encResp = request.getParameter("encResp");; // Get the encrypted response from the request parameter
         AesCryptUtil aesUtil = new AesCryptUtil(workingKey);
         String decResp = aesUtil.decrypt(encResp);
