@@ -65,7 +65,7 @@ public class PaymentGatewayController {
     }
 
 	@RequestMapping(value = "/ccavenue-payment-udpates", method = RequestMethod.POST)
-    public String makePayment(HttpServletRequest request, @ModelAttribute PaymentForm paymentForm) {
+    public String PaymentUpdates(HttpServletRequest request) {
 		System.out.println("Reached by CCAvenue");
 	    return "Success";
     }
