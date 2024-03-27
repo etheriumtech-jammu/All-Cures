@@ -65,8 +65,8 @@ public class PaymentGatewayController {
     }
 
 	@RequestMapping(value = "/ccavenue-payment-udpates", method = RequestMethod.POST)
-    public String PaymentUpdates(HttpServletRequest request) {
-		System.out.println("Reached by CCAvenue");
+    public String PaymentUpdates(HttpServletRequest request, HashMap<String, Object> PaymentMap) {
+		System.out.println("PaymentMap"+ PaymentMap);
 	    return "Success";
     }
     private String generateChecksum(PaymentForm paymentForm) throws NoSuchAlgorithmException {
