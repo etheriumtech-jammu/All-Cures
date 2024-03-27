@@ -37,7 +37,7 @@ import util.HibernateUtil;
 public class AppointmentDaoImpl {
 	 
 	//To add a new Appointment
-	public static Integer SetAppointment(HashMap<String, Object> AppointmentMap, String meeting) {
+	public static String SetAppointment(HashMap<String, Object> AppointmentMap, String meeting) {
 	    Session session = HibernateUtil.buildSessionFactory();
 	    Appointment appointment = new Appointment();
 	    try {
