@@ -607,11 +607,11 @@ public class ChatDaoImpl {
 			String doc_first_name = (String) objects[0];
 			
 			String doc_last_name = (String) objects[1];
-			Integer docID=(Integer) objects[5];
+			Integer docID=(Integer) objects[2];
 			String patient_first_name = (String) objects[3];
 			
 			String patient_last_name = (String) objects[4];			
-			Integer user=(Integer) objects[5];
+			BigInteger user=(BigInteger) objects[5];
 					
 			String time=(String) objects[6];
 			
@@ -628,7 +628,7 @@ public class ChatDaoImpl {
 			hm.put("doc_last_name",doc_last_name);
 			hm.put("patient_first_name", patient_first_name);
 			hm.put("patient_last_name",patient_last_name);
-			hm.put("User",user);
+			hm.put("userID",user);
 			hm.put("docID", docID);
 			hm.put("Message", message);
 			hm.put("Time", time);
