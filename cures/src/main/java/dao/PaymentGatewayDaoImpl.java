@@ -29,7 +29,7 @@ public class PaymentGatewayDaoImpl {
 		String currency=(String) AppointmentMap.get("currency");
 		String workingKey="039AE11691FCF783D1539D35C6188AF9";
 		String amount=(String) AppointmentMap.get("amount");
-		String redirect_url="https://all-cures.com:444/cures/make/ccavenue-payment-udpates";
+		String redirect_url="https://uat.all-cures.com:444/cures/make/ccavenue-payment-udpates";
 		String cancel_url="https://uat.all-cures.com:444/cures/Error.jsp";
 		long currentTimeMillis = new Date().getTime();
         int ccaRequesttid = (int) currentTimeMillis;
