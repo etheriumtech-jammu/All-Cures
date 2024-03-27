@@ -33,6 +33,7 @@ import model.ServicePayment;
 import util.Constant;
 import util.HibernateUtil;
 
+
 public class AppointmentDaoImpl {
 	 
 	//To add a new Appointment
@@ -81,12 +82,12 @@ public class AppointmentDaoImpl {
 	        System.out.println(formattedTime);
 	        System.out.println(dateString);
 	      VideoDaoImpl.sendEmail((Integer) AppointmentMap.get("docID"),(Integer) AppointmentMap.get("userID"),meeting, dateString,formattedTime);
-	       
-	        return 1; // Return 1 if insertion is successful
+	       String encRequest= PaymentGatewayDaoImpl.SetPayment(AppointmentMap);
+	        return encRequest; // Return 1 if insertion is successful
 	    } catch (Exception e) {
 	        e.printStackTrace(); // Log the exception or handle it appropriately
 	        session.getTransaction().rollback();
-	        return 0; // Return 0 if insertion fails
+	        return ""; // Return 0 if insertion fails
 	    }
 	}
 
