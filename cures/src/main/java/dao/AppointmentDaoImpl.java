@@ -38,10 +38,12 @@ public class AppointmentDaoImpl {
 	 
 	//To add a new Appointment
 	public static HashMap<String, String> setAppointment(HashMap<String, Object> appointmentMap, String meeting) {
-	    try (Session session = HibernateUtil.buildSessionFactory()) {
-	        Appointment appointment = new Appointment();
-	        Transaction tx = session.beginTransaction();
+		Session session = HibernateUtil.buildSessionFactory();
+		  Transaction tx = session.beginTransaction();
 	        
+	    try  {
+	        Appointment appointment = new Appointment();
+	      
 	        // Set appointment details
 	        appointment.setDocID((Integer) appointmentMap.get("docID"));
 	        appointment.setUserID((Integer) appointmentMap.get("userID"));
