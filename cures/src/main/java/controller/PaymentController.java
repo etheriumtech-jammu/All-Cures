@@ -98,5 +98,11 @@ public class PaymentController {
     	return res;
     }
 	
+	@RequestMapping(value = "get/payment-udpates/{orderID}", method = RequestMethod.GET)
+    public String getOrderStatus(HttpServletRequest request,@PathVariable String orderID ) {
+    	
+    	return PaymentGatewayDaoImpl.getOrderStatus(orderID);
+    	
+    }
 	
 }
