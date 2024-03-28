@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import dao.PaymentDaoImpl;
 import dao.PaymentGatewayDaoImpl;
@@ -92,7 +94,7 @@ public class PaymentController {
 	}
 
 	@RequestMapping(value = "/ccavenue-payment-udpates", method = RequestMethod.POST)
-    public String PaymentUpdates(HttpServletRequest request,HttpServletResponse response) {
+    public String PaymentUpdates(HttpServletRequest request,HttpServletResponse response) throws IOException {
     	
     	String res= PaymentGatewayDaoImpl.saveTransactionResults(request);
     	System.out.println(res);
