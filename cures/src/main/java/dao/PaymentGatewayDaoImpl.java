@@ -126,7 +126,15 @@ public class PaymentGatewayDaoImpl {
 			        + "trackingID = '" + hs.get("tracking_id") + "'"
 			    
 			        + "WHERE order_id = '" + orderId + "'");
-			
+			System.out.println("UPDATE Payment_Gateway_Transactions "
+			        + "SET order_status = '" + hs.get("order_status") + "', " 
+			        + "payment_mode = '" + hs.get("payment_mode") + "', "
+			        + "status_message = '" + hs.get("status_message") + "', "
+			        + "bank_ref_no = '" + hs.get("bank_ref_no") + "', "
+			        + "trans_date = '" + transDate + "', "
+			        + "trackingID = '" + hs.get("tracking_id") + "', "
+			       
+			        + "WHERE order_id = '" + orderId + "'");
 			
 			query.executeUpdate();
 			tx.commit();
