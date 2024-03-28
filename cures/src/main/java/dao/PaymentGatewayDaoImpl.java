@@ -1,52 +1,266 @@
 package dao;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import java.math.BigInteger;
-import model.AvailabilitySchedule;
+
+import model.PaymentGatewayTransaction;
 import util.AesCryptUtil;
 import util.HibernateUtil;
 
 public class PaymentGatewayDaoImpl {
 
-	
-	public static String SetPayment(HashMap<String, Object> AppointmentMap) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		String orderId="";
-		Integer i=1;
-		Query query = session.createNativeQuery("SELECT MAX(order_id) FROM orders");
-		BigInteger highestOrderId = (BigInteger) query.uniqueResult();
-		if(highestOrderId == null) {
-		    orderId = i.toString();
-		} else {
-	    i = highestOrderId.intValue() + 1;
-		    orderId = Integer.toString(i);
-			}
-		
-		String currency=(String) AppointmentMap.get("currency");
-		String workingKey="039AE11691FCF783D1539D35C6188AF9";
-		String amount=(String) AppointmentMap.get("amount");
-		String redirect_url="https://uat.all-cures.com:444/cures/make/ccavenue-payment-udpates";
-		String cancel_url="https://uat.all-cures.com:444/cures/Error.jsp";
+	// Synchronization lock object
+	private static final Object paymentLock = new Object();
+
+	public static String setPayment(HashMap<String, Object> appointmentMap, int appointmentID) {
+		UUID uuid = UUID.randomUUID();
+		String orderId = uuid.toString();
+
+		String currency = (String) appointmentMap.get("currency");
+//		String workingKey = "80923CFC322F5875BA18A25A84B3F05B";
+		String workingKey = "039AE11691FCF783D1539D35C6188AF9";
+		BigDecimal amount = (BigDecimal) appointmentMap.get("amount");
+		String redirectUrl = "https://uat.all-cures.com:444/cures/payment/ccavenue-payment-udpates";
+		String cancelUrl = "https://uat.all-cures.com:444/cures/Error.jsp";
 		long currentTimeMillis = new Date().getTime();
-        int ccaRequesttid = (int) currentTimeMillis;
-         String merchant_id="3119096";
-         
-         String ccaRequest = "ccaRequesttid=" + ccaRequesttid +
-        	        "&merchant_id=" + merchant_id +
-        	        "&order_id=" + orderId +
-        	        "&currency=" + currency +
-        	        "&amount=" + amount +
-        	        "&redirect_url=" + redirect_url +
-        	        "&cancel_url=" + cancel_url +
-        	        "&language=EN" ;
-         AesCryptUtil aesUtil=new AesCryptUtil(workingKey);
-    	 String encRequest = aesUtil.encrypt(ccaRequest);
-         System.out.println(encRequest);
-		return encRequest;
-		
+		int ccaRequestTid = (int) currentTimeMillis;
+		String merchantId = "3119096";
+
+		String ccaRequest = "ccaRequesttid=" + ccaRequestTid + "&merchant_id=" + merchantId + "&order_id=" + orderId
+				+ "&currency=" + currency + "&amount=" + amount + "&redirect_url=" + redirectUrl + "&cancel_url="
+				+ cancelUrl + "&language=EN";
+		AesCryptUtil aesUtil = new AesCryptUtil(workingKey);
+		String encRequest = aesUtil.encrypt(ccaRequest);
+		System.out.println(encRequest);
+		System.out.println(orderId);
+		int res;
+		synchronized (paymentLock) { // Synchronize payment processing
+			res = saveTransactionDetails(appointmentID, orderId, amount, currency);
+		}
+		if (res == 1) {
+			return encRequest;
+		} else {
+			return "error";
+		}
+	}
+
+	private static int saveTransactionDetails(int appointmentID, String orderID, BigDecimal amount, String currency) {
+
+		try (Session session = HibernateUtil.buildSessionFactory();) {
+			Transaction tx = session.beginTransaction();
+			PaymentGatewayTransaction payment = new PaymentGatewayTransaction();
+			payment.setAppointmentId(appointmentID);
+			payment.setOrderId(orderID);
+			payment.setAmount(amount);
+			payment.setCurrency(currency);
+			session.save(payment);
+			tx.commit();
+			return 1; // Return 1 if insertion is successful
+		} catch (Exception e) {
+			e.printStackTrace(); // Log the exception or handle it appropriately
+			return 0; // Return 0 if insertion fails
+		}
+	}
+
+	public static String saveTransactionResults(HttpServletRequest request) {
+		String workingKey = ""; // Enter your 32 Bit Alphanumeric Working Key here
+		String encResp = request.getParameter("encResp"); // Get the encrypted response from the request parameter
+		AesCryptUtil aesUtil = new AesCryptUtil(workingKey);
+		String decResp = aesUtil.decrypt(encResp);
+		Hashtable<String, String> hs = new Hashtable<>();
+		StringTokenizer tokenizer = new StringTokenizer(decResp, "&");
+		while (tokenizer.hasMoreTokens()) {
+			String pair = tokenizer.nextToken();
+			if (pair != null) {
+				StringTokenizer strTok = new StringTokenizer(pair, "=");
+				String pname = "";
+				String pvalue = "";
+				if (strTok.hasMoreTokens()) {
+					pname = strTok.nextToken();
+					if (strTok.hasMoreTokens()) {
+						pvalue = strTok.nextToken();
+					}
+					hs.put(pname, pvalue);
+				}
+			}
+		}
+
+		// Access the key-value pairs in the Hashtable
+		for (String key : hs.keySet()) {
+			String value = hs.get(key);
+			System.out.println("Parameter Name: " + key + ", Value: " + value);
+		}
+
+		try (Session session = HibernateUtil.buildSessionFactory();) {
+			String orderId = hs.get("order_id"); // Get the order_id from the parameters
+			Transaction tx = session.beginTransaction();
+			Query query = session.createQuery("UPDATE PaymentGatewayTransaction " + "SET orderStatus = :orderStatus, "
+					+ "paymentMode = :paymentMode, " + "statusMessage = :statusMessage, "
+					+ "settlementFlag = :settlementFlag, " + "bankRefNo = :bankRefNo, "
+					+ "transactionDate = :transactionDate, " + "trackingId = :trackingId, "
+					+ "paymentMethod = :paymentMethod " + "WHERE orderId = :orderId");
+
+			// Set parameter values
+			query.setParameter("orderStatus", hs.get("order_status"));
+			query.setParameter("paymentMode", hs.get("payment_mode"));
+			query.setParameter("statusMessage", hs.get("status_message"));
+			query.setParameter("settlementFlag", hs.get("settlement_flag"));
+			query.setParameter("bankRefNo", hs.get("bank_ref_no"));
+			query.setParameter("transactionDate", hs.get("trans_date"));
+			query.setParameter("trackingId", hs.get("trackingID"));
+			query.setParameter("paymentMethod", hs.get("payment_method"));
+			query.setParameter("orderId", orderId);
+
+			query.executeUpdate();
+			tx.commit();
+
+			return "Success";
+		} catch (Exception e) {
+			e.printStackTrace(); // Log the exception or handle it appropriately
+			return "Error";
+		}
+	}
+}
+package dao;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+
+import model.PaymentGatewayTransaction;
+import util.AesCryptUtil;
+import util.HibernateUtil;
+
+public class PaymentGatewayDaoImpl {
+
+	// Synchronization lock object
+	private static final Object paymentLock = new Object();
+
+	public static String setPayment(HashMap<String, Object> appointmentMap, int appointmentID) {
+		UUID uuid = UUID.randomUUID();
+		String orderId = uuid.toString();
+
+		String currency = (String) appointmentMap.get("currency");
+//		String workingKey = "80923CFC322F5875BA18A25A84B3F05B";
+		String workingKey = "039AE11691FCF783D1539D35C6188AF9";
+		BigDecimal amount = (BigDecimal) appointmentMap.get("amount");
+		String redirectUrl = "https://uat.all-cures.com:444/cures/payment/ccavenue-payment-udpates";
+		String cancelUrl = "https://uat.all-cures.com:444/cures/Error.jsp";
+		long currentTimeMillis = new Date().getTime();
+		int ccaRequestTid = (int) currentTimeMillis;
+		String merchantId = "3119096";
+
+		String ccaRequest = "ccaRequesttid=" + ccaRequestTid + "&merchant_id=" + merchantId + "&order_id=" + orderId
+				+ "&currency=" + currency + "&amount=" + amount + "&redirect_url=" + redirectUrl + "&cancel_url="
+				+ cancelUrl + "&language=EN";
+		AesCryptUtil aesUtil = new AesCryptUtil(workingKey);
+		String encRequest = aesUtil.encrypt(ccaRequest);
+		System.out.println(encRequest);
+		System.out.println(orderId);
+		int res;
+		synchronized (paymentLock) { // Synchronize payment processing
+			res = saveTransactionDetails(appointmentID, orderId, amount, currency);
+		}
+		if (res == 1) {
+			return encRequest;
+		} else {
+			return "error";
+		}
+	}
+
+	private static int saveTransactionDetails(int appointmentID, String orderID, BigDecimal amount, String currency) {
+
+		try (Session session = HibernateUtil.buildSessionFactory();) {
+			Transaction tx = session.beginTransaction();
+			PaymentGatewayTransaction payment = new PaymentGatewayTransaction();
+			payment.setAppointmentId(appointmentID);
+			payment.setOrderId(orderID);
+			payment.setAmount(amount);
+			payment.setCurrency(currency);
+			session.save(payment);
+			tx.commit();
+			return 1; // Return 1 if insertion is successful
+		} catch (Exception e) {
+			e.printStackTrace(); // Log the exception or handle it appropriately
+			return 0; // Return 0 if insertion fails
+		}
+	}
+
+	public static String saveTransactionResults(HttpServletRequest request) {
+		String workingKey = ""; // Enter your 32 Bit Alphanumeric Working Key here
+		String encResp = request.getParameter("encResp"); // Get the encrypted response from the request parameter
+		AesCryptUtil aesUtil = new AesCryptUtil(workingKey);
+		String decResp = aesUtil.decrypt(encResp);
+		Hashtable<String, String> hs = new Hashtable<>();
+		StringTokenizer tokenizer = new StringTokenizer(decResp, "&");
+		while (tokenizer.hasMoreTokens()) {
+			String pair = tokenizer.nextToken();
+			if (pair != null) {
+				StringTokenizer strTok = new StringTokenizer(pair, "=");
+				String pname = "";
+				String pvalue = "";
+				if (strTok.hasMoreTokens()) {
+					pname = strTok.nextToken();
+					if (strTok.hasMoreTokens()) {
+						pvalue = strTok.nextToken();
+					}
+					hs.put(pname, pvalue);
+				}
+			}
+		}
+
+		// Access the key-value pairs in the Hashtable
+		for (String key : hs.keySet()) {
+			String value = hs.get(key);
+			System.out.println("Parameter Name: " + key + ", Value: " + value);
+		}
+
+		try (Session session = HibernateUtil.buildSessionFactory();) {
+			String orderId = hs.get("order_id"); // Get the order_id from the parameters
+			Transaction tx = session.beginTransaction();
+			Query query = session.createQuery("UPDATE PaymentGatewayTransaction " + "SET orderStatus = :orderStatus, "
+					+ "paymentMode = :paymentMode, " + "statusMessage = :statusMessage, "
+					+ "settlementFlag = :settlementFlag, " + "bankRefNo = :bankRefNo, "
+					+ "transactionDate = :transactionDate, " + "trackingId = :trackingId, "
+					+ "paymentMethod = :paymentMethod " + "WHERE orderId = :orderId");
+
+			// Set parameter values
+			query.setParameter("orderStatus", hs.get("order_status"));
+			query.setParameter("paymentMode", hs.get("payment_mode"));
+			query.setParameter("statusMessage", hs.get("status_message"));
+			query.setParameter("settlementFlag", hs.get("settlement_flag"));
+			query.setParameter("bankRefNo", hs.get("bank_ref_no"));
+			query.setParameter("transactionDate", hs.get("trans_date"));
+			query.setParameter("trackingId", hs.get("trackingID"));
+			query.setParameter("paymentMethod", hs.get("payment_method"));
+			query.setParameter("orderId", orderId);
+
+			query.executeUpdate();
+			tx.commit();
+
+			return "Success";
+		} catch (Exception e) {
+			e.printStackTrace(); // Log the exception or handle it appropriately
+			return "Error";
+		}
 	}
 }
