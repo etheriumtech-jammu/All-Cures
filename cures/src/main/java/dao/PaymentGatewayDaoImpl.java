@@ -138,7 +138,7 @@ public class PaymentGatewayDaoImpl {
 	//  method to get order status by orderId
     public static String getOrderStatus(String orderId) {
         try (Session session = HibernateUtil.buildSessionFactory()) {
-            Query<String> query = session.createQuery("SELECT order_status FROM PaymentGatewayTransaction WHERE order_id = :orderId", String.class);
+            Query<String> query = session.createQuery("SELECT order_status FROM Payment_Gateway_Transactions WHERE order_id = :orderId", String.class);
             query.setParameter("orderId", orderId);
             return query.uniqueResult();
         } catch (Exception e) {
