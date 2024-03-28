@@ -14,7 +14,7 @@ public class PaymentGatewayDaoImpl {
 
 	
 	public static String SetPayment(HashMap<String, Object> AppointmentMap) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.buildSessionFactory();
 		UUID uuid = UUID.randomUUID();
         	String orderId= uuid.toString();
         
