@@ -30,7 +30,7 @@ public class PaymentGatewayDaoImpl {
 		String currency = (String) appointmentMap.get("currency");
 //		String workingKey = "80923CFC322F5875BA18A25A84B3F05B";
 		String workingKey = "039AE11691FCF783D1539D35C6188AF9";
-		BigDecimal amount = (BigDecimal) appointmentMap.get("amount");
+		BigDecimal amount = new BigDecimal((String) appointmentMap.get("amount"));
 		String redirectUrl = "https://uat.all-cures.com:444/cures/payment/ccavenue-payment-udpates";
 		String cancelUrl = "https://uat.all-cures.com:444/cures/Error.jsp";
 		long currentTimeMillis = new Date().getTime();
