@@ -26,7 +26,7 @@ public class PaymentGatewayTransaction {
     private BigDecimal amount;
 
     @Column(name = "order_status")
-    private Integer orderStatus;
+    private String orderStatus;
 
     @Column(name = "payment_mode")
     private String paymentMode;
@@ -101,11 +101,11 @@ public class PaymentGatewayTransaction {
 		this.amount = amount;
 	}
 
-	public Integer getOrderStatus() {
+	public String getOrderStatus() {
 		return orderStatus;
 	}
 
-	public void setOrderStatus(Integer orderStatus) {
+	public void setOrderStatus(String orderStatus) {
 		this.orderStatus = orderStatus;
 	}
 
