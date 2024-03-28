@@ -134,4 +134,16 @@ public class PaymentGatewayDaoImpl {
 			return "Error";
 		}
 	}
+
+	//  method to get order status by orderId
+    public static String getOrderStatus(String orderId) {
+        try (Session session = HibernateUtil.buildSessionFactory()) {
+            Query<String> query = session.createQuery("SELECT order_status FROM PaymentGatewayTransaction WHERE order_id = :orderId", String.class);
+            query.setParameter("orderId", orderId);
+            return query.uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception or handle it appropriately
+            return null;
+        }
+    }
 }
