@@ -27,9 +27,9 @@ public class AppointmentController {
 	    private DailyCoService dailyCoService;
 	//To add a new Appointment
 	@RequestMapping(value = "/create", produces = "application/json", method = RequestMethod.POST)
-	public @ResponseBody String SetAppointment(@RequestBody HashMap AppointmentMap,HttpServletRequest request ) throws Exception {
+	public @ResponseBody HashMap<String, String> SetAppointment(@RequestBody HashMap AppointmentMap,HttpServletRequest request ) throws Exception {
 		String meeting=dailyCoService.createMeeting();
-		return AppointmentDaoImpl.SetAppointment(AppointmentMap,meeting);
+		return AppointmentDaoImpl.setAppointment(AppointmentMap,meeting);
 		
 	}
 	//To get all the Appointments
