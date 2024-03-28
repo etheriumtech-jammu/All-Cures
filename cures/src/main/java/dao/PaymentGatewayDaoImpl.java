@@ -60,7 +60,9 @@ public class PaymentGatewayDaoImpl {
 
 	private static int saveTransactionDetails(int appointmentID, String orderID, BigDecimal amount, String currency) {
 
-		try (Session session = HibernateUtil.buildSessionFactory();) {
+		Session session = HibernateUtil.buildSessionFactory();
+	    try {
+	    	
 			Transaction tx = session.beginTransaction();
 			PaymentGatewayTransaction payment = new PaymentGatewayTransaction();
 			payment.setAppointmentId(appointmentID);
@@ -105,8 +107,9 @@ public class PaymentGatewayDaoImpl {
 			System.out.println("Parameter Name: " + key + ", Value: " + value);
 		}
 
-		try (Session session = HibernateUtil.buildSessionFactory();) {
-			String orderId = hs.get("order_id"); // Get the order_id from the parameters
+		Session session = HibernateUtil.buildSessionFactory();
+	    try {
+	    		String orderId = hs.get("order_id"); // Get the order_id from the parameters
 			Transaction tx = session.beginTransaction();
 			Query query = session.createQuery("UPDATE PaymentGatewayTransaction " + "SET orderStatus = :orderStatus, "
 					+ "paymentMode = :paymentMode, " + "statusMessage = :statusMessage, "
@@ -138,7 +141,8 @@ public class PaymentGatewayDaoImpl {
 	// Method to get order status by orderId
 	public static String getOrderStatus(String orderId) {
 		String orderStatus="";
-	    try (Session session = HibernateUtil.buildSessionFactory()) {
+		Session session = HibernateUtil.buildSessionFactory();
+	    try {
 	    	
 	    	Query query1 = session.createNativeQuery("SELECT order_status,status_message FROM Payment_Gateway_Transactions  WHERE order_id ='" + orderId + "';");
 	    	List<Object[]> resultList = query1.getResultList();
