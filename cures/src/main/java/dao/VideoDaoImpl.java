@@ -587,7 +587,7 @@ public class VideoDaoImpl {
 			    return failureList;
 			}
 public static Integer sendEmail(int docID, int userID, String meeting, String date, String time) throws IOException {
-	        Session session = HibernateUtil.buildSessionFactory();
+	       try (Session session = HibernateUtil.buildSessionFactory().openSession()) {
 	        String meeting_url = meeting.replaceFirst("https://", "");
 	        String docFullName = "";
 	        String docEmail = "";
@@ -686,5 +686,9 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
 	            System.out.println("Email Address(es) Not Found");
 	            return 0;
 	        }
-	    }
+	    }catch (Exception e) {
+        e.printStackTrace(); // Log the exception or handle it appropriately
+        return 0; // Return 0 if email sending fails
+    }
+}
 }
