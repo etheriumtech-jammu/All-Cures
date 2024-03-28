@@ -112,27 +112,17 @@ public class PaymentGatewayDaoImpl {
 	    try {
 	    		String orderId = hs.get("order_id"); // Get the order_id from the parameters
 			Transaction tx = session.beginTransaction();
-			Query query = session.createQuery("UPDATE Payment_Gateway_Transactions " + "SET order_status = :orderStatus, "
-					+ "payment_mode = :paymentMode, " + "status_message = :statusMessage, "
-					+ "settlement_flag = :settlementFlag, " + "bank_ref_no = :bankRefNo, "
-					+ "trans_date = :transactionDate, " + "trackingID = :trackingId, "
-					+ "payment_method = :paymentMethod " + "WHERE orderId = :orderId");
-
-			// Set parameter values
-			query.setParameter("orderStatus", hs.get("order_status"));
-			query.setParameter("paymentMode", hs.get("payment_mode"));
-			query.setParameter("statusMessage", hs.get("status_message"));
-			query.setParameter("settlementFlag", hs.get("settlement_flag"));
-			query.setParameter("bankRefNo", hs.get("bank_ref_no"));
-			String transDateStr = hs.get("trans_date");
-		    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Assuming the date format is yyyy-MM-dd
-		    Date transDate = dateFormat.parse(transDateStr);
-		    query.setParameter("transactionDate", transDate);
+			Query query = session.createQuery("UPDATE Payment_Gateway_Transactions "
+			        + "SET order_status = '" + hs.get("order_status") + "', " 
+			        + "payment_mode = '" + hs.get("payment_mode") + "', "
+			        + "status_message = '" + hs.get("status_message") + "', "
+			        + "bank_ref_no = '" + hs.get("bank_ref_no") + "', "
+			        + "trans_date = '" + transDate + "', "
+			        + "trackingID = '" + hs.get("trackingID") + "', "
+			        + "payment_method = '" + hs.get("payment_method") + "' "
+			        + "WHERE order_id = '" + orderId + "'");
 			
-			query.setParameter("trackingId", hs.get("trackingID"));
-			query.setParameter("paymentMethod", hs.get("payment_method"));
-			query.setParameter("orderId", orderId);
-
+			
 			query.executeUpdate();
 			tx.commit();
 
