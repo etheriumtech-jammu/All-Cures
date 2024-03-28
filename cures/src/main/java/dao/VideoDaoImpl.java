@@ -587,7 +587,7 @@ public class VideoDaoImpl {
 			    return failureList;
 			}
 public static Integer sendEmail(int docID, int userID, String meeting, String date, String time) throws IOException {
-	       try (Session session = HibernateUtil.buildSessionFactory().openSession()) {
+	       try (Session session = HibernateUtil.buildSessionFactory()) {
 	        String meeting_url = meeting.replaceFirst("https://", "");
 	        String docFullName = "";
 	        String docEmail = "";
@@ -596,8 +596,6 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
 	        String template_name="";
 	        String userReturnEmail="";
 	        String docReturnEmail="";
-	      
-	       session.beginTransaction();
 	        // Fetch doctor details
 	        Query docQuery = session.createNativeQuery(
 	            "SELECT prefix, docname_first, docname_middle, docname_last, email FROM Doctors_New WHERE DocID = " + docID + ";");
