@@ -123,7 +123,7 @@ public class PaymentGatewayDaoImpl {
 			        + "status_message = '" + hs.get("status_message") + "', "
 			        + "bank_ref_no = '" + hs.get("bank_ref_no") + "', "
 			        + "trans_date = '" + transDate + "', "
-			        + "trackingID = '" + hs.get("trackingID") + "'"
+			        + "trackingID = '" + hs.get("tracking_id") + "'"
 			    
 			        + "WHERE order_id = '" + orderId + "'");
 			
