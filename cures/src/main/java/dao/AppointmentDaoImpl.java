@@ -87,7 +87,7 @@ public class AppointmentDaoImpl {
 	        // Check if payment was successful
 	        	if(res!=null) {
 	        	// Send email notification only if payment was successful
-	        	VideoDaoImpl.sendEmail((Integer) appointmentMap.get("docID"), (Integer) appointmentMap.get("userID"), meeting, dateString, formattedTime);
+//	        	VideoDaoImpl.sendEmail((Integer) appointmentMap.get("docID"), (Integer) appointmentMap.get("userID"), meeting, dateString, formattedTime);
 	            
 	           
 	        }
