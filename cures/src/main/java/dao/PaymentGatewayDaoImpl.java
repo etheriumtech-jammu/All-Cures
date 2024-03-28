@@ -2,6 +2,7 @@ package dao;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
@@ -111,11 +112,11 @@ public class PaymentGatewayDaoImpl {
 	    try {
 	    		String orderId = hs.get("order_id"); // Get the order_id from the parameters
 			Transaction tx = session.beginTransaction();
-			Query query = session.createQuery("UPDATE PaymentGatewayTransaction " + "SET orderStatus = :orderStatus, "
-					+ "paymentMode = :paymentMode, " + "statusMessage = :statusMessage, "
-					+ "settlementFlag = :settlementFlag, " + "bankRefNo = :bankRefNo, "
-					+ "transactionDate = :transactionDate, " + "trackingId = :trackingId, "
-					+ "paymentMethod = :paymentMethod " + "WHERE orderId = :orderId");
+			Query query = session.createQuery("UPDATE Payment_Gateway_Transactions " + "SET order_status = :orderStatus, "
+					+ "payment_mode = :paymentMode, " + "status_message = :statusMessage, "
+					+ "settlement_flag = :settlementFlag, " + "bank_ref_no = :bankRefNo, "
+					+ "trans_date = :transactionDate, " + "trackingID = :trackingId, "
+					+ "payment_method = :paymentMethod " + "WHERE orderId = :orderId");
 
 			// Set parameter values
 			query.setParameter("orderStatus", hs.get("order_status"));
@@ -123,7 +124,11 @@ public class PaymentGatewayDaoImpl {
 			query.setParameter("statusMessage", hs.get("status_message"));
 			query.setParameter("settlementFlag", hs.get("settlement_flag"));
 			query.setParameter("bankRefNo", hs.get("bank_ref_no"));
-			query.setParameter("transactionDate", hs.get("trans_date"));
+			String transDateStr = hs.get("trans_date");
+		    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Assuming the date format is yyyy-MM-dd
+		    Date transDate = dateFormat.parse(transDateStr);
+		    query.setParameter("transactionDate", transDate);
+			
 			query.setParameter("trackingId", hs.get("trackingID"));
 			query.setParameter("paymentMethod", hs.get("payment_method"));
 			query.setParameter("orderId", orderId);
