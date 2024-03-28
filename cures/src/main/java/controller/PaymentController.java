@@ -1,10 +1,11 @@
 package controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -91,10 +92,11 @@ public class PaymentController {
 	}
 
 	@RequestMapping(value = "/ccavenue-payment-udpates", method = RequestMethod.POST)
-    public String PaymentUpdates(HttpServletRequest request) {
+    public String PaymentUpdates(HttpServletRequest request,HttpServletResponse response) throws IOException {
     	
     	String res= PaymentGatewayDaoImpl.saveTransactionResults(request);
     	System.out.println(res);
+	response.sendRedirect("https://www.all-cures.com/paymentStatus"); 
     	return res;
     }
 	
