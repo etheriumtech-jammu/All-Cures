@@ -109,9 +109,10 @@ public class PaymentGatewayDaoImpl {
 		}
 
 		Session session = HibernateUtil.buildSessionFactory();
+		Transaction tx = session.beginTransaction();
 	    try {
 	    		String orderId = hs.get("order_id"); // Get the order_id from the parameters
-			Transaction tx = session.beginTransaction();
+			
 		   String transDateStr = hs.get("trans_date");
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date transDate = dateFormat.parse(transDateStr);
