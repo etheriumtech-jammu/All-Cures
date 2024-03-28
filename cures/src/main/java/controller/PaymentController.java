@@ -88,6 +88,14 @@ public class PaymentController {
 
 		return PaymentDaoImpl.getPaymentMethod(ServicePaymentMethodID);
 	}
+
+	@RequestMapping(value = "/ccavenue-payment-udpates", method = RequestMethod.POST)
+    public String PaymentUpdates(HttpServletRequest request) {
+    	
+    	String res= PaymentGatewayDaoImpl.saveTransactionResults(request);
+    	System.out.println(res);
+    	return res;
+    }
 	
 	
 }
