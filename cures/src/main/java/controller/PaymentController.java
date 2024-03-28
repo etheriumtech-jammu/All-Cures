@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import dao.PaymentDaoImpl;
+import dao.PaymentGatewayDaoImpl;
 import dao.VideoDaoImpl;
 import model.ServicePayment;
 import model.VideoFailure;
@@ -88,6 +89,21 @@ public class PaymentController {
 
 		return PaymentDaoImpl.getPaymentMethod(ServicePaymentMethodID);
 	}
+
+	@RequestMapping(value = "/ccavenue-payment-udpates", method = RequestMethod.POST)
+    public String PaymentUpdates(HttpServletRequest request) {
+    	
+    	String res= PaymentGatewayDaoImpl.saveTransactionResults(request);
+    	System.out.println(res);
+    	return res;
+    }
+	
+	@RequestMapping(value = "get/payment-udpates/{orderID}", method = RequestMethod.GET)
+    public String getOrderStatus(HttpServletRequest request,@PathVariable String orderID ) {
+    	
+    	return PaymentGatewayDaoImpl.getOrderStatus(orderID);
+    	
+    }
 	
 	
 }
