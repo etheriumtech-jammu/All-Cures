@@ -71,7 +71,7 @@
 		<mapping class="model.ServicePayment"/>
 		<mapping class="model.ServicePaymentMethod"/>
 		<mapping class="model.Appointment"/>
-		
+		<mapping class="model.PaymentGatewayTransaction"/>
 		
 	
    <!--   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
