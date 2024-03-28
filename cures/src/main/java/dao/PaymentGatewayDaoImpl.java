@@ -135,15 +135,23 @@ public class PaymentGatewayDaoImpl {
 		}
 	}
 
-	//  method to get order status by orderId
-     public static String getOrderStatus(String orderId) {
-        try (Session session = HibernateUtil.buildSessionFactory()) {
-            Query query = session.createQuery("SELECT order_status FROM Payment_Gateway_Transactions WHERE order_id = "+orderId +"");
-          
-            return (String) query.uniqueResult();
-        } catch (Exception e) {
-            e.printStackTrace(); // Log the exception or handle it appropriately
-            return null;
-        }
-    }
+	// Method to get order status by orderId
+	public static String getOrderStatus(String orderId) {
+		String orderStatus="";
+	    try (Session session = HibernateUtil.buildSessionFactory()) {
+	    	
+	    	Query query1 = session.createNativeQuery("SELECT order_status,status_message FROM Payment_Gateway_Transactions  WHERE order_id ='" + orderId + "';");
+	    	List<Object[]> resultList = query1.getResultList();
+			Constant.log("Executed Query and Got: " + resultList.size() + " Schedule Lists back", 1);
+			  for (Object[] result : resultList) {
+		             orderStatus = (String) result[0];
+		            String status = (String) result[1];
+			  }
+	        return orderStatus;
+	    } catch (Exception e) {
+	        e.printStackTrace(); // Log the exception or handle it appropriately
+	        return null;
+	    }
+	}
+
 }
