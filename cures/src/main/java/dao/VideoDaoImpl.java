@@ -597,7 +597,7 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
 	        String userReturnEmail="";
 	        String docReturnEmail="";
 	      
-	       
+	       session.beginTransaction();
 	        // Fetch doctor details
 	        Query docQuery = session.createNativeQuery(
 	            "SELECT prefix, docname_first, docname_middle, docname_last, email FROM Doctors_New WHERE DocID = " + docID + ";");
