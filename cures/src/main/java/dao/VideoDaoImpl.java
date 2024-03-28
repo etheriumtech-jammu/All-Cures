@@ -587,7 +587,9 @@ public class VideoDaoImpl {
 			    return failureList;
 			}
 public static Integer sendEmail(int docID, int userID, String meeting, String date, String time) throws IOException {
-	       try (Session session = HibernateUtil.buildSessionFactory()) {
+	     Session session = HibernateUtil.buildSessionFactory();
+	    try {
+	    	
 	        String meeting_url = meeting.replaceFirst("https://", "");
 	        String docFullName = "";
 	        String docEmail = "";
