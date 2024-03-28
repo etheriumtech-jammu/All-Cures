@@ -35,41 +35,41 @@ import util.HibernateUtil;
 public class AppointmentDaoImpl {
 	 
 	//To add a new Appointment
-	public static String SetAppointment(HashMap<String, Object> AppointmentMap, String meeting) {
-	    Session session = HibernateUtil.buildSessionFactory();
-	    Appointment appointment = new Appointment();
-	    try {
+	public static String setAppointment(HashMap<String, Object> appointmentMap, String meeting) {
+	    try (Session session = HibernateUtil.buildSessionFactory()) {
+	        Appointment appointment = new Appointment();
 	        Transaction tx = session.beginTransaction();
-	        appointment.setDocID((Integer) AppointmentMap.get("docID"));
-	        appointment.setUserID((Integer) AppointmentMap.get("userID"));
-	        String dateString = (String) AppointmentMap.get("appointmentDate");
+	        
+	        // Set appointment details
+	        appointment.setDocID((Integer) appointmentMap.get("docID"));
+	        appointment.setUserID((Integer) appointmentMap.get("userID"));
+	        String dateString = (String) appointmentMap.get("appointmentDate");
 	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	        java.util.Date parsedDate = dateFormat.parse(dateString);
 	        java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
 	        appointment.setAppointmentDate(sqlDate);
 
 	        // Retrieve doctor's availability to get the slot duration
-	        AvailabilitySchedule doctorAvailability = session.get(AvailabilitySchedule.class, (Integer) AppointmentMap.get("docID"));
+	        AvailabilitySchedule doctorAvailability = session.get(AvailabilitySchedule.class, (Integer) appointmentMap.get("docID"));
 	        if (doctorAvailability != null) {
 	            int slotDuration = doctorAvailability.getSlotDuration();
-	            LocalTime startTime = LocalTime.parse((String) AppointmentMap.get("startTime"));
+	            LocalTime startTime = LocalTime.parse((String) appointmentMap.get("startTime"));
 	            // Calculate end time by adding start time and slot duration
 	            LocalTime endTime = startTime.plusMinutes(slotDuration);
 
 	            appointment.setStartTime(startTime.toString());
 	            appointment.setEndTime(endTime.toString());
 	        } else {
-	            throw new Exception("Doctor availability not found for docID: " + AppointmentMap.get("docID"));
+	            throw new Exception("Doctor availability not found for docID: " + appointmentMap.get("docID"));
 	        }
 
-	        appointment.setPaymentStatus((Integer) AppointmentMap.get("paymentStatus"));
+	        appointment.setPaymentStatus((Integer) appointmentMap.get("paymentStatus"));
 	        appointment.setStatus(2);
 	        session.save(appointment);
 	        tx.commit();
-		System.out.println("Appointment booked");
-		
-	     // Parse the appointment time
-	        String startTime=(String) AppointmentMap.get("startTime");
+
+	        // Parse the appointment time
+	        String startTime = (String) appointmentMap.get("startTime");
 	        SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm");
 	        SimpleDateFormat outputFormat = new SimpleDateFormat("hh:mm a"); // 12-hour pattern with AM/PM
 	        outputFormat.setDateFormatSymbols(new DateFormatSymbols(Locale.ENGLISH)); // Set symbols to English to ensure AM/PM is in English
@@ -77,17 +77,31 @@ public class AppointmentDaoImpl {
 	        java.util.Date time = inputFormat.parse(startTime);
 	        String formattedTime = outputFormat.format(time).toUpperCase(); // Convert AM/PM to uppercase
 
-	        System.out.println(formattedTime);
-	        System.out.println(dateString);
-//	      VideoDaoImpl.sendEmail((Integer) AppointmentMap.get("docID"),(Integer) AppointmentMap.get("userID"),meeting, dateString,formattedTime);
-	String encRequest= PaymentGatewayDaoImpl.SetPayment(AppointmentMap);
-	        return encRequest; // Return 1 if insertion is successful
+	        // Print appointment details
+	        System.out.println("Appointment Time: " + formattedTime);
+	        System.out.println("Appointment Date: " + dateString);
+	        
+	        // Initiate payment process
+	        String res = PaymentGatewayDaoImpl.setPayment(appointmentMap, appointment.getAppointmentID());
+	        
+	        // Check if payment was successful
+	        if (!"error".equals(res)) {
+	        	// Send email notification only if payment was successful
+	        	VideoDaoImpl.sendEmail((Integer) appointmentMap.get("docID"), (Integer) appointmentMap.get("userID"), meeting, dateString, formattedTime);
+	            
+	            return res; // Return encRequest if insertion is successful
+	        }
+	        else
+	        {
+	        	return res;
+	        }
+	        
 	    } catch (Exception e) {
 	        e.printStackTrace(); // Log the exception or handle it appropriately
-	        session.getTransaction().rollback();
 	        return ""; // Return 0 if insertion fails
 	    }
 	}
+
 
 	
 	//To get all the Appointments
