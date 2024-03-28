@@ -35,7 +35,7 @@ import util.HibernateUtil;
 public class AppointmentDaoImpl {
 	 
 	//To add a new Appointment
-	public static String setAppointment(HashMap<String, Object> appointmentMap, String meeting) {
+	public static HashMap<String, String> setAppointment(HashMap<String, Object> appointmentMap, String meeting) {
 	    try (Session session = HibernateUtil.buildSessionFactory()) {
 	        Appointment appointment = new Appointment();
 	        Transaction tx = session.beginTransaction();
@@ -82,25 +82,23 @@ public class AppointmentDaoImpl {
 	        System.out.println("Appointment Date: " + dateString);
 	        
 	        // Initiate payment process
-	        String res = PaymentGatewayDaoImpl.setPayment(appointmentMap, appointment.getAppointmentID());
+	        HashMap<String, String> res = PaymentGatewayDaoImpl.setPayment(appointmentMap, appointment.getAppointmentID());
 	        
 	        // Check if payment was successful
-	        if (!"error".equals(res)) {
+	        	if(res!=null) {
 	        	// Send email notification only if payment was successful
 	        	VideoDaoImpl.sendEmail((Integer) appointmentMap.get("docID"), (Integer) appointmentMap.get("userID"), meeting, dateString, formattedTime);
 	            
-	            return res; // Return encRequest if insertion is successful
+	           
 	        }
-	        else
-	        {
-	        	return res;
-	        }
+	        	 return res; // Return encRequest if insertion is successful
 	        
 	    } catch (Exception e) {
 	        e.printStackTrace(); // Log the exception or handle it appropriately
-	        return ""; // Return 0 if insertion fails
+	        return null; // Return 0 if insertion fails
 	    }
 	}
+
 
 
 	
