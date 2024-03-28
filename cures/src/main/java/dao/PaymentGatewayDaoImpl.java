@@ -117,7 +117,7 @@ public class PaymentGatewayDaoImpl {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date transDate = dateFormat.parse(transDateStr);
 
-			Query query = session.createQuery("UPDATE Payment_Gateway_Transactions "
+			Query query = session.createQuery("UPDATE PaymentGatewayTransaction "
 			        + "SET order_status = '" + hs.get("order_status") + "', " 
 			        + "payment_mode = '" + hs.get("payment_mode") + "', "
 			        + "status_message = '" + hs.get("status_message") + "', "
@@ -144,7 +144,7 @@ public class PaymentGatewayDaoImpl {
 		Session session = HibernateUtil.buildSessionFactory();
 	    try {
 	    	
-	    	Query query1 = session.createNativeQuery("SELECT order_status,status_message FROM Payment_Gateway_Transactions  WHERE order_id ='" + orderId + "';");
+	    	Query query1 = session.createNativeQuery("SELECT order_status,status_message FROM PaymentGatewayTransaction  WHERE order_id ='" + orderId + "';");
 	    	List<Object[]> resultList = query1.getResultList();
 			  for (Object[] result : resultList) {
 		             orderStatus = (String) result[0];
