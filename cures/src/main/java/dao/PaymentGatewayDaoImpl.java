@@ -142,7 +142,6 @@ public class PaymentGatewayDaoImpl {
 	    	
 	    	Query query1 = session.createNativeQuery("SELECT order_status,status_message FROM Payment_Gateway_Transactions  WHERE order_id ='" + orderId + "';");
 	    	List<Object[]> resultList = query1.getResultList();
-			Constant.log("Executed Query and Got: " + resultList.size() + " Schedule Lists back", 1);
 			  for (Object[] result : resultList) {
 		             orderStatus = (String) result[0];
 		            String status = (String) result[1];
