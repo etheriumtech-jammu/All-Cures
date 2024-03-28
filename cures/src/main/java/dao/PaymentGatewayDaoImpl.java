@@ -32,7 +32,7 @@ public class PaymentGatewayDaoImpl {
 //		String workingKey = "80923CFC322F5875BA18A25A84B3F05B";
 		String workingKey = "0C8A93B072D45A598061718B364E36B5";
 		BigDecimal amount = new BigDecimal((String) appointmentMap.get("amount"));
-		String redirectUrl = "https://all-cures.com:444/cures/payment/ccavenue-payment-udpates";
+		String redirectUrl = "https://www.all-cures.com/paymentStatus";
 		String cancelUrl = "";
 		long currentTimeMillis = new Date().getTime();
 		int ccaRequestTid = (int) currentTimeMillis;
