@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import dao.PaymentDaoImpl;
+import dao.PaymentGatewayDaoImpl;
 import dao.VideoDaoImpl;
 import model.ServicePayment;
 import model.VideoFailure;
