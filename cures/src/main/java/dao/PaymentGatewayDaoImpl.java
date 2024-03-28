@@ -112,6 +112,10 @@ public class PaymentGatewayDaoImpl {
 	    try {
 	    		String orderId = hs.get("order_id"); // Get the order_id from the parameters
 			Transaction tx = session.beginTransaction();
+		    String transDateStr = hs.get("trans_date");
+		    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Assuming the date format is yyyy-MM-dd
+		    Date transDate = dateFormat.parse(transDateStr);
+		    
 			Query query = session.createQuery("UPDATE Payment_Gateway_Transactions "
 			        + "SET order_status = '" + hs.get("order_status") + "', " 
 			        + "payment_mode = '" + hs.get("payment_mode") + "', "
