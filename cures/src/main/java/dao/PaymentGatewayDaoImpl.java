@@ -52,7 +52,7 @@ public class PaymentGatewayDaoImpl {
 		if (res == 1) {
 			// Payment was successful, add encRequest and orderId to resultMap
             resultMap.put("encRequest", encRequest);
-            resultMap.put("orderId", orderId);
+            resultMap.put("orderID", orderId);
 		} 
 		return resultMap;
 		
