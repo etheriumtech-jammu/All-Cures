@@ -21,10 +21,15 @@ import dao.VideoDaoImpl;
 import model.ServicePayment;
 import model.VideoFailure;
 import model.ServicePaymentMethod;
+import service.DailyCoService;
 @RestController
 @RequestMapping(path = "/payment")
 public class PaymentController {
 
+	 @Autowired
+	    private DailyCoService dailyCoService;
+	
+	
 	@RequestMapping(value = "/add", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody Integer AddPayment(@RequestBody HashMap PaymentMap,HttpServletRequest request ) throws Exception {
 
@@ -95,10 +100,10 @@ public class PaymentController {
 
 	@RequestMapping(value = "/ccavenue-payment-udpates", method = RequestMethod.POST)
     public String PaymentUpdates(HttpServletRequest request,HttpServletResponse response) throws IOException {
-    	
-    	String res= PaymentGatewayDaoImpl.saveTransactionResults(request);
+    	String meeting=dailyCoService.createMeeting();
+    	String res= PaymentGatewayDaoImpl.saveTransactionResults(request,meeting);
     	System.out.println(res);
-	response.sendRedirect("https://uat.all-cures.com:444/cure/714"); 
+	response.sendRedirect("https://uat.all-cures.com/cure/714"); 
     	return res;
     }
 	
