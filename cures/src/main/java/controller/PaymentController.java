@@ -12,17 +12,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import dao.PaymentDaoImpl;
 import dao.PaymentGatewayDaoImpl;
 import dao.VideoDaoImpl;
 import model.ServicePayment;
 import model.VideoFailure;
 import model.ServicePaymentMethod;
+import service.DailyCoService;
 @RestController
 @RequestMapping(path = "/payment")
 public class PaymentController {
 
+	 @Autowired
+	    private DailyCoService dailyCoService;
+	
+		
 	@RequestMapping(value = "/add", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody Integer AddPayment(@RequestBody HashMap PaymentMap,HttpServletRequest request ) throws Exception {
 
@@ -93,8 +98,8 @@ public class PaymentController {
 
 	@RequestMapping(value = "/ccavenue-payment-udpates", method = RequestMethod.POST)
     public String PaymentUpdates(HttpServletRequest request,HttpServletResponse response) throws IOException {
-    	
-    	String res= PaymentGatewayDaoImpl.saveTransactionResults(request);
+    	String meeting=dailyCoService.createMeeting();
+    	String res= PaymentGatewayDaoImpl.saveTransactionResults(request,meeting);
     	System.out.println(res);
 	response.sendRedirect("https://www.all-cures.com/paymentStatus"); 
     	return res;
