@@ -18,18 +18,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dao.AppointmentDaoImpl;
 import model.Appointment;
-import service.DailyCoService;
+
 @RestController
 @RequestMapping(path = "/appointments")
 public class AppointmentController {
 		
-	 @Autowired
-	    private DailyCoService dailyCoService;
+	 
 	//To add a new Appointment
 	@RequestMapping(value = "/create", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody HashMap<String, String> SetAppointment(@RequestBody HashMap AppointmentMap,HttpServletRequest request ) throws Exception {
-		String meeting=dailyCoService.createMeeting();
-		return AppointmentDaoImpl.setAppointment(AppointmentMap,meeting);
+		
+		return AppointmentDaoImpl.setAppointment(AppointmentMap);
 		
 	}
 	//To get all the Appointments
