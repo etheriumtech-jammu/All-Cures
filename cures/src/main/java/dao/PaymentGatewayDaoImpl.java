@@ -1,22 +1,31 @@
 package dao;
 
+import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.text.DateFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
+import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.UUID;
-import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import model.PaymentGatewayTransaction;
+import service.DailyCoService;
 import util.AesCryptUtil;
+import util.Constant;
 import util.HibernateUtil;
+
 
 public class PaymentGatewayDaoImpl {
 
@@ -79,7 +88,7 @@ public class PaymentGatewayDaoImpl {
 		}
 	}
 
-	public static String saveTransactionResults(HttpServletRequest request) {
+	public static String saveTransactionResults(HttpServletRequest request,String meeting) {
 		String workingKey = "039AE11691FCF783D1539D35C6188AF9"; // Enter your 32 Bit Alphanumeric Working Key here
 		String encResp = request.getParameter("encResp"); // Get the encrypted response from the request parameter
 		AesCryptUtil aesUtil = new AesCryptUtil(workingKey);
@@ -138,7 +147,7 @@ public class PaymentGatewayDaoImpl {
 			
 			query.executeUpdate();
 			tx.commit();
-
+		sendEmail(orderId,meeting);
 			return "Success";
 		} catch (Exception e) {
 			e.printStackTrace(); // Log the exception or handle it appropriately
@@ -165,4 +174,35 @@ public class PaymentGatewayDaoImpl {
 	    }
 	}
 
+	public static void sendEmail(String orderID,String meeting) throws ParseException, IOException
+	{
+		Session session = HibernateUtil.buildSessionFactory();
+		String startTime="";
+		  String dateString = "";
+		  Integer userID=0;
+		   Integer docID =0;
+		Query query1 = session.createNativeQuery("SELECT a.UserID, a.DocID, a.StartTime, a.AppointmentDate \r\n"
+				+ "FROM Appointment a\r\n" 
+				+ "JOIN PaymentGatewayTransaction b ON a.AppointmentID = b.AppointmentID \r\n"
+				+ "  where b.order_id= '"+orderID + "';\r\n"
+				+ "");
+    	List<Object[]> resultList = query1.getResultList();
+    	 for (Object[] result : resultList) {
+             userID = (Integer) result[0];
+             docID = (Integer) result[1];
+              startTime=(String) result[2];
+              dateString=(String) result[3];;
+	  }
+    	 
+    	// Parse the appointment time
+	        SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm");
+	        SimpleDateFormat outputFormat = new SimpleDateFormat("hh:mm a"); // 12-hour pattern with AM/PM
+	        outputFormat.setDateFormatSymbols(new DateFormatSymbols(Locale.ENGLISH)); // Set symbols to English to ensure AM/PM is in English
+	        
+	        java.util.Date time = inputFormat.parse(startTime);
+	        String formattedTime = outputFormat.format(time).toUpperCase(); // Convert AM/PM to uppercase
+	        VideoDaoImpl.sendEmail(docID, userID, meeting, dateString, formattedTime);
+            
+    	
+	}
 }
