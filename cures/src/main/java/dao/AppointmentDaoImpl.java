@@ -70,29 +70,9 @@ public class AppointmentDaoImpl {
 	        session.save(appointment);
 	        tx.commit();
 
-	        // Parse the appointment time
-	        String startTime = (String) appointmentMap.get("startTime");
-	        SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm");
-	        SimpleDateFormat outputFormat = new SimpleDateFormat("hh:mm a"); // 12-hour pattern with AM/PM
-	        outputFormat.setDateFormatSymbols(new DateFormatSymbols(Locale.ENGLISH)); // Set symbols to English to ensure AM/PM is in English
-
-	        java.util.Date time = inputFormat.parse(startTime);
-	        String formattedTime = outputFormat.format(time).toUpperCase(); // Convert AM/PM to uppercase
-
-	        // Print appointment details
-	        System.out.println("Appointment Time: " + formattedTime);
-	        System.out.println("Appointment Date: " + dateString);
-	        
 	        // Initiate payment process
 	        HashMap<String, String> res = PaymentGatewayDaoImpl.setPayment(appointmentMap, appointment.getAppointmentID());
 	        
-	        // Check if payment was successful
-	        	if(res!=null) {
-	        	// Send email notification only if payment was successful
-//	        	VideoDaoImpl.sendEmail((Integer) appointmentMap.get("docID"), (Integer) appointmentMap.get("userID"), meeting, dateString, formattedTime);
-	            
-	           
-	        }
 	        	 return res; // Return encRequest if insertion is successful
 	        
 	    } catch (Exception e) {
