@@ -86,7 +86,7 @@ public class PaymentGatewayDaoImpl {
 		}
 	}
 
-	public static String saveTransactionResults(HttpServletRequest request) {
+	public static String saveTransactionResults(HttpServletRequest request,String meeting) {
 		String workingKey = "0C8A93B072D45A598061718B364E36B5"; // Enter your 32 Bit Alphanumeric Working Key here
 		String encResp = request.getParameter("encResp"); // Get the encrypted response from the request parameter
 		AesCryptUtil aesUtil = new AesCryptUtil(workingKey);
