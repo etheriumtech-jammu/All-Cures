@@ -419,7 +419,7 @@ public class RegistrationDaoImpl_New {
 				emaildto2.setEmailTemplateData(templateData);
 				System.out.println("Template is ready");
 				String returnEmail = emailUtil.shootEmail(emaildto2);
-				System.out.println("Hellooo");
+				System.out.println(returnEmail);
 				System.out.println("Email sent");
 //				session.getTransaction().commit();
 				return 1;
