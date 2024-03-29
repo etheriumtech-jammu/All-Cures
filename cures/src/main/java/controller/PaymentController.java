@@ -100,7 +100,7 @@ public class PaymentController {
     public String PaymentUpdates(HttpServletRequest request,HttpServletResponse response) throws IOException {
     	String meeting=dailyCoService.createMeeting();
     	String res= PaymentGatewayDaoImpl.saveTransactionResults(request,meeting);
-    	System.out.println(res);
+    	System.out.println(meeting);
 	response.sendRedirect("https://www.all-cures.com/paymentStatus"); 
     	return res;
     }
