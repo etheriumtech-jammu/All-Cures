@@ -17,6 +17,12 @@ public class TokenValidationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String userAgent = request.getHeader("User-Agent");
+    // Check if the user agent indicates a mobile device
+    if (userAgent != null && userAgent.toLowerCase().contains("mobile")) {
+        // If it's a mobile device, skip token validation
+        return true;
+    }
         String token = request.getHeader("Authorization");
         String url= request.getServletPath().toString();
         String final_url="";
