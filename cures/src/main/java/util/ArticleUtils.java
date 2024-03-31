@@ -100,11 +100,11 @@ public class ArticleUtils {
 				// artLoc = artLoc.replace("\\", "/");//.replace("/", "/");
 				System.out.println("22222222>>>>>>>>" + artLoc);
 				artFile = new File(artLoc);
-				System.out.println(artFile);
+				System.out.println(artFile.toString());
 			}
 			FileWriter myWriter = new FileWriter(artFile);
 			Constant.log(artFile.toString(), 1);
-			System.out.println(artFile.toString());
+			
 			Constant.log("Writing Article Content to Filesystem", 1);
 			System.out.println("_______________________");
 			// System.out.println(articleContent);
