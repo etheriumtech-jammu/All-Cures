@@ -103,6 +103,7 @@ public class ArticleUtils {
 			}
 			FileWriter myWriter = new FileWriter(artFile);
 			Constant.log(artFile.toString(), 1);
+			System.out.println(artFile.toString());
 			Constant.log("Writing Article Content to Filesystem", 1);
 			System.out.println("_______________________");
 			// System.out.println(articleContent);
