@@ -129,6 +129,14 @@
 
 <mvc:interceptor>
 
+<mvc:mapping path="/SearchActionController/*"/>
+<bean class="service.TokenValidationInterceptor">
+</bean>
+
+</mvc:interceptor>
+
+<mvc:interceptor>
+
 <mvc:mapping path="/isearch/diseases/*"/>
 <bean class="service.TokenValidationInterceptor">
 </bean>
