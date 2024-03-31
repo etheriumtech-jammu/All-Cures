@@ -100,43 +100,34 @@ public class ArticleUtils {
 				// artLoc = artLoc.replace("\\", "/");//.replace("/", "/");
 				System.out.println("22222222>>>>>>>>" + artLoc);
 				artFile = new File(artLoc);
-				System.out.println(artFile.toString());
+				System.out.println(artFile);
 			}
-			try (FileWriter writer = new FileWriter(artFile)) {
-		           
-		            System.out.println("Article content updated successfully.");
-		        } catch (IOException e) {
-		            System.err.println("Error updating article content: " + e.getMessage());
-		            e.printStackTrace();
-		 }
-			Constant.log(artFile.toString(), 1);
 			
-			Constant.log("Writing Article Content to Filesystem", 1);
-			System.out.println("_______________________");
-			// System.out.println(articleContent);
-//			EncodingUtil encodeUtil = new EncodingUtil();
-//			System.out.println(encodeUtil.encodeURIComponent(articleContent));
-//			System.out.println(encodeUtil.decodeURIComponent(articleContent));
-//			Decoder decoder = Base64.getDecoder();
-//			byte[] bytes = decoder.decode(articleContent);
-//					
-//			System.out.println(new String(bytes));
-			System.out.println("<<<------###################--------------------->>>>>");
-			System.out.println(articleContent);
-			myWriter.write(articleContent);
-			myWriter.flush();
-			Constant.log("Wrote Article Content to Filesystem", 1);
-			System.out.println("Wrote Article Content to Filesystem");
-			myWriter.close();
-			updateStatus = true;
-		} catch (Exception e) {
-			updateStatus = false;
-			e.printStackTrace();
+			try (FileWriter writer = new FileWriter(artFile)) {
+			    Constant.log(artFile.toString(), 1);
+			    Constant.log("Writing Article Content to Filesystem", 1);
+			    System.out.println("_______________________");
+			    System.out.println(articleContent);
+			    writer.write(articleContent);
+			    writer.flush();
+			    Constant.log("Wrote Article Content to Filesystem", 1);
+			    System.out.println("<<<------###################--------------------->>>>>");
+			    System.out.println(articleContent);
+			    updateStatus = true;
+			} catch (IOException e) {
+			    updateStatus = false;
+			    System.err.println("Error updating article content: " + e.getMessage());
+			    e.printStackTrace();
+			}
+			return updateStatus;
+		} catch (IOException e) {
+		    updateStatus = false;
+	//	    System.err.println("Error updating article content: " + e.getMessage());
+		    e.printStackTrace();
 		}
 		return updateStatus;
-
+		
 	}
-
 	public Properties readPropertiesFile(String fileName) throws IOException {
 		FileInputStream fis = null;
 		Properties prop = null;
