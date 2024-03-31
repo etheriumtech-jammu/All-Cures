@@ -18,7 +18,12 @@ public class ContentActionInterceptorFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-
+        String userAgent = httpRequest.getHeader("User-Agent");
+   	 System.out.println("User-Agent"+ userAgent);
+   	if (userAgent != null && (userAgent.toLowerCase().contains("mobile") || userAgent.contains("AllCures"))) {
+	    // If it's a mobile device or MyApp, skip token validation
+	    return ;
+	}
         String uri = httpRequest.getRequestURI();
         String queryString = httpRequest.getQueryString();
 
