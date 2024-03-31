@@ -201,7 +201,7 @@ public class ContentActionController extends HttpServlet {
 		return article;
     }
     
-    public boolean updateArticle(HttpServletRequest request, HttpServletResponse response, int articleId, int userId){
+    /*public boolean updateArticle(HttpServletRequest request, HttpServletResponse response, int articleId, int userId){
     	String title= request.getParameter("title");
 		String author_fname= request.getParameter("firstName");
 		String author_mname= request.getParameter("middleName");
@@ -306,7 +306,8 @@ public class ContentActionController extends HttpServlet {
 	            out.flush();
 	            out.close();
 			}            
-		}else if (finalAction.equals("updateArticle")) {
+		}
+		/*else if (finalAction.equals("updateArticle")) {
 			Constant.log("Updating Article:"+article_id, 1);
 			boolean artStatus = updateArticle(request, response, Integer.parseInt(article_id), regi.getRegistration_id().intValue());
 			if(!ajaxCall){
@@ -319,7 +320,8 @@ public class ContentActionController extends HttpServlet {
 				out.flush();
 				out.close();
 			}			
-		}else if (finalAction.equals("createDashboard")) {
+		}
+  */else if (finalAction.equals("createDashboard")) {
 			List<Article> articlearr = null;
 			String state = request.getParameter("state");
 			int iState = -1; //Articles in any state
@@ -353,7 +355,8 @@ public class ContentActionController extends HttpServlet {
 				out.flush();
 				out.close();
 			}			
-		}else if (finalAction.equals("createBlog")) {
+		}
+		/*else if (finalAction.equals("createBlog")) {
 			//ToDo: Not sure why this was created; Will need to most probably remove; But keep it in for time being
 			Article articlearray = new Article();
 			articlearray= contentDao.findByArticleId(Integer.parseInt(article_id));
