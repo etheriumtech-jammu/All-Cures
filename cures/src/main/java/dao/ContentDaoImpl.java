@@ -152,7 +152,7 @@ public class ContentDaoImpl {
 		session.getTransaction().commit();   //session.close();
 		return articleArr;
 	}
-	
+	*/
 	public static Article findByArticleId(Integer articleid){
 		Article article = new Article();
 		Session session = HibernateUtil.buildSessionFactory();
@@ -193,12 +193,13 @@ public class ContentDaoImpl {
 				articleList.setCopyright_file_loc((String)obj[15]);
 				articleList.setDisclaimer_file_loc((String)obj[16]);
 				articleList.setStatus_discription((String)obj[17]);
-
+*/
 			}
+   
 //		session.getTransaction().commit();   //session.close();
 		return articleList;
 		}	
-*/	
+/*	
 	public static List<Article> findByArticleTypeAndDC(Integer DC_ID){
 			Session session = HibernateUtil.buildSessionFactory();
 
