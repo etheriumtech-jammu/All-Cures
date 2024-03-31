@@ -132,7 +132,6 @@
 <mvc:interceptor>
     <mvc:mapping path="/SearchActionController/**"/>
     <bean class="service.TokenValidationInterceptor"/>
-    <mvc:path-matcher type="regex"/>
 </mvc:interceptor>
 
 
