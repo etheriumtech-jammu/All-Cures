@@ -309,7 +309,7 @@ public class ContentActionController extends HttpServlet {
 		}else if (finalAction.equals("updateArticle")) {
 			Constant.log("Updating Article:"+article_id, 1);
 //			boolean artStatus = updateArticle(request, response, Integer.parseInt(article_id), regi.getRegistration_id().intValue());
-			boolean artStatus = updateArticle(request, response, Integer.parseInt(article_id), 84);
+			boolean artStatus = updateArticle(request, response, Integer.parseInt(article_id), 3);
 			System.out.println(artStatus);
 			if(!ajaxCall){
 				//Set the article object in the session or servlet Context
