@@ -60,7 +60,7 @@ public class ContentActionController extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-    
+    /*
     public int createArticle(HttpServletRequest request, HttpServletResponse response, Registration user) throws IOException{
 		String requestJsonStr = IOUtils.toString(request.getInputStream(), "UTF-8");
 		ObjectMapper mapper = new ObjectMapper();
@@ -194,7 +194,7 @@ public class ContentActionController extends HttpServlet {
 		}    	
 		return result;
     }
-
+*/
     public Article findArticle(int artId, int regId){
     	Article article = null;
 		article = contentDao.findByArticleId(artId);
@@ -259,7 +259,7 @@ public class ContentActionController extends HttpServlet {
 		javax.servlet.http.HttpSession ses= request.getSession();
 		Registration regi=(Registration)ses.getAttribute(Constant.USER);		
 		Constant.log("In Content Action Controller with action::"+finalAction+" by user:"+regi.getEmail_address(), 1);		
-		if(finalAction.equals("createArticle")){			
+	/*	if(finalAction.equals("createArticle")){			
 			status = createArticle(request, response, regi);			
 			Constant.log("Post Dao Content Save with Result:"+status, 1);
 			if(!ajaxCall){
@@ -321,7 +321,7 @@ public class ContentActionController extends HttpServlet {
 				out.close();
 			}			
 		}
-  */else if (finalAction.equals("createDashboard")) {
+  else if (finalAction.equals("createDashboard")) {
 			List<Article> articlearr = null;
 			String state = request.getParameter("state");
 			int iState = -1; //Articles in any state
