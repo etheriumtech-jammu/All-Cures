@@ -103,7 +103,7 @@ public class ArticleUtils {
 				System.out.println(artFile.toString());
 			}
 			 try (FileWriter writer = new FileWriter(filePath)) {
-            writer.write(content);
+  
             System.out.println("Article content updated successfully.");
         } catch (IOException e) {
             System.err.println("Error updating article content: " + e.getMessage());
