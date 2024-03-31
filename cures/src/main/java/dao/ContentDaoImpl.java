@@ -25,7 +25,7 @@ public class ContentDaoImpl {
 	}
 	
 	
-	public boolean createArticle(Integer pubStatus, Integer lang, Integer disclaimerId, Integer copyrightId, String authById, String title, String frndlyName, 
+/*	public boolean createArticle(Integer pubStatus, Integer lang, Integer disclaimerId, Integer copyrightId, String authById, String title, String frndlyName, 
 			String subhead, String contentTypeId, String keywords, String windowTitle, 
 			String contentLocation, Integer reg_id, String articleContent, Integer diseaseConditionId, Integer countryId, String comments, Integer promoId, Integer promoStage
 			,String type, Integer imedicineTypeId,String featured_article) {
@@ -198,7 +198,7 @@ public class ContentDaoImpl {
 //		session.getTransaction().commit();   //session.close();
 		return articleList;
 		}	
-	
+	*/
 	public static List<Article> findByArticleTypeAndDC(Integer DC_ID){
 			Session session = HibernateUtil.buildSessionFactory();
 
