@@ -19,7 +19,7 @@ public class TokenValidationInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String userAgent = request.getHeader("User-Agent");
  // Check if the user agent indicates a mobile device or MyApp
-if (userAgent != null && (userAgent.toLowerCase().contains("mobile") || userAgent.contains("MyApp"))) {
+if (userAgent != null && (userAgent.toLowerCase().contains("mobile") || userAgent.contains("All Cures"))) {
     // If it's a mobile device or MyApp, skip token validation
     return true;
 }
