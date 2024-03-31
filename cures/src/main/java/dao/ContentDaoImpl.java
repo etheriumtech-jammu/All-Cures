@@ -199,7 +199,7 @@ public class ContentDaoImpl {
 //		session.getTransaction().commit();   //session.close();
 		return articleList;
 		}	
-/*	
+	
 	public static List<Article> findByArticleTypeAndDC(Integer DC_ID){
 			Session session = HibernateUtil.buildSessionFactory();
 
