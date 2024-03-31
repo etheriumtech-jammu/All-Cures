@@ -119,6 +119,7 @@ public class ArticleUtils {
 			myWriter.write(articleContent);
 			myWriter.flush();
 			Constant.log("Wrote Article Content to Filesystem", 1);
+			System.out.println("Wrote Article Content to Filesystem");
 			myWriter.close();
 			updateStatus = true;
 		} catch (Exception e) {
