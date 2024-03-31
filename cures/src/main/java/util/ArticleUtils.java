@@ -102,14 +102,13 @@ public class ArticleUtils {
 				artFile = new File(artLoc);
 				System.out.println(artFile.toString());
 			}
-			 try (FileWriter writer = new FileWriter(filePath)) {
-  
-            System.out.println("Article content updated successfully.");
-        } catch (IOException e) {
-            System.err.println("Error updating article content: " + e.getMessage());
-            e.printStackTrace();
-        }
-
+			try (FileWriter writer = new FileWriter(artFile)) {
+		           
+		            System.out.println("Article content updated successfully.");
+		        } catch (IOException e) {
+		            System.err.println("Error updating article content: " + e.getMessage());
+		            e.printStackTrace();
+		 }
 			Constant.log(artFile.toString(), 1);
 			
 			Constant.log("Writing Article Content to Filesystem", 1);
