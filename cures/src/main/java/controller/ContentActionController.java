@@ -195,13 +195,13 @@ public class ContentActionController extends HttpServlet {
 		}    	
 		return result;
     }
-*/
+
     public Article findArticle(int artId, int regId){
     	Article article = null;
 		article = contentDao.findByArticleId(artId);
 		return article;
     }
-    
+ */   
     /*public boolean updateArticle(HttpServletRequest request, HttpServletResponse response, int articleId, int userId){
     	String title= request.getParameter("title");
 		String author_fname= request.getParameter("firstName");
