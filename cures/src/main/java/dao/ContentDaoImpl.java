@@ -193,12 +193,12 @@ public class ContentDaoImpl {
 				articleList.setCopyright_file_loc((String)obj[15]);
 				articleList.setDisclaimer_file_loc((String)obj[16]);
 				articleList.setStatus_discription((String)obj[17]);
-*/
+
 			}
 //		session.getTransaction().commit();   //session.close();
 		return articleList;
 		}	
-	
+*/	
 	public static List<Article> findByArticleTypeAndDC(Integer DC_ID){
 			Session session = HibernateUtil.buildSessionFactory();
 
