@@ -185,7 +185,7 @@ public class ContentActionController extends HttpServlet {
 				} 
 			}
 			//TODO: Remove this hardcoding	
-			Constant.log("User object is in session; User is logged In; Adding Article Now", 0);
+//			Constant.log("User object is in session; User is logged In; Adding Article Now", 0);
 			boolean bResult = contentDao.createArticle(iStatus, iLang, iDiscId, iCopyId, authIdS, title, artFrndlyNm, subHead, 
 					content_type, keyword, window_title, null, user.getRegistration_id().intValue(), articlecontent, iDiseaseConditionId, iCountryId,comments,
 					ipromoId,promoStage,type,imedicineTypeId,featured_article);
