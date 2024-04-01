@@ -258,7 +258,7 @@ public class ContentActionController extends HttpServlet {
 		String artJson = "";
 		javax.servlet.http.HttpSession ses= request.getSession();
 		Registration regi=(Registration)ses.getAttribute(Constant.USER);		
-		Constant.log("In Content Action Controller with action::"+finalAction+" by user:"+regi.getEmail_address(), 1);		
+//		Constant.log("In Content Action Controller with action::"+finalAction+" by user:"+regi.getEmail_address(), 1);		
 		if(finalAction.equals("createArticle")){			
 			status = createArticle(request, response, regi);			
 			Constant.log("Post Dao Content Save with Result:"+status, 1);
