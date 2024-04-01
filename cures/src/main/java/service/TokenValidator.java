@@ -34,9 +34,11 @@ public class TokenValidator {
 						"SELECT at.TokenID, at.Token, at.Status, at.Max_Allowed, aa.Total_Count, aa.LastUpdateDate FROM API_Tokens at JOIN APITokenAnalytics aa ON at.TokenID = aa.TokenID WHERE at.Token = :token AND aa.API = :url")
 				.setParameter("token", token)
 				.setParameter("url", url);
-
+		String queryString = query.unwrap(org.hibernate.query.Query.class).getQueryString();
+			System.out.println("Generated SQL query: " + queryString);
 		try {
 			List<Object[]> results = query.getResultList();
+			System.out.println("Results size " + results.size());
 			if(results.size()>0) {
 			for (Object[] list : results) {
 				Integer TokenID = (Integer) list[0];
