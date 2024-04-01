@@ -195,7 +195,6 @@ public class ContentDaoImpl {
 				articleList.setStatus_discription((String)obj[17]);
 */
 			}
-   
 //		session.getTransaction().commit();   //session.close();
 		return articleList;
 		}	
@@ -237,7 +236,7 @@ public class ContentDaoImpl {
 //			session.getTransaction().commit();   //session.close();
 			return articleArr;
 			}	
-	/*
+	
 	public static boolean updateArticleMeta(String title, String f_name, String subhead, String content_type, String keyword, 
 			String window_title, int articleId, int regId){
 		
@@ -288,9 +287,6 @@ public class ContentDaoImpl {
 		}		
 		return value;		
 	}
-
-	*/
 }
 
 	
-
