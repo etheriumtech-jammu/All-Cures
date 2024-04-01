@@ -49,7 +49,6 @@ import util.ArticleUtils;
  * TODO: Disclaimer and Copyright related stuff
  * TODO: Article Publication Status related stuff
  */
-
 public class ContentActionController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public static final int defAuthorRegId = 9999999;
@@ -185,7 +184,7 @@ public class ContentActionController extends HttpServlet {
 				} 
 			}
 			//TODO: Remove this hardcoding	
-//			Constant.log("User object is in session; User is logged In; Adding Article Now", 0);
+			Constant.log("User object is in session; User is logged In; Adding Article Now", 0);
 			boolean bResult = contentDao.createArticle(iStatus, iLang, iDiscId, iCopyId, authIdS, title, artFrndlyNm, subHead, 
 					content_type, keyword, window_title, null, user.getRegistration_id().intValue(), articlecontent, iDiseaseConditionId, iCountryId,comments,
 					ipromoId,promoStage,type,imedicineTypeId,featured_article);
@@ -201,8 +200,8 @@ public class ContentActionController extends HttpServlet {
 		article = contentDao.findByArticleId(artId);
 		return article;
     }
-   
-    /*public boolean updateArticle(HttpServletRequest request, HttpServletResponse response, int articleId, int userId){
+    
+    public boolean updateArticle(HttpServletRequest request, HttpServletResponse response, int articleId, int userId){
     	String title= request.getParameter("title");
 		String author_fname= request.getParameter("firstName");
 		String author_mname= request.getParameter("middleName");
@@ -307,11 +306,11 @@ public class ContentActionController extends HttpServlet {
 	            out.flush();
 	            out.close();
 			}            
-		}
-	}
-		/*else if (finalAction.equals("updateArticle")) {
+		}else if (finalAction.equals("updateArticle")) {
 			Constant.log("Updating Article:"+article_id, 1);
 			boolean artStatus = updateArticle(request, response, Integer.parseInt(article_id), regi.getRegistration_id().intValue());
+			
+			System.out.println(artStatus);
 			if(!ajaxCall){
 				//Set the article object in the session or servlet Context
 				Constant.log("Sending to article.jsp:"+artJson, 1);
@@ -322,8 +321,7 @@ public class ContentActionController extends HttpServlet {
 				out.flush();
 				out.close();
 			}			
-		}
-  else if (finalAction.equals("createDashboard")) {
+		}else if (finalAction.equals("createDashboard")) {
 			List<Article> articlearr = null;
 			String state = request.getParameter("state");
 			int iState = -1; //Articles in any state
@@ -357,8 +355,7 @@ public class ContentActionController extends HttpServlet {
 				out.flush();
 				out.close();
 			}			
-		}
-		/*else if (finalAction.equals("createBlog")) {
+		}else if (finalAction.equals("createBlog")) {
 			//ToDo: Not sure why this was created; Will need to most probably remove; But keep it in for time being
 			Article articlearray = new Article();
 			articlearray= contentDao.findByArticleId(Integer.parseInt(article_id));
@@ -390,6 +387,5 @@ public class ContentActionController extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
 
 }
