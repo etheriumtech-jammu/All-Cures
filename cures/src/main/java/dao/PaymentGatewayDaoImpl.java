@@ -189,7 +189,10 @@ public class PaymentGatewayDaoImpl {
              userID = (Integer) result[0];
              docID = (Integer) result[1];
               startTime=(String) result[2];
-              dateString=(String) result[3];;
+               Date appointmentDate = (Date) result[3];
+              SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Adjust the format as needed
+             dateString = dateFormat.format(appointmentDate);
+              
 	  }
     	 
     	// Parse the appointment time
