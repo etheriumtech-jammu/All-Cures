@@ -113,6 +113,14 @@
 
 <mvc:interceptor>
 
+<mvc:mapping path="/article/all/table/*"/>
+<bean class="service.TokenValidationInterceptor">
+</bean>
+
+</mvc:interceptor>
+
+<mvc:interceptor>
+
 <mvc:mapping path="/article/allkv"/>
 <bean class="service.TokenValidationInterceptor">
 </bean>
