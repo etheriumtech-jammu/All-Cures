@@ -152,7 +152,7 @@ public class ContentDaoImpl {
 		session.getTransaction().commit();   //session.close();
 		return articleArr;
 	}
-	*/
+	
 	public static Article findByArticleId(Integer articleid){
 		Article article = new Article();
 		Session session = HibernateUtil.buildSessionFactory();
