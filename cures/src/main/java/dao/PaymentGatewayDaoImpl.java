@@ -206,6 +206,6 @@ public class PaymentGatewayDaoImpl {
 	        String formattedTime = outputFormat.format(time).toUpperCase(); // Convert AM/PM to uppercase
 	        VideoDaoImpl.sendEmail(docID, userID, meeting, dateString, formattedTime);
             
-    	
+    		System.out.println("Video Link sent");
 	}
 }
