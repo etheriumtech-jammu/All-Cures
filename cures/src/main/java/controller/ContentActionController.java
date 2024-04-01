@@ -104,6 +104,7 @@ public class ContentActionController extends HttpServlet {
 
 		
 //		String featured_article=(String) requestJsonMap.get("featured_article");
+	    	String featured_article="0";
 //		Constant.log("Creating Article with Featured Article:"+featured_article, 0);
 		
 		String status= (String) ""+ requestJsonMap.get("articleStatus");
