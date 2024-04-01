@@ -30,10 +30,9 @@ public class TokenValidator {
 
 		Date current_Date = generatingCurrentDate();
 		synchronized (lock) {
-		Query<Object[]> query = session.createNativeQuery(
-						"SELECT at.TokenID, at.Token, at.Status, at.Max_Allowed, aa.Total_Count, aa.LastUpdateDate FROM API_Tokens at JOIN APITokenAnalytics aa ON at.TokenID = aa.TokenID WHERE at.Token = :token AND aa.API = :url")
-				.setParameter("token", token)
-				.setParameter("url", url);
+		 Query query = session.createNativeQuery(
+						"SELECT at.TokenID, at.Token, at.Status, at.Max_Allowed, aa.Total_Count, aa.LastUpdateDate FROM API_Tokens at JOIN APITokenAnalytics aa ON at.TokenID = aa.TokenID WHERE at.Token = "+token+" AND aa.API = "+url+"");
+				
 		String queryString = query.unwrap(org.hibernate.query.Query.class).getQueryString();
 			System.out.println("Generated SQL query: " + queryString);
 		try {
