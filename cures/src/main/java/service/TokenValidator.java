@@ -94,6 +94,7 @@ public class TokenValidator {
 			//         session.close(); // Close the session when done
 		}
 		}
+		System.out.println("Result of token validation"+res);
 		return res;
 	}
 
