@@ -36,7 +36,7 @@ public class ContentActionInterceptorFilter implements Filter {
             // Example: Check if a specific token exists in the request header
         	System.out.println("hello");
             String token = httpRequest.getHeader("Authorization");
- //           System.out.println(TokenValidator.isValidToken(token, uri));
+            System.out.println(TokenValidator.isValidToken(token, uri));
             try {
                 if (!(token == null )) {
                     int result=TokenValidator.isValidToken(token,uri);
