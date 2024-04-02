@@ -64,7 +64,7 @@ public class ContentActionInterceptorFilter implements Filter {
         }
         return;
         // If the request does not match the specified criteria, continue processing without validation
-  //      chain.doFilter(request, response);
+        chain.doFilter(request, response);
     }
 
     @Override
