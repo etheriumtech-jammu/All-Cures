@@ -62,7 +62,7 @@ public class ContentActionInterceptorFilter implements Filter {
                 return;
             }
         }
-        return;
+     
         // If the request does not match the specified criteria, continue processing without validation
         chain.doFilter(request, response);
     }
