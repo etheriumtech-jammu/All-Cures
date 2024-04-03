@@ -142,14 +142,6 @@
 
 </mvc:interceptor>
 
-<mvc:interceptor>
-
-<mvc:mapping path="/article/*"/>
-<bean class="service.TokenValidationInterceptor">
-</bean>
-
-</mvc:interceptor>
-
 
 
 <mvc:interceptor>
