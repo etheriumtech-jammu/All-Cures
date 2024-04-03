@@ -253,7 +253,8 @@ public class ContentActionController extends HttpServlet {
 			finalAction = action;
 		}else{
 			finalAction = request.getParameter("cmd");
-		}		
+		}	
+		System.out.println("finalAction"+finalAction);
 		int status = -1;
 		String artJson = "";
 		javax.servlet.http.HttpSession ses= request.getSession();
