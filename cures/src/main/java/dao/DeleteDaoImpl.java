@@ -21,8 +21,6 @@ import util.HibernateUtil;
 import util.Constant;
 public class DeleteDaoImpl {
 	public static Integer Delete_Update(HashMap dataMasterMap) {
-		
-		
 		Session session = HibernateUtil.buildSessionFactory();
 		Encryption encrypt = new Encryption();
 		session.beginTransaction();
