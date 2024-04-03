@@ -36,13 +36,13 @@ public class TipDaoImpl {
 		java.util.Date date=new java.util.Date();
 		java.sql.Timestamp sqlDate=new java.sql.Timestamp(date.getTime());
 		tip_date = sqlDate.toString();
-		System.out.println("start_time>>>>>"+tip_date);
+//		System.out.println("start_time>>>>>"+tip_date);
 		
 		
 		java.util.Date dates=new java.util.Date();
 		java.sql.Timestamp sqlDates=new java.sql.Timestamp(date.getTime());
 		tip_updatedtime = sqlDate.toString();
-		System.out.println("tip_updatedtime>>>>>"+tip_updatedtime);
+//		System.out.println("tip_updatedtime>>>>>"+tip_updatedtime);
 		
 		Query query1= session.createNativeQuery("Select title,pubstatus_id from article where article_id = " + article_id);
 		List<Object[]> results = (List<Object[]>) query1.getResultList();
@@ -106,7 +106,7 @@ public class TipDaoImpl {
 					+ "    `tip`.`user_id`," + "    `tip`.`tip_status`"+ "FROM `tip`;");
 			
 			List<Object[]> results = (List<Object[]>) query.getResultList();
-			System.out.println("result list Subscription@@@@@@@@@@@@@ size=" + results.size());
+//			System.out.println("result list Subscription@@@@@@@@@@@@@ size=" + results.size());
 			List hmFinal = new ArrayList();
 			for (Object[] objects : results) {
 				HashMap hm = new HashMap();
@@ -184,7 +184,7 @@ public class TipDaoImpl {
 		java.sql.Timestamp sqlDate=new java.sql.Timestamp(date.getTime());
 		String tip_updatedtime = sqlDate.toString();
 		updatestr += " `tip_updatedtime` = '" + tip_updatedtime + "',";
-		System.out.println("tip_updatedtime>>>>>"+tip_updatedtime);
+//		System.out.println("tip_updatedtime>>>>>"+tip_updatedtime);
 
 		updatestr = updatestr.replaceAll(",$", "");
 		Query query = session.createNativeQuery(
@@ -193,7 +193,7 @@ public class TipDaoImpl {
 		try {
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
-			System.out.println("updated tip table for tip_id =  " + tip_id);
+//			System.out.println("updated tip table for tip_id =  " + tip_id);
 
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
@@ -216,7 +216,7 @@ public class TipDaoImpl {
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
-			System.out.println("soft deleteed from subscription_master, where tip_id  =  " + tip_id );
+//			System.out.println("soft deleted, where tip_id  =  " + tip_id );
 			session.getTransaction().commit();
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
@@ -235,7 +235,7 @@ public static ArrayList getTipDetailsById(int tip_id) {
 				+ "    `tip`.`tip_title`," + "    `tip`.`tip_date`,"
 				+ "    `tip`.`user_id`," + "    `tip`.`tip_status`" + "FROM `tip` where tip_id="+tip_id+";");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println("result list Subscription@@@@@@@@@@@@@ size=" + results.size());
+//		System.out.println("result list Subscription@@@@@@@@@@@@@ size=" + results.size());
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
 			HashMap hm = new HashMap();
@@ -264,7 +264,7 @@ public static ArrayList getTipDetailsById(int tip_id) {
 			String id="";
 			List<String> recipientTokens = FCMDao.getTokens();
 			NotificationService.sendNotification(recipientTokens,title,  tip_title,action,id);
-			System.out.println("Message Sent");
+//			System.out.println("Message Sent");
 						
 		}
 
