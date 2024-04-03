@@ -48,10 +48,10 @@ public class VideoDaoImpl {
 	            // Adjust these names based on your actual Service class
 			try {
 	        	 ContractID = (Integer) query1.getSingleResult();
-	        	 System.out.println(ContractID);
+//	        	 System.out.println(ContractID);
 	        	}
 	        	catch (NoResultException e) {
-	    			System.out.println("ContractID is null");
+//	    			System.out.println("ContractID is null");
 	    			
 	    		}
 	        	
@@ -254,14 +254,14 @@ public class VideoDaoImpl {
 				
 				 String updatestr = " status = 0  ";
 				 
-				 System.out.println(updatestr);
+//				 System.out.println(updatestr);
 					Query query = session.createNativeQuery(
 							"UPDATE `DoctorAvailability`\r\n" + "SET\r\n" + updatestr + "WHERE `DocID` = " + DocID + ";");
 					int ret = 0;
 					try {
 					ret = query.executeUpdate();
 					session.getTransaction().commit();
-					System.out.println("deleted entry for DocID =  " + DocID);
+//					System.out.println("deleted entry for DocID =  " + DocID);
 				
 				}catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -371,9 +371,9 @@ public class VideoDaoImpl {
                          " AND CURRENT_TIME BETWEEN FromTime AND ToTime AND DocID=" + docID + ";";
              }
             Query query = session.createNativeQuery(queryStr);
-		  System.out.println(queryStr);
+//		  System.out.println(queryStr);
             List<Object[]> results = (List<Object[]>) query.getResultList();
-            System.out.println(results.size());
+//            System.out.println(results.size());
             return results.size();
 		}
 
@@ -540,14 +540,14 @@ public class VideoDaoImpl {
 				
 				 String updatestr = " status = 0  ";
 				 
-				 System.out.println(updatestr);
+//				 System.out.println(updatestr);
 					Query query = session.createNativeQuery(
 							"UPDATE `FailureMaster`\r\n" + "SET\r\n" + updatestr + "WHERE `FailureID` = " + FailureID + ";");
 					int ret = 0;
 					try {
 					ret = query.executeUpdate();
 					session.getTransaction().commit();
-					System.out.println("deleted entry for FailureID =  " + FailureID);
+//					System.out.println("deleted entry for FailureID =  " + FailureID);
 				
 				}catch (Exception e) {
 					// TODO Auto-generated catch block
