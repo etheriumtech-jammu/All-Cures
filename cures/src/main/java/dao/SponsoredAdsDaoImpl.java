@@ -77,14 +77,14 @@ public class SponsoredAdsDaoImpl {
 			insertStr = insertStr.substring(0, insertStr.lastIndexOf(","));
 			insertStr_values = insertStr_values.substring(0, insertStr_values.lastIndexOf(","));
 			String completInsertStr = insertStr + ")" + " values " + insertStr_values + " );";
-			System.out.println(completInsertStr);
+//			System.out.println(completInsertStr);
 
 			Query query = session.createNativeQuery(completInsertStr);
 			
 			// needs other condition too but unable to find correct column
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
-			System.out.println("Companymap " + companyMap);
+//			System.out.println("Companymap " + companyMap);
 			
 
 		} catch (Exception e) {
@@ -131,14 +131,14 @@ public class SponsoredAdsDaoImpl {
 			insertStr = insertStr.substring(0, insertStr.lastIndexOf(","));
 			insertStr_values = insertStr_values.substring(0, insertStr_values.lastIndexOf(","));
 			String completInsertStr = insertStr + ")" + " values " + insertStr_values + " );";
-			System.out.println(completInsertStr);
+//			System.out.println(completInsertStr);
 
 			Query query = session.createNativeQuery(completInsertStr);
 			
 			// needs other condition too but unable to find correct column
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
-			System.out.println("Campaignmap " + campaignMap);
+//			System.out.println("Campaignmap " + campaignMap);
 			
 
 		} catch (Exception e) {
@@ -182,14 +182,14 @@ public class SponsoredAdsDaoImpl {
 			insertStr = insertStr.substring(0, insertStr.lastIndexOf(","));
 			insertStr_values = insertStr_values.substring(0, insertStr_values.lastIndexOf(","));
 			String completInsertStr = insertStr + ")" + " values " + insertStr_values + " );";
-			System.out.println(completInsertStr);
+//			System.out.println(completInsertStr);
 
 			Query query = session.createNativeQuery(completInsertStr);
 			
 			// needs other condition too but unable to find correct column
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
-			System.out.println("Admap " + AdMap);
+//			System.out.println("Admap " + AdMap);
 			ret=uploadFile(image,mobile_image);
 			
 
@@ -210,20 +210,20 @@ public class SponsoredAdsDaoImpl {
 		int res=0;
 		try {
 			res = (int) query.getSingleResult();
-			System.out.println(res);
+//			System.out.println(res);
 		} catch (NoResultException e) {
-			System.out.println("No Entry");
+//			System.out.println("No Entry");
 
 		}
 		String path = System.getProperty( "catalina.base" ) + "/webapps"+ "/cures_articleimages/"+ "cures_adsimages";
-		System.out.println(path);
+//		System.out.println(path);
 		// path = path+"/uitest";
 		String filename = image.getOriginalFilename();
 		
 		// Rename the file to the new file name
         String renamedFilename = "Ad_" + res + "." + FilenameUtils.getExtension(filename);
 
-		System.out.println(path + "/" + renamedFilename);
+//		System.out.println(path + "/" + renamedFilename);
 		String finalPath="/cures_articleimages/"+ "cures_adsimages" + "/" + renamedFilename;
 		try {
 			byte barr[] = image.getBytes();
@@ -306,14 +306,14 @@ public class SponsoredAdsDaoImpl {
 			insertStr = insertStr.substring(0, insertStr.lastIndexOf(","));
 			insertStr_values = insertStr_values.substring(0, insertStr_values.lastIndexOf(","));
 			String completInsertStr = insertStr + ")" + " values " + insertStr_values + " );";
-			System.out.println(completInsertStr);
+//			System.out.println(completInsertStr);
 
 			Query query = session.createNativeQuery(completInsertStr);
 			
 			// needs other condition too but unable to find correct column
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
-			System.out.println("Statsmap " + StatsMap);
+//			System.out.println("Statsmap " + StatsMap);
 			
 
 		} catch (Exception e) {
@@ -332,7 +332,7 @@ public class SponsoredAdsDaoImpl {
 		Query query = session.createNativeQuery(
 				"Select * from Companies\r\n" + "\r\n" + "");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println(results.size());
+//		System.out.println(results.size());
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
 			LinkedHashMap<String, Object> hm = new LinkedHashMap<>();
@@ -374,7 +374,7 @@ public class SponsoredAdsDaoImpl {
 		Query query = session.createNativeQuery(
 				"Select *  from Companies where CompanyID =" + CompanyID + ";");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println(results.size());
+//		System.out.println(results.size());
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
 			LinkedHashMap<String, Object> hm = new LinkedHashMap<>();
@@ -414,7 +414,7 @@ public class SponsoredAdsDaoImpl {
 		Query query = session.createNativeQuery(
 				"Select * from Campaign\r\n" + "\r\n" + "");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println(results.size());
+//		System.out.println(results.size());
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
 			LinkedHashMap<String, Object> hm = new LinkedHashMap<>();
@@ -456,7 +456,7 @@ public class SponsoredAdsDaoImpl {
 		Query query = session.createNativeQuery(
 				"Select *  from Campaign where CampaignID =" + CampaignID + ";");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println(results.size());
+//		System.out.println(results.size());
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
 			LinkedHashMap<String, Object> hm = new LinkedHashMap<>();
@@ -501,7 +501,7 @@ public class SponsoredAdsDaoImpl {
 				 + "LEFT JOIN AdsTypes target ON ca.AdTypeID = target.AdTypeID;\r\n"
 				 + "");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println(results.size());
+//		System.out.println(results.size());
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
 			LinkedHashMap<String, Object> hm = new LinkedHashMap<>();
@@ -582,7 +582,7 @@ public class SponsoredAdsDaoImpl {
 				 + "LEFT JOIN AdsTypes target ON ca.AdTypeID = target.AdTypeID\r\n"
 				+ "where AdID =" + AdID + ";");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println(results.size());
+//		System.out.println(results.size());
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
 			LinkedHashMap<String, Object> hm = new LinkedHashMap<>();
@@ -655,7 +655,7 @@ public class SponsoredAdsDaoImpl {
 		Query query = session.createNativeQuery(
 				"Select *  from AdsStats where StatsID =" + StatsID + ";");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println(results.size());
+//		System.out.println(results.size());
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
 			LinkedHashMap<String, Object> hm = new LinkedHashMap<>();
@@ -722,7 +722,7 @@ public class SponsoredAdsDaoImpl {
 			updatestr += "`Status` = '" + companyMap.get("Status") + "',\r\n";
 		}
 		updatestr+="LastUpdateddate='"  + date +  "'  ";
-		System.out.println();
+
 		Query query = session.createNativeQuery(
 				"UPDATE `Companies`\r\n" + "SET\r\n" + updatestr + "WHERE `CompanyID` = " + CompanyID + ";");
 		int ret = 0;
@@ -730,7 +730,7 @@ public class SponsoredAdsDaoImpl {
 		try {
 		ret = query.executeUpdate();
 		session.getTransaction().commit();
-		System.out.println("updated  table for CompanyID =  " + CompanyID);
+//		System.out.println("updated  table for CompanyID =  " + CompanyID);
 	
 	}catch (Exception e) {
 		// TODO Auto-generated catch block
@@ -770,14 +770,14 @@ public class SponsoredAdsDaoImpl {
 			updatestr += "`Status` = '" + campaignMap.get("Status") + "',\r\n";
 		}
 		updatestr+="LastUpdateddate='"  + date +  "'  ";
-		System.out.println();
+		
 		Query query = session.createNativeQuery(
 				"UPDATE `Campaign`\r\n" + "SET\r\n" + updatestr + "WHERE `CampaignID` = " + CampaignID + ";");
 		int ret = 0;
 		try {
 		ret = query.executeUpdate();
 		session.getTransaction().commit();
-		System.out.println("updated  table for CampaignID =  " + CampaignID);
+//		System.out.println("updated  table for CampaignID =  " + CampaignID);
 	
 	}catch (Exception e) {
 		// TODO Auto-generated catch block
@@ -858,14 +858,14 @@ public class SponsoredAdsDaoImpl {
 		
 		
 		updatestr+="LastUpdateddate='"  + date +  "'  ";
-		System.out.println();
+		
 		Query query = session.createNativeQuery(
 				"UPDATE `CampaignAds`\r\n" + "SET\r\n" + updatestr + "WHERE `AdID` = " + AdID + ";");
 		int ret = 0;
 		try {
 		ret = query.executeUpdate();
 		session.getTransaction().commit();
-		System.out.println("updated  table for AdID =  " + AdID);
+//		System.out.println("updated  table for AdID =  " + AdID);
 	
 	}catch (Exception e) {
 		// TODO Auto-generated catch block
@@ -905,14 +905,14 @@ public class SponsoredAdsDaoImpl {
 			updatestr += "`AdTargetID` = '" + StatsMap.get("AdTargetID") + "',\r\n";
 		}
 		updatestr+="LastUpdateddate='"  + date +  "'  ";
-		System.out.println();
+		
 		Query query = session.createNativeQuery(
 				"UPDATE `AdsStats`\r\n" + "SET\r\n" + updatestr + "WHERE `StatsID` = " + StatsID + ";");
 		int ret = 0;
 		try {
 		ret = query.executeUpdate();
 		session.getTransaction().commit();
-		System.out.println("updated  table for StatsID =  " + StatsID);
+//		System.out.println("updated  table for StatsID =  " + StatsID);
 	
 	}catch (Exception e) {
 		// TODO Auto-generated catch block
@@ -932,14 +932,14 @@ public class SponsoredAdsDaoImpl {
 		 Date date= Date.valueOf(LocalDate.now());
 		 String updatestr = " status = 0 , ";
 		 updatestr+="LastUpdateddate='"  + date +  "'  ";
-		 System.out.println(updatestr);
+//		 System.out.println(updatestr);
 			Query query = session.createNativeQuery(
 					"UPDATE `Campaign`\r\n" + "SET\r\n" + updatestr + "WHERE `CampaignID` = " + CampaignID + ";");
 			int ret = 0;
 			try {
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
-			System.out.println("deleted entry for CampaignID =  " + CampaignID);
+//			System.out.println("deleted entry for CampaignID =  " + CampaignID);
 		
 		}catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -962,14 +962,14 @@ public static int deleteCompanyId(int CompanyID) {
 		 Date date= Date.valueOf(LocalDate.now());
 		 String updatestr = " status = 0 , ";
 		 updatestr+="LastUpdateddate='"  + date +  "'  ";
-		 System.out.println(updatestr);
+//		 System.out.println(updatestr);
 			Query query = session.createNativeQuery(
 					"UPDATE `Companies`\r\n" + "SET\r\n" + updatestr + "WHERE `CompanyID` = " + CompanyID + ";");
 			int ret = 0;
 			try {
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
-			System.out.println("deleted entry for CompanyID =  " + CompanyID);
+//			System.out.println("deleted entry for CompanyID =  " + CompanyID);
 		
 		}catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -988,7 +988,7 @@ public static int deleteCompanyId(int CompanyID) {
 	Query query = session.createNativeQuery(
 			"Select CompanyID, CompanyName from Companies where Status = 1 ;");
 	List<Object[]> results = (List<Object[]>) query.getResultList();
-	System.out.println(results.size());
+//	System.out.println(results.size());
 
 	List<Object[]> arrayDataList = new ArrayList<>();
 	for (Object[] objects : results) {
@@ -1011,7 +1011,7 @@ public static List ListCampaigns() {
 	Query query = session.createNativeQuery(
 			"Select CampaignID, CampaignName from Campaign where Status = 1 ;");
 	List<Object[]> results = (List<Object[]>) query.getResultList();
-	System.out.println(results.size());
+//	System.out.println(results.size());
 
 	List<Object[]> arrayDataList = new ArrayList<>();
 	for (Object[] objects : results) {
@@ -1033,7 +1033,7 @@ public static List ListCampaigns() {
 	Query query = session.createNativeQuery(
 			"Select AdTypeID, AdTypeName from AdsTypes ;");
 	List<Object[]> results = (List<Object[]>) query.getResultList();
-	System.out.println(results.size());
+//	System.out.println(results.size());
 
 	List<Object[]> arrayDataList = new ArrayList<>();
 	for (Object[] objects : results) {
@@ -1057,7 +1057,7 @@ public static List ListCampaigns() {
 		Query query = session.createNativeQuery(
 				"Select AdTargetID, AdTargetName from AdsTargetTypes;");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println(results.size());
+//		System.out.println(results.size());
 
 		List<Object[]> arrayDataList = new ArrayList<>();
 		for (Object[] objects : results) {
@@ -1080,7 +1080,7 @@ public static List ListCampaigns() {
 		Query query = session.createNativeQuery(
 				"Select SlotID,SlotName from AdsSlotTypes where Status = 1 ;");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println(results.size());
+//		System.out.println(results.size());
 
 		List<Object[]> arrayDataList = new ArrayList<>();
 		for (Object[] objects : results) {
@@ -1110,45 +1110,45 @@ public static List ListCampaigns() {
 	 			initializeCacheClient();
 	 		}
 		 boolean val=mcc.getAvailableServers().isEmpty();
-		 System.out.println("Memcached status:" + val);
+//		 System.out.println("Memcached status:" + val);
 		 if(val)
 		 {
-			 System.out.println("Memcached Restarted");
+//			 System.out.println("Memcached Restarted");
 			 DailyTaskScheduler.performDailyCalculationsAndCacheUpdate();
 			 
 			 TargetAds.update();
 			 DailyTaskScheduler.DisplayPattern();
 			 flag =true;
-			 System.out.println("flag"+flag);
+//			 System.out.println("flag"+flag);
 		 }
-		System.out.println("flag"+flag);
+//		System.out.println("flag"+flag);
 		 if(val== false || flag == true)
 		 {
 		 if(DC_Cond!=0)
 		 {
 		String count1=TargetAds.DC_AdCount.get(DC_Cond.toString());
-		System.out.println("count1"+count1);
+//		System.out.println("count1"+count1);
 		if(count1!=null)
 		{
 			String []parts=count1.split(":");
 			total=Integer.parseInt(parts[0]);
 			displayed=Integer.parseInt(parts[1]);
-			System.out.println(total + displayed);
+//			System.out.println(total + displayed);
 			if(displayed<total)
 			{
 				String key1="Left_" + DC_Cond + "_" + displayed;
-				System.out.println("Key:" +key1 );
+//				System.out.println("Key:" +key1 );
 				 URL=(String) mcc.get(key1);
 				 
 			}
 			else
 			{
-				System.out.println("DC_Conds are served");
+//				System.out.println("DC_Conds are served");
 				AdType=2;
 			}
 			 }else
 		{
-			System.out.println("No Ads of this DC_Cond");
+//			System.out.println("No Ads of this DC_Cond");
 			AdType=2;
 		}
 		
