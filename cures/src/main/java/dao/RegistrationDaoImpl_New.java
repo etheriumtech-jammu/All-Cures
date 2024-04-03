@@ -60,7 +60,7 @@ public class RegistrationDaoImpl_New {
 	        
 	        if (type == 1) {
 	        docid=   DoctorsDaoImpl_New.saveDoctors( f_name, l_name, email);
-	        System.out.println("docid" +docid);
+//	        System.out.println("docid" +docid);
 	        if(docid!=0) {  
 	        
 	        session.beginTransaction();
@@ -80,7 +80,7 @@ public class RegistrationDaoImpl_New {
 	        session.getTransaction().commit();
 	       
 	        }else {
-	        	System.out.println("Error in Creating doctor");
+//	        	System.out.println("Error in Creating doctor");
 	        }
 	//        sendRegistrationEmail(session, email, f_name, user);
 
@@ -114,12 +114,12 @@ public class RegistrationDaoImpl_New {
 	    Constant.log("Registering User is a Doctor", 0);
 //	 Session   session = HibernateUtil.buildSessionFactory();
 	    Registration user1 = RegistrationDaoImpl_New.findUserByEmail(email);
-	    System.out.println("user" + user1);
+//	    System.out.println("user" + user1);
 //	    session.beginTransaction();
 	    DoctorsDaoImpl_New.saveDoctors( f_name, l_name, email);
 
 	    int docid = DoctorsDaoImpl_New.findDoctorsByEmail(email).getDocID();
-	    System.out.println("docid" + docid);
+//	    System.out.println("docid" + docid);
 //	    session.beginTransaction();
 	    Query query = session
 				.createNativeQuery("UPDATE  registration " + " SET DocID =" + docid + " WHERE registration_id = " + user1.getRegistration_id() + ";");
@@ -127,7 +127,7 @@ public class RegistrationDaoImpl_New {
 		try {
 			ret = query.executeUpdate();
 			// session.getTransaction().commit();
-			System.out.println("updated registration table ");
+//			System.out.println("updated registration table ");
 //			session.getTransaction().commit();
 			session.getTransaction().commit();   //session.close();
 			
@@ -146,11 +146,11 @@ public class RegistrationDaoImpl_New {
 	    Constant.log("Registering User is a Patient", 0);
 
 //	    Registration user = RegistrationDaoImpl_New.findUserByEmail(email);
-	    System.out.println("user" + user);
+//	    System.out.println("user" + user);
 
 //	    PatientDaoImpl.savePatient(user.getRegistration_id(), f_name, l_name, email);
 
-	    System.out.println("Added Patient");
+//	    System.out.println("Added Patient");
 
 	    return 1; // Return the user object
 	}
@@ -172,7 +172,7 @@ public class RegistrationDaoImpl_New {
 	    templateData.putAll(mapUser);
 
 	    emaildto.setEmailTemplateData(templateData);
-	    System.out.println(emaildto);
+//	    System.out.println(emaildto);
 
 	    String returnEmail = emailUtil.shootEmail(emaildto);
 	}
@@ -318,7 +318,7 @@ public class RegistrationDaoImpl_New {
 				register.setRemember_me(obj[9] != null ? (Integer) obj[9] : 0);
 				register.setMobile_number(obj[13] != null ? Long.parseLong((String) obj[13]) : 0);
 				register.setDocID(obj[14] != null ? (Integer) obj[14] : 0);
-				System.out.println((Integer) obj[14]);
+//				System.out.println((Integer) obj[14]);
 				
 				register.setAge(obj[15] != null ? (Integer) obj[15] : 0);
 
@@ -346,19 +346,19 @@ public class RegistrationDaoImpl_New {
 					"select email_address from  registration where email_address = '" + email + "' ;");
 
 			List<Object[]> results = (List<Object[]>) checkEmailExists.getResultList();
-			System.out.println("result list Email Check@@@@@@@@@@@@@ size=" + results.size());
+//			System.out.println("result list Email Check@@@@@@@@@@@@@ size=" + results.size());
 			if (results.size() == 0) {
 				return "Sorry, the email address you entered does not exist in our database.";
 			}
 
-			System.out.println("check email exists in  registration table for email passed from UI =  " + email);
+//			System.out.println("check email exists in  registration table for email passed from UI =  " + email);
 
 			Query queryApproved = session.createNativeQuery(
 					"UPDATE registration SET pass_word= '" + password + "' where email_address = '" + email + "' ;");
 
 			ret = queryApproved.executeUpdate();
 			session.getTransaction().commit();
-			System.out.println("updated registration table password for email =  " + email);
+//			System.out.println("updated registration table password for email =  " + email);
 
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
@@ -390,10 +390,10 @@ public class RegistrationDaoImpl_New {
 				return 0;
 			} else {
 				String encEmail = new UserController().getEmailEncrypted(email);
-				System.out.println("encEmail"+encEmail);
+//				System.out.println("encEmail"+encEmail);
 				// String link = "http://localhost:3000/loginForm/ResetPass/?em=" + encEmail;
 				String link = "https://all-cures.com/loginForm/ResetPass/?em=" + encEmail;
-				System.out.println("link"+link);
+//				System.out.println("link"+link);
 				// new SendEmailUtil().shootEmail(email, "Test subject", "Password reset link
 				// here...\n" + link);
 //				EmailDTO emaildto = new EmailDTO();
@@ -419,7 +419,7 @@ public class RegistrationDaoImpl_New {
 				emaildto2.setEmailTemplateData(templateData);
 				
 				String returnEmail = emailUtil.shootEmail(emaildto2);
-				System.out.println("Hellooo");
+				
 				System.out.println("Email sent");
 //				session.getTransaction().commit();
 				return 1;
@@ -534,7 +534,7 @@ public class RegistrationDaoImpl_New {
 				+ nl_subscription_disease_id + "',\r\n '" + nl_start_date + "' ,\r\n" + nl_sub_type + ",\r\n" + mobile
 				+ ",\r\n'" + nl_subscription_cures_id + "',1, " + country_code + ");\r\n");
 		// needs other condition too but unable to find correct column
-		System.out.println(query);
+//		System.out.println(query);
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
@@ -615,8 +615,8 @@ public class RegistrationDaoImpl_New {
 		try {
 			ret = queryArticlePromoPaid.executeUpdate();
 			session.getTransaction().commit();
-			System.out.println(
-					"updated newsletter table for mobile  =  " + mobile + " and country_code = " + country_code);
+//			System.out.println(
+//					"updated newsletter table for mobile  =  " + mobile + " and country_code = " + country_code);
 //			SendEmailUtil.shootEmail(null, "updated subscription ",
 //					"Hi, \n\r updated newsletter table for mobile  =  " + mobile);
 
@@ -661,7 +661,7 @@ public class RegistrationDaoImpl_New {
 		try {
 			ret = queryArticlePromoPaid.executeUpdate();
 			session.getTransaction().commit();
-			System.out.println("unscribe newsletter table for mobile = " + mobile + " country_code=" + country_code);
+//			System.out.println("unscribe newsletter table for mobile = " + mobile + " country_code=" + country_code);
 //			SendEmailUtil.shootEmail(null, "Unscribed allcures ",
 //					"Hi, \n\r updated newsletter table for reg_id  =  " + reg_id);
 
@@ -694,7 +694,7 @@ public class RegistrationDaoImpl_New {
 				+ " FROM `newsletter`\r\n" + " where mobile=" + mobile + " and country_code=" + country_code + ";");
 
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println("result list Promo@@@@@@@@@@@@@ size=" + results.size());
+//		System.out.println("result list Promo@@@@@@@@@@@@@ size=" + results.size());
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
 			HashMap hm = new HashMap();
@@ -759,7 +759,7 @@ public class RegistrationDaoImpl_New {
 	             String acceptPolicy =(String) RegisterMap.get(Constant.AcceptPolicy);
 	             String number = (String) RegisterMap.get(Constant.MOBILE_NUMBER);
 	             Long mobile = Long.parseLong(number);
-	             System.out.println("docpatient" + docpatient);
+//	             System.out.println("docpatient" + docpatient);
 	             Integer docOrPatient = determineDocOrPatient(docpatient);
 	             Integer rememberPassword = (Constant.OFF.equalsIgnoreCase(remPwd.trim())) ? 0 : 1;
 
@@ -794,7 +794,7 @@ public class RegistrationDaoImpl_New {
 	  	     if (errMsg.isEmpty()) {
 	  	      Gson gson = new GsonBuilder().serializeNulls().create();
           	      String jsonData = gson.toJson(user);
-          	      System.out.println("jsonData"+jsonData);
+ //         	      System.out.println("jsonData"+jsonData);
          	       // Convert JSON string to JSON object
          	       Object jsonObject = gson.fromJson(jsonData, Object.class);
          	       return jsonData;
@@ -842,13 +842,13 @@ public class RegistrationDaoImpl_New {
 	        
 	 private static int determineDocOrPatient(String docpatient) {
 	    	if (docpatient != null && docpatient.trim().equalsIgnoreCase(Constant.DOCTOR)) {
-	    		System.out.println("doctor");
+//	    		System.out.println("doctor");
 				return 1;
 			}else if (docpatient != null && docpatient.trim().equalsIgnoreCase(Constant.PATIENT)) {
-				System.out.println("patient");
+//				System.out.println("patient");
 			return  2;
 			}else{
-				System.out.println("default");
+//				System.out.println("default");
 				//Default to Patient Reg
 			return 2;
 			}}
