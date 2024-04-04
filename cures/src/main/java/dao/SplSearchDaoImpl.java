@@ -138,7 +138,7 @@ public class SplSearchDaoImpl {
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry(),
 					doc.getOverAllRating(), doc.getPrefix(),
 					doc.getFirstName(), doc.getMiddleName(), doc.getLastName(), doc.getFullName(),
-					doc.getEmail(), doc.getAbout(),doc.getImgLoc()));
+					doc.getEmail(), doc.getAbout(),doc.getImgLoc(),doc.getMedicineType()));
 
 			//System.out.println("id: " + doctorid + "; for: " + docname_first);
 
