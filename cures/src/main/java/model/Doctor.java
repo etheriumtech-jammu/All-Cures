@@ -1,7 +1,5 @@
 package model;
 
-
-
 import org.apache.solr.client.solrj.beans.Field;
 
 public class Doctor {
