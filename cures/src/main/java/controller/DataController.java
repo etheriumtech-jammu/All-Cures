@@ -127,4 +127,9 @@ public class DataController {
 	public  List Medicines() {
 		return DataDaoImpl.viewMedicines();
 	}
+
+	@RequestMapping(value = "/categories", produces = "application/json", method = RequestMethod.GET)
+	public  List Categories() {
+		return DataDaoImpl.viewCategories();
+	}
 }
