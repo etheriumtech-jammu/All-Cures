@@ -141,8 +141,7 @@ public class ArticleController {
 		return articleDaoImpl.deleteArticleId(article_id);
 	
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody HashMap uploadFile(@RequestParam CommonsMultipartFile image, HttpServletRequest request,
-			HttpSession session) {
+	public @ResponseBody HashMap uploadFile(@RequestParam CommonsMultipartFile image, HttpServletRequest request, HttpSession session) {
 		//String path = session.getServletContext().getRealPath("/uitest");
 		String curesProperties = "cures.properties";
 		Properties prop = null;
@@ -184,8 +183,7 @@ public class ArticleController {
 	}
 
 	@RequestMapping(value = "/fetchUrl", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody HashMap fetchUrl(@RequestBody HashMap dataMap, HttpServletRequest request, HttpSession session)
-			throws MalformedURLException {
+	public @ResponseBody HashMap fetchUrl(@RequestBody HashMap dataMap, HttpServletRequest request, HttpSession session)throws MalformedURLException {
 		String url = (String) dataMap.get("url");
 		URL urlExt = new URL(url);
 
