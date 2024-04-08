@@ -218,6 +218,7 @@ public class SearchDaoImpl {
                    
                 }
             }
+			System.out.println(queryStringBuilder.toString());
 			 query.add("q", queryStringBuilder.toString());
         } else {
 		    // Handle cases where the name doesn't contain "Dr" or "Dr."
