@@ -60,7 +60,7 @@ public class UserController {
 
 		return registrationDaoImpl.checkEmail(email);
 	}
-
+/*
 	// @RequestMapping(value = "/getemaildecrypt?e={em}", produces =
 	// "application/json", method = RequestMethod.GET)
 	@RequestMapping(value = "/getemdecrypt", produces = "application/json", method = RequestMethod.GET)
@@ -98,7 +98,7 @@ public class UserController {
 
 		return emailEnc;
 	}
-
+*/
 	@RequestMapping(value = "/subscribe/{mobile}", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody String subscribe(@PathVariable long mobile, @RequestBody HashMap ns_map) {
 
@@ -130,7 +130,7 @@ public class UserController {
 
 		return registrationDaoImpl.getSubscriptionDetail(mobile,country_code);
 	}
-
+/*
 	@RequestMapping(value = "/testemail", method = RequestMethod.POST)
 	@ResponseBody
 	public String sendMail(@RequestBody HashMap messageHtml) throws MessagingException {
@@ -159,5 +159,5 @@ public class UserController {
 
 		return "Email Sent Successfully.!";
 	}
-
+*/
 }
