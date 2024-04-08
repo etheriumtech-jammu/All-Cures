@@ -86,8 +86,8 @@ public class UserController {
 
 		return em;
 	}
-
-	@RequestMapping(value = "/getemencrypt", produces = "application/json", method = RequestMethod.GET)
+*/
+//	@RequestMapping(value = "/getemencrypt", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody String getEmailEncrypted(@RequestParam String em) {
 		String emailEnc = null;
 		final String secretKey = Constant.SECRETE;
@@ -98,7 +98,7 @@ public class UserController {
 
 		return emailEnc;
 	}
-*/
+
 	@RequestMapping(value = "/subscribe/{mobile}", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody String subscribe(@PathVariable long mobile, @RequestBody HashMap ns_map) {
 
