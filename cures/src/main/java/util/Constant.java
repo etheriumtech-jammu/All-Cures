@@ -91,7 +91,7 @@ public class Constant{
 	public static final String REGISTRATION="registration";
 	public static final String REGISTRATION_ID="registration_id";
 	public static final String EMAIL_ADDRESS= "email_address";
-	public static final String PASS_WORD= "zP@5Xc#1Lb2D";
+	public static final String PASS_WORD= "pass_word";
 	public static final String REGISTRATION_TYPE= "registration_type";
 	public static final String ACCEPTANCE_CONDITION= "acceptance_condition";
 	public static final String PRIVACY_POLICY= "privacy_policy";
@@ -109,7 +109,7 @@ public class Constant{
 	public static final String DefaultCookiePath = "/";
 	public static final String DefaultStringSplitter = "|";
 	public static final String CipherAlgorithm = Constant.AES;
-	public static final String SECRETE ="b5t9+z1y7C6K5Q4W3E2R1T0U9";
+	public static final String SECRETE ="secrete";
 	public static final int DefaultPermCookieDuration = 31556952; //1 Year represented in seconds
 	 
 	public static final String SOLRSPLSEARCHJSONDATA = "solrsplsearchjsondata";
