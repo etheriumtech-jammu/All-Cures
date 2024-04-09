@@ -42,14 +42,12 @@ public class DataController {
 	}
 	
 	
-	@RequestMapping(value = "/deactivate/{usr_id}/{reason_id}", produces = "application/json", method = RequestMethod.POST)
-	public @ResponseBody int delete_update(@PathVariable Integer usr_id,@PathVariable Integer reason_id )  {
-		
+	@RequestMapping(value = "/deactivate", produces = "application/json", method = RequestMethod.PUT)
+	public @ResponseBody int delete_update(@RequestBody HashMap dataMasterMap ) throws SQLException {
 		System.out.println("Request to deactivate");
-		return DeleteDaoImpl.Delete_Update(usr_id,reason_id);
-	
-		
-	}	
+		return DeleteDaoImpl.Delete_Update(dataMasterMap);
+			
+	}
 	
 	@RequestMapping(value = "/delete/{email}", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody String login_delete(@PathVariable String email) {
