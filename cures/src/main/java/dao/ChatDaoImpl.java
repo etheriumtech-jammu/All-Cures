@@ -61,8 +61,8 @@ public class ChatDaoImpl {
 		Session session = HibernateUtil.buildSessionFactory();
 
 		session.beginTransaction();
-		System.out.println(chat_id);
-		System.out.println(session.isOpen());
+//		System.out.println(chat_id);
+//		System.out.println(session.isOpen());
 		ZonedDateTime now = ZonedDateTime.now();
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 	        String timestamp= now.format(formatter);
@@ -91,7 +91,7 @@ public class ChatDaoImpl {
 			insertStr = insertStr.substring(0, insertStr.lastIndexOf(","));
 			insertStr_values = insertStr_values.substring(0, insertStr_values.lastIndexOf(","));
 			String completInsertStr = insertStr + ")" + " values " + insertStr_values + " );";
-			System.out.println("Query is " +completInsertStr);
+	//		System.out.println("Query is " +completInsertStr);
 
 			Query query = session.createNativeQuery(completInsertStr);
 
@@ -123,7 +123,7 @@ public class ChatDaoImpl {
 		// mcc.delete("Chat_id" + "_" + chat_id);
 		// // Retrieve the existing chat data from memcached
 		String cacheString = (String) mcc.get("Chat_id_" + chat_id);
-		System.out.println("Cache String: " + cacheString); //
+//		System.out.println("Cache String: " + cacheString); //
 		HashMap<String, Object> chatData = null;
 		if (cacheString != null) {
 			chatData = new Gson().fromJson(cacheString, new TypeToken<HashMap<String, Object>>() {
@@ -156,7 +156,7 @@ public class ChatDaoImpl {
 		Gson gson = new GsonBuilder().create();
 		String jsonData = gson.toJson(chatData);
 		mcc.set("Chat_id_" + chat_id, 3600, jsonData);
-		System.out.println("Added to memcached");
+	//	System.out.println("Added to memcached");
 	}
 	public static Integer ChatStore() {
 		Session session = HibernateUtil.buildSessionFactory();
@@ -173,7 +173,7 @@ public class ChatDaoImpl {
 
 		// session.close();
 
-		System.out.println(chat.getChat_id());
+//		System.out.println(chat.getChat_id());
 		return chat.getChat_id();
 	}
 
@@ -184,7 +184,7 @@ public class ChatDaoImpl {
 
 		int ret = 0;
 		String insertStr = "INSERT into dp_doctor_leads " + "(doc_id)" + "values(" + doc_id + ");";
-		System.out.println(insertStr);
+//		System.out.println(insertStr);
 		
 		Query query = session.createNativeQuery(insertStr);
 
@@ -234,7 +234,7 @@ public class ChatDaoImpl {
 		{
 			e.printStackTrace(); 
 		}
-	        System.out.println("Cache String: " + cacheString); // 
+//	        System.out.println("Cache String: " + cacheString); // 
 	        HashMap<String, Object> chatData = null;
 	        if (cacheString != null) {
 	            chatData = new Gson().fromJson(cacheString, new TypeToken<HashMap<String, Object>>() {}.getType());
@@ -268,7 +268,7 @@ public class ChatDaoImpl {
 		                 allMessages.add(hm);
 		            }
 		        }
-		        System.out.println(allMessages);
+	//	        System.out.println(allMessages);
 	   
 	        
 	        
@@ -281,7 +281,7 @@ public class ChatDaoImpl {
 		Constant.log("Got Req for Chat_ID: " + chat_id, 1);
 		List allMessages = findChatInCache(chat_id);
 
-		System.out.println(allMessages);
+//		System.out.println(allMessages);
 		String jsondata = null;
 	if (allMessages.size() == 0) {
 			// Chat Not Found in MemCache
@@ -319,7 +319,7 @@ public class ChatDaoImpl {
 				+ "" + chat_id + " ;");
 		
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println("Getting results:" );
+//		System.out.println("Getting results:" );
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
 			HashMap hm = new HashMap();
@@ -383,7 +383,7 @@ public class ChatDaoImpl {
 			hmFinal.add(hm);
 
 		}
-		System.out.println(hmFinal);
+//		System.out.println(hmFinal);
 		return hmFinal;
 
 	}
@@ -395,7 +395,7 @@ public class ChatDaoImpl {
 
 		int ret = 0;
 		String Str = "INSERT into dp_chat_archive select * from allcures1.dp_chat_history;";
-		System.out.println(Str);
+//		System.out.println(Str);
 		
 		Query query = session.createNativeQuery(Str);
 
@@ -414,7 +414,7 @@ public class ChatDaoImpl {
 
 		int ret = 0;
 	
-		System.out.println("Path is"+ path);
+//		System.out.println("Path is"+ path);
 		 
         path.toString();
 		
@@ -444,7 +444,7 @@ public class ChatDaoImpl {
 		try {
 			res = (int) query.getSingleResult();
 			
-			System.out.println(res);
+	//		System.out.println(res);
 			
 		} catch (NoResultException e) {
 		e.printStackTrace();
@@ -470,11 +470,11 @@ public class ChatDaoImpl {
 					res = (int) query1.getSingleResult();
 					
 				} catch (NoResultException e) {
-					System.out.println("Chat is not initiated");
+		//			System.out.println("Chat is not initiated");
 				    
 					
 				}
-				System.out.println("Chat_id" + res);
+	//			System.out.println("Chat_id" + res);
 				HashMap hm = new HashMap();
 				hm.put("Chat_id", res);
 				hm.put("From_id", from_id);
@@ -488,7 +488,7 @@ public class ChatDaoImpl {
 			}
 			else
 			{
-			System.out.println(result);
+		//	System.out.println(result);
 				
 				return result;
 			}
@@ -506,7 +506,7 @@ public class ChatDaoImpl {
 		Session session = HibernateUtil.buildSessionFactory();
 		session.beginTransaction();
 		
-			System.out.println("NEW CHAT");
+	//		System.out.println("NEW CHAT");
 			Date d1 = new Date();
 			int ret=0;
 			int res=0;
@@ -516,7 +516,7 @@ public class ChatDaoImpl {
 					 + from_id + "," + to_id + ", '" + Date1 + "' );");
 			try {
 				ret = query2.executeUpdate();
-				System.out.println(ret);
+	//			System.out.println(ret);
 				session.getTransaction().commit();
 			}
 			catch (Exception e) {
@@ -529,7 +529,7 @@ public class ChatDaoImpl {
 				res = (int) query.getSingleResult();
 				
 			} catch (NoResultException e) {
-				System.out.println("Chat is not initiated");
+	//			System.out.println("Chat is not initiated");
 			    
 				
 			}
@@ -597,7 +597,7 @@ public class ChatDaoImpl {
 
 
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println(results.size());
+	//	System.out.println(results.size());
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
 			LinkedHashMap<String, Object> hm = new LinkedHashMap<>();   
@@ -614,7 +614,7 @@ public class ChatDaoImpl {
 			if(demsg!=null) {
 			final String secretKey = Constant.SECRETE;
 			Encryption encrypt = new Encryption();
-			System.out.println(demsg);
+	//		System.out.println(demsg);
 			
 			message = encrypt.decrypt(demsg, secretKey);
 			}
