@@ -1160,9 +1160,10 @@ public static List ListCampaigns() {
 		{
 			int count = BannerCountMap.getOrDefault(currentDate, 0);
 			key="Banner_0_"+String.valueOf(count);
-			System.out.println(key);
+	//		System.out.println(key);
 			 URL=(String) mcc.get(key);
-			 System.out.println(key + URL);
+	//
+			System.out.println(key + URL);
 			 if (lastRequestDate == null || !lastRequestDate.equals(currentDate)) {
 		            BannerCountMap.clear();
 		            lastRequestDate = currentDate;
@@ -1172,7 +1173,7 @@ public static List ListCampaigns() {
 		{
 			int count = LeftCountMap.getOrDefault(currentDate, 0);
 			key="Left_0_"+String.valueOf(count);
-			System.out.println("Key" + key);
+	//		System.out.println("Key" + key);
 			 URL=(String) mcc.get(key);
 			 if (lastRequestDate == null || !lastRequestDate.equals(currentDate)) {
 		            LeftCountMap.clear();
@@ -1207,7 +1208,7 @@ public static List ListCampaigns() {
 					 Integer remaining=displayed + 1;
 					 
 					 TargetAds.DC_AdCount.put(DC_Cond.toString(),total + ":" + remaining);
-					 System.out.println("TargetAds.DC_AdCount" +TargetAds.DC_AdCount);
+			//		 System.out.println("TargetAds.DC_AdCount" +TargetAds.DC_AdCount);
 				 }
 			 
 		        
@@ -1219,7 +1220,7 @@ public static List ListCampaigns() {
 			 }
 			 }
 		 }
-		 System.out.println("Current Date in Milliseconds: before sending the response " + System.currentTimeMillis());
+//		 System.out.println("Current Date in Milliseconds: before sending the response " + System.currentTimeMillis());
 		  return URL;
 	}
 	  @Async
@@ -1227,14 +1228,14 @@ public static List ListCampaigns() {
     {
     	Session session1 = HibernateUtil.buildSessionFactory();
     	session1.beginTransaction();
-	System.out.println("Current Date in Milliseconds: before update " + System.currentTimeMillis());
+//	System.out.println("Current Date in Milliseconds: before update " + System.currentTimeMillis());
     	Query query = session1.createNativeQuery(
    			"Update CampaignAds set AdDelivered=AdDelivered + 1 WHERE ImageLocation = '" + URL + "';");
     	try {
 			int ret = query.executeUpdate();
-			System.out.println(ret);
+//			System.out.println(ret);
 			session1.getTransaction().commit();
-	System.out.println("Current Date in Milliseconds: after update " + System.currentTimeMillis());
+//	System.out.println("Current Date in Milliseconds: after update " + System.currentTimeMillis());
 //		store(URL);
 		}catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -1256,22 +1257,22 @@ public static List ListCampaigns() {
 			for (Object[] objects : results) {
 			
 				AdID = (Integer) objects[0];
-				System.out.println("AdID" + AdID);
+	//			System.out.println("AdID" + AdID);
 				
 			}
 			
 			if (AdID == null)
 			{
-				System.out.println("Current Date in Milliseconds: before insert " + System.currentTimeMillis());
+	//			System.out.println("Current Date in Milliseconds: before insert " + System.currentTimeMillis());
 				Query query = session.createNativeQuery(
 		    			"INSERT INTO AdsStats (AdID, Impressions) SELECT c.AdID, 1 FROM CampaignAds c WHERE c.ImageLocation = '" + URL + "';");
-		    		System.out.println(query);
+	//	    		System.out.println(query);
 		    	try {
 					int ret = query.executeUpdate();
 					session.getTransaction().commit();
-		System.out.println("Current Date in Milliseconds: after insert " + System.currentTimeMillis());
+	//	System.out.println("Current Date in Milliseconds: after insert " + System.currentTimeMillis());
 
-					System.out.println(" entry for URL =  " + URL);
+	//				System.out.println(" entry for URL =  " + URL);
 				
 				}catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -1280,7 +1281,7 @@ public static List ListCampaigns() {
 			}
 			else
 			{
-		System.out.println("Current Date in Milliseconds: before update " + System.currentTimeMillis());
+	//	System.out.println("Current Date in Milliseconds: before update " + System.currentTimeMillis());
 					Query query = session.createNativeQuery(
 		    			"UPDATE AdsStats\r\n"
 		    			+ "JOIN CampaignAds ON AdsStats.AdID = CampaignAds.AdID\r\n"
@@ -1289,11 +1290,11 @@ public static List ListCampaigns() {
 		    		
 		    	try {
 					int ret = query.executeUpdate();
-					System.out.println(ret);
+		//			System.out.println(ret);
 					session.getTransaction().commit();
-		System.out.println("Current Date in Milliseconds: after update adsstats " + System.currentTimeMillis());
+	//	System.out.println("Current Date in Milliseconds: after update adsstats " + System.currentTimeMillis());
 
-					System.out.println(" entry for URL =  " + URL);
+	//				System.out.println(" entry for URL =  " + URL);
 					
 				}catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -1310,8 +1311,8 @@ public static List ListCampaigns() {
 				+ "where a.disease_condition_id = d.dc_id && article_id="+article_id+"\n"
 				+ ";");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println(results);
-		System.out.println(results.get(0));
+//		System.out.println(results);
+//		System.out.println(results.get(0));
 		Integer parent_disease_id=null;
 		Integer dc_id=null;
 		HashMap<String, Integer> hm_dc_id= new LinkedHashMap<String, Integer>();
@@ -1323,8 +1324,8 @@ public static List ListCampaigns() {
 			hm_dc_id.put("parent_dc_id", dc_id);
 			hm_parent_disease_id.put("parent_dc_id", parent_disease_id);
 		}
-		System.out.println(dc_id);
-		System.out.println(parent_disease_id);
+//		System.out.println(dc_id);
+//		System.out.println(parent_disease_id);
 //		System.out.println(hm);
 		if(parent_disease_id== null) {
 			return hm_dc_id;
@@ -1349,7 +1350,7 @@ public static List ListCampaigns() {
 			try {
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
-			System.out.println("updating clicks in adstats =  " + adId);
+	//		System.out.println("updating clicks in adstats =  " + adId);
 			 
 		
 		}catch (Exception e) {
@@ -1368,7 +1369,7 @@ public static List ListCampaigns() {
 			Query query = session.createNativeQuery(
 					"select parent_dc_id,dc_desc, dc_id from disease_condition;");
 			List<Object[]> results = (List<Object[]>) query.getResultList();
-			System.out.println(results.size());
+//			System.out.println(results.size());
               
 			List<Object[]> arrayDataList = new ArrayList<>();
 			for (Object[] objects : results) {
@@ -1429,7 +1430,7 @@ public static List ListCampaigns() {
 		List<LinkedHashMap<String,Object>> list= new ArrayList<LinkedHashMap<String,Object>>();
 		try {
 			List<Object[]> results = (List<Object[]>) query.getResultList();
-			System.out.println(results);
+	//		System.out.println(results);
 			for (Object[] res: results) {
 				LinkedHashMap<String,Object> hm= new LinkedHashMap<String, Object>();
 				hm.put("CompanyID", res[0]);
@@ -1463,7 +1464,7 @@ public static List ListCampaigns() {
         try {
            
             if(campaigns.containsKey("CampaignName")) { 
-            	System.out.println(campaigns.containsKey("CampaignName"));
+    //        	System.out.println(campaigns.containsKey("CampaignName"));
             	String CampaignName = (String) campaigns.get("CampaignName");
             	query = session.createNativeQuery(
         				"SELECT * "
@@ -1767,14 +1768,14 @@ public static List ListCampaigns() {
 			
 			 String updatestr = " status = 0  ";
 			 
-			 System.out.println(updatestr);
+	//		 System.out.println(updatestr);
 				Query query = session.createNativeQuery(
 						"UPDATE `SponsoredServicesMaster`\r\n" + "SET\r\n" + updatestr + "WHERE `ServiceID` = " + ServiceID + ";");
 				int ret = 0;
 				try {
 				ret = query.executeUpdate();
 				session.getTransaction().commit();
-				System.out.println("deleted entry for ServiceID =  " + ServiceID);
+	//			System.out.println("deleted entry for ServiceID =  " + ServiceID);
 			
 			}catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -1862,7 +1863,7 @@ public static List ListCampaigns() {
 			// Convert the resultMap values to a list
 			hmFinal.addAll(resultMap.values());
 
-			System.out.println(hmFinal);
+	//		System.out.println(hmFinal);
 			return hmFinal;
 		}
 	public static List getServicesListDoctor() {
@@ -1903,7 +1904,7 @@ public static List ListCampaigns() {
 			  	hm.put("DocID", DocID);
 				// hm.put("Date", date1);
 				hmFinal.add(hm);
-		  System.out.println(hmFinal);
+	//	  System.out.println(hmFinal);
 		  }
 		  return hmFinal;
 
@@ -1917,12 +1918,12 @@ public static List ListCampaigns() {
 		  {
 			  result=uploadContractFile(document);
 			  filename=document.getOriginalFilename();
-			  System.out.println("Filename"+filename);
+	//		  System.out.println("Filename"+filename);
 		  }
 		  
 		  if(result==0)
 		  {
-			 System.out.println("Not uploading the document"); 
+	//		 System.out.println("Not uploading the document"); 
 		  }
 			  try {
 		            // Assuming your HashMap has keys matching the property names in Service
@@ -1941,7 +1942,7 @@ public static List ListCampaigns() {
 		        	contract.setStatus((Integer) ContractMap.get("Status"));
 		            session.save(contract);
 		            tx.commit();
-				System.out.println("Contract added");
+	//			System.out.println("Contract added");
 		            // Return 1 if insertion is successful
 		            return 1;
 		        } catch (Exception e) {
@@ -1959,7 +1960,7 @@ public static List ListCampaigns() {
 
 		String filename = image.getOriginalFilename();
 		String finalPath=path + "/" + filename;
-	        System.out.println(path + "/" + filename);
+	//        System.out.println(path + "/" + filename);
 			int ret=0;	
 			try {
 				byte barr[] = image.getBytes();
@@ -2055,13 +2056,13 @@ public static List ListCampaigns() {
 			  {
 				  result=uploadContractFile(document);
 				  filename=document.getOriginalFilename();
-				  System.out.println("Filename"+filename);
+	//			  System.out.println("Filename"+filename);
 				  updatestr += " DocumentPath = '" +filename +"',\r\n";
 			  }
 			  
 			  if(result==0)
 			  {
-				 System.out.println("Not uploading the image"); 
+	//			 System.out.println("Not uploading the image"); 
 			  }
 	        // Construct the update clauses based on the keys in ContractMap
 	       
@@ -2143,14 +2144,14 @@ public static List ListCampaigns() {
 			
 			 String updatestr = " status = 0  ";
 			 
-			 System.out.println(updatestr);
+	//		 System.out.println(updatestr);
 				Query query = session.createNativeQuery(
 						"UPDATE `ServiceContractDetails`\r\n" + "SET\r\n" + updatestr + "WHERE `ContractID` = " + ContractID + ";");
 				int ret = 0;
 				try {
 				ret = query.executeUpdate();
 				session.getTransaction().commit();
-				System.out.println("deleted entry for ContractID =  " + ContractID);
+	//			System.out.println("deleted entry for ContractID =  " + ContractID);
 			
 			}catch (Exception e) {
 				// TODO Auto-generated catch block
