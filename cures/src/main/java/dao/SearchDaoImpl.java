@@ -44,7 +44,7 @@ public class SearchDaoImpl {
 		List<Doctor> docarr = new ArrayList<Doctor>();
 		// Map<String,List<String>> doctorSolr = new
 		// HashMap<String,List<String>>();
-		System.out.println("Got Solr Client");
+	//	System.out.println("Got Solr Client");
 		// final Map<String, String> queryParamMap = new HashMap<String,
 		// String>();
 		// queryParamMap.put("q", "location:"+city);
@@ -146,7 +146,7 @@ public class SearchDaoImpl {
 			 * doc.setLatitude(latitude); String longitude = (String)
 			 * document.getFieldValue(Constant.LONGITUDE); doc.setLongitude(longitude);
 			 */
-			System.out.println("doctor" + doc.getPrimarySpl());
+	//		System.out.println("doctor" + doc.getPrimarySpl());
 			// docarr.add("gender:"+doc.getGender()+",city:"+doc.getCity()+",waiting_time:"+doc.getWaiting_time()+",prefix:"+doc.getPrefix()+",sub_spls:"+doc.getSub_spls()+",docactive:"+docactive+",telephone_nos:"+telephone_nos+",docname_last:"+docname_last+",country:"+country+",over_allrating:"+over_allrating+",
 			// doctorid:"+doctorid+", docname_first:"+doc.getFirstName()+",
 			// state:"+state+"
@@ -186,7 +186,7 @@ public class SearchDaoImpl {
 		List<Doctor> docarr = new ArrayList<Doctor>();
 		// Map<String,List<String>> doctorSolr = new
 		// HashMap<String,List<String>>();
-		System.out.println("Got Solr Client");
+	//	System.out.println("Got Solr Client");
 		// final Map<String, String> queryParamMap = new HashMap<String,
 		// String>();
 		// queryParamMap.put("q", "location:"+city);
@@ -197,7 +197,7 @@ public class SearchDaoImpl {
 //		System.out.println("Lon" + lon);
 		SolrQuery query = new SolrQuery();
 		String[] dname = docdetails.split(" ");
-		System.out.println("length" + dname.length);
+	//	System.out.println("length" + dname.length);
 		StringBuilder queryStringBuilder = new StringBuilder();
 		if (dname[0].contains("Dr") || dname[0].contains("Dr.")) {
             // Append the field name and the first name
@@ -218,7 +218,7 @@ public class SearchDaoImpl {
                    
                 }
             }
-			System.out.println(queryStringBuilder.toString());
+	//		System.out.println(queryStringBuilder.toString());
 			 query.add("q", queryStringBuilder.toString());
         } else {
 		    // Handle cases where the name doesn't contain "Dr" or "Dr."
@@ -345,7 +345,7 @@ public class SearchDaoImpl {
 		List<Doctor> docarr = new ArrayList<Doctor>();
 		// Map<String,List<String>> doctorSolr = new
 		// HashMap<String,List<String>>();
-		System.out.println("Got Solr Client for SearchBy Both, Doctor:" + docdetails + ": and city:" + cityname);
+	//	System.out.println("Got Solr Client for SearchBy Both, Doctor:" + docdetails + ": and city:" + cityname);
 		// final Map<String, String> queryParamMap = new HashMap<String,
 		// String>();
 		// queryParamMap.put("q", "location:"+city);
@@ -476,7 +476,7 @@ public class SearchDaoImpl {
 		List<Doctor> docarr = new ArrayList<Doctor>();
 		// Map<String,List<String>> doctorSolr = new
 		// HashMap<String,List<String>>();
-		System.out.println("Got Solr Client for featuredDoctors For Doctor:" + featureddocdetails);
+	//	System.out.println("Got Solr Client for featuredDoctors For Doctor:" + featureddocdetails);
 		// final Map<String, String> queryParamMap = new HashMap<String,
 		// String>();
 		// queryParamMap.put("q", "location:"+city);
@@ -515,7 +515,7 @@ public class SearchDaoImpl {
 			String docid = (String) document.getFirstValue(Constant.DOCID);
 				if (null!=docid) {
 				doc.setDocID(docid);
-				System.out.println("DocID from Solr:" +docid);
+		//		System.out.println("DocID from Solr:" +docid);
 			}
 
 	//		Object rowno_ = document.getFieldValue(Constant.ROWNO);
@@ -554,7 +554,7 @@ public class SearchDaoImpl {
 			String state = (String) document.getFieldValue(Constant.STATE);
 			doc.setState(state);
 			String country = (String) document.getFieldValue("country");
-			System.out.println("country"+country);
+	//		System.out.println("country"+country);
 			doc.setCountry(country);
 			String over_allrating = (String) document.getFieldValue(Constant.OVER_ALLRATING);
 			doc.setOverAllRating(over_allrating);
@@ -580,7 +580,7 @@ public class SearchDaoImpl {
 			String about = (String) document.getFieldValue("about");
 			doc.setAbout(about);
 			String img_Loc = (String) document.getFieldValue("img_Loc");
-			System.out.println("img_Loc"+img_Loc);
+	//		System.out.println("img_Loc"+img_Loc);
 			doc.setImgLoc(img_Loc);
 			String MedicineType = (String) document.getFieldValue("medicine_type");
 			 doc.setMedicineType(MedicineType);
