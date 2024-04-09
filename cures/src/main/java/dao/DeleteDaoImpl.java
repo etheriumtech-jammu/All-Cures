@@ -15,10 +15,10 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-
+import util.Encryption;
 import model.Registration;
 import util.HibernateUtil;
-
+import util.Constant;
 public class DeleteDaoImpl {
 	public static Integer Delete_Update(HashMap dataMasterMap) {
 		Session session = HibernateUtil.buildSessionFactory();
