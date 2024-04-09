@@ -20,33 +20,40 @@ import model.Registration;
 import util.HibernateUtil;
 
 public class DeleteDaoImpl {
-	public static Integer Delete_Update(Integer usr_id, Integer reason_id) {
-		
-		
+	public static Integer Delete_Update(HashMap dataMasterMap) {
 		Session session = HibernateUtil.buildSessionFactory();
-
+		Encryption encrypt = new Encryption();
 		session.beginTransaction();
-
+		String email=(String)dataMasterMap.get("email");
+		String pwd=(String)dataMasterMap.get("pwd");
+		Integer reason_id=(Integer)dataMasterMap.get("reasonID");
 		int ret = 0;
-	
+		String hashedPassword = null;
+		final String secretKey = Constant.SECRETE;		
+		hashedPassword = encrypt.encrypt(pwd, secretKey);	
 	//	 LocalDateTime now = LocalDateTime.now();  
 		java.sql.Timestamp now = new java.sql.Timestamp(new java.util.Date().getTime());
 		Query query = session.createNativeQuery(
-				"Update registration set Deactivated_time= '" + now + "' ,deactivated=1,reason_id='"+ reason_id + "'  where registration_id=" + usr_id + " ;");
+				"Update registration set Deactivated_time= '" + now + "' ,deactivated=1,reason_id="+ reason_id + " where email_address= '" + email + "' and pass_word= '" + hashedPassword + "' ;");
     
-		
-		
 		// needs other condition too but unable to find correct column
-		ret = query.executeUpdate();
 		
+	try {
+			ret = query.executeUpdate();
+			session.getTransaction().commit();
+//			System.out.println(ret);
+		}
+		catch (Exception e) {
+		    session.getTransaction().rollback();
+		    }
+	
+//		session.getTransaction().commit();
 		
-		
-		session.getTransaction().commit();
-		
-	//	session.close();
+//	session.close();
 		
 		return ret;
 	}
+	
 	
 	public static String Login_Delete(String email) {
 		Session session = HibernateUtil.buildSessionFactory();
