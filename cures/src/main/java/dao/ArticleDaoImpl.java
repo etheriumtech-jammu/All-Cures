@@ -68,6 +68,7 @@ public static MemcachedClient mcc = null;
 //		session.beginTransaction();
 		String conditionMatch = "";
 		// Admin user
+		System.out.println(user);
 		if (user.getRegistration_type() == 9)
 			conditionMatch = "  ";
 		// Reviewer
