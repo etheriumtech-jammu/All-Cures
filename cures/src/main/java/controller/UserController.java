@@ -63,7 +63,7 @@ public class UserController {
 
 	// @RequestMapping(value = "/getemaildecrypt?e={em}", produces =
 	// "application/json", method = RequestMethod.GET)
-	@RequestMapping(value = "/getemdecrypt", produces = "application/json", method = RequestMethod.GET)
+//	@RequestMapping(value = "/getemdecrypt", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody String getEmailDecrypted(@RequestParam String em) {
 		String email = null;
 		final String secretKey = Constant.SECRETE;
@@ -75,7 +75,7 @@ public class UserController {
 		return email;
 	}
 
-	@RequestMapping(value = "/getemdecrypt", produces = "application/json", method = RequestMethod.POST)
+//	@RequestMapping(value = "/getemdecrypt", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody String getEmailDecryptedPost(@RequestBody HashMap reqBody) {
 		String email = (String) reqBody.get("email");
 		final String secretKey = Constant.SECRETE;
@@ -87,7 +87,7 @@ public class UserController {
 		return em;
 	}
 
-	@RequestMapping(value = "/getemencrypt", produces = "application/json", method = RequestMethod.GET)
+//	@RequestMapping(value = "/getemencrypt", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody String getEmailEncrypted(@RequestParam String em) {
 		String emailEnc = null;
 		final String secretKey = Constant.SECRETE;
