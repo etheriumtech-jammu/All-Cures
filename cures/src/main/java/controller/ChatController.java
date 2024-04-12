@@ -27,12 +27,12 @@ public class ChatController {
 		@RequestMapping(value = "/chat/msg", produces = "application/json", method = RequestMethod.POST)
 		public @ResponseBody int chat_store(@RequestParam(required = false) Integer chat_id, @RequestBody HashMap chatMap, HttpServletRequest request) {
 		
-			System.out.println("hh");
+			
 			if (chat_id==null)
 			{
 			
 			chat_id= ChatDaoImpl.ChatStore();
-			System.out.println(chat_id);
+	//		System.out.println(chat_id);
 			}
 			
 			return ChatDaoImpl.Chat_Store(chat_id, chatMap);
@@ -60,7 +60,7 @@ public class ChatController {
 		
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			String strDate1 = dateFormat.format(date1);
-			System.out.println(strDate1);
+	//		System.out.println(strDate1);
 			return ChatDaoImpl.Chat_History(doc_id,strDate1);
 		
 		}
