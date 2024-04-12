@@ -24,7 +24,7 @@ public class TokenValidator {
 			token = token.substring("Bearer ".length());
 		}
 
-		System.out.println("Token: " + token);
+	//	System.out.println("Token: " + token);
 		Session session = HibernateUtil.buildSessionFactory();
 		int res = 0;
 
@@ -34,10 +34,10 @@ public class TokenValidator {
 						"SELECT at.TokenID, at.Token, at.Status, at.Max_Allowed, aa.Total_Count, aa.LastUpdateDate FROM API_Tokens at JOIN APITokenAnalytics aa ON at.TokenID = aa.TokenID WHERE at.Token = '"+token+"' AND aa.API = '"+url+"'");
 				
 		String queryString = query.unwrap(org.hibernate.query.Query.class).getQueryString();
-			System.out.println("Generated SQL query: " + queryString);
+	//		System.out.println("Generated SQL query: " + queryString);
 		try {
 			List<Object[]> results = query.getResultList();
-			System.out.println("Results size " + results.size());
+	//		System.out.println("Results size " + results.size());
 			if(results.size()>0) {
 			for (Object[] list : results) {
 				Integer TokenID = (Integer) list[0];
@@ -94,7 +94,7 @@ public class TokenValidator {
 			//         session.close(); // Close the session when done
 		}
 		}
-		System.out.println("Result of token validation"+res);
+		
 		return res;
 	}
 
