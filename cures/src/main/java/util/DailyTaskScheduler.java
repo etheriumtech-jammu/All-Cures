@@ -125,7 +125,7 @@ public class DailyTaskScheduler {
    //     System.out.println("Days" + daysDiff);
         int adCountPerDay = (int) Math.ceil(adCount / (double) daysDiff);
         
-        System.out.println("DailyCount" + adCountPerDay);
+//        System.out.println("DailyCount" + adCountPerDay);
         return adCountPerDay;
     }
 
@@ -251,7 +251,7 @@ public class DailyTaskScheduler {
 
  	                    }
  	                 } else {
- 	                    System.out.println("Ad not found in Memcached.");
+ 	      //              System.out.println("Ad not found in Memcached.");
  	                   
  	                }
  	                 	            
@@ -260,7 +260,7 @@ public class DailyTaskScheduler {
  	        // Print the list of tracked keys
  	   		 Set<String> keyList_LEFT = (Set<String>) mcc.get(LEFT_KEY_LIST_KEY);
  	   	        if (keyList_LEFT != null) {
- 	   	            System.out.println("List of Keys: " + keyList_LEFT);
+ 	//   	            System.out.println("List of Keys: " + keyList_LEFT);
  	   	            for (String key : keyList_LEFT) {
  	   	         //       System.out.println(key);
  	   	                
@@ -272,8 +272,8 @@ public class DailyTaskScheduler {
 	                    if (parts.length == 2) {
 	                        String storedImageLocation = parts[0];
 	                        int storedAdCount = Integer.parseInt(parts[1]);
-	                       System.out.println("Stored Image Location: " + storedImageLocation);
-	                       System.out.println("Stored Ad Count: " + storedAdCount);
+	   //                    System.out.println("Stored Image Location: " + storedImageLocation);
+	  //                     System.out.println("Stored Ad Count: " + storedAdCount);
 	                      LeftrotationCount1= LeftrotationCount1 + storedAdCount;
 	                        LeftAdCount.put(key,storedAdCount);
 	    //                   System.out.println("LeftAdCount" + LeftAdCount);
@@ -281,13 +281,13 @@ public class DailyTaskScheduler {
 
 	                    }
 	                 } else {
-	                    System.out.println("Ad not found in Memcached.");
+	    //                System.out.println("Ad not found in Memcached.");
 	                   
 	                }
 	            
  	   	            }createPattern(LeftAdCount,LeftAdURL,LeftrotationCount1,LEFT_KEY_LIST_KEY);}
  	             else {
- 	            System.out.println("No keys found in the list.");
+ 	//            System.out.println("No keys found in the list.");
  	            
  	        }  
  	            }
@@ -313,16 +313,16 @@ public class DailyTaskScheduler {
     {
     	int count =0;
     	 Set<String> keyList = (Set<String>) mcc.get(KEY_LIST_KEY);
-    	 System.out.println("keyList" + keyList);
+//    	 System.out.println("keyList" + keyList);
     	  List<String> ads = new ArrayList<>();
-    	  System.out.println(AdCount);
-          System.out.println(AdURL);
+//    	  System.out.println(AdCount);
+//          System.out.println(AdURL);
      	   
       	       if(AdCount.size() ==1)
       	       {
-      	    	   System.out.println("Single AD");
+   //   	    	   System.out.println("Single AD");
       	    	 for ( String key1 : keyList) {
-      	    		System.out.println(AdCount.get(key1));
+    //  	    		System.out.println(AdCount.get(key1));
       	    		 count=AdCount.get(key1);
       	    	 
       	    		 for (int i = 0; i < count; i++) {
@@ -332,15 +332,15 @@ public class DailyTaskScheduler {
       	       
       	       
       	       else {
-      	    	 System.out.println("AdCount::"+AdCount);
+   //   	    	 System.out.println("AdCount::"+AdCount);
       	    	 LinkedHashMap<String, Double> Result= SimplifiedRatioCalculator.CalculateRatio(AdCount);
-    	           System.out.println("Size:"+AdCount.size());  
+  //  	           System.out.println("Size:"+AdCount.size());  
     	            ads =DynamicAdPattern.generateAds(Result);
     	  
       	       }
       	         	     
-            System.out.println("ADS:"+ads);
-            System.out.println(rotationCount1);
+ //           System.out.println("ADS:"+ads);
+ //           System.out.println(rotationCount1);
             int DC_Cond=0;
            displayRotatedAds(ads, rotationCount1,AdCount,AdURL,DC_Cond);
     	
@@ -355,7 +355,7 @@ public class DailyTaskScheduler {
            String[] parts = match.split("_");
            if (parts.length >=2) {
                result = parts[0] + "_" + parts[1] + "_"; // Concatenate the first two parts
-              System.out.println("Result: " + result);
+  //            System.out.println("Result: " + result);
           } 
           if (mcc == null) {
 	 initializeCacheClient();
@@ -367,23 +367,23 @@ public class DailyTaskScheduler {
                String currentAd = ads.get(adIndex);
                // Check if the current AD should be skipped
                if (brandSkipCounts.containsKey(currentAd) && brandSkipCounts.get(currentAd) > 0) {
-               	System.out.println("hello");
+               	
                	brandSkipCounts.put(currentAd, brandSkipCounts.get(currentAd) - 1);
-               	System.out.println(currentAd); 
+   //            	System.out.println(currentAd); 
                	String URL=AdURL.get(currentAd);
                	
    //            	String key="Banner" + String.valueOf(index);
                	String key=result + String.valueOf(index);
-               	System.out.println("Key:" + key);
-               	System.out.println("URL:" + URL);
+   //            	System.out.println("Key:" + key);
+   //            	System.out.println("URL:" + URL);
                	index=index+1;
                	
                	// Append the URL to the list
                  mcc.set(key,0,URL );
-                System.out.println("in memcached" + (String)mcc.get(key)); 
+   //             System.out.println("in memcached" + (String)mcc.get(key)); 
                	
        //        } else {
-               	System.out.println("hh");
+               
        //       	rotationCount=rotationCount +1;
                	
        //        }
@@ -408,23 +408,23 @@ public class DailyTaskScheduler {
                String currentAd = ads.get(adIndex);
                // Check if the current AD should be skipped
                if (brandSkipCounts.containsKey(currentAd) && brandSkipCounts.get(currentAd) > 0) {
-               	System.out.println("hello");
+
                	brandSkipCounts.put(currentAd, brandSkipCounts.get(currentAd) - 1);
-               	System.out.println(currentAd); 
+  //             	System.out.println(currentAd); 
                	String URL=AdURL.get(currentAd);
                	
    //            	String key="Banner" + String.valueOf(index);
                	String key=parts[0] + "_0_"  + String.valueOf(index) ;
-               	System.out.println("Key:" + key);
-               	System.out.println("URL:" + URL);
+    //           	System.out.println("Key:" + key);
+  //             	System.out.println("URL:" + URL);
                	index=index+1;
                	
                	// Append the URL to the list
                  mcc.set(key,0,URL );
-                System.out.println("in memcached" + (String)mcc.get(key)); 
+             
                	
        //        } else {
-               	System.out.println("hh");
+               
        //       	rotationCount=rotationCount +1;
                	
        //        }
@@ -446,22 +446,20 @@ public class DailyTaskScheduler {
         {
         	int adIndex = 0;
             int index=0;
-            System.out.println(rotationCount);
+        
             for (int i = 0; i < rotationCount; i++) {
                 String currentAd = ads.get(adIndex);
                 // Check if the current AD should be skipped
                 if (brandSkipCounts.containsKey(currentAd) && brandSkipCounts.get(currentAd) > 0) {
-                	System.out.println("hello");
+                	
                 	brandSkipCounts.put(currentAd, brandSkipCounts.get(currentAd) - 1);
-                	System.out.println(currentAd); 
+                	
                 	String URL=AdURL.get(currentAd);
                 	String key="Left" + String.valueOf(index);
                 	index=index+1;
                 	 
                 	// Append the URL to the list
-                  mcc.set(key,0,URL );
-                 System.out.println("in memcached" + (String)mcc.get(key)); 
-                	
+                  mcc.set(key,0,URL );  	
                 } else {
          //       	System.out.println("hh");
         //       	rotationCount=rotationCount +1;
