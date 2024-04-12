@@ -81,7 +81,7 @@ public class ArticleDaoImpl {
 		Query query = session
 				.createNativeQuery("select  article_id  from article  where pubstatus_id = 3 " + conditionMatch + " ;");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
-		System.out.println("result list article@@@@@@@@@@@@@" + list.size());
+//		System.out.println("result list article@@@@@@@@@@@@@" + list.size());
 
 //		session.getTransaction().commit();   
 		//session.close();;
@@ -122,7 +122,7 @@ public class ArticleDaoImpl {
 		Query query = session
 				.createNativeQuery("select  article_id  from article where pubstatus_id = 1 " + conditionMatch + " ;");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
-		System.out.println("result list article@@@@@@@@@@@@@" + list.size());
+//		System.out.println("result list article@@@@@@@@@@@@@" + list.size());
 //		session.getTransaction().commit();   
 		//session.close();
 		return list;
@@ -158,7 +158,7 @@ public class ArticleDaoImpl {
 		Query query = session
 				.createNativeQuery("select  article_id  from article  where pubstatus_id = 2 " + conditionMatch + " ;");
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
-		System.out.println("result list article@@@@@@@@@@@@@" + list.size());
+//		System.out.println("result list article@@@@@@@@@@@@@" + list.size());
 //		session.getTransaction().commit();   //session.close();
 		return list;
 	}
@@ -197,7 +197,7 @@ public class ArticleDaoImpl {
 				.createNativeQuery("select  article_id  from article  where pubstatus_id = 2 " + conditionMatch + " ;");
 		// needs other condition too but unable to find correct column
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
-		System.out.println("result list article@@@@@@@@@@@@@" + list.size());
+//		System.out.println("result list article@@@@@@@@@@@@@" + list.size());
 //		session.getTransaction().commit();   //session.close();
 
 		return list;
@@ -257,8 +257,8 @@ public class ArticleDaoImpl {
 		Iterator itr = articleList.iterator();
 		while (itr.hasNext()) {
 			Object[] obj = (Object[]) itr.next();
-			System.out.println((Integer) obj[0]);
-			System.out.println((String) obj[1]);
+	//		System.out.println((Integer) obj[0]);
+	//		System.out.println((String) obj[1]);
 			article.setArticle_id((Integer) obj[0]);
 			article.setTitle((String) obj[1]);
 			article.setFriendly_name((String) obj[2]);
@@ -267,11 +267,11 @@ public class ArticleDaoImpl {
 			article.setKeywords((String) obj[5]);
 			article.setWindow_title((String) obj[6]);
 			article.setContent_location((String) obj[7]);
-			System.out.println((String) obj[7]);
+	//		System.out.println((String) obj[7]);
 			String file = (String) obj[7];
 			// file = "/home/administrator/uat/"+
 			// file = file.replace("\\", "/");//.replace("/", "/");
-			System.out.println("FILENAME===>>>>>>>>>>" + file);
+	//		System.out.println("FILENAME===>>>>>>>>>>" + file);
 			// String file = "C:\\" + (String) obj[7];
 //			file = "C:\\test\\14\\2021\\05\\26\\article_"+(Integer) obj[0]+".json";
 			String contents = "";
@@ -300,7 +300,7 @@ public class ArticleDaoImpl {
 					char c = (char) b;
 
 					// prints character
-					System.out.print(c);
+		//			System.out.print(c);
 					contents = contents + c;
 				}
 
@@ -324,7 +324,7 @@ public class ArticleDaoImpl {
 						e.printStackTrace();
 					}
 			}
-			System.out.println(contents);
+	//		System.out.println(contents);
 
 			article.setAuthored_by((String) obj[8]);
 			article.setPublished_by((Integer) obj[9]);
@@ -398,8 +398,8 @@ public class ArticleDaoImpl {
 		Iterator itr = articleList.iterator();
 		while (itr.hasNext()) {
 			Object[] obj = (Object[]) itr.next();
-			System.out.println((Integer) obj[0]);
-			System.out.println((String) obj[1]);
+	//		System.out.println((Integer) obj[0]);
+	//		System.out.println((String) obj[1]);
 			article.setArticle_id((Integer) obj[0]);
 			article.setTitle((String) obj[1]);
 			article.setFriendly_name((String) obj[2]);
@@ -408,11 +408,11 @@ public class ArticleDaoImpl {
 			article.setKeywords((String) obj[5]);
 			article.setWindow_title((String) obj[6]);
 			article.setContent_location((String) obj[7]);
-			System.out.println((String) obj[7]);
+	//		System.out.println((String) obj[7]);
 			String file = (String) obj[7];
 			// file = "/home/administrator/uat/"+
 			// file = file.replace("\\", "/");//.replace("/", "/");
-			System.out.println("FILENAME===>>>>>>>>>>" + file);
+	//		System.out.println("FILENAME===>>>>>>>>>>" + file);
 			// String file = "C:\\" + (String) obj[7];
 //			file = "C:\\test\\14\\2021\\05\\26\\article_"+(Integer) obj[0]+".json";
 			String contents = "";
@@ -441,7 +441,7 @@ public class ArticleDaoImpl {
 					char c = (char) b;
 
 					// prints character
-					System.out.print(c);
+		//			System.out.print(c);
 					contents = contents + c;
 				}
 
@@ -465,7 +465,7 @@ public class ArticleDaoImpl {
 						e.printStackTrace();
 					}
 			}
-			System.out.println(contents);
+	//		System.out.println(contents);
 
 			article.setAuthored_by((String) obj[8]);
 			article.setPublished_by((Integer) obj[9]);
@@ -525,7 +525,7 @@ public class ArticleDaoImpl {
 				+ " order by `article`.`article_id` desc " + limit_str + offset_str + " ;\r\n" + ";");
 		// needs other condition too but unable to find correct column
 		ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
-		System.out.println("result list article@@@@@@@@@@@@@" + list.size());
+//		System.out.println("result list article@@@@@@@@@@@@@" + list.size());
 //		session.getTransaction().commit();   
 		//session.close();
 
@@ -571,7 +571,7 @@ public class ArticleDaoImpl {
 				+ "where ar.pubstatus_id = 3 and au.reg_doc_pat_id = "+reg_doc_pat_id+" order by ar.article_id desc \r\n" + limit_str + offset_str + ";");
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println("result list article@@@@@@@@@@@@@" + results.size());
+//		System.out.println("result list article@@@@@@@@@@@@@" + results.size());
 //		session.getTransaction().commit();   //session.close();
 
 		List hmFinal = new ArrayList();
@@ -695,7 +695,7 @@ public class ArticleDaoImpl {
 				+ limit_str + offset_str + " ;");
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println("result list article@@@@@@@@@@@@@" + results.size());
+//		System.out.println("result list article@@@@@@@@@@@@@" + results.size());
 //		session.getTransaction().commit();   //session.close();
 		
 		List hmFinal = new ArrayList();
@@ -821,7 +821,7 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 				+ limit_str + offset_str + " ;");
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println("result list article@@@@@@@@@@@@@" + results.size());
+//		System.out.println("result list article@@@@@@@@@@@@@" + results.size());
 //		session.getTransaction().commit();   //session.close();
 		
 		List hmFinal = new ArrayList();
@@ -945,7 +945,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 			+ limit_str + offset_str + " ;");
 	// needs other condition too but unable to find correct column
 	List<Object[]> results = (List<Object[]>) query.getResultList();
-	System.out.println("result list article@@@@@@@@@@@@@" + results.size());
+//	System.out.println("result list article@@@@@@@@@@@@@" + results.size());
 //	session.getTransaction().commit();   //session.close();
 	
 	List hmFinal = new ArrayList();
@@ -1032,7 +1032,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 		Query query = session.createNativeQuery("SELECT * FROM `" + table_name + "`;\r\n" + ";");
 		// needs other condition too but unable to find correct column
 		ArrayList list = (ArrayList) query.getResultList();
-		System.out.println("result list " + table_name + " all@@@@@@@@@" + list.size());
+//		System.out.println("result list " + table_name + " all@@@@@@@@@" + list.size());
 //		session.getTransaction().commit();   
 		//session.close();
 
@@ -1219,7 +1219,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 		try {
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
-			System.out.println("updated article table for article_id =  " + article_id);
+//			System.out.println("updated article table for article_id =  " + article_id);
 			Boolean value = true;
 			String article_location_relative_full =  "https://etheriumtech.com/images/illustrations/favicon.png";
 
@@ -1268,10 +1268,10 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 			        // Checking if the specified file exists or not
 			        if (f.exists()) {
 			            // Show if the file exists
-			            System.out.println("Image File Exists");
-						System.out.println(baseUrl);
+//			            System.out.println("Image File Exists");
+//						System.out.println(baseUrl);
 						article_location_relative_full =  baseUrl + "/"+cures_articleimages+"/" + article_location_relative_image;
-						System.out.println(article_location_relative_full);
+//						System.out.println(article_location_relative_full);
 			        }
 			        String author_medicine_type = "";
 			        String disease_name = "";
@@ -1295,10 +1295,10 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 						List<String> recipientTokens = FCMDao.getTokens();
 						String id=Integer.toString(article_id);
 						NotificationService.sendNotification(recipientTokens,title,  article_title,action,id);
-						System.out.println("Notification Sent");
+	//					System.out.println("Notification Sent");
 	//					WhatsAPITrackEvents.POSTRequestTrackEventsByArticleId(article_id);
 						WhatsAPITemplateMessage.POSTRequestTrackEventsByArticleId(art.getTitle()+"?whatsapp", article_id, type, art.getDisease_condition_id(), article_location_relative_full, author_medicine_type, disease_name);
-						System.out.println("Subscription WhatsApp Message sent.");
+	//					System.out.println("Subscription WhatsApp Message sent.");
 					}
 				}
 				
@@ -1336,7 +1336,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 //				Map<String, Object> mapUser = oMapper.convertValue(user, Map.class);
 //				templateData.putAll(mapUser);
 				emaildto.setEmailTemplateData(templateData);
-				System.out.println(emaildto);
+//				System.out.println(emaildto);
 
 				String returnEmail = emailUtil.shootEmail(emaildto);
 
@@ -1377,7 +1377,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 		int ret = 0;
 		try {
 			ret = query.executeUpdate();
-			System.out.println("soft deleteed article_id =  " + article_id);
+//			System.out.println("soft deleteed article_id =  " + article_id);
 			session.getTransaction().commit();
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
@@ -1449,7 +1449,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 				" ;");
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println("result list article@@@@@@@@@@@@@" + results.size());
+//		System.out.println("result list article@@@@@@@@@@@@@" + results.size());
 //		session.getTransaction().commit();   //session.close();
 		
 		List hmFinal = new ArrayList();
@@ -1553,7 +1553,7 @@ public static List getArticlesListAllKeysRanked(Integer limit, Integer offset, S
 		List hmFinal = new ArrayList();
 		if(ret==0)
 		{
-			System.out.println("Failed to call procedure");
+//			System.out.println("Failed to call procedure");
 		}
 		
 		else
@@ -1612,7 +1612,7 @@ public static List getArticlesListAllKeysRanked(Integer limit, Integer offset, S
 					+ limit_str + offset_str + " ;");
 			// needs other condition too but unable to find correct column
 			List<Object[]> results = (List<Object[]>) query.getResultList();
-			System.out.println("result list article@@@@@@@@@@@@@" + results.size());
+//			System.out.println("result list article@@@@@@@@@@@@@" + results.size());
 //			session.getTransaction().commit();   //session.close();
 			
 			
