@@ -226,7 +226,7 @@ public class PaymentGatewayDaoImpl {
             updateWalletAmount(session, 2, wallet2Amount);
             updateWalletAmount(session, 1, wallet1Amount);
             updateWalletAmount(session, 3, wallet3Amount, docId);
-
+		System.out.println("Updated");
             tx.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -237,12 +237,14 @@ public class PaymentGatewayDaoImpl {
         String hql = "UPDATE WalletHistory SET amount = amount + " + amount + " WHERE walletMasterId = " + walletMasterId + " ";
         session.createQuery(hql)
                 .executeUpdate();
+	    System.out.println("Updated");
     }
 
     private static void updateWalletAmount(Session session, int walletMasterId, double amount, int docId) {
         String hql = "UPDATE WalletHistory SET amount = amount + " + amount + " WHERE walletMasterId = "+ walletMasterId + " AND docId = " + docId +"";
         session.createQuery(hql)
                 .executeUpdate();
+	    System.out.println("Updated");
     }
 
 }
