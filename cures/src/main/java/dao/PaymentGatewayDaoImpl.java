@@ -50,8 +50,8 @@ public class PaymentGatewayDaoImpl {
 				+ cancelUrl + "&language=EN";
 		AesCryptUtil aesUtil = new AesCryptUtil(workingKey);
 		String encRequest = aesUtil.encrypt(ccaRequest);
-		System.out.println(encRequest);
-		System.out.println(orderId);
+//		System.out.println(encRequest);
+//		System.out.println(orderId);
 		
 		int res;
 		synchronized (paymentLock) { // Synchronize payment processing
@@ -110,11 +110,11 @@ public class PaymentGatewayDaoImpl {
 		}
 
 		// Access the key-value pairs in the Hashtable
-		for (String key : hs.keySet()) {
+/*		for (String key : hs.keySet()) {
 			String value = hs.get(key);
 			System.out.println("Parameter Name: " + key + ", Value: " + value);
 		}
-
+*/
 		Session session = HibernateUtil.buildSessionFactory();
 		Transaction tx = session.beginTransaction();
 	    try {
@@ -133,7 +133,7 @@ public class PaymentGatewayDaoImpl {
 			        + "trackingID = '" + hs.get("tracking_id") + "'"
 			    
 			        + "WHERE order_id = '" + orderId + "'");
-			System.out.println("UPDATE Payment_Gateway_Transactions "
+	/*		System.out.println("UPDATE Payment_Gateway_Transactions "
 			        + "SET order_status = '" + hs.get("order_status") + "', " 
 			        + "payment_mode = '" + hs.get("payment_mode") + "', "
 			        + "status_message = '" + hs.get("status_message") + "', "
@@ -142,7 +142,7 @@ public class PaymentGatewayDaoImpl {
 			        + "trackingID = '" + hs.get("tracking_id") + "', "
 			       
 			        + "WHERE order_id = '" + orderId + "'");
-			
+	*/		
 			query.executeUpdate();
 			tx.commit();
 			sendEmail(orderId,meeting);
