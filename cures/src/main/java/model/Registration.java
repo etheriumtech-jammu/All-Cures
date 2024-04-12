@@ -26,7 +26,7 @@ public class Registration implements Serializable {
 	private String last_name;
 	 @Column(name = Constant.EMAIL_ADDRESS)
 	private String email_address;
-	 @Column(name = Constant.PASS_WORD)
+	 @Column(name = "pass_word")
 	private String  pass_word;
 	 @Column(name = Constant.REGISTRATION_TYPE)
 	private Integer registration_type;
