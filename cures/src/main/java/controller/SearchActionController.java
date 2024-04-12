@@ -93,13 +93,13 @@ public class SearchActionController extends HttpServlet {
 				 featuredDoctors = resultList.stream()
 				        .map(row -> String.valueOf(row[0]))
 				        .collect(Collectors.joining(","));
-				System.out.println(featuredDoctors);
+	//			System.out.println(featuredDoctors);
 			}
 			
 			if (null !=featuredDoctors && featuredDoctors.length() != 0) {
-				System.out.println("In Featured doctor..");
+	//			System.out.println("In Featured doctor..");
 				docSolr = search.featuredDoctors(featuredDoctors);
-				System.out.println("docSolr" + docSolr);
+	//			System.out.println("docSolr" + docSolr);
 			}else {		
 				if(!city_pin.equals("") && doc_details.equals("")){
 					Constant.log("Searching By City Pin:"+city_pin, 1);
