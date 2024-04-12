@@ -62,7 +62,7 @@ public class SocketIOServer1 extends WebSocketServer {
 	//	  roomName = handshake.getFieldValue("Room_No");
 	//	  System.out.println("A client has connected" + clientId); 
 		 
-	    System.out.println("A client has connected");
+//	    System.out.println("A client has connected");
 	    clients.put(conn, null);
 	    
 		  while (!conn.isOpen()) {
@@ -80,10 +80,9 @@ public class SocketIOServer1 extends WebSocketServer {
 
 	  @Override
 	  public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-	    System.out.println("A client has disconnected");
+//	    System.out.println("A client has disconnected");
 		connectionCount.decrementAndGet();
-	    System.out.println(connectionCount);
-	  System.out.println(connectionCount);
+	   
 	    String roomName = clients.get(conn);
         if (roomName != null) {
             rooms.get(roomName).remove(conn);
@@ -109,12 +108,12 @@ public class SocketIOServer1 extends WebSocketServer {
 
 	  @Override
 	  public void onMessage(WebSocket conn, String message) {
-		  System.out.println("Received message is" + message);
+//		  System.out.println("Received message is" + message);
 
 		if (message.contains("Room_No") == true) {
 			JSONObject json = new JSONObject(message);
 			String roomName = json.getString("Room_No");
-			System.out.println("Chat_Room is " + roomName);
+//			System.out.println("Chat_Room is " + roomName);
 			 // Add the client to the chat room
 			if (!rooms.containsKey(roomName)) {
 				rooms.put(roomName, new CopyOnWriteArraySet<>());
@@ -157,9 +156,7 @@ public class SocketIOServer1 extends WebSocketServer {
 			Encryption encrypt = new Encryption();
 
 			enmsg = encrypt.encrypt(message1, secretKey);
-			System.out.println(roomName);
-
-			System.out.println("Encrypted Message:" + enmsg);
+			
 
 			// Store the message in the database
 			HashMap hm = new HashMap();
@@ -167,8 +164,7 @@ public class SocketIOServer1 extends WebSocketServer {
 			hm.put("To_id", recipientId);
 			hm.put("Message", enmsg);
 
-			System.out.println("Send_ID" + sendId);
-			System.out.println("Recipient_ID" + recipientId);
+			
 
 			Integer result = ChatDaoImpl.Chat_Store(chat_id, hm);
 			// broadcast the message to all clients in the room
