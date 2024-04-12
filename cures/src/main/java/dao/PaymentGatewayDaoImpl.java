@@ -125,7 +125,7 @@ public class PaymentGatewayDaoImpl {
 		   String transDateStr = hs.get("trans_date");
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date transDate = dateFormat.parse(transDateStr);
-
+		Double amount=Double.parseDouble(hs.get("amount"));
 			Query query = session.createQuery("UPDATE PaymentGatewayTransaction "
 			        + "SET order_status = '" + hs.get("order_status") + "', " 
 			        + "payment_mode = '" + hs.get("payment_mode") + "', "
@@ -148,7 +148,7 @@ public class PaymentGatewayDaoImpl {
 			query.executeUpdate();
 			tx.commit();
 		Integer docid= sendEmail(orderId,meeting);
-			 updateWalletAmount(10.00,docid);
+			 updateWalletAmount(amount,docid);
 			return "Success";
 		} catch (Exception e) {
 			e.printStackTrace(); // Log the exception or handle it appropriately
@@ -205,7 +205,7 @@ public class PaymentGatewayDaoImpl {
 	        
 	        java.util.Date time = inputFormat.parse(startTime);
 	        String formattedTime = outputFormat.format(time).toUpperCase(); // Convert AM/PM to uppercase
-	        VideoDaoImpl.sendEmail(docID, userID, meeting, dateString, formattedTime);
+//	        VideoDaoImpl.sendEmail(docID, userID, meeting, dateString, formattedTime);
             
     		System.out.println("Video Link sent");
 		return docID;
