@@ -147,7 +147,8 @@ public class PaymentGatewayDaoImpl {
 			
 			query.executeUpdate();
 			tx.commit();
-		sendEmail(orderId,meeting);
+		Integer docid= sendEmail(orderId,meeting);
+			 updateWalletAmount(10.00,docid);
 			return "Success";
 		} catch (Exception e) {
 			e.printStackTrace(); // Log the exception or handle it appropriately
@@ -174,7 +175,7 @@ public class PaymentGatewayDaoImpl {
 	    }
 	}
 
-	public static void sendEmail(String orderID,String meeting) throws ParseException, IOException
+	public static Integer sendEmail(String orderID,String meeting) throws ParseException, IOException
 	{
 		Session session = HibernateUtil.buildSessionFactory();
 		String startTime="";
@@ -207,5 +208,41 @@ public class PaymentGatewayDaoImpl {
 	        VideoDaoImpl.sendEmail(docID, userID, meeting, dateString, formattedTime);
             
     		System.out.println("Video Link sent");
+		return docID;
 	}
+
+	public static void updateWalletAmount(double amount, int docId) {
+		Session session = HibernateUtil.buildSessionFactory();
+		
+        try {
+            Transaction tx = session.beginTransaction();
+
+            // Divide the amount based on the rule
+            double wallet2Amount = amount * 0.2; // 20% to walletmasterid 2 i.e All Cures
+            double wallet1Amount = amount * 0.1; // 10% to walletmasterid 1 i.e GST
+            double wallet3Amount = amount * 0.7; // 70% to walletmasterid 3 if docid matches
+
+            // Update rows in the table
+            updateWalletAmount(session, 2, wallet2Amount);
+            updateWalletAmount(session, 1, wallet1Amount);
+            updateWalletAmount(session, 3, wallet3Amount, docId);
+
+            tx.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void updateWalletAmount(Session session, int walletMasterId, double amount) {
+        String hql = "UPDATE WalletHistory SET amount = amount + " + amount + " WHERE walletMasterId = " + walletMasterId + " ";
+        session.createQuery(hql)
+                .executeUpdate();
+    }
+
+    private static void updateWalletAmount(Session session, int walletMasterId, double amount, int docId) {
+        String hql = "UPDATE WalletHistory SET amount = amount + " + amount + " WHERE walletMasterId = "+ walletMasterId + " AND docId = " + docId +"";
+        session.createQuery(hql)
+                .executeUpdate();
+    }
+
 }
