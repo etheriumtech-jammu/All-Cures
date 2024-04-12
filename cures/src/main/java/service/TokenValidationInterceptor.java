@@ -36,7 +36,7 @@ if (userAgent != null && (userAgent.toLowerCase().contains("mobile") || userAgen
         } else {
             final_url+= url;
         }
-        logger.info("TokenValidationInterceptor: Request received with token: {}", token);
+//        logger.info("TokenValidationInterceptor: Request received with token: {}", token);
         try {
             if (!(token == null )) {
                 int result=TokenValidator.isValidToken(token,final_url);
