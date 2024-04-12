@@ -328,7 +328,11 @@
 						<version>4.2.2</version>
 					</dependency>
 
-
+				<dependency>
+    <groupId>org.apache.solr</groupId>
+    <artifactId>solr-dataimporthandler</artifactId>
+    <version>9.5.0</version> <!-- Or the version compatible with your Solr installation -->
+</dependency>
 
 
 
