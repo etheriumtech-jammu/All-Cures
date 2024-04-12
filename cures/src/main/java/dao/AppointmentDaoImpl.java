@@ -212,8 +212,8 @@ public class AppointmentDaoImpl {
 	                    Set<LocalTime> unbookedSlotsTime = new HashSet<>(slotStartTimes);
 	                    unbookedSlotsTime.removeAll(bookedSlotsTime);
 	                    unbookedSlots.put(date, unbookedSlotsTime);
-			    System.out.println("slotStartTimes.size()"+slotStartTimes.size());
-			    System.out.println("bookedSlotsTime.size()"+bookedSlotsTime.size());
+//			    System.out.println("slotStartTimes.size()"+slotStartTimes.size());
+//			    System.out.println("bookedSlotsTime.size()"+bookedSlotsTime.size());
 	                    if (bookedSlotsTime.size() >= slotStartTimes.size()) {
 	                        completelyBookedDates.add(date);
 	                    }
@@ -299,7 +299,7 @@ public class AppointmentDaoImpl {
 	                LocalTime slotStartTime = startTime.plusMinutes(i * (slotDuration));
 	                slotStartTimes.add(slotStartTime);
 	            }
-	            System.out.println(slotStartTimes);
+//	            System.out.println(slotStartTimes);
 	        } else {
 	            throw new Exception("Doctor not found with id: " + doctorId);
 	        }
@@ -324,9 +324,9 @@ public class AppointmentDaoImpl {
 	        
 	        List<Object> resultList = query.getResultList();
 	        for (Object startTimeObj : resultList) {
-	            System.out.println("Type of startTimeObj: " + startTimeObj.getClass().getName());
+//	            System.out.println("Type of startTimeObj: " + startTimeObj.getClass().getName());
 	        }
-	        System.out.println(resultList.size());
+//	        System.out.println(resultList.size());
 	        for (Object startTimeObj : resultList) {
 	//            if (startTimeObj instanceof Time) {
 	        	String startTimeStr = (String) startTimeObj;
@@ -338,7 +338,7 @@ public class AppointmentDaoImpl {
 	        // Handle exceptions
 	        e.printStackTrace();
 	    }
-	    System.out.println("appointmentStartTimes"+appointmentStartTimes);
+//	    System.out.println("appointmentStartTimes"+appointmentStartTimes);
 	    return appointmentStartTimes;
 	}
 
