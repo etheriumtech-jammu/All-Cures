@@ -234,14 +234,14 @@ public class PaymentGatewayDaoImpl {
     }
 
     private static void updateWalletAmount(Session session, int walletMasterId, double amount) {
-        String hql = "UPDATE WalletHistory SET amount = amount + " + amount + " WHERE WalletMasterTypeID = " + walletMasterId + " ";
+        String hql = "UPDATE WalletHistory SET WalletAmount = WalletAmount + " + amount + " WHERE WalletMasterTypeID = " + walletMasterId + " ";
         session.createQuery(hql)
                 .executeUpdate();
 	    System.out.println("Updated");
     }
 
     private static void updateWalletAmount(Session session, int walletMasterId, double amount, int docId) {
-        String hql = "UPDATE WalletHistory SET amount = amount + " + amount + " WHERE WalletMasterTypeID = "+ walletMasterId + " AND OwnerID = " + docId +"";
+        String hql = "UPDATE WalletHistory SET WalletAmount = WalletAmount + " + amount + " WHERE WalletMasterTypeID = "+ walletMasterId + " AND OwnerID = " + docId +"";
         session.createQuery(hql)
                 .executeUpdate();
 	    System.out.println("Updated");
