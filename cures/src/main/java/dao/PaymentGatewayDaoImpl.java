@@ -123,7 +123,7 @@ public class PaymentGatewayDaoImpl {
 		   String transDateStr = hs.get("trans_date");
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date transDate = dateFormat.parse(transDateStr);
-
+		Double amount=Double.parseDouble(hs.get("amount"));
 			Query query = session.createQuery("UPDATE PaymentGatewayTransaction "
 			        + "SET order_status = '" + hs.get("order_status") + "', " 
 			        + "payment_mode = '" + hs.get("payment_mode") + "', "
