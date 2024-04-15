@@ -86,7 +86,7 @@ public class PaymentGatewayDaoImpl {
 		}
 	}
 
-	public static String saveTransactionResults(HttpServletRequest request,String meeting) {
+	public synchronized static String saveTransactionResults(HttpServletRequest request,String meeting) {
 		String workingKey = "0C8A93B072D45A598061718B364E36B5"; // Enter your 32 Bit Alphanumeric Working Key here
 		String encResp = request.getParameter("encResp"); // Get the encrypted response from the request parameter
 		AesCryptUtil aesUtil = new AesCryptUtil(workingKey);
@@ -145,7 +145,8 @@ public class PaymentGatewayDaoImpl {
 	*/		
 			query.executeUpdate();
 			tx.commit();
-			sendEmail(orderId,meeting);
+			Integer docid= sendEmail(orderId,meeting);
+			 updateWalletAmount(amount,docid);
 			return "Success";
 		} catch (Exception e) {
 			e.printStackTrace(); // Log the exception or handle it appropriately
@@ -172,7 +173,7 @@ public class PaymentGatewayDaoImpl {
 	    }
 	}
 
-	public static void sendEmail(String orderID,String meeting) throws ParseException, IOException
+	public static Integer sendEmail(String orderID,String meeting) throws ParseException, IOException
 	{
 		Session session = HibernateUtil.buildSessionFactory();
 		String startTime="";
@@ -203,7 +204,44 @@ public class PaymentGatewayDaoImpl {
 	        java.util.Date time = inputFormat.parse(startTime);
 	        String formattedTime = outputFormat.format(time).toUpperCase(); // Convert AM/PM to uppercase
 	        VideoDaoImpl.sendEmail(docID, userID, meeting, dateString, formattedTime);
-            
+            	return docID;
     	
 	}
+
+	public static void updateWalletAmount(double amount, int docId) {
+		Session session = HibernateUtil.buildSessionFactory();
+		
+        try {
+            Transaction tx = session.beginTransaction();
+
+            // Divide the amount based on the rule
+            double wallet2Amount = amount * 0.2; // 20% to walletmasterid 2 i.e All Cures
+            double wallet1Amount = amount * 0.1; // 10% to walletmasterid 1 i.e GST
+            double wallet3Amount = amount * 0.7; // 70% to walletmasterid 3 if docid matches
+
+            // Update rows in the table
+            updateWalletAmount(session, 2, wallet2Amount);
+            updateWalletAmount(session, 1, wallet1Amount);
+            updateWalletAmount(session, 3, wallet3Amount, docId);
+		System.out.println("Updated");
+            tx.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void updateWalletAmount(Session session, int walletMasterId, double amount) {
+        String hql = "UPDATE WalletHistory SET WalletAmount = WalletAmount + " + amount + " WHERE WalletMasterTypeID = " + walletMasterId + " ";
+        session.createNativeQuery(hql)
+                .executeUpdate();
+	    System.out.println("Updated");
+    }
+
+    private static void updateWalletAmount(Session session, int walletMasterId, double amount, int docId) {
+        String hql = "UPDATE WalletHistory SET WalletAmount = WalletAmount + " + amount + " WHERE WalletMasterTypeID = "+ walletMasterId + " AND OwnerID = " + docId +"";
+        session.createNativeQuery(hql)
+                .executeUpdate();
+	    System.out.println("Updated");
+    }
+
 }
