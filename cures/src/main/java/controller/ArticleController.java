@@ -127,7 +127,7 @@ public class ArticleController {
 		return articleDaoImpl.getTablesDataListAll(table_name);
 	}
 
-	 
+/*	 
 	@RequestMapping(value = "/{article_id}", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody int updateArticle(@PathVariable int article_id, @RequestBody HashMap articleMap, HttpServletRequest request) {
 	String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).build().toUriString();
@@ -141,7 +141,7 @@ public class ArticleController {
 		return articleDaoImpl.deleteArticleId(article_id);
 	}
 
-
+*/
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody HashMap uploadFile(@RequestParam CommonsMultipartFile image, HttpServletRequest request, HttpSession session) {
 		//String path = session.getServletContext().getRealPath("/uitest");
