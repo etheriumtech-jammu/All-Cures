@@ -96,7 +96,7 @@ public class WhatsAPITemplateMessage {
 //				+ " \"type\": \"Template\"," + " \"template\": {\"name\": \"" + template_name
 //				+ "\",\"languageCode\": \"en\"," + " \"headerValues\": [\"" + header1_imgpath + "\"],"
 //				+ " \"bodyValues\": [\"Subscriber\",\"" +  BV3_desc + "\"]" + "}}";
-		System.out.println("Disease:" + disease_name + BV3_desc );
+//		System.out.println("Disease:" + disease_name + BV3_desc );
 		final String POST_PARAMS = "{\"countryCode\": \"" + countryCode + "\", \"phoneNumber\": \"" + mobile + "\","
 				+ " \"type\": \"Template\"," + " \"template\": {\"name\": \"" + template_name
 				+ "\",\"languageCode\": \"en\"," + " \"headerValues\": [\"" + header1_imgpath + "\"],"
@@ -107,7 +107,7 @@ public class WhatsAPITemplateMessage {
 	       System.setProperty("javax.net.ssl.trustStore", "/etc/ssl/certs/java/cacerts");
 	        System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
 
-		System.out.println(POST_PARAMS);
+//		System.out.println(POST_PARAMS);
 
 //		URL obj = new URL("https://api.interakt.ai/v1/public/track/events/");
 		URL obj = new URL(prop.getProperty("URL_API_TEMPLATES"));
@@ -125,8 +125,8 @@ public class WhatsAPITemplateMessage {
 		os.close();
 
 		int responseCode = postConnection.getResponseCode();
-		System.out.println("POST Response Code :  " + responseCode);
-		System.out.println("POST Response Message : " + postConnection.getResponseMessage());
+//		System.out.println("POST Response Code :  " + responseCode);
+//		System.out.println("POST Response Message : " + postConnection.getResponseMessage());
 
 		if (responseCode == HttpURLConnection.HTTP_CREATED || responseCode == HttpURLConnection.HTTP_ACCEPTED) { // success
 			BufferedReader in = new BufferedReader(new InputStreamReader(postConnection.getInputStream()));
@@ -137,9 +137,10 @@ public class WhatsAPITemplateMessage {
 				response.append(inputLine);
 			}
 			in.close();
-
+			System.out.println(mobile + BV1_art_id);
+			System.out.println("POST Response Code :  " + responseCode);
 			// print result
-			System.out.println(response.toString());
+//			System.out.println(response.toString());
 		} else {
 			System.out.println("POST NOT WORKED");
 		}
