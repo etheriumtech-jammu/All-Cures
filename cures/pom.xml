@@ -307,6 +307,13 @@
     <version>1.7.32</version> <!-- Use the latest version -->
 </dependency>
 
+<!-- https://mvnrepository.com/artifact/org.xerial.snappy/snappy-java -->
+<dependency>
+    <groupId>org.xerial.snappy</groupId>
+    <artifactId>snappy-java</artifactId>
+    <version>1.1.2.4</version>
+</dependency>
+
 	</dependencies>
 
 	<build>
