@@ -97,20 +97,27 @@ public class IntegratedActionController extends HttpServlet {
 			//cacheArray.addAll((Collection<? extends String>) mcc.get("docname"));
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
-			PrintWriter out = response.getWriter();
+//			PrintWriter out = response.getWriter();
+			OutputStream out = response.getOutputStream();
+			// Create a SnappyOutputStream to compress the response data
+		    SnappyOutputStream snappyOutputStream = new SnappyOutputStream(out);
+
+		    // Create a PrintWriter to write JSON data to the compressed output stream
+		    PrintWriter writer = new PrintWriter(new OutputStreamWriter(snappyOutputStream, "UTF-8"));
+
 			Gson gson = new Gson();
 			// Constant.log("------------json OBJECT OUT>>>>>>>"+stringToJsonObject);
 			String jsondata = gson.toJson(stringToJsonObject);
-
+			
 			// out.write(json);
-			response.getWriter().write(jsondata);
-
-
+	//		response.getWriter().write(jsondata);
+			writer.write(jsondata);
 			//Constant.log(("JSON data database---->"+jsondata), 1);
 			//RequestDispatcher view = request.getRequestDispatcher("/test.html");
 			//response.sendRedirect("test.html");
 			//view.forward(request, response);
 			out.flush();
+			out.close();
 		}else{
 			cachedocArray.addAll((Collection<? extends String>) mcc.get(Constant.DOCNAME));
 			cachesplArray.addAll((Collection<? extends String>) mcc.get(Constant.SPL));
@@ -136,16 +143,26 @@ public class IntegratedActionController extends HttpServlet {
 			// }
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
-			PrintWriter out = response.getWriter();
-			String jsondata = new Gson().toJson(stringToJsonObject);
+//			PrintWriter out = response.getWriter();
+			OutputStream out = response.getOutputStream();
+			// Create a SnappyOutputStream to compress the response data
+		    SnappyOutputStream snappyOutputStream = new SnappyOutputStream(out);
 
+		    // Create a PrintWriter to write JSON data to the compressed output stream
+		    PrintWriter writer = new PrintWriter(new OutputStreamWriter(snappyOutputStream, "UTF-8"));
+
+			Gson gson = new Gson();
+			// Constant.log("------------json OBJECT OUT>>>>>>>"+stringToJsonObject);
+			String jsondata = gson.toJson(stringToJsonObject);
+			
 			// out.write(json);
-			response.getWriter().write(jsondata);
-
+	//		response.getWriter().write(jsondata);
+			writer.write(jsondata);
+			
 
 			//Constant.log(("JSON data cache---->"+jsondata), 1);
 			out.flush();
-
+			out.close();
 		}
 
 	}
