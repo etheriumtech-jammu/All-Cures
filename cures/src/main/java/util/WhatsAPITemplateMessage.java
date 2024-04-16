@@ -85,7 +85,7 @@ public class WhatsAPITemplateMessage {
 
 		String fileProperties = "whatsapi.properties";
 		Properties prop = new WAPICommon().readPropertiesFile(fileProperties);
-		System.out.println("URL_API_TEMPLATES: " + prop.getProperty("URL_API_TEMPLATES"));
+//		System.out.println("URL_API_TEMPLATES: " + prop.getProperty("URL_API_TEMPLATES"));
 
 //		final String POST_PARAMS = "{\"countryCode\": \"" + countryCode + "\", \"phoneNumber\": \"" + mobile + "\","
 //				+ " \"type\": \"Template\"," + " \"template\": {\"name\": \"" + template_name
@@ -137,7 +137,7 @@ public class WhatsAPITemplateMessage {
 				response.append(inputLine);
 			}
 			in.close();
-			System.out.println(mobile + BV1_art_id);
+			System.out.println(mobile + "          " + BV1_art_id);
 			System.out.println("POST Response Code :  " + responseCode);
 			// print result
 //			System.out.println(response.toString());
