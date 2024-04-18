@@ -253,7 +253,7 @@ public static int file_upload_webStories(HashMap webData,CommonsMultipartFile im
 			hm.put("link", (String)objects[2]);
 			hm.put("image", (String)objects[3]);
 			hm.put("ImageAltText", (String)objects[4]);
-			hm.put("webID", (Integer)objects[5]);
+			hm.put("webID", (String)objects[5]);
 			hmFinal.add(hm);
 
 		}
