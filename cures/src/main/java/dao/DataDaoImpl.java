@@ -242,7 +242,7 @@ public static int file_upload_webStories(HashMap webData,CommonsMultipartFile im
 		Session session = HibernateUtil.buildSessionFactory();
 
 		Query query = session.createNativeQuery(
-				"select Title,Description,Link,image,Alt_Text,WebID from WebStories_Data");
+				"select Title,Description,Link,image,Alt_Text,WebID,CreateDate from WebStories_Data");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println(results.size());
 		List hmFinal = new ArrayList();
@@ -253,7 +253,8 @@ public static int file_upload_webStories(HashMap webData,CommonsMultipartFile im
 			hm.put("link", (String)objects[2]);
 			hm.put("image", (String)objects[3]);
 			hm.put("ImageAltText", (String)objects[4]);
-			hm.put("webID", (String)objects[5]);
+			hm.put("webID", objects[5].toString());
+			hm.put("createDate", objects[6].toString());
 			hmFinal.add(hm);
 
 		}
@@ -283,6 +284,31 @@ public static int file_upload_webStories(HashMap webData,CommonsMultipartFile im
 		
 	}
 
+
+	public static List Get_webStories(Integer webID) {
+	
+	Session session = HibernateUtil.buildSessionFactory();
+
+	Query query = session.createNativeQuery(
+			"select Title,Description,Link,image,Alt_Text from WebStories_Data where WebID= " + webID + "");
+	List<Object[]> results = (List<Object[]>) query.getResultList();
+	System.out.println(results.size());
+	List hmFinal = new ArrayList();
+	for (Object[] objects : results) {
+		LinkedHashMap<String, String> hm= new LinkedHashMap<String, String>();
+		hm.put("title", (String)objects[0]);
+		hm.put("description", (String)objects[1]);
+		hm.put("link", (String)objects[2]);
+		hm.put("image", (String)objects[3]);
+		hm.put("ImageAltText", (String)objects[4]);
+		hm.put("webID", objects[5].toString());
+		hm.put("createDate", objects[6].toString());
+		hmFinal.add(hm);
+
+	}
+	
+	return hmFinal; 
+}
 
 	public static List viewCategories() {
 		Session session = HibernateUtil.buildSessionFactory();
