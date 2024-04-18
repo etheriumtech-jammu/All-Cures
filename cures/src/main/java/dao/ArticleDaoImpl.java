@@ -1,5 +1,6 @@
 package dao;
 
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,6 +19,7 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.xerial.snappy.SnappyOutputStream;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
 import model.Article;
@@ -51,6 +53,13 @@ public static MemcachedClient mcc = null;
 
 	ContentDaoImpl contentDao = new ContentDaoImpl();
 
+	public static byte[] compressData(byte[] data) throws IOException {
+	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	    try (SnappyOutputStream snappyOutputStream = new SnappyOutputStream(outputStream)) {
+	        snappyOutputStream.write(data);
+	    }
+	    return outputStream.toByteArray();
+	}
 	public static ArrayList<Article> findPublishedArticle(Registration user) {
 
 //		HibernateUtil hu = new HibernateUtil();
@@ -967,8 +976,25 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 //		session.getTransaction().commit(); 
 		
 		//session.close();
-		
-		return hmFinal;
+		String json = new Gson().toJson(hmFinal);
+
+	    // Compress the JSON string using Snappy
+		byte[] compressedData;
+	    try {
+	        compressedData = compressData(json.getBytes(StandardCharsets.UTF_8));
+	    } catch (IOException e) {
+	        // Handle compression error
+	        e.printStackTrace();
+	        return Collections.emptyList(); // or throw an exception
+	    }
+
+	    // Now you can use the compressed data as needed
+	    // For example, you can store it in a database, send it over the network, etc.
+
+	    List<byte[]> compressedDataList = new ArrayList<>();
+        compressedDataList.add(compressedData);
+        return compressedDataList;
+//		return hmFinal;
 	}
 
 public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset, String searchStr, String orderByStr) {
