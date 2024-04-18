@@ -176,7 +176,67 @@ public static int file_upload_webStories(HashMap webData,CommonsMultipartFile im
     	 
     	return ret;
     }
-	
+
+	public static int file_update_webStories(HashMap webData, CommonsMultipartFile image) throws IOException {
+    Session session = HibernateUtil.buildSessionFactory();
+    int i = 0;
+    int ret = 0;
+    String title = "";
+    String description = "";
+    String link = "";
+    String altText = "";
+    String updatestr = "";
+    String path = System.getProperty("catalina.base") + "/webapps" + "/cures_articleimages" + "/webstories_images";
+    String filename = image.getOriginalFilename();
+    String finalPath = "/cures_articleimages" + "/webstories_images" + "/" + filename;
+    String WebID=(String)webData.get("webID");
+    try {
+        byte barr[] = image.getBytes();
+        BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(path + "/" + filename));
+        bout.write(barr);
+        bout.flush();
+        bout.close();
+        i = 1;
+    } catch (Exception e) {
+        System.out.println(e);
+    }
+
+    if (webData.containsKey("title")) {
+        updatestr += "`title` = '" + webData.get("title") + "',";
+    }
+
+    if (webData.containsKey("description")) {
+        updatestr += "`description` = '" + webData.get("description") + "',";
+    }
+    if (webData.containsKey("link")) {
+        updatestr += "`link` = '" + webData.get("link") + "',";
+    }
+
+    if (webData.containsKey("ImageAltText")) {
+        updatestr += "`Alt_Text` = '" + webData.get("ImageAltText") + "',";
+    }
+
+    updatestr = updatestr.replaceAll(",$", "");
+
+    // Check if the image is received and add the corresponding update statement
+    if (i == 1) {
+        updatestr += "`image` = '" + finalPath + "',";
+    }
+
+    Query query = session.createNativeQuery(
+            "UPDATE `WebStories_Data`" + " SET " + updatestr + " WHERE `WebID` = " + WebID + ";");
+    
+    try {
+        session.beginTransaction();
+        ret = query.executeUpdate();
+        session.getTransaction().commit();
+    } catch (Exception ex) {
+        session.getTransaction().rollback();
+        ex.printStackTrace();
+    }
+    return ret;
+}
+
 	public static List file_Get_webStories() {
 		
 		Session session = HibernateUtil.buildSessionFactory();
