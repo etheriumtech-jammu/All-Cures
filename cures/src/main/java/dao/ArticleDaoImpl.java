@@ -267,7 +267,8 @@ public static MemcachedClient mcc = null;
 					+ "        LEFT JOIN medicinetype p ON m.parent_med_type = p.id\r\n"
 					+ "        WHERE m.id = `article`.`medicine_type`\r\n"
 					+ "    ) AS parent_medicine_type,\r\n"
-					+ "    `article`.`featured_article`\r\n"
+					+ "    `article`.`featured_article`,\r\n"
+					+ "    `article`.`introduction`\r\n"
 					+ "FROM `article`\r\n"
 					+ "LEFT JOIN disease_condition dc ON dc.dc_id = `article`.`disease_condition_id`\r\n"
 					+ "WHERE article_id =  " + article_id + ";");
@@ -369,6 +370,7 @@ public static MemcachedClient mcc = null;
 				article.setMedicine_type_name((String) obj[28]);
 				article.setParent_Medicine_type((String) obj[29]);
 				article.setFeatured_article((String) obj[30]);
+				article.setIntroduction((String) obj[31]);
 			}
 			
 //			session.getTransaction().commit();   
@@ -1194,7 +1196,10 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 		if (articleMap.containsKey("language_id")) {
 			updatestr += "`language_id` = " + articleMap.get("language_id") + ",\r\n";
 		}
-		
+
+		if (articleMap.containsKey("introduction")) {
+			updatestr += "`introduction` = " + articleMap.get("introduction") + ",\r\n";
+		}
 		if (articleMap.containsKey("content_small")) {
 			String content_small = (String ) articleMap.get("content_small");
 			updatestr += "`content` = '" + content_small + "',\r\n";
