@@ -257,7 +257,7 @@ public class WhatsAPITemplateMessage {
 				+ "\",\"languageCode\": \"en\"," + " \"headerValues\": [\"" + header1_imgpath + "\"],"
 				+ " \"bodyValues\": [ \"" + title + "\"]"
 				+ "}}";
-		System.out.println(POST_PARAMS);
+//		System.out.println(POST_PARAMS);
 
 		URL obj = new URL(prop.getProperty("URL_API_TEMPLATES"));
 		HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
@@ -272,8 +272,8 @@ public class WhatsAPITemplateMessage {
 		os.close();
 
 		int responseCode = postConnection.getResponseCode();
-		System.out.println("POST Response Code :  " + responseCode);
-		System.out.println("POST Response Message : " + postConnection.getResponseMessage());
+//		System.out.println("POST Response Code :  " + responseCode);
+//		System.out.println("POST Response Message : " + postConnection.getResponseMessage());
 
 		if (responseCode == HttpURLConnection.HTTP_CREATED || responseCode == HttpURLConnection.HTTP_ACCEPTED) { // success
 			BufferedReader in = new BufferedReader(new InputStreamReader(postConnection.getInputStream()));
@@ -284,9 +284,10 @@ public class WhatsAPITemplateMessage {
 				response.append(inputLine);
 			}
 			in.close();
-
+			System.out.println(mobile);
+			System.out.println("POST Response Code :  " + responseCode);
 			// print result
-			System.out.println(response.toString());
+//			System.out.println(response.toString());
 		} else {
 			System.out.println("POST NOT WORKED");
 		}
