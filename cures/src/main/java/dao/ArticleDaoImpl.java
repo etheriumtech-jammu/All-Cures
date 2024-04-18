@@ -995,8 +995,8 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 
 	    List<byte[]> compressedDataList = new ArrayList<>();
         compressedDataList.add(compressedData);
-        return compressedDataList;
-//		return hmFinal;
+//        return compressedDataList;
+		return hmFinal;
 	}
 
 public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset, String searchStr, String orderByStr) {
