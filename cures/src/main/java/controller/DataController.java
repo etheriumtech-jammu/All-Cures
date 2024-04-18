@@ -125,6 +125,12 @@ public class DataController {
 		
 	}
 
+	@RequestMapping(value = "/webStories/get/{webID}", produces = "application/json", method = RequestMethod.GET)
+	public List webStories_Get(@PathVariable Integer webID) throws IOException {
+		return DataDaoImpl.Get_webStories(webID);
+		
+	}
+
 	@RequestMapping(value = "/doctor/image", produces = "application/json", method = RequestMethod.GET)
 	public List doctor_image() throws IOException {
 		return DataDaoImpl.doctor_image();
