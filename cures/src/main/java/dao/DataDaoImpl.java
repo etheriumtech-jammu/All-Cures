@@ -177,7 +177,7 @@ public static int file_upload_webStories(HashMap webData,CommonsMultipartFile im
     	return ret;
     }
 
-	public static int file_update_webStories(HashMap webData, CommonsMultipartFile image) throws IOException {
+	public static int file_update_webStories(HashMap webData, CommonsMultipartFile image,Integer webID) throws IOException {
     Session session = HibernateUtil.buildSessionFactory();
     int i = 0;
     int ret = 0;
@@ -187,19 +187,24 @@ public static int file_upload_webStories(HashMap webData,CommonsMultipartFile im
     String altText = "";
     String updatestr = "";
     String path = System.getProperty("catalina.base") + "/webapps" + "/cures_articleimages" + "/webstories_images";
-    String filename = image.getOriginalFilename();
-    String finalPath = "/cures_articleimages" + "/webstories_images" + "/" + filename;
-    String WebID=(String)webData.get("webID");
-    try {
-        byte barr[] = image.getBytes();
-        BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(path + "/" + filename));
-        bout.write(barr);
-        bout.flush();
-        bout.close();
-        i = 1;
-    } catch (Exception e) {
-        System.out.println(e);
+    if(image!=null) {
+    	String path = System.getProperty("catalina.base") + "/webapps" + "/cures_articleimages" + "/webstories_images";
+        String filename = image.getOriginalFilename();
+        String finalPath = "/cures_articleimages" + "/webstories_images" + "/" + filename;
+       
+        try {
+            byte barr[] = image.getBytes();
+            BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(path + "/" + filename));
+            bout.write(barr);
+            bout.flush();
+            bout.close();
+            
+            updatestr += "`image` = '" + finalPath + "',";
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
+    
 
     if (webData.containsKey("title")) {
         updatestr += "`title` = '" + webData.get("title") + "',";
@@ -224,7 +229,7 @@ public static int file_upload_webStories(HashMap webData,CommonsMultipartFile im
     }
 
     Query query = session.createNativeQuery(
-            "UPDATE `WebStories_Data`" + " SET " + updatestr + " WHERE `WebID` = " + WebID + ";");
+            "UPDATE `WebStories_Data`" + " SET " + updatestr + " WHERE `WebID` = " + webID + ";");
     
     try {
         session.beginTransaction();
