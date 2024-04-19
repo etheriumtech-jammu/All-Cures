@@ -31,10 +31,10 @@ public class SolrIndexer {
                     document.addField("id", file.getName()); // Unique identifier for the document
                     document.addField("content", content.toString()); // File content
                     
-                    // Add the document to Solr
+                   // Add the document to Solr
                     try {
                         solr.add(document);
-                    } catch (Exception e) {
+                    } catch (org.apache.solr.client.solrj.SolrServerException e) {
                         e.printStackTrace();
                     }
                 }
@@ -42,12 +42,15 @@ public class SolrIndexer {
         }
         
         // Commit changes to the Solr index
-        solr.commit();
+        try {
+            solr.commit();
+        } catch (org.apache.solr.client.solrj.SolrServerException e) {
+            e.printStackTrace();
+        }
         
         // Close Solr client
         solr.close();
     }
-
     public static void main(String[] args) {
         String directoryPath = "/var/solr/data/article_new_core"; // Directory containing files
         String solrUrl = "http://localhost:8983/solr/article_new_core"; // Replace with your Solr collection URL
