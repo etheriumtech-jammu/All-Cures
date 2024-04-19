@@ -179,7 +179,7 @@ public static int file_upload_webStories(HashMap webData,CommonsMultipartFile im
 
 	public static int file_update_webStories(HashMap webData, CommonsMultipartFile image,Integer webID) throws IOException {
     Session session = HibernateUtil.buildSessionFactory();
-    int i = 0;
+   
     int ret = 0;
     String title = "";
     String description = "";
@@ -222,11 +222,6 @@ public static int file_upload_webStories(HashMap webData,CommonsMultipartFile im
     }
 
     updatestr = updatestr.replaceAll(",$", "");
-
-    // Check if the image is received and add the corresponding update statement
-    if (i == 1) {
-        updatestr += "`image` = '" + finalPath + "',";
-    }
 
     Query query = session.createNativeQuery(
             "UPDATE `WebStories_Data`" + " SET " + updatestr + " WHERE `WebID` = " + webID + ";");
