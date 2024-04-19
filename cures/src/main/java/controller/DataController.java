@@ -112,7 +112,7 @@ public class DataController {
 	}
 
 	@RequestMapping(value = "/webStories/update", produces = "application/json", method = RequestMethod.POST)
-	public int webStories_fileupdate(@RequestParam("image") CommonsMultipartFile image, 
+	public int webStories_fileupdate(@RequestParam(value = "image" , required = false) CommonsMultipartFile image, 
 			@RequestParam("webData") String webDataJson) throws IOException {
 		ObjectMapper objectMapper = new ObjectMapper();
 		HashMap<String, Object> webData = objectMapper.readValue(webDataJson, new TypeReference<HashMap<String, Object>>() {});
