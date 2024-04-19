@@ -106,7 +106,7 @@ public class DataController {
 		
 	}
 
-	@RequestMapping(value = "/webStories/upload", produces = "application/json", method = RequestMethod.PUT)
+	@RequestMapping(value = "/webStories/upload", produces = "application/json", method = RequestMethod.POST)
 	public int webStories_fileupload(@RequestParam("image") CommonsMultipartFile image, 
 			@RequestParam("webData") String webDataJson) throws IOException {
 		ObjectMapper objectMapper = new ObjectMapper();
