@@ -111,12 +111,12 @@ public class DataController {
 		
 	}
 
-	@RequestMapping(value = "/webStories/update", produces = "application/json", method = RequestMethod.POST)
+	@RequestMapping(value = "/webStories/update/{webID}", produces = "application/json", method = RequestMethod.POST)
 	public int webStories_fileupdate(@RequestParam(value = "image" , required = false) CommonsMultipartFile image, 
-			@RequestParam("webData") String webDataJson) throws IOException {
+			@RequestParam("webData") String webDataJson,@PathVariable Integer webID) throws IOException {
 		ObjectMapper objectMapper = new ObjectMapper();
 		HashMap<String, Object> webData = objectMapper.readValue(webDataJson, new TypeReference<HashMap<String, Object>>() {});
-		return DataDaoImpl.file_update_webStories(webData,image);
+		return DataDaoImpl.file_update_webStories(webData,image,webID);
 		
 	}
 	@RequestMapping(value = "/webStories/get", produces = "application/json", method = RequestMethod.GET)
