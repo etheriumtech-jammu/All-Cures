@@ -186,7 +186,7 @@ public static int file_upload_webStories(HashMap webData,CommonsMultipartFile im
     String link = "";
     String altText = "";
     String updatestr = "";
-    String path = System.getProperty("catalina.base") + "/webapps" + "/cures_articleimages" + "/webstories_images";
+   
     if(image!=null) {
     	String path = System.getProperty("catalina.base") + "/webapps" + "/cures_articleimages" + "/webstories_images";
         String filename = image.getOriginalFilename();
