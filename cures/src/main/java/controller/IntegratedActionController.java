@@ -1,28 +1,26 @@
 package controller;
-
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.io.OutputStreamWriter;
-import java.io.OutputStream;
+import java.util.zip.GZIPOutputStream;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
-import org.xerial.snappy.SnappyOutputStream;
+import org.springframework.http.HttpHeaders;
+
 import com.google.gson.Gson;
 
 import dao.DoctorsDaoImpl;
 import dao.SpecialtiesDaoImpl;
 import dao.SubspecialtiesDaoImp;
-import model.Doctors;
-
-import model.Registration;
 import model.Specialties;
 import model.Subspecialties;
 import net.spy.memcached.AddrUtil;
@@ -35,146 +33,97 @@ import util.Constant;
  * Servlet implementation class IntegratedActionController
  */
 public class IntegratedActionController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public IntegratedActionController() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public IntegratedActionController() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		DoctorsDaoImpl doctors = new DoctorsDaoImpl();
-		ArrayList<String> doctorArray = new ArrayList<String>();
-		//ArrayList<String> cacheArray = new ArrayList<String>();
-		SpecialtiesDaoImpl spl = new SpecialtiesDaoImpl();
-		ArrayList<Specialties> splArray = new ArrayList<Specialties>();
-		SubspecialtiesDaoImp subspl = new SubspecialtiesDaoImp();
-		ArrayList<Subspecialties> subsplArray = new ArrayList<Subspecialties>();
-		ArrayList<String> cachedocArray= new ArrayList<String>();
-		ArrayList<String> cachesplArray= new ArrayList<String>();
-		ArrayList<String> cachesubsplArray= new ArrayList<String>();
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        DoctorsDaoImpl doctors = new DoctorsDaoImpl();
+        ArrayList<String> doctorArray = new ArrayList<String>();
+        SpecialtiesDaoImpl spl = new SpecialtiesDaoImpl();
+        ArrayList<Specialties> splArray = new ArrayList<Specialties>();
+        SubspecialtiesDaoImp subspl = new SubspecialtiesDaoImp();
+        ArrayList<Subspecialties> subsplArray = new ArrayList<Subspecialties>();
 
-		
-		String cachedocnameString = null;
-		String cacheSplString = null;
-		String cacheSplSubString = null;
+        MemcachedClient mcc = null;
+        String address = Constant.ADDRESS;
 
-		//String cacheString = null;
-		MemcachedClient mcc = null;
-		String address = Constant.ADDRESS;
+        try {
+            mcc = new MemcachedClient(
+                    new ConnectionFactoryBuilder().setDaemon(true).setFailureMode(FailureMode.Retry).build(),
+                    AddrUtil.getAddresses(address));
+        } catch (IOException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to connect to Memcached server");
+            return;
+        }
 
-		try {
-			mcc = new MemcachedClient(new ConnectionFactoryBuilder().setDaemon(true).setFailureMode(FailureMode.Retry).build(), AddrUtil.getAddresses(address));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		Constant.log("Connection to memcache server sucessful", 1);
-		cachedocnameString =  (""+mcc.get(Constant.DOCNAME)+"").toString();
-		cacheSplString  = (""+mcc.get(Constant.SPL)+"").toString();
-		cacheSplSubString = (""+mcc.get(Constant.SUBSPL)+"").toString();
-		String ct=Constant.NULL;
-		if ((cachedocnameString.contains(ct)) && (cacheSplString.contains(ct)) && (cacheSplSubString.contains(ct))){
-			cachedocnameString=Constant.NULL;
-			cacheSplString=Constant.NULL;	
-			cacheSplSubString=Constant.NULL;
-			doctorArray = doctors.findAllDoctors();
-			splArray = spl.findAllSpecialties();
-			subsplArray= subspl.findAllSubSpecialties();
-			//Constant.log("splarr"+splArray);
-			Constant.log(("Adding to mem cache:"+ mcc.add(Constant.DOCNAME,360000,doctorArray).getStatus()), 1);
-			Constant.log(("Adding up in cache:"+ mcc.add(Constant.SPL,360000 ,splArray).getStatus()), 1);
-			Constant.log(("Adding up in cache:"+ mcc.add(Constant.SUBSPL,360000 ,subsplArray).getStatus()), 1);
-			JSONObject stringToJsonObject =new JSONObject().put (Constant.DOCNAME,doctorArray);
-			stringToJsonObject.put(Constant.SPECIALTIES, splArray);
-			stringToJsonObject.put(Constant.SUBSPECIALTIES, subsplArray);
-			//cacheArray.addAll((Collection<? extends String>) mcc.get("docname"));
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-//			PrintWriter out = response.getWriter();
-			OutputStream out = response.getOutputStream();
-			// Create a SnappyOutputStream to compress the response data
-		    SnappyOutputStream snappyOutputStream = new SnappyOutputStream(out);
+        Constant.log("Connection to memcache server successful", 1);
+        String cachedocnameString = "" + mcc.get(Constant.DOCNAME);
+        String cacheSplString = "" + mcc.get(Constant.SPL);
+        String cacheSplSubString = "" + mcc.get(Constant.SUBSPL);
+        String ct = Constant.NULL;
+        if ((cachedocnameString.contains(ct)) && (cacheSplString.contains(ct)) && (cacheSplSubString.contains(ct))) {
+            cachedocnameString = Constant.NULL;
+            cacheSplString = Constant.NULL;
+            cacheSplSubString = Constant.NULL;
+            doctorArray = doctors.findAllDoctors();
+            splArray = spl.findAllSpecialties();
+            subsplArray = subspl.findAllSubSpecialties();
+            Constant.log(("Adding to mem cache:" + mcc.add(Constant.DOCNAME, 360000, doctorArray).getStatus()), 1);
+            Constant.log(("Adding up in cache:" + mcc.add(Constant.SPL, 360000, splArray).getStatus()), 1);
+            Constant.log(("Adding up in cache:" + mcc.add(Constant.SUBSPL, 360000, subsplArray).getStatus()), 1);
+        } else {
+            doctorArray.addAll((Collection<? extends String>) mcc.get(Constant.DOCNAME));
+            splArray.addAll((Collection<? extends Specialties>) mcc.get(Constant.SPL));
+            subsplArray.addAll((Collection<? extends Subspecialties>) mcc.get(Constant.SUBSPL));
+        }
 
-		    // Create a PrintWriter to write JSON data to the compressed output stream
-		    PrintWriter writer = new PrintWriter(new OutputStreamWriter(snappyOutputStream, "UTF-8"));
+        JSONObject stringToJsonObject = new JSONObject();
+        stringToJsonObject.put(Constant.DOCTORNAME, doctorArray);
+        stringToJsonObject.put(Constant.SPECIALTIES, splArray);
+        stringToJsonObject.put(Constant.SUBSPECIALTIES, subsplArray);
 
-			Gson gson = new Gson();
-			// Constant.log("------------json OBJECT OUT>>>>>>>"+stringToJsonObject);
-			String jsondata = gson.toJson(stringToJsonObject);
-			
-			// out.write(json);
-	//		response.getWriter().write(jsondata);
-			writer.write(jsondata);
-			//Constant.log(("JSON data database---->"+jsondata), 1);
-			//RequestDispatcher view = request.getRequestDispatcher("/test.html");
-			//response.sendRedirect("test.html");
-			//view.forward(request, response);
-			out.flush();
-			out.close();
-		}else{
-			cachedocArray.addAll((Collection<? extends String>) mcc.get(Constant.DOCNAME));
-			cachesplArray.addAll((Collection<? extends String>) mcc.get(Constant.SPL));
-			cachesubsplArray.addAll((Collection<? extends String>) mcc.get(Constant.SUBSPL));
-			/* int length= 0;
-			    if(length!=0){
-			   ArrayList<String> limitdocnameCache= new ArrayList<String>();
-			   ArrayList<String> limitsplCache= new ArrayList<String>();
-			   ArrayList<String> limitSubsplCache= new ArrayList<String>();
-			   for(int i=0;i<length;i++){
-				   limitdocnameCache.add(cachedocArray.get(i));
-				   limitsplCache.add(cachesplArray.get(i));
-				   limitSubsplCache.add(cachesubsplArray.get(i));
-			   }JSONObject stringToJsonObject =new JSONObject().put ("Doctorname",limitdocnameCache);
-				stringToJsonObject.put("Specialties", limitsplCache);
-				stringToJsonObject.put("SubSpecialties", limitSubsplCache);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.setHeader("Content-Encoding", "gzip");
 
-			   }else{*/
-			/**/
-			JSONObject stringToJsonObject =new JSONObject().put (Constant.DOCTORNAME,cachedocArray);
-			stringToJsonObject.put(Constant.SPECIALTIES, cachesplArray);
-			stringToJsonObject.put(Constant.SUBSPECIALTIES, cachesubsplArray);
-			// }
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-//			PrintWriter out = response.getWriter();
-			OutputStream out = response.getOutputStream();
-			// Create a SnappyOutputStream to compress the response data
-		    SnappyOutputStream snappyOutputStream = new SnappyOutputStream(out);
+        OutputStream out = response.getOutputStream();
 
-		    // Create a PrintWriter to write JSON data to the compressed output stream
-		    PrintWriter writer = new PrintWriter(new OutputStreamWriter(snappyOutputStream, "UTF-8"));
+        try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(out);
+             PrintWriter writer = new PrintWriter(new OutputStreamWriter(gzipOutputStream, StandardCharsets.UTF_8))) {
+            Gson gson = new Gson();
+            String jsonData = gson.toJson(stringToJsonObject);
+           
+	        System.out.println("hh");
+            writer.write(jsonData);
+        } catch (IOException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to compress response");
+        } finally {
+            out.flush();
+            out.close();
+        }
+    }
 
-			Gson gson = new Gson();
-			// Constant.log("------------json OBJECT OUT>>>>>>>"+stringToJsonObject);
-			String jsondata = gson.toJson(stringToJsonObject);
-			
-			// out.write(json);
-	//		response.getWriter().write(jsondata);
-			writer.write(jsondata);
-			
-
-			//Constant.log(("JSON data cache---->"+jsondata), 1);
-			out.flush();
-			out.close();
-		}
-
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // TODO Auto-generated method stub
+        doGet(request, response);
+    }
 }
