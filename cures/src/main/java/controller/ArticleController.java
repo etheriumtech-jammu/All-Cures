@@ -29,10 +29,11 @@ import java.util.zip.GZIPOutputStream;
 import java.util.zip.Inflater;
 
 
+import org.springframework.http.HttpStatus;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletResponse;
-
+import com.google.gson.Gson;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,7 +46,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
+import java.nio.charset.StandardCharsets;
 import dao.ArticleDaoImpl;
 import dao.ip_detaildao;
 import model.Article;
