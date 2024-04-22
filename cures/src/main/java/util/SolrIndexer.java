@@ -73,8 +73,8 @@ public class SolrIndexer {
     }
 
     public static void main(String[] args) {
-        String directoryPath = "C:\\JAVA\\New"; // Directory containing files
-        String solrUrl = "http://localhost:8983/solr/test"; // Replace with your Solr collection URL
+        String directoryPath = "/home/uat/Production/installers/tomcat/webapps/cures_articleimages"; // Directory containing files
+        String solrUrl = "http://localhost:8983/solr/articontent_core"; // Replace with your Solr collection URL
 
         SolrIndexer indexer = new SolrIndexer();
         try {
