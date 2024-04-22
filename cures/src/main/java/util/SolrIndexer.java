@@ -29,7 +29,7 @@ public class SolrIndexer {
         solr.close();
     }
 
-    private void traverseDirectory(File directory, SolrClient solr) {
+    private void traverseDirectory(File directory, SolrClient solr) throws IOException {
         File[] files = directory.listFiles();
 
         if (files != null) {
@@ -45,7 +45,7 @@ public class SolrIndexer {
         }
     }
 
-    private void processJsonFile(File file, SolrClient solr) {
+    private void processJsonFile(File file, SolrClient solr) throws IOException {
         // Read the file
         StringBuilder content = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -55,26 +55,33 @@ public class SolrIndexer {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            return;
         }
 
         // Create a Solr document for the file
         SolrInputDocument document = new SolrInputDocument();
         document.addField("id", file.getName()); // Unique identifier for the document
-        String decryptcontent = decryptData(content.toString());
+        String decryptcontent;
+        try {
+            decryptcontent = decryptData(content.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return;
+        }
         document.addField("content", decryptcontent); // File content
         System.out.println(file.getName());
 
         // Add the document to Solr
         try {
             solr.add(document);
-        } catch (org.apache.solr.client.solrj.SolrServerException | IOException e) {
+        } catch (org.apache.solr.client.solrj.SolrServerException e) {
             e.printStackTrace();
         }
     }
 
     public static void main(String[] args) {
-        String directoryPath = "/home/uat/Production/installers/tomcat/webapps/cures_articleimages"; // Directory containing files
-        String solrUrl = "http://localhost:8983/solr/articontent_core"; // Replace with your Solr collection URL
+        String directoryPath = "C:\\JAVA\\New"; // Directory containing files
+        String solrUrl = "http://localhost:8983/solr/test"; // Replace with your Solr collection URL
 
         SolrIndexer indexer = new SolrIndexer();
         try {
