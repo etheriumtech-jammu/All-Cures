@@ -114,13 +114,26 @@ public class DataController {
 		return DataDaoImpl.file_upload_webStories(webData,image);
 		
 	}
-	
+
+	@RequestMapping(value = "/webStories/update/{webID}", produces = "application/json", method = RequestMethod.POST)
+	public int webStories_fileupdate(@RequestParam(value = "image" , required = false) CommonsMultipartFile image, 
+			@RequestParam("webData") String webDataJson,@PathVariable Integer webID) throws IOException {
+		ObjectMapper objectMapper = new ObjectMapper();
+		HashMap<String, Object> webData = objectMapper.readValue(webDataJson, new TypeReference<HashMap<String, Object>>() {});
+		return DataDaoImpl.file_update_webStories(webData,image,webID);
+		
+	}
 	@RequestMapping(value = "/webStories/get", produces = "application/json", method = RequestMethod.GET)
 	public List webStories_fileGet() throws IOException {
 		return DataDaoImpl.file_Get_webStories();
 		
 	}
 
+	@RequestMapping(value = "/webStories/get/{webID}", produces = "application/json", method = RequestMethod.GET)
+	public List webStories_Get(@PathVariable Integer webID) throws IOException {
+		return DataDaoImpl.Get_webStories(webID);
+		
+	}
 	@RequestMapping(value = "/medicines", produces = "application/json", method = RequestMethod.GET)
 	public  List Medicines() {
 		return DataDaoImpl.viewMedicines();
