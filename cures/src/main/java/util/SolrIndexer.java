@@ -1,4 +1,3 @@
-package util;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.common.SolrInputDocument;
@@ -17,36 +16,7 @@ public class SolrIndexer {
     public void indexFiles(String directoryPath, String solrUrl) throws IOException {
         SolrClient solr = new HttpSolrClient.Builder(solrUrl).build();
 
-        File directory = new File(directoryPath);
-        File[] files = directory.listFiles();
-
-        if (files != null) {
-            for (File file : files) {
-                if (file.isFile() && file.getName().toLowerCase().endsWith(".json")) {
-                    // Read the file
-                    StringBuilder content = new StringBuilder();
-                    try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-                        String line;
-                        while ((line = reader.readLine()) != null) {
-                            content.append(line).append("\n");
-                        }
-                    }
-
-                    // Create a Solr document for the file
-                    SolrInputDocument document = new SolrInputDocument();
-                    document.addField("id", file.getName()); // Unique identifier for the document
-                    String decryptcontent = decryptData(content.toString());
-                    document.addField("content", decryptcontent); // File content
-                    System.out.println(file.getName());
-                    // Add the document to Solr
-                    try {
-                        solr.add(document);
-                    } catch (org.apache.solr.client.solrj.SolrServerException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
+        traverseDirectory(new File(directoryPath), solr);
 
         // Commit changes to the Solr index
         try {
@@ -57,6 +27,49 @@ public class SolrIndexer {
 
         // Close Solr client
         solr.close();
+    }
+
+    private void traverseDirectory(File directory, SolrClient solr) {
+        File[] files = directory.listFiles();
+
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    // Recursive call to traverse subdirectories
+                    traverseDirectory(file, solr);
+                } else if (file.isFile() && file.getName().toLowerCase().endsWith(".json")) {
+                    // Process JSON files
+                    processJsonFile(file, solr);
+                }
+            }
+        }
+    }
+
+    private void processJsonFile(File file, SolrClient solr) {
+        // Read the file
+        StringBuilder content = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Create a Solr document for the file
+        SolrInputDocument document = new SolrInputDocument();
+        document.addField("id", file.getName()); // Unique identifier for the document
+        String decryptcontent = decryptData(content.toString());
+        document.addField("content", decryptcontent); // File content
+        System.out.println(file.getName());
+
+        // Add the document to Solr
+        try {
+            solr.add(document);
+        } catch (org.apache.solr.client.solrj.SolrServerException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
@@ -72,36 +85,7 @@ public class SolrIndexer {
     }
 
     public String decryptData(String encryptedData) throws UnsupportedEncodingException {
-        try {
-            // Decode URL-encoded data
-            String decodedData = URLDecoder.decode(encryptedData, "UTF-8");
-
-            // Convert the decoded data to JSON object
-            JSONObject json = new JSONObject(decodedData);
-
-            // Extract information from the JSON object
-            long time = json.getLong("time");
-            JSONArray blocks = json.getJSONArray("blocks");
-
-            // Iterate over the blocks and decrypt each one
-            StringBuilder decryptedText = new StringBuilder();
-            for (int i = 0; i < blocks.length(); i++) {
-                JSONObject block = blocks.getJSONObject(i);
-                if (block.has("data")) {
-                    JSONObject data = block.getJSONObject("data");
-                    if (data.has("text")) {
-                        String text = data.getString("text");
-                        // Perform decryption here (if needed)
-                        decryptedText.append(text).append("\n");
-                    }
-                }
-            }
-
-            // Return the decrypted text or process it further
-            return decryptedText.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return "Error occurred while decrypting the data.";
-        }
+        // Your decryption logic here
+        return encryptedData;
     }
 }
