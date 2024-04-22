@@ -111,7 +111,7 @@ public class IntegratedActionController extends HttpServlet {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to compress response");
         } finally {
             out.flush();
-            out.close();
+//            out.close();
         }
     }
 
