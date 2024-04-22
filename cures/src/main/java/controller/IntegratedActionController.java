@@ -105,8 +105,6 @@ public class IntegratedActionController extends HttpServlet {
              PrintWriter writer = new PrintWriter(new OutputStreamWriter(gzipOutputStream, StandardCharsets.UTF_8))) {
             Gson gson = new Gson();
             String jsonData = gson.toJson(stringToJsonObject);
-           
-	        System.out.println("hh");
             writer.write(jsonData);
         } catch (IOException e) {
             e.printStackTrace();
