@@ -101,7 +101,7 @@ public class SolrIndexer {
             return decryptedText.toString();
         } catch (JSONException e) {
             e.printStackTrace();
-  //          return "Error occurred while decrypting the data.";
+            return "Error occurred while decrypting the data.";
         }
     }
 }
