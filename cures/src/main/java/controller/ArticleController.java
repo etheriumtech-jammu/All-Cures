@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,6 +23,11 @@ import java.util.List;
 import java.util.Map;
 import util.Constant;
 import java.util.Properties;
+import java.util.zip.DataFormatException;
+import java.util.zip.DeflaterOutputStream;
+import java.util.zip.GZIPOutputStream;
+import java.util.zip.Inflater;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -108,9 +114,44 @@ public class ArticleController {
 	}
 	
 	@RequestMapping(value = "/allkvfeatured", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody List listArticlesAllKeysFeatured(@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset,@RequestParam(required = false) String search,@RequestParam(required = false) String order) {
-		return articleDaoImpl.getArticlesListAllKeysFeatured(limit,offset,search,order);
-	}
+    public ResponseEntity<byte[]> getCompressedData(HttpServletResponse response,
+                                                     @RequestParam(required = false) Integer limit,
+                                                     @RequestParam(required = false) Integer offset,
+                                                     @RequestParam(required = false) String search,
+                                                     @RequestParam(required = false) String order) {
+        try {
+            // Get the JSON data from DAO
+        	// Assuming articleDaoImpl.getArticlesListAllKeysFeatured() returns List<HashMap<String, Object>>
+            List<HashMap<String, Object>> data = articleDaoImpl.getArticlesListAllKeysFeatured(limit, offset,
+                    search, order);
+
+            // Convert data to JSON string
+            String json = new Gson().toJson(data);
+
+
+            // Compression
+            ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+            try (GZIPOutputStream gzipStream = new GZIPOutputStream(byteStream)) {
+                gzipStream.write(json.getBytes(StandardCharsets.UTF_8));
+            }
+            byte[] compressedData = byteStream.toByteArray();
+
+            // Set appropriate headers
+            response.setHeader("Content-Encoding", "gzip");
+            response.setContentLength(compressedData.length);
+            response.setContentType("application/json");
+
+            // Write compressed data to the response output stream
+            response.getOutputStream().write(compressedData);
+            response.getOutputStream().flush();
+
+            // Return ResponseEntity indicating success
+            return ResponseEntity.ok().build();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
 	@RequestMapping(value = "/allkvranked", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List listArticlesAllKeysRanked(@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset,@RequestParam(required = false) String search,@RequestParam(required = false) String order) {
