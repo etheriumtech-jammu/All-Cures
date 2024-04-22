@@ -111,7 +111,7 @@ public class IntegratedActionController extends HttpServlet {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to compress response");
         } finally {
             out.flush();
-           out.close();
+ //          out.close();
         }
     }
 
@@ -122,6 +122,6 @@ public class IntegratedActionController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // TODO Auto-generated method stub
-        doGet(request, response);
+//        doGet(request, response);
     }
 }
