@@ -178,7 +178,92 @@ public class DataDaoImpl {
     	 
     	return ret;
     }
+
+	public static int file_update_webStories(HashMap webData, CommonsMultipartFile image,Integer webID) throws IOException {
+    Session session = HibernateUtil.buildSessionFactory();
+   
+    int ret = 0;
+    String title = "";
+    String description = "";
+    String link = "";
+    String altText = "";
+    String updatestr = "";
+   
+    if(image!=null) {
+    	String path = System.getProperty("catalina.base") + "/webapps" + "/cures_articleimages" + "/webstories_images";
+        String filename = image.getOriginalFilename();
+        String finalPath = "/cures_articleimages" + "/webstories_images" + "/" + filename;
+       
+        try {
+            byte barr[] = image.getBytes();
+            BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(path + "/" + filename));
+            bout.write(barr);
+            bout.flush();
+            bout.close();
+            
+            updatestr += "`image` = '" + finalPath + "',";
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    
+
+    if (webData.containsKey("title")) {
+        updatestr += "`title` = '" + webData.get("title") + "',";
+    }
+
+    if (webData.containsKey("description")) {
+        updatestr += "`description` = '" + webData.get("description") + "',";
+    }
+    if (webData.containsKey("link")) {
+        updatestr += "`link` = '" + webData.get("link") + "',";
+    }
+
+    if (webData.containsKey("ImageAltText")) {
+        updatestr += "`Alt_Text` = '" + webData.get("ImageAltText") + "',";
+    }
+
+    updatestr = updatestr.replaceAll(",$", "");
+
+    Query query = session.createNativeQuery(
+            "UPDATE `WebStories_Data`" + " SET " + updatestr + " WHERE `WebID` = " + webID + ";");
+    
+    try {
+        session.beginTransaction();
+        ret = query.executeUpdate();
+        session.getTransaction().commit();
+    } catch (Exception ex) {
+        session.getTransaction().rollback();
+        ex.printStackTrace();
+    }
+    return ret;
+}
+
+	public static List Get_webStories(Integer webID) {
 	
+	Session session = HibernateUtil.buildSessionFactory();
+
+	Query query = session.createNativeQuery(
+			"select Title,Description,Link,image,Alt_Text from WebStories_Data where WebID= " + webID + "");
+	List<Object[]> results = (List<Object[]>) query.getResultList();
+	System.out.println(results.size());
+	List hmFinal = new ArrayList();
+	for (Object[] objects : results) {
+		LinkedHashMap<String, String> hm= new LinkedHashMap<String, String>();
+		hm.put("title", (String)objects[0]);
+		hm.put("description", (String)objects[1]);
+		hm.put("link", (String)objects[2]);
+		hm.put("image", (String)objects[3]);
+		hm.put("ImageAltText", (String)objects[4]);
+		
+		
+		hmFinal.add(hm);
+
+	}
+	
+	return hmFinal; 
+}
+
 	public static List file_Get_webStories() {
 		
 		Session session = HibernateUtil.buildSessionFactory();
