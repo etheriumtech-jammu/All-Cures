@@ -166,7 +166,30 @@ public class Appointment {
 	public void setDoctorName(String doctorName) {
 		this.doctorName = doctorName;
 	}
-	
+
+	@Transient
+    private String imgLoc;
+
+    @Transient
+    private String medicineType;
+
+    
+	public String getMedicineType() {
+		return medicineType;
+	}
+
+	public void setMedicineType(String medicineType) {
+		this.medicineType = medicineType;
+	}
+
+	public String getImgLoc() {
+		return imgLoc;
+	}
+
+	public void setImgLoc(String imgLoc) {
+		this.imgLoc = imgLoc;
+	}
+
   
   
     // Getters and setters
