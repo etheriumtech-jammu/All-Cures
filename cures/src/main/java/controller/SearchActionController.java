@@ -127,7 +127,7 @@ public class SearchActionController extends HttpServlet {
 			
 			response.setContentType("application/json");
 			
-	//                response.setHeader("Content-Encoding", "gzip");
+	                response.setHeader("Content-Encoding", "gzip");
 			response.setCharacterEncoding("UTF-8");
 			Gson gson = new Gson();
 			//Converting Results to a JSON Object
