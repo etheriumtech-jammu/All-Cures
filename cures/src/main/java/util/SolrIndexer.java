@@ -69,6 +69,7 @@ public class SolrIndexer {
             e.printStackTrace();
             return;
         }
+        System.out.println(decryptcontent);
         document.addField("content", decryptcontent); // File content
         System.out.println(file.getName());
 
