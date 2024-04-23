@@ -130,11 +130,16 @@ public class SearchActionController extends HttpServlet {
 			//Converting JSON to String using GSON
 			String jsondata = gson.toJson(stringToJsonObject);
 			if(jsonResponse){
-				Constant.log("Sending Response as JSON", 1);
-				PrintWriter out = response.getWriter();	
-				out.write(jsondata);
-				//Const obj=Json.parse(jsondata);
-				out.flush();
+				 response.setContentType("application/json");
+	                response.setHeader("Content-Encoding", "gzip");
+	                OutputStream out = response.getOutputStream();
+	                try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(out);
+	                		PrintWriter writer = new PrintWriter(new OutputStreamWriter(gzipOutputStream, StandardCharsets.UTF_8))) {
+	                      writer.write(jsondata);
+	                }finally {
+	                    out.flush();
+	                    out.close();
+	                }
 			}else{
 				Constant.log("Sending Response to search.jsp page", 0);
 				this.getServletContext().setAttribute(Constant.JSONDATA, jsondata);
