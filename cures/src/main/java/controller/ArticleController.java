@@ -288,7 +288,14 @@ return articleDaoImpl.updateArticleId(article_id, articleMap, baseUrl);
 	public @ResponseBody Map<String, Integer> getlikesanddislikescount(@PathVariable Long articleId)
 	
 	{
-		String directoryPath = "/home/uat/Production/installers/tomcat/webapps/cures_articleimages"; // Directory containing files
+	
+		return ArticleDaoImpl.getLikesAndDislikesCount(articleId);
+    }
+	@RequestMapping(value = "/solr/add", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody void AddArticle()
+	
+	{
+	String directoryPath = "/home/uat/Production/installers/tomcat/webapps/cures_articleimages"; // Directory containing files
         String solrUrl = "http://localhost:8983/solr/articontent_core"; // Replace with your Solr collection URL
         System.out.println(solrUrl);
         SolrIndexer indexer = new SolrIndexer();
@@ -296,9 +303,9 @@ return articleDaoImpl.updateArticleId(article_id, articleMap, baseUrl);
             indexer.indexFiles(directoryPath, solrUrl);
         } catch (IOException e) {
             e.printStackTrace();
-        }
-		return ArticleDaoImpl.getLikesAndDislikesCount(articleId);
-    }
+        }	
+	}
+	
 	
 	
 
