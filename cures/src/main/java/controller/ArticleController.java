@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,10 +23,13 @@ import java.util.List;
 import java.util.Map;
 import util.Constant;
 import java.util.Properties;
-
+import java.util.zip.GZIPOutputStream;
+import org.springframework.http.HttpStatus;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
+import javax.servlet.http.HttpServletResponse;
+import com.google.gson.Gson;
+import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,7 +41,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
+import java.nio.charset.StandardCharsets;
 import dao.ArticleDaoImpl;
 import dao.ip_detaildao;
 import model.Article;
@@ -107,11 +111,50 @@ public class ArticleController {
 		return articleDaoImpl.getArticlesListAllKeysList(limit,offset,search,order);
 	}
 	
-	@RequestMapping(value = "/allkvfeatured", produces = "application/json", method = RequestMethod.GET)
+/*	@RequestMapping(value = "/allkvfeatured", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List listArticlesAllKeysFeatured(@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset,@RequestParam(required = false) String search,@RequestParam(required = false) String order) {
 		return articleDaoImpl.getArticlesListAllKeysFeatured(limit,offset,search,order);
 	}
-	
+*/	
+	@RequestMapping(value = "/allkvfeatured", produces = "application/json", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> getCompressedData(HttpServletResponse response,
+                                                     @RequestParam(required = false) Integer limit,
+                                                     @RequestParam(required = false) Integer offset,
+                                                     @RequestParam(required = false) String search,
+                                                     @RequestParam(required = false) String order) {
+        try {
+            // Get the JSON data from DAO
+        	// Assuming articleDaoImpl.getArticlesListAllKeysFeatured() returns List<HashMap<String, Object>>
+            List<HashMap<String, Object>> data = articleDaoImpl.getArticlesListAllKeysFeatured(limit, offset,
+                    search, order);
+
+            // Convert data to JSON string
+            String json = new Gson().toJson(data);
+
+
+            // Compression
+            ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+            try (GZIPOutputStream gzipStream = new GZIPOutputStream(byteStream)) {
+                gzipStream.write(json.getBytes(StandardCharsets.UTF_8));
+            }
+            byte[] compressedData = byteStream.toByteArray();
+
+            // Set appropriate headers
+            response.setHeader("Content-Encoding", "gzip");
+            response.setContentLength(compressedData.length);
+            response.setContentType("application/json");
+
+            // Write compressed data to the response output stream
+            response.getOutputStream().write(compressedData);
+            response.getOutputStream().flush();
+
+            // Return ResponseEntity indicating success
+            return ResponseEntity.ok().build();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 	@RequestMapping(value = "/allkvranked", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List listArticlesAllKeysRanked(@RequestParam(required = false) Integer limit,@RequestParam(required = false) Integer offset,@RequestParam(required = false) String search,@RequestParam(required = false) String order) {
 		return articleDaoImpl.getArticlesListAllKeysRanked(limit,offset,search,order);
