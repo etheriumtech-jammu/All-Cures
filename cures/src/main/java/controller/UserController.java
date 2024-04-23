@@ -75,7 +75,7 @@ public class UserController {
 		return email;
 	}
 
-//	@RequestMapping(value = "/getemdecrypt", produces = "application/json", method = RequestMethod.POST)
+	@RequestMapping(value = "/getemdecrypt", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody String getEmailDecryptedPost(@RequestBody HashMap reqBody) {
 		String email = (String) reqBody.get("email");
 		final String secretKey = Constant.SECRETE;
