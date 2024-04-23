@@ -62,7 +62,6 @@ public class SolrIndexer {
         // Create a Solr document for the file
         SolrInputDocument document = new SolrInputDocument();
         document.addField("id", file.getName()); // Unique identifier for the document
-          System.out.println(content.toString());
         String decryptcontent;
         try {
             decryptcontent = decryptData(content.toString());
