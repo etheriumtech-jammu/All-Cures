@@ -94,8 +94,37 @@ public class SolrIndexer {
         }
     }
 
-    public String decryptData(String encryptedData) throws UnsupportedEncodingException {
-        // Your decryption logic here
-        return encryptedData;
+   public String decryptData(String encryptedData) throws UnsupportedEncodingException {
+        try {
+            // Decode URL-encoded data
+            String decodedData = URLDecoder.decode(encryptedData, "UTF-8");
+
+            // Convert the decoded data to JSON object
+            JSONObject json = new JSONObject(decodedData);
+
+            // Extract information from the JSON object
+            long time = json.getLong("time");
+            JSONArray blocks = json.getJSONArray("blocks");
+
+            // Iterate over the blocks and decrypt each one
+            StringBuilder decryptedText = new StringBuilder();
+            for (int i = 0; i < blocks.length(); i++) {
+                JSONObject block = blocks.getJSONObject(i);
+                if (block.has("data")) {
+                    JSONObject data = block.getJSONObject("data");
+                    if (data.has("text")) {
+                        String text = data.getString("text");
+                        // Perform decryption here (if needed)
+                        decryptedText.append(text).append("\n");
+                    }
+                }
+            }
+
+            // Return the decrypted text or process it further
+            return decryptedText.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return "Error occurred while decrypting the data.";
+        }
     }
 }
