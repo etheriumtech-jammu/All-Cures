@@ -145,7 +145,29 @@ public class Appointment {
 
     @Column(name = "Status")
     private int status;
-    
+    @Transient
+    private String doctorName;
+
+    @Transient
+    private Integer slotDuration;
+
+	public Integer getSlotDuration() {
+		return slotDuration;
+	}
+
+	public void setSlotDuration(Integer slotDuration) {
+		this.slotDuration = slotDuration;
+	}
+
+	public String getDoctorName() {
+		return doctorName;
+	}
+
+	public void setDoctorName(String doctorName) {
+		this.doctorName = doctorName;
+	}
+	
+  
   
     // Getters and setters
 }
