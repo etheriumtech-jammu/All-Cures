@@ -288,8 +288,8 @@ return articleDaoImpl.updateArticleId(article_id, articleMap, baseUrl);
 	public @ResponseBody Map<String, Integer> getlikesanddislikescount(@PathVariable Long articleId)
 	
 	{
-		String directoryPath = "C:\\JAVA\\New"; // Directory containing files
-        String solrUrl = "http://localhost:8983/solr/test"; // Replace with your Solr collection URL
+		String directoryPath = "/home/uat/Production/installers/tomcat/webapps/cures_articleimages"; // Directory containing files
+        String solrUrl = "http://localhost:8983/solr/articontent_core"; // Replace with your Solr collection URL
         System.out.println(solrUrl);
         SolrIndexer indexer = new SolrIndexer();
         try {
