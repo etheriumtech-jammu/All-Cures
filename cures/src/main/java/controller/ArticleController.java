@@ -53,7 +53,7 @@ import model.Article;
 import model.Article_dc_name;
 import model.Registration;
 import util.ArticleUtils;
-
+import util.SolrIndexer;
 @RestController
 @RequestMapping(path = "/article")
 public class ArticleController {
