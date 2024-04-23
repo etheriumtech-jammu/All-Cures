@@ -178,6 +178,49 @@ public class AppointmentDaoImpl {
 
 			return AppointmentList;
 		}
+
+	//To get Appointments of a particular User
+				public static List<Appointment> getAllAppointmentsOfUser(Integer userID) {
+					Session session = HibernateUtil.buildSessionFactory();
+					Query query1 = session.createNativeQuery(
+							"SELECT \r\n"
+							+ "      a.DocID, \r\n"
+							+ "      a.AppointmentDate, \r\n"
+							+ "      a.StartTime, \r\n"
+							+ "      a.EndTime, \r\n"
+							+ "      a.Status, \r\n"
+							+ "      a.RequestStatus, \r\n"
+							+ "      a.UserID,\r\n"
+							+ "      CONCAT(d.docname_first, ' ', d.docname_middle, ' ', d.docname_last) AS DoctorName,\r\n"
+							+ "      da.SlotDuration\r\n"
+							+ "    FROM \r\n"
+							+ "      Appointment a\r\n"
+							+ "    LEFT JOIN \r\n"
+							+ "      Doctors_New d ON a.DocID = d.docid"
+							+ "    LEFT JOIN \r\n"
+							+ "      DoctorAvailability da ON a.DocID = da.DocID"
+							+ " where  a.UserId= " + userID + "");
+					List<Appointment> AppointmentList = new ArrayList<>();
+
+					List<Object[]> resultList = query1.getResultList();
+					Constant.log("Executed Query and Got: " + resultList.size() + " Appointment Lists back", 1);
+
+					for (Object[] obj : resultList) {
+						Appointment appointment = new Appointment();
+						
+						Date date=(Date)obj[1];
+						appointment.setAppointmentDate(date);
+						appointment.setStartTime(obj[2] != null ? (String) obj[2] : "");
+						appointment.setEndTime(obj[3] != null ? (String) obj[3] : "");
+						appointment.setStatus(obj[4] != null ? (Integer) obj[4] : 0);
+						appointment.setRequestStatus(obj[5] != null ? (Integer) obj[5] : 0);
+						appointment.setDoctorName(obj[7] != null ? (String) obj[7] : "");
+						appointment.setSlotDuration(obj[8] != null ? (Integer) obj[8] : 0);
+						AppointmentList.add(appointment);
+					}
+
+					return AppointmentList;
+				}
 	//To get Total , unbooked slots and Completely Booked Dates of a particular doctor
 	public static Map<String, Object> findCompletelyBookedAndAvailableDates(int doctorId) {
 	    Map<String, Object> datesMap = new HashMap<>();
