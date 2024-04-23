@@ -126,6 +126,8 @@ public class SearchActionController extends HttpServlet {
 			}
 			
 			response.setContentType("application/json");
+			
+	//                response.setHeader("Content-Encoding", "gzip");
 			response.setCharacterEncoding("UTF-8");
 			Gson gson = new Gson();
 			//Converting Results to a JSON Object
@@ -134,8 +136,7 @@ public class SearchActionController extends HttpServlet {
 			//Converting JSON to String using GSON
 			String jsondata = gson.toJson(stringToJsonObject);
 			if(jsonResponse){
-				 response.setContentType("application/json");
-	                response.setHeader("Content-Encoding", "gzip");
+				 
 	                OutputStream out = response.getOutputStream();
 	                try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(out);
 	                		PrintWriter writer = new PrintWriter(new OutputStreamWriter(gzipOutputStream, StandardCharsets.UTF_8))) {
