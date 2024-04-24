@@ -1,7 +1,11 @@
 package controller;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.util.zip.GZIPOutputStream;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -114,6 +118,7 @@ public class SearchActionController extends HttpServlet {
 			}
 			
 			response.setContentType("application/json");
+			  response.setHeader("Content-Encoding", "gzip");
 			response.setCharacterEncoding("UTF-8");
 			Gson gson = new Gson();
 			//Converting Results to a JSON Object
@@ -121,12 +126,16 @@ public class SearchActionController extends HttpServlet {
 			// Constant.log("------------json OBJECT OUT>>>>>>>"+stringToJsonObject);
 			//Converting JSON to String using GSON
 			String jsondata = gson.toJson(stringToJsonObject);
-			if(jsonResponse){
-				Constant.log("Sending Response as JSON", 1);
-				PrintWriter out = response.getWriter();	
-				out.write(jsondata);
-				//Const obj=Json.parse(jsondata);
-				out.flush();
+			if(jsonResponse)if(jsonResponse){
+				 
+	                OutputStream out = response.getOutputStream();
+	                try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(out);
+	                		PrintWriter writer = new PrintWriter(new OutputStreamWriter(gzipOutputStream, StandardCharsets.UTF_8))) {
+	                      writer.write(jsondata);
+	                }finally {
+	                    out.flush();
+	                    out.close();
+	                }
 			}else{
 				Constant.log("Sending Response to search.jsp page", 0);
 				this.getServletContext().setAttribute(Constant.JSONDATA, jsondata);
