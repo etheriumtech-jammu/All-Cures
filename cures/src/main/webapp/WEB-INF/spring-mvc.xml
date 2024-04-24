@@ -149,6 +149,21 @@
 </bean>
 
 </mvc:interceptor>
+
+<mvc:interceptor>
+
+<mvc:mapping path="/article/update/*"/>
+<bean class="service.TokenValidationInterceptor">
+</bean>
+
+</mvc:interceptor>
+<mvc:interceptor>
+
+<mvc:mapping path="/article/delete/*"/>
+<bean class="service.TokenValidationInterceptor">
+</bean>
+
+</mvc:interceptor>
 <mvc:interceptor>
 
 <mvc:mapping path="/isearch/diseases/*"/>
