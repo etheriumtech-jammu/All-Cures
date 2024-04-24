@@ -38,7 +38,7 @@ public class ContentActionInterceptorFilter implements Filter {
 	    System.out.println(TokenValidator.isValidToken(token, uri));
             
             try {
-                if (token != null && TokenValidator.isValidToken(token, uri) == 0) {
+                if (token != null && TokenValidator.isValidToken(token, uri) == 1) {
                     // Token is valid, continue with the filter chain
                     chain.doFilter(request, response);
                     return;
