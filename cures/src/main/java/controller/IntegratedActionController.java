@@ -55,7 +55,10 @@ public class IntegratedActionController extends HttpServlet {
         ArrayList<Specialties> splArray = new ArrayList<Specialties>();
         SubspecialtiesDaoImp subspl = new SubspecialtiesDaoImp();
         ArrayList<Subspecialties> subsplArray = new ArrayList<Subspecialties>();
-
+        javax.servlet.http.HttpSession ses= request.getSession();
+        Registration regi=(Registration)ses.getAttribute(Constant.USER);
+//		Registration regi="model.Registration@295f6af8";
+		System.out.println("user"+regi);
         MemcachedClient mcc = null;
         String address = Constant.ADDRESS;
 
