@@ -28,6 +28,7 @@ import net.spy.memcached.ConnectionFactoryBuilder;
 import net.spy.memcached.FailureMode;
 import net.spy.memcached.MemcachedClient;
 import util.Constant;
+import model.Registration;
 
 /**
  * Servlet implementation class IntegratedActionController
