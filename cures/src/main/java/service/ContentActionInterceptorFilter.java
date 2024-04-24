@@ -22,7 +22,7 @@ public class ContentActionInterceptorFilter implements Filter {
         System.out.println("User-Agent"+ userAgent);
         if (userAgent != null && (userAgent.toLowerCase().contains("mobile") || userAgent.contains("AllCures"))) {
             // If it's a mobile device or MyApp, skip token validation
-            chain.doFilter(request, response); // Continue with the filter chain
+            chain.doFilter(httpRequest, httpResponse); // Continue with the filter chain
             return;
         }
         String uri = httpRequest.getRequestURI();
