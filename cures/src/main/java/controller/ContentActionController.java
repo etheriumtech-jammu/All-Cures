@@ -392,7 +392,7 @@ public class ContentActionController extends HttpServlet {
 //			Registration regi="model.Registration@295f6af8";
 			System.out.println("user"+regi);
 		System.out.println("Reached");
-		doGet(request, response);
+//		doGet(request, response);
 	}
 
 }
