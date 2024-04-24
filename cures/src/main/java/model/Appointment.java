@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
+import javax.persistence.Transient;
 @Entity
 public class Appointment {
     @Id
@@ -145,7 +145,52 @@ public class Appointment {
 
     @Column(name = "Status")
     private int status;
+
+ @Transient
+    private String doctorName;
+
+    @Transient
+    private Integer slotDuration;
+
+	public Integer getSlotDuration() {
+		return slotDuration;
+	}
+
+	public void setSlotDuration(Integer slotDuration) {
+		this.slotDuration = slotDuration;
+	}
+
+	public String getDoctorName() {
+		return doctorName;
+	}
+
+	public void setDoctorName(String doctorName) {
+		this.doctorName = doctorName;
+	}
+
+	@Transient
+    private String imgLoc;
+
+    @Transient
+    private String medicineType;
+
     
+	public String getMedicineType() {
+		return medicineType;
+	}
+
+	public void setMedicineType(String medicineType) {
+		this.medicineType = medicineType;
+	}
+
+	public String getImgLoc() {
+		return imgLoc;
+	}
+
+	public void setImgLoc(String imgLoc) {
+		this.imgLoc = imgLoc;
+	}
+
   
     // Getters and setters
 }
