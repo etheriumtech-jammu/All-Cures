@@ -30,7 +30,7 @@ public class ContentActionInterceptorFilter implements Filter {
         System.out.println("Intercepted URL: " + uri);
         System.out.println("queryString in  URL: " + queryString);
          // Check if the request URL matches /cure/content
-        if ("/content".equals(uri) && queryString != null) {
+        if ("/cures/content".equals(uri) && queryString != null) {
             // Your validation logic here
             String token = httpRequest.getHeader("Authorization");
             try {
