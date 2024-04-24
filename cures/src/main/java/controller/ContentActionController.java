@@ -387,6 +387,10 @@ public class ContentActionController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		javax.servlet.http.HttpSession ses= request.getSession();
+		 Registration regi=(Registration)ses.getAttribute(Constant.USER);
+//			Registration regi="model.Registration@295f6af8";
+			System.out.println("user"+regi);
 		System.out.println("Reached");
 		doGet(request, response);
 	}
