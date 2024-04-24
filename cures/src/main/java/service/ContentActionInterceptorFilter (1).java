@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter("/content")
+@WebFilter("/IntegratedActionController")
 public class ContentActionInterceptorFilter implements Filter {
 
     @Override
@@ -30,7 +30,7 @@ public class ContentActionInterceptorFilter implements Filter {
         System.out.println("Intercepted URL: " + uri);
         System.out.println("queryString in  URL: " + queryString);
          // Check if the request URL matches /cure/content
-        if ("/cures/content".equals(uri) && queryString != null) {
+        if ("/cures/IntegratedActionController".equals(uri) && queryString != null) {
             // Your validation logic here
 		
             String token = httpRequest.getHeader("Authorization");
