@@ -40,7 +40,7 @@ public class ContentActionInterceptorFilter implements Filter {
             try {
                 if (token != null && TokenValidator.isValidToken(token, uri) == 1) {
                     // Token is valid, continue with the filter chain
-                    chain.doFilter(request, response);
+                    chain.doFilter(httpRequest, httpResponse);
                     return;
                 } else {
                     httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or missing token.");
