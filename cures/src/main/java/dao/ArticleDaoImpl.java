@@ -20,6 +20,8 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import org.apache.commons.io.IOUtils;
 import org.xerial.snappy.SnappyOutputStream;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
