@@ -269,7 +269,7 @@ public class DataDaoImpl {
 		Session session = HibernateUtil.buildSessionFactory();
 
 		Query query = session.createNativeQuery(
-				"select Title,Description,Link,image,Alt_Text from WebStories_Data");
+				"select Title,Description,Link,image,Alt_Text,WebID,CreateDate from WebStories_Data");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		System.out.println(results.size());
 		List hmFinal = new ArrayList();
@@ -280,14 +280,14 @@ public class DataDaoImpl {
 			hm.put("link", (String)objects[2]);
 			hm.put("image", (String)objects[3]);
 			hm.put("ImageAltText", (String)objects[4]);
-			
+			hm.put("webID", objects[5].toString());
+			hm.put("createDate", objects[6].toString());
 			hmFinal.add(hm);
 
 		}
 		
 		return hmFinal; 
 	}
-
 	public static List doctor_image() {
 		
 		Session session = HibernateUtil.buildSessionFactory();
