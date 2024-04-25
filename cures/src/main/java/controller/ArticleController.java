@@ -289,6 +289,23 @@ public class ArticleController {
 	{
 		return ArticleDaoImpl.getLikesAndDislikesCount(articleId);
     }
+
+	@RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
+	public @ResponseBody int AddArticle(HttpServletRequest request, HttpServletResponse response) throws IOException
+	
+	{
+		HttpSession session = request.getSession(false);
+		Registration regi=(Registration)session.getAttribute(Constant.USER);
+		System.out.println(regi);
+		try {
+			return ArticleDaoImpl.createArticle(request,response,regi);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return 0;
+		}
+		
+	}
 	
 
 }
