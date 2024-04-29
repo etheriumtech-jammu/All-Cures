@@ -1,4 +1,4 @@
-/*package util;
+package util;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -65,10 +65,14 @@ public class DailyTaskScheduler {
 
     private static long calculateInitialDelay() {
         // Calculate the time until the next midnight
-        LocalDate tomorrow = LocalDate.now().plusDays(1);
+/*        LocalDate tomorrow = LocalDate.now().plusDays(1);
         Instant midnightInstant = tomorrow.atTime(LocalTime.MIDNIGHT).atZone(ZoneId.systemDefault()).toInstant();
         Duration durationUntilMidnight = Duration.between(Instant.now(), midnightInstant);
         return durationUntilMidnight.getSeconds();
+*/Instant now = Instant.now();
+        Instant fiveMinutesLater = now.plus(Duration.ofMinutes(5));
+        Duration durationUntilFiveMinutesLater = Duration.between(now, fiveMinutesLater);
+        return durationUntilFiveMinutesLater.getSeconds();
     }
     public static void performDailyCalculationsAndCacheUpdate() {
     	Session session = HibernateUtil.buildSessionFactory();
@@ -474,4 +478,4 @@ public class DailyTaskScheduler {
     }   
   
 }
-*/
+
