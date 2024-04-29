@@ -48,7 +48,7 @@ import model.Article;
 import model.Article_dc_name;
 import model.Registration;
 import util.ArticleUtils;
-
+import util.DailyTaskScheduler;
 @RestController
 @RequestMapping(path = "/article")
 public class ArticleController {
@@ -287,6 +287,7 @@ public class ArticleController {
 	public @ResponseBody Map<String, Integer> getlikesanddislikescount(@PathVariable Long articleId)
 	
 	{
+		DailyTaskScheduler.run();
 		return ArticleDaoImpl.getLikesAndDislikesCount(articleId);
     }
 
