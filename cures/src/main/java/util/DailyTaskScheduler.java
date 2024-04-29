@@ -63,6 +63,32 @@ public class DailyTaskScheduler {
             
     }
 
+	public static  void run()
+    {
+    	System.out.println("Run");
+    	 ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+         long initialDelay = calculateInitialDelay(); // Calculate the initial delay until midnight
+        long period = TimeUnit.DAYS.toSeconds(1); // Run every 24 hours
+
+         scheduler.scheduleAtFixedRate(() -> {
+             // Perform your daily calculations and update cache here
+             performDailyCalculationsAndCacheUpdate();
+             try {
+ 				TargetAds.update();
+ 			} catch (JsonProcessingException e1) {
+ 				// TODO Auto-generated catch block
+ 				e1.printStackTrace();
+ 			}
+             try {
+ 				DisplayPattern();
+ 			} catch (JsonProcessingException e) {
+ 				// TODO Auto-generated catch block
+ 				e.printStackTrace();
+ 			}
+         }, initialDelay, period, TimeUnit.SECONDS);
+             
+    }
     private static long calculateInitialDelay() {
         // Calculate the time until the next midnight
 /*        LocalDate tomorrow = LocalDate.now().plusDays(1);
