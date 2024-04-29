@@ -445,8 +445,8 @@ public class DailyTaskScheduler {
                	
    //            	String key="Banner" + String.valueOf(index);
                	String key=parts[0] + "_0_"  + String.valueOf(index) ;
-    //           	System.out.println("Key:" + key);
-  //             	System.out.println("URL:" + URL);
+              	System.out.println("Key:" + key);
+               	System.out.println("URL:" + URL);
                	index=index+1;
                	
                	// Append the URL to the list
