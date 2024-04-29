@@ -287,7 +287,7 @@ public class ArticleController {
 	public @ResponseBody Map<String, Integer> getlikesanddislikescount(@PathVariable Long articleId)
 	
 	{
-		DailyTaskScheduler.run();
+//		DailyTaskScheduler.run();
 		return ArticleDaoImpl.getLikesAndDislikesCount(articleId);
     }
 
