@@ -73,7 +73,7 @@ public class DailyTaskScheduler {
 
          scheduler.scheduleAtFixedRate(() -> {
              // Perform your daily calculations and update cache here
-             ();
+            performDailyCalculationsAndCacheUpdate();
              try {
  				TargetAds.update();
  			} catch (JsonProcessingException e1) {
