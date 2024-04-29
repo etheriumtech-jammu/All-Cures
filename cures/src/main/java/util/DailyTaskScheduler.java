@@ -65,7 +65,7 @@ public class DailyTaskScheduler {
 
 	public static  void run()
     {
-    	System.out.println("Run");
+    	
     	 ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
          long initialDelay = calculateInitialDelay(); // Calculate the initial delay until midnight
@@ -103,7 +103,7 @@ public class DailyTaskScheduler {
     }
     public static void performDailyCalculationsAndCacheUpdate() {
     	Session session = HibernateUtil.buildSessionFactory();
-	System.out.println("Reached");
+	
     	  int adCountPerDay=0;
 		Query query = session.createNativeQuery(
 				"SELECT AdID,ImageLocation, StartDate, EndDate,AdCount,(AdCount-AdDelivered), SlotName\r\n"
