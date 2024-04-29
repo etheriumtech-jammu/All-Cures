@@ -73,7 +73,7 @@ public class DailyTaskScheduler {
 
          scheduler.scheduleAtFixedRate(() -> {
              // Perform your daily calculations and update cache here
-             performDailyCalculationsAndCacheUpdate();
+             ();
              try {
  				TargetAds.update();
  			} catch (JsonProcessingException e1) {
@@ -102,6 +102,7 @@ public class DailyTaskScheduler {
     }
     public static void performDailyCalculationsAndCacheUpdate() {
     	Session session = HibernateUtil.buildSessionFactory();
+	System.out.println("Reached");
     	  int adCountPerDay=0;
 		Query query = session.createNativeQuery(
 				"SELECT AdID,ImageLocation, StartDate, EndDate,AdCount,(AdCount-AdDelivered), SlotName\r\n"
@@ -445,8 +446,8 @@ public class DailyTaskScheduler {
                	
    //            	String key="Banner" + String.valueOf(index);
                	String key=parts[0] + "_0_"  + String.valueOf(index) ;
-              	System.out.println("Key:" + key);
-               	System.out.println("URL:" + URL);
+   //           	System.out.println("Key:" + key);
+   //            	System.out.println("URL:" + URL);
                	index=index+1;
                	
                	// Append the URL to the list
