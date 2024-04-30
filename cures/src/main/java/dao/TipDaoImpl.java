@@ -33,15 +33,9 @@ public class TipDaoImpl {
 		String tip_updatedtime = null;
 		Integer article_id=(Integer) promoMap.get("article_id");
 		Integer pubstatus_id=0;
-		java.util.Date date=new java.util.Date();
-		java.sql.Timestamp sqlDate=new java.sql.Timestamp(date.getTime());
-		tip_date = sqlDate.toString();
+		
 //		System.out.println("start_time>>>>>"+tip_date);
 		
-		
-		java.util.Date dates=new java.util.Date();
-		java.sql.Timestamp sqlDates=new java.sql.Timestamp(date.getTime());
-		tip_updatedtime = sqlDate.toString();
 //		System.out.println("tip_updatedtime>>>>>"+tip_updatedtime);
 		
 		Query query1= session.createNativeQuery("Select title,pubstatus_id from article where article_id = " + article_id);
@@ -62,8 +56,8 @@ public class TipDaoImpl {
 		{
           Query query = session
 				.createNativeQuery("INSERT INTO `tip`" + " (`tip_title`,"
-						+ " `tip_date`,"+"`user_id`,"+"`tip_status`, "+"`article_id`)"
-						+ " VALUES" + " ('" + tip_title + "',    " + "     '" + tip_date + "', " + " '"+ user_id +"', " + " '"+tip_status+"',  " + " '"+article_id+"' );" + "");
+						+ " `user_id`,"+"`tip_status`, "+"`article_id`)"
+						+ " VALUES" + " ('" + tip_title + "', " + " '"+ user_id +"', " + " '"+tip_status+"',  " + " '"+article_id+"' );" + "");
 		
 		try {
 			ret = query.executeUpdate();
