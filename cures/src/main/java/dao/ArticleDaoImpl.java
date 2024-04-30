@@ -1328,7 +1328,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 				//templateData.put("first_name", f_name);
 				// String link = "http://localhost:3000";
 //				String link = "https://all-cures.com/cure/"+URLEncoder.encode(art.getTitle(),"UTF-8");
-				String link = "https://all-cures.com/cure/"+art.getArticle_id()+"-"+art.getTitle().replaceAll(" ", "-");
+				String link = "https://www.all-cures.com/cure/"+art.getArticle_id()+"-"+art.getTitle().replaceAll(" ", "-");
 				templateData.put("linkverfiy", link);
 				templateData.put("title", art.getTitle());
 				templateData.put("type", type);
