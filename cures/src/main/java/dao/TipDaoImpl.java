@@ -62,8 +62,8 @@ public class TipDaoImpl {
 		{
           Query query = session
 				.createNativeQuery("INSERT INTO `tip`" + " (`tip_title`,"
-						+ " `tip_date`,"+"`user_id`,"+"`tip_status`,"+"`tip_updatedtime` , "+"`article_id`)"
-						+ " VALUES" + " ('" + tip_title + "',    " + "     '" + tip_date + "', " + " '"+ user_id +"', " + " '"+tip_status+"', " + " '"+tip_updatedtime+"' , " + " '"+article_id+"' );" + "");
+						+ " `tip_date`,"+"`user_id`,"+"`tip_status`, "+"`article_id`)"
+						+ " VALUES" + " ('" + tip_title + "',    " + "     '" + tip_date + "', " + " '"+ user_id +"', " + " '"+tip_status+"',  " + " '"+article_id+"' );" + "");
 		
 		try {
 			ret = query.executeUpdate();
