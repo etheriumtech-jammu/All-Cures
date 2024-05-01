@@ -122,12 +122,12 @@ public class DeltaSiteMapGen {
 	*/
 			str_add = "";
 			
-			rs2_cure = stmt2.executeQuery("Select article_id,title from article ");
+			rs2_cure = stmt2.executeQuery("Select article_id,title from article  where pubstatus_id=3");
 			System.out.println(rs2_cure.getFetchSize());
 			while (rs2_cure.next()) {
 				String title = rs2_cure.getString(2);
-				title = title.replaceAll(" ", "-").toLowerCase();
-				title = title.replaceAll("&", "-").toLowerCase();
+				title = title.replaceAll(" ", "-");
+				title = title.replaceAll("&", "-");
 				// System.out.println(str);
 				System.out.println();
 				str_add = rs2_cure.getString(1) + "-" + title;
@@ -212,12 +212,12 @@ public class DeltaSiteMapGen {
 				str_add = "";
 
 				rs2_cure = stmt2.executeQuery("Select article_id,title from article where create_time >  '"
-						+ formattedDateTime + "'");
+						+ formattedDateTime + "' and pubstatus_id=3");
 				System.out.println(rs2_cure.getFetchSize());
 				while (rs2_cure.next()) {
 					String title = rs2_cure.getString(2);
-					title = title.replaceAll(" ", "-").toLowerCase();
-					title = title.replaceAll("&", "-").toLowerCase();
+					title = title.replaceAll(" ", "-");
+					title = title.replaceAll("&", "-");
 					// System.out.println(str);
 					System.out.println();
 					str_add = rs2_cure.getString(1) + "-" + title;
