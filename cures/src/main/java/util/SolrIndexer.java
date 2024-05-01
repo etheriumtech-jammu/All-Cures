@@ -21,8 +21,8 @@ public class SolrIndexer {
 
     public void indexFiles(String directoryPath, String solrUrl) throws IOException, SolrServerException {
         SolrClient solr = new HttpSolrClient.Builder(solrUrl).build();
-        String directoryPath="/home/uat/Production/installers/tomcat/webapps/cures_articleimages/3/2021/12/23";
-        File directory = new File(directoryPath);
+        String directory="/home/uat/Production/installers/tomcat/webapps/cures_articleimages/3/2021/12/23";
+        File directory = new File(directory);
         File[] files = directory.listFiles();
         if (files != null) {
             for (File file : files) {
