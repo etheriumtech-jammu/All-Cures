@@ -54,6 +54,7 @@ import model.Article_dc_name;
 import model.Registration;
 import util.ArticleUtils;
 import util.SolrIndexer;
+import org.apache.solr.client.solrj.SolrServerException;
 @RestController
 @RequestMapping(path = "/article")
 public class ArticleController {
@@ -292,8 +293,7 @@ return articleDaoImpl.updateArticleId(article_id, articleMap, baseUrl);
 		return ArticleDaoImpl.getLikesAndDislikesCount(articleId);
     }
 	@RequestMapping(value = "/solr/add", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody void AddArticle()
-	
+	public @ResponseBody void AddArticle() throws SolrServerException	
 	{
 	String directoryPath = "/home/uat/Production/installers/tomcat/webapps/cures_articleimages"; // Directory containing files
         String solrUrl = "http://localhost:8983/solr/article_new_core"; // Replace with your Solr collection URL
