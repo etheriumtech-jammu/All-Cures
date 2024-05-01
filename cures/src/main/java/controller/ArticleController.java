@@ -55,6 +55,13 @@ import model.Registration;
 import util.ArticleUtils;
 import util.SolrIndexer;
 import org.apache.solr.client.solrj.SolrServerException;
+
+import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
 @RestController
 @RequestMapping(path = "/article")
 public class ArticleController {
@@ -63,6 +70,8 @@ public class ArticleController {
 	private ArticleDaoImpl articleDaoImpl;
 
 	private String saveDirectory = "C:/test/";
+
+	private final SolrClient solrClient = new HttpSolrClient.Builder("http://localhost:8983/solr/article_new_core").build();
 
 	@RequestMapping(value = "/{article_id}", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody Article_dc_name getArticleDetails(@PathVariable int article_id, HttpServletRequest request,@RequestHeader Map<String,String> headers) {
@@ -323,6 +332,23 @@ return articleDaoImpl.updateArticleId(article_id, articleMap, baseUrl);
 		
 	}
 	
-	
+	@RequestMapping(value = "/solr/{articleId}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<String> getContentNew(@PathVariable int articleId) {
+        SolrQuery query = new SolrQuery();
+        query.setQuery("article_id:" + articleId);
+        try {
+            QueryResponse response = solrClient.query(query);
+            SolrDocument document = response.getResults().get(0);
+            Object contentNewFieldValue = document.getFieldValue("content_new");
+            if (contentNewFieldValue != null) {
+                return ResponseEntity.ok(contentNewFieldValue.toString());
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Content_new field not found in the document.");
+            }
+        } catch (SolrServerException | IOException | IndexOutOfBoundsException | NullPointerException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while retrieving content_new field.");
+        }
+    }
 
 }
