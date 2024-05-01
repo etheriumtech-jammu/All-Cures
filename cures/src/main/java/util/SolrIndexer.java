@@ -22,7 +22,7 @@ public class SolrIndexer {
     public void indexFiles(String directoryPath, String solrUrl) throws IOException, SolrServerException {
 	    SolrClient solr = new HttpSolrClient.Builder(solrUrl).build();
 //	    String directory1 = "/home/uat/Production/installers/tomcat/webapps/cures_articleimages/50/2023/03/24";
-//	    File directory = new File(directory);
+	    File directory = new File(directoryPath);
 	    File[] files = directory.listFiles();
 
 	    System.out.println(files.length);
