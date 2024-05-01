@@ -21,6 +21,7 @@ public class SolrIndexer {
 
     public void indexFiles(String directoryPath, String solrUrl) throws IOException, SolrServerException {
         SolrClient solr = new HttpSolrClient.Builder(solrUrl).build();
+        String directoryPath="/home/uat/Production/installers/tomcat/webapps/cures_articleimages/3/2021/12/23";
         File directory = new File(directoryPath);
         File[] files = directory.listFiles();
         if (files != null) {
@@ -37,6 +38,7 @@ public class SolrIndexer {
 
                     // Extract article ID from the filename
                     int articleId = extractArticleId(file.getName());
+                    
                     if (articleId == -1) {
                         System.out.println("Invalid filename format: " + file.getName());
                         continue; // Skip this file if filename format is invalid
