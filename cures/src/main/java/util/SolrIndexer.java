@@ -72,7 +72,7 @@ public class SolrIndexer {
 	                        // Retrieve and print the content_new field from the document
 	                        Object contentNewFieldValue = existingDocument.getFieldValue("content_new");
 	                        if (contentNewFieldValue != null) {
-	                            System.out.println("content_new: " + contentNewFieldValue.toString());
+	       //                     System.out.println("content_new: " + contentNewFieldValue.toString());
 	                        } else {
 	                            System.out.println("content_new not found in the document.");
 	                        }
