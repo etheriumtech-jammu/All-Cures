@@ -60,7 +60,7 @@ public class SolrIndexer {
 
                         if (decryptedContent != null) {
                             // Add new content to the existing document
-                            existingDocument.addField("content_new", decryptedContent.toString());
+                            existingDocument.setField("content_new", decryptedContent.toString());
 
                             // Update the document in Solr
                             solr.add(convertToSolrInputDocument(existingDocument));
