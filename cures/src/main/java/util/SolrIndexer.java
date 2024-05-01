@@ -26,6 +26,10 @@ public class SolrIndexer {
 	    File[] files = directory.listFiles();
 
 	    System.out.println("size:"+files.length);
+	    for (File f : files) {
+    System.out.println(f.getName());
+}
+
 	    if (files != null) {
 	        for (File file : files) {
 	            if (file.isFile() && file.getName().toLowerCase().endsWith(".json")) {
