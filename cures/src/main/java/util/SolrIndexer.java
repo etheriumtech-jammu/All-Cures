@@ -48,7 +48,7 @@ public class SolrIndexer {
 
 	                // Build a Solr query to retrieve the document by its ID
 	                SolrQuery query = new SolrQuery();
-	                query.setQuery("id:" + articleId);
+	                query.setQuery("article_id:" + articleId);
 
 	                // Execute the query
 	                QueryResponse response = solr.query(query);
