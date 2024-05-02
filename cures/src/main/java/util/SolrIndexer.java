@@ -52,8 +52,8 @@ public class SolrIndexer {
 
         // Extract article ID from the filename
         int articleId = extractArticleId(file.getName());
-        System.out.println("filename format: " + file.getName());
-        System.out.println("File path: " + file.getPath());
+//        System.out.println("filename format: " + file.getName());
+       
         if (articleId == -1) {
             System.out.println("Invalid filename format: " + file.getName());
             return; // Skip this file if filename format is invalid
@@ -96,6 +96,7 @@ public class SolrIndexer {
                 System.out.println("Error decrypting and parsing content for file: " + file.getName());
             }
         } else {
+             System.out.println("File path: " + file.getPath());
             System.out.println("Document with ID " + articleId + " does not exist in Solr.");
         }
     }
