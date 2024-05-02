@@ -49,8 +49,10 @@ public class TokenValidator {
 
 				if (token.equals(Token) && Status == 1) {
 					
-					
-					if (Max_Allowed == Total_Count && false == current_Date.equals(LastUpdateDate)) {
+					 if (Max_Allowed == 0) {
+						res = 1;
+					}
+					else if (Max_Allowed == Total_Count && false == current_Date.equals(LastUpdateDate)) {
 						session.beginTransaction();
 						String str = "UPDATE APITokenAnalytics SET Total_Count = 1 "
 								+ "WHERE TokenID = :tokenID AND API = :url";
@@ -67,9 +69,7 @@ public class TokenValidator {
 						}
 					 else if (Max_Allowed == Total_Count && true == current_Date.equals(LastUpdateDate)) {
 						res = 2;
-					} else if (Max_Allowed == 0) {
-						res = 1;
-					} else if (Max_Allowed > Total_Count) {
+					}  else if (Max_Allowed > Total_Count) {
 						session.beginTransaction();
 						String str = "UPDATE APITokenAnalytics SET Total_Count = Total_Count + 1 "
 								+ "WHERE TokenID = :tokenID AND API = :url";
