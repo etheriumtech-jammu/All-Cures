@@ -53,6 +53,7 @@ public class SolrIndexer {
         // Extract article ID from the filename
         int articleId = extractArticleId(file.getName());
         System.out.println("filename format: " + file.getName());
+        System.out.println("File path: " + file.getPath());
         if (articleId == -1) {
             System.out.println("Invalid filename format: " + file.getName());
             return; // Skip this file if filename format is invalid
