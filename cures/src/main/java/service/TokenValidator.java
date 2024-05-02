@@ -15,7 +15,7 @@ import org.hibernate.query.Query;
 import util.HibernateUtil;
 
 public class TokenValidator {
-	private static final String STATIC_TOKEN = "All-Cures";
+	
 	private static Object lock = new Object();
 	@Transactional(isolation = Isolation.SERIALIZABLE)
 	public static int isValidToken(String token, String url) {
@@ -33,8 +33,7 @@ public class TokenValidator {
 		 Query query = session.createNativeQuery(
 						"SELECT at.TokenID, at.Token, at.Status, at.Max_Allowed, aa.Total_Count, aa.LastUpdateDate FROM API_Tokens at JOIN APITokenAnalytics aa ON at.TokenID = aa.TokenID WHERE at.Token = '"+token+"' AND aa.API = '"+url+"'");
 				
-		String queryString = query.unwrap(org.hibernate.query.Query.class).getQueryString();
-	//		System.out.println("Generated SQL query: " + queryString);
+	
 		try {
 			List<Object[]> results = query.getResultList();
 	//		System.out.println("Results size " + results.size());
