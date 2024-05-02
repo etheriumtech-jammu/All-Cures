@@ -33,7 +33,7 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
             jwtToken = jwtToken.substring(7);
 
             // Validate the JWT token and extract claims
-            Claims claims = JWTExample.validateJWTToken(jwtToken);
+            Claims claims = JWT.validateJWTToken(jwtToken);
 
             if (claims != null) {
                 // Check if the username and password are valid
