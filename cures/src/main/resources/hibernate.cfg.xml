@@ -18,16 +18,16 @@
 <!-- property name="hibernate.connection.provider_class">org.hibernate.hikaricp.internal.HikariCPConnectionProvider</property -->
 
 		<!-- Maximum waiting time for a connection from the pool -->
-		<property name="hibernate.hikari.connectionTimeout">30000</property>
+		<property name="hibernate.connectionTimeout">30000</property>
 
 		<!-- Minimum number of ideal connections in the pool -->
-		<property name="hibernate.hikari.minimumIdle">100</property>
+		<property name="hibernate.minimumIdle">100</property>
 
 		<!-- Maximum number of actual connection in the pool -->
-		<property name="hibernate.hikari.maximumPoolSize">100</property>
+		<property name="hibernate.maximumPoolSize">100</property>
 
 		<!-- Maximum time that a connection is allowed to sit ideal in the pool -->
-		<property name="hibernate.hikari.idleTimeout">100000</property>
+		<property name="hibernate.idleTimeout">100000</property>
 		# Maximum lifetime of a connection in the pool. After this time, the connection will be closed and removed from the pool.
 			
 	    	<property name="hikari.dataSource.maxLifetime">180000</property>
