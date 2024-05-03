@@ -38,7 +38,7 @@ public class SearchDaoImpl {
 		search.searchByCityPin("jammu");
 	}
 
-	public static List<Doctor> searchByCityPin(String cityname) {
+	public static List<Doctor> searchByCityPin(String cityname) throws IOException {
 		SolrClient client = SolrUtil.buildSolrFactory();
 		Doctor doc = new Doctor();
 		List<Doctor> docarr = new ArrayList<Doctor>();
@@ -184,7 +184,7 @@ public class SearchDaoImpl {
 		return docarr;
 	}
 
-	public static List<Doctor> searchByDocSpl(String docdetails) {
+	public static List<Doctor> searchByDocSpl(String docdetails) throws IOException{
 		
 		SolrClient client = SolrUtil.buildSolrFactory();
 		Doctor doc = new Doctor();
@@ -349,7 +349,7 @@ public class SearchDaoImpl {
 		return docarr;
 	}
 
-	public static List<Doctor> searchByBoth(String docdetails, String cityname) {
+	public static List<Doctor> searchByBoth(String docdetails, String cityname) throws IOException {
 		SolrClient client = SolrUtil.buildSolrFactory();
 		Doctor doc = new Doctor();
 		List<Doctor> docarr = new ArrayList<Doctor>();
@@ -485,7 +485,7 @@ public class SearchDaoImpl {
 
 		return docarr;
 	}
-	public static List<Doctor> featuredDoctors(String featureddocdetails) {
+	public static List<Doctor> featuredDoctors(String featureddocdetails) throws IOException {
 		SolrClient client = SolrUtil.buildSolrFactory();
 		Doctor doc = new Doctor();
 		List<Doctor> docarr = new ArrayList<Doctor>();
