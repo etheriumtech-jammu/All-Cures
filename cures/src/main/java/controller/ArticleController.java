@@ -62,7 +62,7 @@ public class ArticleController {
 	public @ResponseBody Article_dc_name getArticleDetails(@PathVariable int article_id, HttpServletRequest request,@RequestHeader Map<String,String> headers) {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpSession session = req.getSession(true);
-		
+		System.out.println("hh");
 		return articleDaoImpl.getArticleDetails(article_id);
 
 	}
