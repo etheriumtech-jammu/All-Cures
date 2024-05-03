@@ -35,7 +35,7 @@ public class SearchDaoImpl {
 		SearchDaoImpl search = new SearchDaoImpl();
 		Doctor docdetail = new Doctor();
 
-		search.searchByCityPin("jammu");
+//		search.searchByCityPin("jammu");
 	}
 
 	public static List<Doctor> searchByCityPin(String cityname) throws IOException {
