@@ -18,7 +18,7 @@ import util.Constant;
 import util.SolrUtil;
 
 public class SplSearchDaoImpl {
-	public static List<Doctor> SplSearchLatLon(String lat, String lon  ) {
+	public static List<Doctor> SplSearchLatLon(String lat, String lon  ) throws IOException {
 		SolrClient client = SolrUtil.buildSolrFactory();
 		Doctor doc = new Doctor();
 		List<Doctor> docarr = new ArrayList<Doctor>();
