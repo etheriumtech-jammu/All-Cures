@@ -30,7 +30,7 @@
 		<property name="hibernate.idleTimeout">100000</property>
 		# Maximum lifetime of a connection in the pool. After this time, the connection will be closed and removed from the pool.
 			
-	    	<property name="hikari.dataSource.maxLifetime">180000</property>
+	    	
 		<property name="hibernate.hbm2ddl.auto">update</property>
 		<property name="hibernate.show_sql">false</property>
 		<property name="hibernate.format_sql">false</property>
