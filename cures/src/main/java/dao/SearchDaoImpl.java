@@ -63,7 +63,12 @@ public class SearchDaoImpl {
 		} catch (SolrServerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
+		} finally {
+     		   try {
+    		        if (client != null) {
+    	            client.close(); // Close the SolrClient instance
+   	         }
+  	      }catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -235,7 +240,12 @@ public class SearchDaoImpl {
 		} catch (SolrServerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
+		}finally {
+ 		       try {
+	            if (client != null) {
+	                client.close(); // Close the SolrClient instance
+	            }
+	        } catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -367,7 +377,12 @@ public class SearchDaoImpl {
 		} catch (SolrServerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
+		}finally {
+	        try {
+	            if (client != null) {
+	                client.close(); // Close the SolrClient instance
+	            }
+	        } catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -503,7 +518,12 @@ public class SearchDaoImpl {
 		} catch (SolrServerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
+		} finally {
+   	     try {
+	            if (client != null) {
+	                client.close(); // Close the SolrClient instance
+	            }
+	        }catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
