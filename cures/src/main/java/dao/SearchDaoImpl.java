@@ -72,7 +72,7 @@ public class SearchDaoImpl {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		}
 		final SolrDocumentList documents = response.getResults();
 
 		System.out.println("Found " + documents.getNumFound() + " documents");
@@ -249,7 +249,7 @@ public class SearchDaoImpl {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		}
 		final SolrDocumentList documents = response.getResults();
 
 		System.out.println("Found " + documents.getNumFound() + " documents");
@@ -386,7 +386,7 @@ public class SearchDaoImpl {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		}
 		final SolrDocumentList documents = response.getResults();
 
 		System.out.println("Found " + documents.getNumFound() + " documents");
@@ -527,7 +527,7 @@ public class SearchDaoImpl {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		}
 		final SolrDocumentList documents = response.getResults();
 		
 		System.out.println("Found " + documents.getNumFound() + " documents");
