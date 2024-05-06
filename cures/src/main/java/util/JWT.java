@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JWT {
+public class JWTExample {
 
  //   private static final SecretKey SECRET_KEY = generateKey();
 
