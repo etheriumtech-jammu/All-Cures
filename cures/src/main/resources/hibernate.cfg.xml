@@ -22,15 +22,15 @@
 		<property name="hibernate.hikari.connectionTimeout">30000</property>
 
 		<!-- Minimum number of ideal connections in the pool -->
-		<property name="hibernate.hikari.minimumIdle">100</property>
+		<property name="hibernate.hikari.minimumIdle">20</property>
 
 		<!-- Maximum number of actual connection in the pool -->
-		<property name="hibernate.hikari.maximumPoolSize">100</property>
+		<property name="hibernate.hikari.maximumPoolSize">300</property>
 
 		<!-- Maximum time that a connection is allowed to sit ideal in the pool -->
 		<property name="hibernate.hikari.idleTimeout">200000</property>
 
-	    	<property name="hibernate.hikari.dataSource.maxLifetime">1800000</property>
+	    	<property name="hibernate.hikari.dataSource.maxLifetime">180000</property>
 
 		<property name="hibernate.hbm2ddl.auto">update</property>
 		<property name="hibernate.show_sql">false</property>
