@@ -69,7 +69,7 @@ public class JWT {
                 .compact();
     }
 
-    static Claims validateJWTToken(String jwtToken) {
+ public static Claims validateJWTToken(String jwtToken) {
         try {
             return Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(jwtToken).getBody();
         } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException  | IllegalArgumentException e) {
