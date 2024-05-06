@@ -55,7 +55,7 @@ public class LoginActionController extends HttpServlet {
 		String destinationUrl = request.getParameter("destinationUrl");
 		Constant.log("????????????????????????::::::::::::::"+destinationUrl, 0);
 		//HttpSession session = request.getSession();
-		
+		String value= JWTExample.generateJWTToken(email);
 		String hashedPassword = null;
 		final String secretKey = Constant.SECRETE;		
 		hashedPassword = encrypt.encrypt(saltedPassword, secretKey);		
@@ -77,7 +77,7 @@ public class LoginActionController extends HttpServlet {
 			}
 			
 			RegistrationDaoImpl_New.resetLoginDetails(user.getRegistration_id());
-
+			user.setValue(value);
 			
 			//User should be logged in now
 			session.setAttribute(Constant.USER, user);
