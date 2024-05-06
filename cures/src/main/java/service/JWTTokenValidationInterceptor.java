@@ -1,6 +1,7 @@
 package service;
 
 import io.jsonwebtoken.*;
+import util.JWTExample;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -17,7 +18,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.JWT;
+
 
 public class JWTTokenValidationInterceptor implements HandlerInterceptor {
 
@@ -33,7 +34,7 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
             jwtToken = jwtToken.substring(7);
 
             // Validate the JWT token and extract claims
-            Claims claims = JWT.validateJWTToken(jwtToken);
+            Claims claims = JWTExample.validateJWTToken(jwtToken);
 
             if (claims != null) {
                 // Check if the username and password are valid
