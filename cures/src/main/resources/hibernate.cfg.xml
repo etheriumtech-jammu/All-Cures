@@ -28,7 +28,7 @@
 		<property name="hibernate.hikari.maximumPoolSize">300</property>
 
 		<!-- Maximum time that a connection is allowed to sit ideal in the pool -->
-		<property name="hibernate.hikari.idleTimeout">200000</property>
+		<property name="hibernate.hikari.idleTimeout">20000</property>
 
 	    	<!-- property name="hibernate.hikari.dataSource.maxLifetime">180000</property -->
 
