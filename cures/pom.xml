@@ -266,7 +266,7 @@
       <artifactId>hibernate-hikaricp</artifactId>
       <version>5.2.12.Final</version>
     </dependency>
-<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
+https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
 <dependency>
     <groupId>io.jsonwebtoken</groupId>
     <artifactId>jjwt-api</artifactId>
