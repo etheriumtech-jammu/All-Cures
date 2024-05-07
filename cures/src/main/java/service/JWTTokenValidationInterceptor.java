@@ -75,7 +75,7 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
         // For demonstration purposes, let's assume username validation
         
         // List of valid usernames
-        String[] validUsernames = {"amangill@etheriumtech.com", "ruler.here@gmail.com", "kauraman198495@gmail.com"};
+        String[] validUsernames = {"amangill@etheriumtech.com", "ruler.here@gmail.com", "kauraman198495@gmail.com","dikshapandita313@gmail.com"};
         
         // Check if the provided username is in the list of valid usernames
         for (String validUsername : validUsernames) {
