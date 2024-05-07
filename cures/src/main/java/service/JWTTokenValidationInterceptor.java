@@ -70,11 +70,23 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
 
 
     // Example method for custom authentication logic
-    private boolean isValidUser(String username) {
+       private boolean isValidUser(String username) {
         // Perform your custom authentication logic here
-        // For demonstration purposes, let's assume username and password are valid
-        return username.equals("divya");
+        // For demonstration purposes, let's assume username validation
+        
+        // List of valid usernames
+        String[] validUsernames = {"amangill@etheriumtech.com", "ruler.here@gmail.com", "kauraman198495@gmail.com"};
+        
+        // Check if the provided username is in the list of valid usernames
+        for (String validUsername : validUsernames) {
+            if (username.equals(validUsername)) {
+                return true; // Username is valid
+            }
+        }
+        
+        return false; // Username is not valid
     }
+
     static String encodedString = "ti0dG0Jy9RCttNVauQ1bjo0oYXNxfgHjfpAm/mKZaak=";
     
     // Decode the Base64-encoded string to byte array
