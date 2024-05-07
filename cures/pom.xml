@@ -244,11 +244,12 @@
 
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/c3p0/c3p0 -->
-<dependency>
-    <groupId>c3p0</groupId>
-    <artifactId>c3p0</artifactId>
-    <version>0.9.0</version>
-</dependency>
+		<dependency>
+   	 <groupId>com.mchange</groupId>
+   	 <artifactId>c3p0</artifactId>
+   	 <version>0.9.5.5</version> <!-- Or the latest version -->
+	</dependency>
+
 
 		<!-- <dependency>
 		    <groupId>org.hibernate</groupId>
