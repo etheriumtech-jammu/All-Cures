@@ -68,7 +68,7 @@ public class AppointmentDaoImpl {
 	        }
 
 	        appointment.setPaymentStatus((Integer) appointmentMap.get("paymentStatus"));
-	        appointment.setStatus(1);
+	        appointment.setStatus(0);
 	        session.save(appointment);
 	        tx.commit();
 
