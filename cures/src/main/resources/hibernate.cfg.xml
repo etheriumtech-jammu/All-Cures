@@ -30,7 +30,7 @@
 		<!-- Maximum time that a connection is allowed to sit ideal in the pool -->
 		<property name="hibernate.hikari.idleTimeout">200000</property>
 
-	    	<property name="hibernate.hikari.dataSource.maxLifetime">180000</property>
+	    	<!-- property name="hibernate.hikari.dataSource.maxLifetime">180000</property -->
 
 		<property name="hibernate.hbm2ddl.auto">update</property>
 		<property name="hibernate.show_sql">false</property>
