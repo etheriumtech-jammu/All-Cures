@@ -24,7 +24,7 @@ public class ip_detaildao {
 
 	public static Integer Insert(Integer article_id, HttpServletRequest request,Integer user_id,String cookie,String whats_app) {
 	
-		SessionFactory factory=new Configuration().configure().buildSessionFactory();
+//		SessionFactory factory=new Configuration().configure().buildSessionFactory();
 	//	Session session = HibernateUtil.buildSessionFactory();
 		//Transaction transaction = session.getTransaction();
 	//	session.beginTransaction();
