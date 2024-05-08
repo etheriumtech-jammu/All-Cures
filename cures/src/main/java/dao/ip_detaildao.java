@@ -58,7 +58,7 @@ public class ip_detaildao {
 	     session1.save(ip);
 	       tx.commit();
 	    
-	       session1.close();
+	//       session1.close();
 		
 		return 1;
 		
