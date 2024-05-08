@@ -53,7 +53,7 @@ public class ip_detaildao {
 		 ip.setDate(formatter.format(date));
 		 ip.setCookie_list(cookie);
 		 ip.setReg_id(user_id);
-		 Session session1=factory.openSession();
+		 Session session1 = HibernateUtil.buildSessionFactory();
 	       Transaction tx=session1.beginTransaction();
 	     session1.save(ip);
 	       tx.commit();
