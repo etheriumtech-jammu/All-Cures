@@ -799,8 +799,8 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 ////			search_str = " where ";
 //		search_str = " where article_id in ("+searchStr.split(":")[1]+")";
 //		}
-		search_str = " where featured_article ='[1]'";
-
+		search_str = " WHERE featured_article IN ('[1]', '1')\r\n"
+				+ "";
 		Query query = session.createNativeQuery("SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
 				+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
 				+ "    `article`.`content_type`,\r\n" + "    `article`.`keywords`,\r\n"
@@ -923,8 +923,8 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 ////		search_str = " where ";
 //	search_str = " where article_id in ("+searchStr.split(":")[1]+")";
 //	}
-	search_str = " WHERE featured_article IN ('[1]', '1')\r\n"
-				+ "";
+	
+	search_str = " where favourite_article ='[1]'";
 
 	Query query = session.createNativeQuery("SELECT `article`.`article_id`,\r\n" + "    `article`.`title`,\r\n"
 			+ "    `article`.`friendly_name`,\r\n" + "    `article`.`subheading`,\r\n"
