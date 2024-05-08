@@ -28,10 +28,8 @@ public class ip_detaildao {
 	//	Session session = HibernateUtil.buildSessionFactory();
 		//Transaction transaction = session.getTransaction();
 	//	session.beginTransaction();
+		Session session1 = HibernateUtil.buildSessionFactory();
 		
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpSession session = req.getSession(true);
-	
 	//	String cookie1=headers.get("cookie");
 		System.out.println(cookie);
 		IP_Details ip =new IP_Details();
@@ -53,7 +51,7 @@ public class ip_detaildao {
 		 ip.setDate(formatter.format(date));
 		 ip.setCookie_list(cookie);
 		 ip.setReg_id(user_id);
-		 Session session1 = HibernateUtil.buildSessionFactory();
+		 
 	       Transaction tx=session1.beginTransaction();
 	     session1.save(ip);
 	       tx.commit();
