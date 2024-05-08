@@ -24,11 +24,11 @@ public class ip_detaildao {
 
 	public static Integer Insert(Integer article_id, HttpServletRequest request,Integer user_id,String cookie,String whats_app) {
 	
-		SessionFactory factory=new Configuration().configure().buildSessionFactory();
+	//	SessionFactory factory=new Configuration().configure().buildSessionFactory();
 	//	Session session = HibernateUtil.buildSessionFactory();
 		//Transaction transaction = session.getTransaction();
 	//	session.beginTransaction();
-		
+		Session session1 = HibernateUtil.buildSessionFactory();
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpSession session = req.getSession(true);
 	
@@ -53,12 +53,12 @@ public class ip_detaildao {
 		 ip.setDate(formatter.format(date));
 		 ip.setCookie_list(cookie);
 		 ip.setReg_id(user_id);
-		 Session session1=factory.openSession();
+//		 Session session1=factory.openSession();
 	       Transaction tx=session1.beginTransaction();
 	     session1.save(ip);
 	       tx.commit();
 	    
-	       session1.close();
+//	       session1.close();
 		
 		return 1;
 		
