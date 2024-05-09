@@ -56,8 +56,11 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
                else if(url.equals(str))
                 {
                 	String status = getStatusFromJson(request);
-                	if(status=="2")
+                	
+                	int val=2;
+                	if(status.equals(String.valueOf(val)))
                 	{
+                		
                 		return true;
                 	}
                 }
