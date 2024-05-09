@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.crypto.SecretKey;
 import org.apache.commons.io.IOUtils;
@@ -18,7 +19,7 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
     // Define constants
     private static final String AUTH_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
-    private static final String[] VALID_USERNAMES = {"amangill@etheriumtech.com", "ruler.here@gmail.com", "kauraman198495@gmail.com","divya1111sharma@gmail.com"};
+    private static final String[] VALID_USERNAMES = {"amangill@etheriumtech.com", "ruler.here@gmail.com", "kauraman198495@gmail.com","dikshapandita313@gmail.com"};
     private static final List<String> VALID_USERNAMES_LIST = Arrays.asList(VALID_USERNAMES);
     private static final String SECRET_KEY_BASE64 = "ti0dG0Jy9RCttNVauQ1bjo0oYXNxfgHjfpAm/mKZaak=";
 
@@ -44,15 +45,18 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
             if (claims != null) {
                 // Check if the username is valid
                 String username = (String) claims.get("username");
-                int status = getStatusFromJson(request);
-
+               
                if (isValidUser(username) ) {
                     // User is authenticated, proceed with the request
                     return true;
                 }
-                else if(isSpecialStatus(status))
+                else 
                 {
-                	return true;
+                	int status = getStatusFromJson(request);
+                	if(status==2)
+                	{
+                		return true;
+                	}
                 }
             }
         }
@@ -87,7 +91,7 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
     private int getStatusFromJson(HttpServletRequest request) throws IOException {
         String requestJsonStr = IOUtils.toString(request.getInputStream(), "UTF-8");
         ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> requestJsonMap = mapper.readValue(requestJsonStr, Map.class);
+       Map<String, Object> requestJsonMap = mapper.readValue(requestJsonStr, Map.class);
         Object articleStatusObj = requestJsonMap.get("pubstatus_id");
         if (articleStatusObj instanceof Integer) {
             return (Integer) articleStatusObj;
@@ -100,9 +104,6 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
         return VALID_USERNAMES_LIST.contains(username);
     }
 
-    // Check if the status is special
-    private boolean isSpecialStatus(int status) {
-        return status == 2;
-    }
+   
     
 }
