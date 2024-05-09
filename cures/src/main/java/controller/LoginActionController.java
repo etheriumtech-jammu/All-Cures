@@ -56,8 +56,7 @@ public class LoginActionController extends HttpServlet {
 		Constant.log("????????????????????????::::::::::::::"+destinationUrl, 0);
 		//HttpSession session = request.getSession();
 		String value= JWTTokenValidationInterceptor.generateJWTToken(email);
-		System.out.println(email);
-		System.out.println(value);
+		
 		String hashedPassword = null;
 		final String secretKey = Constant.SECRETE;		
 		hashedPassword = encrypt.encrypt(saltedPassword, secretKey);		
@@ -66,7 +65,7 @@ public class LoginActionController extends HttpServlet {
 		String remme= (request.getParameter(Constant.REMPWD) == null || "".equals(request.getParameter(Constant.REMPWD))) ? Constant.OFF : (String) request.getParameter(Constant.REMPWD);
 		//ToDo: This implementation should not be static as this will cause overwrite issues in a multi user environment
 		Registration user = RegistrationDaoImpl_New.findAllUsers(email, hashedPassword);
-		System.out.println(user);
+		
 		user.setValue(value);
 		if(user != null){
 
