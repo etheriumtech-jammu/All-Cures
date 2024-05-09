@@ -22,7 +22,7 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
     private static final String[] VALID_USERNAMES = {"amangill@etheriumtech.com", "ruler.here@gmail.com", "kauraman198495@gmail.com","dikshapandita313@gmail.com"};
     private static final List<String> VALID_USERNAMES_LIST = Arrays.asList(VALID_USERNAMES);
     private static final String SECRET_KEY_BASE64 = "ti0dG0Jy9RCttNVauQ1bjo0oYXNxfgHjfpAm/mKZaak=";
-
+    
     // Decode the Base64-encoded string to byte array
     private static final byte[] SECRET_KEY_BYTES = java.util.Base64.getDecoder().decode(SECRET_KEY_BASE64);
 
@@ -33,7 +33,8 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         // Retrieve the token from the request header
         String jwtToken = request.getHeader(AUTH_HEADER);
-
+        String url= request.getServletPath().toString();
+        String str="/article/add";
         // Check if the token exists and starts with "Bearer "
         if (jwtToken != null && jwtToken.startsWith(BEARER_PREFIX)) {
             // Extract the token without "Bearer " prefix
@@ -50,7 +51,7 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
                     // User is authenticated, proceed with the request
                     return true;
                 }
-                else 
+               else if(url.equals(str))
                 {
                 	int status = getStatusFromJson(request);
                 	if(status==2)
