@@ -56,6 +56,8 @@ public class LoginActionController extends HttpServlet {
 		Constant.log("????????????????????????::::::::::::::"+destinationUrl, 0);
 		//HttpSession session = request.getSession();
 		String value= JWTTokenValidationInterceptor.generateJWTToken(email);
+		System.out.println(email);
+		System.out.println(value);
 		String hashedPassword = null;
 		final String secretKey = Constant.SECRETE;		
 		hashedPassword = encrypt.encrypt(saltedPassword, secretKey);		
