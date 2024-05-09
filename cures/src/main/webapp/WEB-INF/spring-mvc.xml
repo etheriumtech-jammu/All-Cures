@@ -171,7 +171,6 @@
 </mvc:interceptor>
 
 <mvc:interceptor>
-
 <mvc:mapping path="/article/add"/>
 <bean class="service.JWTTokenValidationInterceptor">
 </bean>
