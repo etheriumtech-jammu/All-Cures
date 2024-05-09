@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
+import javax.persistence.Transient;
 import util.Constant;;
 
 
@@ -53,7 +53,17 @@ public class Registration implements Serializable {
 
 	 @Column(name = "Age")
 	 private int Age;
-	
+
+	@Transient
+	 private String value;
+	 
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
 	public Registration() {
 		super();
 		// TODO Auto-generated constructor stub
