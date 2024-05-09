@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import javax.crypto.SecretKey;
 public class JWTTokenValidationInterceptor implements HandlerInterceptor {
 
     // Define constants
