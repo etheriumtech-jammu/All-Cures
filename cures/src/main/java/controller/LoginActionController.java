@@ -23,7 +23,7 @@ import util.Constant;
 import util.CookieManager;
 import util.Encryption;
 import util.EnDeCryptor;
-
+import service.JWTTokenValidationInterceptor;
 /**
  * Servlet implementation class LoginActionController
  */
@@ -55,7 +55,7 @@ public class LoginActionController extends HttpServlet {
 		String destinationUrl = request.getParameter("destinationUrl");
 		Constant.log("????????????????????????::::::::::::::"+destinationUrl, 0);
 		//HttpSession session = request.getSession();
-		
+		String value= JWTTokenValidationInterceptor.generateJWTToken(email);
 		String hashedPassword = null;
 		final String secretKey = Constant.SECRETE;		
 		hashedPassword = encrypt.encrypt(saltedPassword, secretKey);		
@@ -64,6 +64,7 @@ public class LoginActionController extends HttpServlet {
 		String remme= (request.getParameter(Constant.REMPWD) == null || "".equals(request.getParameter(Constant.REMPWD))) ? Constant.OFF : (String) request.getParameter(Constant.REMPWD);
 		//ToDo: This implementation should not be static as this will cause overwrite issues in a multi user environment
 		Registration user = RegistrationDaoImpl_New.findAllUsers(email, hashedPassword);
+		user.setValue(value);
 		if(user != null){
 
 			//Logging Password in Logs only in DEBUG Mode
