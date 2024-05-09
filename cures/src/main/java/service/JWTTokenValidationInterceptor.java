@@ -55,8 +55,8 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
                 }
                else if(url.equals(str))
                 {
-                	int status = getStatusFromJson(request);
-                	if(status==2)
+                	String status = getStatusFromJson(request);
+                	if(status=="2")
                 	{
                 		return true;
                 	}
@@ -91,15 +91,15 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
                 .compact();
     }
     // Extract status from request JSON, default to 1 if not present or not an integer
-    private int getStatusFromJson(HttpServletRequest request) throws IOException {
+    private String getStatusFromJson(HttpServletRequest request) throws IOException {
         String requestJsonStr = IOUtils.toString(request.getInputStream(), "UTF-8");
         ObjectMapper mapper = new ObjectMapper();
        Map<String, Object> requestJsonMap = mapper.readValue(requestJsonStr, Map.class);
         Object articleStatusObj = requestJsonMap.get("articleStatus");
-        if (articleStatusObj instanceof Integer) {
-            return (Integer) articleStatusObj;
+        if (articleStatusObj instanceof String) {
+            return (String) articleStatusObj;
         }
-        return 1; // Default status if not present or not an integer
+        return ""; // Default status if not present or not an integer
     }
 
     // Check if the username is valid
