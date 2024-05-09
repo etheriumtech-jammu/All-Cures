@@ -103,6 +103,7 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
 
     // Check if the username is valid
     private boolean isValidUser(String username) {
+        	System.out.println(VALID_USERNAMES_LIST.contains(username));
         return VALID_USERNAMES_LIST.contains(username);
     }
 
