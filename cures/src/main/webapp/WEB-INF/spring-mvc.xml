@@ -158,21 +158,21 @@
 <mvc:interceptor>
 
 <mvc:mapping path="/article/update/*"/>
-<bean class="service.JWTTokenValidationInterceptor">
+<bean class="service.TokenValidationInterceptor">
 </bean>
 
 </mvc:interceptor>
 <mvc:interceptor>
 
 <mvc:mapping path="/article/delete/*"/>
-<bean class="service.JWTTokenValidationInterceptor">
+<bean class="service.TokenValidationInterceptor">
 </bean>
 
 </mvc:interceptor>
 <mvc:interceptor>
 
 <mvc:mapping path="/article/add"/>
-<bean class="service.JWTTokenValidationInterceptor">
+<bean class="service.TokenValidationInterceptor">
 </bean>
 
 </mvc:interceptor>
