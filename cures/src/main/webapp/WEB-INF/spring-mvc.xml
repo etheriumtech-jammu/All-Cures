@@ -166,7 +166,7 @@
 </mvc:interceptor>
 <mvc:interceptor>
 
-<mvc:mapping path="/cures/city/all"/>
+<mvc:mapping path="/city/all"/>
 <bean class="service.JWTTokenValidationInterceptor">
 </bean>
 
