@@ -32,6 +32,7 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         // Retrieve the token from the request header
+        System.out.println("create");
         String jwtToken = request.getHeader(AUTH_HEADER);
         String url= request.getServletPath().toString();
         String str="/article/add";
