@@ -35,6 +35,7 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
         String jwtToken = request.getHeader(AUTH_HEADER);
         String url= request.getServletPath().toString();
         String str="/article/add";
+        System.out.println(url);
         // Check if the token exists and starts with "Bearer "
         if (jwtToken != null && jwtToken.startsWith(BEARER_PREFIX)) {
             // Extract the token without "Bearer " prefix
