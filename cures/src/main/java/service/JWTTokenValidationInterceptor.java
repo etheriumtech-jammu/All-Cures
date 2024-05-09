@@ -63,6 +63,18 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
         }
     }
 
+    //to generate token
+     public static String generateJWTToken(String token) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("username", token);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+       //         .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hour
+                .signWith(SECRET_KEY)
+                .compact();
+    }
     // Extract status from request JSON, default to 1 if not present or not an integer
     private int getStatusFromJson(HttpServletRequest request) throws IOException {
         String requestJsonStr = IOUtils.toString(request.getInputStream(), "UTF-8");
@@ -84,4 +96,5 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
     private boolean isSpecialStatus(int status) {
         return status == 2;
     }
+    
 }
