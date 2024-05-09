@@ -88,7 +88,7 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
         String requestJsonStr = IOUtils.toString(request.getInputStream(), "UTF-8");
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> requestJsonMap = mapper.readValue(requestJsonStr, Map.class);
-        Object articleStatusObj = requestJsonMap.get("articleStatus");
+        Object articleStatusObj = requestJsonMap.get("pubstatus_id");
         if (articleStatusObj instanceof Integer) {
             return (Integer) articleStatusObj;
         }
