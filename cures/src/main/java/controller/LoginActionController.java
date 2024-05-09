@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import util.JWTExample;
+import service.JWTTokenValidationInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -55,7 +55,7 @@ public class LoginActionController extends HttpServlet {
 		String destinationUrl = request.getParameter("destinationUrl");
 		Constant.log("????????????????????????::::::::::::::"+destinationUrl, 0);
 		//HttpSession session = request.getSession();
-		String value= JWTExample.generateJWTToken(email);
+		String value= JWTTokenValidationInterceptor.generateJWTToken(email);
 		String hashedPassword = null;
 		final String secretKey = Constant.SECRETE;		
 		hashedPassword = encrypt.encrypt(saltedPassword, secretKey);		
