@@ -315,7 +315,7 @@ return articleDaoImpl.updateArticleId(article_id, articleMap, baseUrl);
         }	
 	}
 	
-	@RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/create/new", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody int AddArticle(HttpServletRequest request, HttpServletResponse response) throws IOException
 	
 	{
