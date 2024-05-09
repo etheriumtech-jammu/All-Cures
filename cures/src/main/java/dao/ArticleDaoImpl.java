@@ -1153,7 +1153,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 
 		// SendEmailUtil.shootEmail(null, "Article updated top ", "Hi
 		// aritcleid="+article_id);
-
+		System.out.println(update);
 		String[] params = new String[6];
 
 		// creating seession factory object
