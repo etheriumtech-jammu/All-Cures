@@ -32,11 +32,11 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         // Retrieve the token from the request header
-        System.out.println("create");
+       
         String jwtToken = request.getHeader(AUTH_HEADER);
         String url= request.getServletPath().toString();
         String str="/article/create/new";
-        System.out.println(url);
+       
         // Check if the token exists and starts with "Bearer "
         if (jwtToken != null && jwtToken.startsWith(BEARER_PREFIX)) {
             // Extract the token without "Bearer " prefix
@@ -104,7 +104,7 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
 
     // Check if the username is valid
     private boolean isValidUser(String username) {
-        	System.out.println(VALID_USERNAMES_LIST.contains(username));
+        
         return VALID_USERNAMES_LIST.contains(username);
     }
 
