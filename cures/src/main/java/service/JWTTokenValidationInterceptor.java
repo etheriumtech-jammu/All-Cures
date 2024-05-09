@@ -46,9 +46,13 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
                 String username = (String) claims.get("username");
                 int status = getStatusFromJson(request);
 
-                if (isValidUser(username) || isSpecialStatus(status)) {
+               if (isValidUser(username) ) {
                     // User is authenticated, proceed with the request
                     return true;
+                }
+                else if(isSpecialStatus(status))
+                {
+                	return true;
                 }
             }
         }
