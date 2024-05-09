@@ -22,7 +22,7 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
     private static final String[] VALID_USERNAMES = {"amangill@etheriumtech.com", "ruler.here@gmail.com", "kauraman198495@gmail.com","dikshapandita313@gmail.com"};
     private static final List<String> VALID_USERNAMES_LIST = Arrays.asList(VALID_USERNAMES);
     private static final String SECRET_KEY_BASE64 = "ti0dG0Jy9RCttNVauQ1bjo0oYXNxfgHjfpAm/mKZaak=";
-
+    
     // Decode the Base64-encoded string to byte array
     private static final byte[] SECRET_KEY_BYTES = java.util.Base64.getDecoder().decode(SECRET_KEY_BASE64);
 
@@ -32,8 +32,11 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         // Retrieve the token from the request header
+        System.out.println("create");
         String jwtToken = request.getHeader(AUTH_HEADER);
-
+        String url= request.getServletPath().toString();
+        String str="/article/add";
+        System.out.println(url);
         // Check if the token exists and starts with "Bearer "
         if (jwtToken != null && jwtToken.startsWith(BEARER_PREFIX)) {
             // Extract the token without "Bearer " prefix
@@ -50,7 +53,7 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
                     // User is authenticated, proceed with the request
                     return true;
                 }
-                else 
+               else if(url.equals(str))
                 {
                 	int status = getStatusFromJson(request);
                 	if(status==2)
@@ -92,7 +95,7 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
         String requestJsonStr = IOUtils.toString(request.getInputStream(), "UTF-8");
         ObjectMapper mapper = new ObjectMapper();
        Map<String, Object> requestJsonMap = mapper.readValue(requestJsonStr, Map.class);
-        Object articleStatusObj = requestJsonMap.get("pubstatus_id");
+        Object articleStatusObj = requestJsonMap.get("articleStatus");
         if (articleStatusObj instanceof Integer) {
             return (Integer) articleStatusObj;
         }
@@ -101,6 +104,7 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
 
     // Check if the username is valid
     private boolean isValidUser(String username) {
+        	System.out.println(VALID_USERNAMES_LIST.contains(username));
         return VALID_USERNAMES_LIST.contains(username);
     }
 
