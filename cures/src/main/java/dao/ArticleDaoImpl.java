@@ -1146,8 +1146,6 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 	    	query = session.createNativeQuery("SELECT * FROM `" + table_name + "`;\r\n" + ";");
 			
 	    }
-
-		Query query = session.createNativeQuery("SELECT * FROM `" + table_name + "`;\r\n" + ";");
 		// needs other condition too but unable to find correct column
 		ArrayList list = (ArrayList) query.getResultList();
 		System.out.println("result list " + table_name + " all@@@@@@@@@" + list.size());
