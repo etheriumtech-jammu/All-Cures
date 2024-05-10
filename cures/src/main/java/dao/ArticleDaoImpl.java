@@ -1027,14 +1027,21 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
-
+		Query query;
 		// creating session object
 		//Session session = factory;
 
 		// creating transaction object
 //		session.beginTransaction();
 
-		Query query = session.createNativeQuery("SELECT * FROM `" + table_name + "`;\r\n" + ";");
+		if ("registration".equals(table_name)) {
+	        // If the table name is "registration", select only specific columns
+			 query = session.createNativeQuery("SELECT registration_id, first_name, last_name, email_address, registration_type FROM `" + table_name + "`;\r\n" + ";");
+	    } else {
+	        // For other tables, select all columns
+	    	query = session.createNativeQuery("SELECT * FROM `" + table_name + "`;\r\n" + ";");
+			
+	    }
 		// needs other condition too but unable to find correct column
 		ArrayList list = (ArrayList) query.getResultList();
 //		System.out.println("result list " + table_name + " all@@@@@@@@@" + list.size());
