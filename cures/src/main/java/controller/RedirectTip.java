@@ -26,7 +26,7 @@ public class RedirectTip extends HttpServlet {
     	Session session = HibernateUtil.buildSessionFactory();
     	Query query1= session.createNativeQuery("SELECT tip.article_id,article.title\r\n"
     			+ "FROM  tip inner join article where tip.article_id=article.article_id\r\n"
-    			+ "ORDER BY tip_updatedtime DESC\r\n"
+    			+ "ORDER BY tip_date DESC\r\n"
     			+ "LIMIT 1; ");
 		List<Object[]> results = (List<Object[]>) query1.getResultList();
 		
