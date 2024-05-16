@@ -95,32 +95,34 @@ public class TipDaoImpl {
 
 			Session session = HibernateUtil.buildSessionFactory();
 
-			Query query = session.createNativeQuery("SELECT `tip`.`tip_id`,"
-					+ "    `tip`.`tip_title`," + "    `tip`.`tip_date`,"
-					+ "    `tip`.`user_id`," + "    `tip`.`tip_status`"+ "FROM `tip`;");
+			Query query = session.createNativeQuery("SELECT tip_id,tip_title,tip_date,CreatedBy,tip_status,a.article_id,a.title FROM tip t join article a on a.article_id=t.article_id;\n"
+					+ "");
 			
 			List<Object[]> results = (List<Object[]>) query.getResultList();
-//			System.out.println("result list Subscription@@@@@@@@@@@@@ size=" + results.size());
+			System.out.println("result list Subscription@@@@@@@@@@@@@ size=" + results.size());
 			List hmFinal = new ArrayList();
 			for (Object[] objects : results) {
 				HashMap hm = new HashMap();
 				int tip_id = (int) objects[0];
 				String tip_title = (String) objects[1];
 				java.sql.Timestamp tip_date= (java.sql.Timestamp) objects[2];
-				int user_id = (int) objects[3];
+				int createdBy = (int) objects[3];
 				int tip_status = (int) objects[4];
-
-
+				int article_id= (int) objects[5];
+				String title=(String) objects[6];
 				hm.put("tip_id", tip_id);
 				hm.put("tip_title", tip_title);
 				hm.put("tip_date", tip_date);
-				hm.put("user_id", user_id);
+				hm.put("createdBy", createdBy);
 				hm.put("tip_status", tip_status);
+				hm.put("article_id", article_id);
+				hm.put("article_title", title);
 				hmFinal.add(hm);
 			}
 			return (ArrayList) hmFinal;
 		}
 		
+
 
 //	public static ArrayList getAllTipDetails() {
 //
