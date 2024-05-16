@@ -101,7 +101,7 @@ public class TipDaoImpl {
 
 			Session session = HibernateUtil.buildSessionFactory();
 
-			Query query = session.createNativeQuery("SELECT tip_id,tip_title,tip_date,CreatedBy,tip_status,a.article_id,a.title FROM allcures_schema.tip t join article a on a.article_id=t.article_id;\n"
+			Query query = session.createNativeQuery("SELECT tip_id,tip_title,tip_date,CreatedBy,tip_status,a.article_id,a.title FROM tip t join article a on a.article_id=t.article_id;\n"
 					+ "");
 			
 			List<Object[]> results = (List<Object[]>) query.getResultList();
