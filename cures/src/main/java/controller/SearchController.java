@@ -73,7 +73,7 @@ public class SearchController {
 	public @ResponseBody List listDataMatchingStrDiseaseConditonAndArticleTables(@PathVariable String search_string) {
 	//	return diseaseANDconditionDaoImpl.listDataMatchingStrDiseaseConditonAndArticleTables(search_string);
 		 // Solr server URL
-        String solrUrl = "http://115.246.95.58:8983//solr/article_new_core";
+        String solrUrl = "http://localhost:8983/solr/article_new_core";
 
       
         // Perform search with relevance ranking and debug mode
