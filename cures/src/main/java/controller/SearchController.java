@@ -71,7 +71,42 @@ public class SearchController {
 	
 	@RequestMapping(value = "/combo/{search_string}", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List listDataMatchingStrDiseaseConditonAndArticleTables(@PathVariable String search_string) {
-		return diseaseANDconditionDaoImpl.listDataMatchingStrDiseaseConditonAndArticleTables(search_string);
+	//	return diseaseANDconditionDaoImpl.listDataMatchingStrDiseaseConditonAndArticleTables(search_string);
+		 // Solr server URL
+        String solrUrl = "http://115.246.95.58:8983//solr/article_new_core";
+
+      
+        // Perform search with relevance ranking and debug mode
+        SolrClient solrClient = new HttpSolrClient.Builder(solrUrl).build();
+        SolrQuery solrQuery = new SolrQuery(search_string);
+        solrQuery.set("defType", "edismax");
+        solrQuery.set("qf", "title^3.0 keywords^2.5 dc_name^2.0 content_new "); // Apply boosts to title field
+        solrQuery.set("debug", true); // Enable debug mode
+        solrQuery.setRows(20); // Limit the number of returned documents
+        solrQuery.setSort("score", SolrQuery.ORDER.desc); // Sort by relevance first
+        solrQuery.addSort("published_date", SolrQuery.ORDER.desc); // Then sort by published_date
+
+        QueryResponse response = null;
+		try {
+			response = solrClient.query(solrQuery);
+		} catch (SolrServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        List hmFinal = new ArrayList();
+        // Retrieve documents from response
+        SolrDocumentList results = response.getResults();
+        for (int i = 0; i < results.size(); i++) {
+        	SolrDocument doc = results.get(i);
+        	int articleId = Integer.parseInt((String) doc.getFieldValue("article_id"));
+        	String title = (String) doc.getFieldValue("title");
+        	
+        	hmFinal.add(title);
+        } 
+        return hmFinal;
 	}
 	
 	@RequestMapping(value = "/treatmentregions/{dc_id}", produces = "application/json", method = RequestMethod.GET)
