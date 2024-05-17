@@ -82,7 +82,7 @@ public class SearchController {
         solrQuery.set("defType", "edismax");
         solrQuery.set("qf", "title^3.0 keywords^2.5 dc_name^2.0 content_new "); // Apply boosts to title field
         solrQuery.set("debug", true); // Enable debug mode
-        solrQuery.setRows(20); // Limit the number of returned documents
+//        solrQuery.setRows(20); // Limit the number of returned documents
         solrQuery.setSort("score", SolrQuery.ORDER.desc); // Sort by relevance first
         solrQuery.addSort("published_date", SolrQuery.ORDER.desc); // Then sort by published_date
 
