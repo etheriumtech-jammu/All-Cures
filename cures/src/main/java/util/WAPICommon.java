@@ -233,7 +233,7 @@ public static ArrayList fetchDatabaseResultsForNewsletterByTip() throws SQLExcep
 					+ " group by country_code, mobile " //,nl_sub_type ,nl_subscription_disease_id, nl_subscription_cures_id "
 					+ " order by country_code, mobile " ; //,nl_sub_type ,nl_subscription_disease_id, nl_subscription_cures_id";
 			
-			System.out.println(" SQL for fetchDatabaseResultsForNewsletterByTip "+query);
+//			System.out.println(" SQL for fetchDatabaseResultsForNewsletterByTip "+query);
 			rs = stmt.executeQuery(query);
 			while (rs.next()) {
 				HashMap<String, Object> hmRow = new HashMap<String, Object>();
@@ -243,7 +243,7 @@ public static ArrayList fetchDatabaseResultsForNewsletterByTip() throws SQLExcep
 				hmRow.put("country_code", rs.getInt(4));
 				hmRow.put("count", rs.getInt(5));
 				hmFinal.add(hmRow);
-				System.out.println(hmFinal);
+//				System.out.println(hmFinal);
 			}
 //			con.close();
 		} catch (Exception e) {
