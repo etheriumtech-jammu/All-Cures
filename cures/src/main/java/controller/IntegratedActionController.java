@@ -35,7 +35,7 @@ import model.Registration;
  */
 public class IntegratedActionController extends HttpServlet {
     private static final long serialVersionUID = 1L;
-
+private MemcachedClient mcc = null;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -60,9 +60,7 @@ public class IntegratedActionController extends HttpServlet {
         javax.servlet.http.HttpSession ses= request.getSession();
 	
         Registration regi=(Registration)ses.getAttribute(Constant.USER);
-//		Registration regi="model.Registration@295f6af8";
-		System.out.println("user"+regi);
-        MemcachedClient mcc = null;
+    
         String address = Constant.ADDRESS;
 
         try {
@@ -129,5 +127,14 @@ public class IntegratedActionController extends HttpServlet {
             throws ServletException, IOException {
         // TODO Auto-generated method stub
 //        doGet(request, response);
+    }
+
+	 @Override
+    public void destroy() {
+        super.destroy();
+        // Close MemcachedClient connection
+        if (mcc != null) {
+            mcc.shutdown();
+        }
     }
 }
