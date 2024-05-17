@@ -284,7 +284,7 @@ public class WhatsAPITemplateMessage {
 				response.append(inputLine);
 			}
 			in.close();
-//			System.out.println(mobile);
+			System.out.println(mobile);
 			System.out.println("POST Response Code :  " + responseCode);
 			// print result
 //			System.out.println(response.toString());
