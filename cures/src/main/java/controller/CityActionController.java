@@ -31,7 +31,7 @@ import util.Constant;
  */
 public class CityActionController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	 private MemcachedClient mcc = null;
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -55,7 +55,7 @@ public class CityActionController extends HttpServlet {
 		String cacheCityString = null;
 		String cachepinString = null;
 
-		MemcachedClient mcc = null;
+		
 		String address = Constant.ADDRESS;
 
 		try {
@@ -137,5 +137,14 @@ public class CityActionController extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+
+	@Override
+    public void destroy() {
+        super.destroy();
+        // Close MemcachedClient connection
+        if (mcc != null) {
+            mcc.shutdown();
+        }
+    }
 
 }
