@@ -56,7 +56,7 @@ public class TipDaoImpl {
 		{
           Query query = session
 				.createNativeQuery("INSERT INTO `tip`" + " (`tip_title`,"
-						+ " `user_id`,"+"`tip_status`, "+"`article_id`)"
+						+ " `CreatedBy`,"+"`tip_status`, "+"`article_id`)"
 						+ " VALUES" + " ('" + tip_title + "', " + " '"+ user_id +"', " + " '"+tip_status+"',  " + " '"+article_id+"' );" + "");
 		
 		try {
@@ -130,7 +130,7 @@ public class TipDaoImpl {
 //
 //		Query query = session.createNativeQuery("SELECT `tip`.`tip_id`,"
 //				+ "    `tip`.`tip_title`," + "    `tip`.`tip_date`,"
-//				+ "    `tip`.`user_id`," + "    `tip`.`tip_status` "+ "FROM `tip`;");
+//				+ "    `tip`.`CreatedBy`," + "    `tip`.`tip_status` "+ "FROM `tip`;");
 //		
 //		
 //		List<Object[]> results = (List<Object[]>) query.getResultList();
@@ -168,8 +168,8 @@ public class TipDaoImpl {
 			updatestr += "`tip_title` = '" + articleMap.get("tip_title") + "',";
 		}
 		
-		if (articleMap.containsKey("user_id")) {
-			updatestr += "`user_id` = '" + articleMap.get("user_id") + "',";
+		if (articleMap.containsKey("CreatedBy")) {
+			updatestr += "`CreatedBy` = '" + articleMap.get("CreatedBy") + "',";
 		}
 		
 		if (articleMap.containsKey("tip_updatedtime")) {
@@ -229,7 +229,7 @@ public static ArrayList getTipDetailsById(int tip_id) {
 		
 		Query query = session.createNativeQuery("SELECT `tip`.`tip_id`,"
 				+ "    `tip`.`tip_title`," + "    `tip`.`tip_date`,"
-				+ "    `tip`.`user_id`," + "    `tip`.`tip_status`" + "FROM `tip` where tip_id="+tip_id+";");
+				+ "    `tip`.`CreatedBy`," + "    `tip`.`tip_status`" + "FROM `tip` where tip_id="+tip_id+";");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 //		System.out.println("result list Subscription@@@@@@@@@@@@@ size=" + results.size());
 		List hmFinal = new ArrayList();
@@ -246,7 +246,7 @@ public static ArrayList getTipDetailsById(int tip_id) {
 			hm.put("tip_id1", tip_id);
 			hm.put("tip_title", tip_title);
 			hm.put("tip_date", tip_date);
-			hm.put("user_id", user_id);
+			hm.put("CreatedBy", user_id);
 			hm.put("tip_status", tip_status);
 			hmFinal.add(hm);
 		}
