@@ -396,12 +396,18 @@ public static MemcachedClient mcc = null;
 			jsondata = article.toJson();
 	//		System.out.println("jsondata"+jsondata);
 			mcc.set( Integer.toString(article_id),expirationTime,jsondata );
+			if (mcc != null) {
+	               mcc.shutdown(); // Release the MemcachedClient resources
+	            }
 			return article;
 			
 			}
 		
 		else {
 			Article_dc_name article= Article_dc_name.fromJson(cacheString);
+			 if (mcc != null) {
+	               mcc.shutdown(); // Release the MemcachedClient resources
+	            }
 			return article;
 		}	
 	}
