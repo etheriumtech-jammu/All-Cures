@@ -305,7 +305,7 @@ return articleDaoImpl.updateArticleId(article_id, articleMap, baseUrl);
 	public @ResponseBody void AddArticle() throws SolrServerException	
 	{
 	String directoryPath = "/home/uat/Production/installers/tomcat/webapps/cures_articleimages"; // Directory containing files
-        String solrUrl = "http://localhost:8983/solr/article_new_core"; // Replace with your Solr collection URL
+        String solrUrl = "http://localhost:8983/solr/Sahil_core"; // Replace with your Solr collection URL
         System.out.println(solrUrl);
         SolrIndexer indexer = new SolrIndexer();
         try {
