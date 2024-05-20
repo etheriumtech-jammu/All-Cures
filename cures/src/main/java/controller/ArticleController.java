@@ -71,7 +71,7 @@ public class ArticleController {
 
 	private String saveDirectory = "C:/test/";
 
-	private final SolrClient solrClient = new HttpSolrClient.Builder("http://localhost:8983/solr/article_new_core").build();
+	private final SolrClient solrClient = new HttpSolrClient.Builder("http://localhost:8983/solr/Sahil_core").build();
 
 	@RequestMapping(value = "/{article_id}", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody Article_dc_name getArticleDetails(@PathVariable int article_id, HttpServletRequest request,@RequestHeader Map<String,String> headers) {
