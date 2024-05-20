@@ -29,7 +29,7 @@ import util.Constant;
  */
 public class SubspecialtiesActionController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	private MemcachedClient mcc = null;
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -48,7 +48,7 @@ public class SubspecialtiesActionController extends HttpServlet {
 
 		ArrayList<String> cacheSubsplArray = new ArrayList<String>();
 		String cacheSubsplString = null;
-		MemcachedClient mcc = null;
+//		MemcachedClient mcc = null;
 		String address = Constant.ADDRESS;
 
 		try {
@@ -104,5 +104,14 @@ public class SubspecialtiesActionController extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+
+	 @Override
+    public void destroy() {
+        super.destroy();
+        // Close MemcachedClient connection
+        if (mcc != null) {
+            mcc.shutdown();
+        }
+    }
 
 }
