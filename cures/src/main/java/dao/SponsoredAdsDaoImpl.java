@@ -1217,7 +1217,12 @@ public static List ListCampaigns() {
 			 {
 			e.printStackTrace();	 
 			 }
+			 finally {
+		            if (mcc != null) {
+		                mcc.shutdown(); // Release the MemcachedClient resources
+		            }}	 
 			 }
+			 
 		 }
 		 System.out.println("Current Date in Milliseconds: before sending the response " + System.currentTimeMillis());
 		  return URL;
