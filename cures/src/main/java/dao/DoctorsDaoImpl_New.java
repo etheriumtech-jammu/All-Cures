@@ -238,6 +238,9 @@ public class DoctorsDaoImpl_New {
 			session.getTransaction().rollback();
 		} finally {
 //			session.getTransaction().commit();   //session.close();
+			if (mcc != null) {
+	               mcc.shutdown(); // Release the MemcachedClient resources
+	            }
 		}
 		System.out.println(ret+ret1+ret2);
 		return ret+ret1+ret2;
@@ -357,6 +360,9 @@ public class DoctorsDaoImpl_New {
 		if (mcc.get(Constant.DOCID + "_" + DocID) != null)
 			cacheString = mcc.get(Constant.DOCID + "_" + DocID).toString();
 		Constant.log("Found In MemCache:" + cacheString, 0);
+		if (mcc != null) {
+             mcc.shutdown(); // Release the MemcachedClient resources
+          }
 		return cacheString;
 	}
 
