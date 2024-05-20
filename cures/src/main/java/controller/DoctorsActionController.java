@@ -220,4 +220,13 @@ public class DoctorsActionController extends HttpServlet {
 		doGet(request, response);
 	}
 
+	@Override
+    public void destroy() {
+        super.destroy();
+        // Close MemcachedClient connection
+        if (mcc != null) {
+            mcc.shutdown();
+        }
+    }
+
 }
