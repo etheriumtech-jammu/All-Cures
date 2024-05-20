@@ -144,8 +144,13 @@ public class DailyTaskScheduler {
     	String value = imageLocation + ":" + adCount;
 
         // Store and track keys in Memcached
+	
         storeAndTrackKey(mcc, AdID, value,AdType);
-       
+       if (mcc != null) {
+            mcc.shutdown(); // Release the MemcachedClient resources
+         }
+
+	    
         }
     	
     private static void storeAndTrackKey(MemcachedClient memcachedClient, String key, String value,String AdType) {
@@ -390,7 +395,9 @@ public class DailyTaskScheduler {
                adIndex = (adIndex + 1) % totalAds;
            }
 
-       }
+       }  if (mcc != null) {
+               mcc.shutdown(); // Release the MemcachedClient resources
+            }
        }
 		
        else
