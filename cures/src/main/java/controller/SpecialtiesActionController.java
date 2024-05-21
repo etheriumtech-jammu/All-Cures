@@ -28,7 +28,7 @@ import util.Constant;
  */
 public class SpecialtiesActionController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	private MemcachedClient mcc = null;
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -36,7 +36,29 @@ public class SpecialtiesActionController extends HttpServlet {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	@Override
+    public void init() throws ServletException {
+        super.init();
+        initializeCacheClient();
+    }
 
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (mcc != null) {
+            mcc.shutdown();
+        }
+    }
+    public void initializeCacheClient() {
+        try {
+            Constant.log("Trying Connection to Memcache server", 0);
+            mcc = new MemcachedClient(new ConnectionFactoryBuilder().setDaemon(true).setFailureMode(FailureMode.Retry).build(), AddrUtil.getAddresses(Constant.ADDRESS));
+            Constant.log("Connection to Memcache server Sucessful", 0);
+        } catch (IOException e) {
+            e.printStackTrace(); 
+            Constant.log("Connection to Memcache server UN-Sucessful", 3);
+        }
+    }
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
@@ -52,16 +74,6 @@ public class SpecialtiesActionController extends HttpServlet {
 		MemcachedClient mcc = null;
 		String address = Constant.ADDRESS;
 
-		try {
-			mcc = new MemcachedClient(
-					new ConnectionFactoryBuilder().setDaemon(true).setFailureMode(FailureMode.Retry).build(),
-					AddrUtil.getAddresses(address));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("Connection to server sucessfully");
-		System.out.println("Get from Cache:" + mcc.get(Constant.SPL));
 		cachesplString = ("" + mcc.get(Constant.SPL) + "").toString();
 		String ct = Constant.NULL;
 		if (cachesplString.contains(ct)) {
