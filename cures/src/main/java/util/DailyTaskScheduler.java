@@ -429,7 +429,7 @@ public class DailyTaskScheduler {
                mcc.shutdown(); // Release the MemcachedClient resources
             }
        }
-       }
+       
 		
        else
        {
