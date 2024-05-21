@@ -174,7 +174,9 @@ public class DailyTaskScheduler {
     	String AdID =AdType+"_"+adId.toString();
    // 	System.out.println(AdType);
     	String value = imageLocation + ":" + adCount;
-
+	if (mcc != null) {
+            mcc.shutdown(); // Release the MemcachedClient resources
+         }
         // Store and track keys in Memcached
         storeAndTrackKey(mcc, AdID, value,AdType);
        
@@ -422,6 +424,10 @@ public class DailyTaskScheduler {
                adIndex = (adIndex + 1) % totalAds;
            }
 
+       }
+	       if (mcc != null) {
+               mcc.shutdown(); // Release the MemcachedClient resources
+            }
        }
        }
 		
