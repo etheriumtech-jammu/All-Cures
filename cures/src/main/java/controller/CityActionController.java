@@ -31,7 +31,7 @@ import util.Constant;
  */
 public class CityActionController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	 private MemcachedClient mcc = null;
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -64,9 +64,9 @@ public class CityActionController extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  
-		System.out.println("Connection to server sucessfully");
-		System.out.println("Get from Cache cityname:"+"'"+mcc.gets(Constant.CITY)+"'");
-		System.out.println("Get from Cache pincode:"+"'"+mcc.gets(Constant.PIN)+"'");
+		System.out.println("Connection to memcached server sucessfully");
+//		System.out.println("Get from Cache cityname:"+"'"+mcc.gets(Constant.CITY)+"'");
+//		System.out.println("Get from Cache pincode:"+"'"+mcc.gets(Constant.PIN)+"'");
 		cacheCityString =  (""+mcc.get(Constant.CITY)+"").toString();
 		cachepinString  =(""+mcc.get(Constant.PIN)+"").toString();
 		String ct=Constant.NULL;
@@ -93,7 +93,7 @@ public class CityActionController extends HttpServlet {
 			response.getWriter().write(jsondata);
 
 
-			System.out.println("JSON data database---->"+jsondata);
+//			System.out.println("JSON data database---->"+jsondata);
 			out.flush();
 		}
 		else{
@@ -137,5 +137,14 @@ public class CityActionController extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+
+	@Override
+    public void destroy() {
+        super.destroy();
+        // Close MemcachedClient connection
+        if (mcc != null) {
+            mcc.shutdown();
+        }
+    }
 
 }
