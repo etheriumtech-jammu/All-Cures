@@ -55,7 +55,7 @@ public class CityActionController extends HttpServlet {
 		String cacheCityString = null;
 		String cachepinString = null;
 
-		MemcachedClient mcc = null;
+
 		String address = Constant.ADDRESS;
 
 		try {
