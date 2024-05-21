@@ -38,11 +38,37 @@ public class IntegratedActionController extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
+   private MemcachedClient mcc = null;
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
     public IntegratedActionController() {
         super();
         // TODO Auto-generated constructor stub
     }
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        initializeCacheClient();
+    }
 
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (mcc != null) {
+            mcc.shutdown();
+        }
+    }
+    public void initializeCacheClient() {
+        try {
+            Constant.log("Trying Connection to Memcache server", 0);
+            mcc = new MemcachedClient(new ConnectionFactoryBuilder().setDaemon(true).setFailureMode(FailureMode.Retry).build(), AddrUtil.getAddresses(Constant.ADDRESS));
+            Constant.log("Connection to Memcache server Sucessful", 0);
+        } catch (IOException e) {
+            e.printStackTrace(); 
+            Constant.log("Connection to Memcache server UN-Sucessful", 3);
+        }
+    }
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
      *      response)
@@ -55,21 +81,7 @@ public class IntegratedActionController extends HttpServlet {
         ArrayList<Specialties> splArray = new ArrayList<Specialties>();
         SubspecialtiesDaoImp subspl = new SubspecialtiesDaoImp();
         ArrayList<Subspecialties> subsplArray = new ArrayList<Subspecialties>();
-
-      
         String address = Constant.ADDRESS;
-
-        try {
-            mcc = new MemcachedClient(
-                    new ConnectionFactoryBuilder().setDaemon(true).setFailureMode(FailureMode.Retry).build(),
-                    AddrUtil.getAddresses(address));
-        } catch (IOException e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to connect to Memcached server");
-            return;
-        }
-
-        Constant.log("Connection to memcache server successful", 1);
         String cachedocnameString = "" + mcc.get(Constant.DOCNAME);
         String cacheSplString = "" + mcc.get(Constant.SPL);
         String cacheSplSubString = "" + mcc.get(Constant.SUBSPL);
