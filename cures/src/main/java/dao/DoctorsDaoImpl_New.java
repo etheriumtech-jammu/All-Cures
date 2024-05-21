@@ -589,7 +589,7 @@ public class DoctorsDaoImpl_New {
 			    "FROM Doctors_New d " +
 			    "JOIN registration r ON d.docid = r.DocID " +
 			    "JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID and sr.Status=1 " +
-			    "WHERE d.docid = " +docid + ";");
+			     "WHERE d.docid = " +docid + " and EndDate>=current_date();");
 		
 		List<Integer> serviceIDs = query1.getResultList();
 
