@@ -18,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import dao.CityDaoImpl;
 import model.Registration;
 import com.google.gson.Gson;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.ui.Model;
 @RestController
 @RequestMapping(path = "/city")
 public class CityController {
@@ -81,5 +83,19 @@ public class CityController {
 		return cityDaoImpl.getAllMobileDetails();
 
 	}
+
+	@RequestMapping("/home")
+    public ModelAndView home(Model model) {
+		System.out.println("hh");
+		ModelAndView m=new ModelAndView();
+		m.addObject("pageTitle", "Welcome to All-Cures Team ");
+		m.addObject("pageDescription", "This is a centralized, user-powered platform for bringing information on alternate systems of medicine from across the world.");
+	        
+		m.addObject("name","D");
+		m.setViewName("Error");
+ //       model.addAttribute("message", "Hello, Thymeleaf!");
+        return m;
+    }
+
 
 }
