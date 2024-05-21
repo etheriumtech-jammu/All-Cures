@@ -38,7 +38,6 @@ public class IntegratedActionController extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-   private MemcachedClient mcc = null;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -137,12 +136,5 @@ public class IntegratedActionController extends HttpServlet {
 //        doGet(request, response);
     }
 
-     @Override
-    public void destroy() {
-        super.destroy();
-        // Close MemcachedClient connection
-        if (mcc != null) {
-            mcc.shutdown();
-        }
-    }
+     
 }
