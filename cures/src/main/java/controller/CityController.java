@@ -92,7 +92,7 @@ public class CityController {
 		m.addObject("pageDescription", "This is a centralized, user-powered platform for bringing information on alternate systems of medicine from across the world.");
 	        
 		m.addObject("name","D");
-		m.setViewName("Error");
+		m.setViewName("hello");
  //       model.addAttribute("message", "Hello, Thymeleaf!");
         return m;
     }
