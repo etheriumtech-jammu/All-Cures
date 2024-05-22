@@ -133,7 +133,7 @@ public class ChatDaoImpl {
 		}
 
 		// Get the existing message list or create a new one if it doesn't exist
-		// Get the existing message list or create a new one if it doesn't exist
+		
 		Object messagesObj = chatData.get("messages");
 		ArrayList<HashMap<String, Object>> messages = new ArrayList<>();
 		if (messagesObj != null) {
@@ -156,9 +156,6 @@ public class ChatDaoImpl {
 		Gson gson = new GsonBuilder().create();
 		String jsonData = gson.toJson(chatData);
 		mcc.set("Chat_id_" + chat_id, 3600, jsonData);
-		 if (mcc != null) {
-	               mcc.shutdown(); // Release the MemcachedClient resources
-	            }
 	//	System.out.println("Added to memcached");
 	}
 	public static Integer ChatStore() {
@@ -237,11 +234,7 @@ public class ChatDaoImpl {
 		{
 			e.printStackTrace(); 
 		}
-		finally{
-			if (mcc != null) {
-	               mcc.shutdown(); // Release the MemcachedClient resources
-	            }
-		}
+		
 //	        System.out.println("Cache String: " + cacheString); // 
 	        HashMap<String, Object> chatData = null;
 	        if (cacheString != null) {
@@ -276,10 +269,7 @@ public class ChatDaoImpl {
 		                 allMessages.add(hm);
 		            }
 		        }
-	//	        System.out.println(allMessages);
-	   
-	        
-	        
+	//	        System.out.println(allMessages); 
 		return allMessages;
 	}
 	
@@ -288,31 +278,19 @@ public class ChatDaoImpl {
 	
 		Constant.log("Got Req for Chat_ID: " + chat_id, 1);
 		List allMessages = findChatInCache(chat_id);
-
-//		System.out.println(allMessages);
 		String jsondata = null;
-	if (allMessages.size() == 0) {
+			if (allMessages.size() == 0) {
 			// Chat Not Found in MemCache
 			Constant.log("Got Null From MemCache on the Chat:" + chat_id, 1);
 			List chat = Chat_Search(chat_id);
-			
-//			Gson gson = new GsonBuilder().serializeNulls().create();
-//			jsondata = gson.toJson(chat);
-	//		return chat;
-			
-	//		jsondata = new Gson().toJson(chat);
-	//		 mcc.add("Chat_id"+"_"+chat_id,360000 ,chat).getStatus();
 			 return chat;
 		}
 
 		else {
-
 			Constant.log("Found Chat in Memcache and serving from there", 1);
-	//		jsondata = new Gson().toJson(allMessages);
 			return allMessages;
 
 	}
-	
 	}
 	
 	
