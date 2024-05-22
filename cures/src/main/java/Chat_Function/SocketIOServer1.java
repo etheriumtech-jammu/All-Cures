@@ -62,7 +62,7 @@ public class SocketIOServer1 extends WebSocketServer {
 	//	  roomName = handshake.getFieldValue("Room_No");
 	//	  System.out.println("A client has connected" + clientId); 
 		 
-//	    System.out.println("A client has connected");
+	    System.out.println("A client has connected");
 	    clients.put(conn, null);
 	    
 		  while (!conn.isOpen()) {
@@ -108,7 +108,7 @@ public class SocketIOServer1 extends WebSocketServer {
 
 	  @Override
 	  public void onMessage(WebSocket conn, String message) {
-//		  System.out.println("Received message is" + message);
+		  System.out.println("Received message is" + message);
 
 		if (message.contains("Room_No") == true) {
 			JSONObject json = new JSONObject(message);
