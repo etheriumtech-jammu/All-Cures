@@ -62,7 +62,7 @@ public class SearchActionController extends HttpServlet {
 	}
 	
 	public void getResults(HttpServletRequest request, HttpServletResponse response, boolean jsonResponse) throws ServletException, IOException {
-		System.out.println("hello");
+
 		String featuredDoctors="";
 		try{
 		//	String lat= request.getParameter("Latitude");
