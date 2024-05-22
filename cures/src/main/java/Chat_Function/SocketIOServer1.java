@@ -108,7 +108,7 @@ public class SocketIOServer1 extends WebSocketServer {
 
 	  @Override
 	  public void onMessage(WebSocket conn, String message) {
-		  System.out.println("Received message is" + message);
+//		  System.out.println("Received message is" + message);
 
 		if (message.contains("Room_No") == true) {
 			JSONObject json = new JSONObject(message);
