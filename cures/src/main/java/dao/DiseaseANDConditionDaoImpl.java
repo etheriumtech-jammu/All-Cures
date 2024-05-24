@@ -79,7 +79,7 @@ public class DiseaseANDConditionDaoImpl {
 						+ ") " + " and pubstatus_id = 3 " + limit_str + offset_str + " order by published_date desc " );
 		// needs other condition too but unable to find correct column
 		// ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
-		System.out.println("result list searched article count@@@@@@@@@@@@@");
+//		System.out.println("result list searched article count@@@@@@@@@@@@@");
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
@@ -192,7 +192,7 @@ public class DiseaseANDConditionDaoImpl {
 						+ " where medicine_type =  " +medicine_type+ " and pubstatus_id = 3    order by published_date desc " + limit_str + offset_str );
 		// needs other condition too but unable to find correct column
 		// ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
-		System.out.println("result list searched article count@@@@@@@@@@@@@" + query.getQueryString());
+//		System.out.println("result list searched article count@@@@@@@@@@@@@" + query.getQueryString());
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
@@ -300,7 +300,7 @@ public class DiseaseANDConditionDaoImpl {
 						+ " where disease_condition_id =  " +disease_condition_id+ " and pubstatus_id = 3   order by published_date desc " + limit_str + offset_str);
 		// needs other condition too but unable to find correct column
 		// ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
-		System.out.println("result list searched article count@@@@@@@@@@@@@" + query.getQueryString());
+//		System.out.println("result list searched article count@@@@@@@@@@@@@" + query.getQueryString());
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
@@ -397,7 +397,7 @@ public class DiseaseANDConditionDaoImpl {
 						+ "select * from cte where dc_status is not null;");
 		// needs other condition too but unable to find correct column
 		// ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
-		System.out.println("result list searched hierarchy count@@@@@@@@@@@@@" + parent_id);
+//		System.out.println("result list searched hierarchy count@@@@@@@@@@@@@" + parent_id);
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
@@ -416,7 +416,7 @@ public class DiseaseANDConditionDaoImpl {
 			hm.put("dc_status", dc_status);
 			hm.put("parent_dc_id", parent_dc_id);
 			hmFinal.add(hm);
-			System.out.println(hm);
+//			System.out.println(hm);
 		}
 //		session.getTransaction().commit();   //session.close();
 
@@ -438,7 +438,7 @@ public class DiseaseANDConditionDaoImpl {
 						+ search_str + "%' or a.keywords like '%"+ search_str +"%')\r\n"
 						+ "union (select dc.dc_name, dc.dc_desc from disease_condition dc where dc.dc_status=1 and dc.dc_name like '%"
 						+ search_str + "%')");
-		System.out.println("result list searched article and dis_condi table query>@@@@@@@@@@@@@" + query.getQueryString());
+//		System.out.println("result list searched article and dis_condi table query>@@@@@@@@@@@@@" + query.getQueryString());
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
@@ -516,7 +516,7 @@ public class DiseaseANDConditionDaoImpl {
 		// needs other condition too but unable to find correct column
 		// ArrayList<Article> list = (ArrayList<Article>) query.getResultList();
 //		System.out.println("result list searched article count@@@@@@@@@@@@@" + query.getQueryString());
-		System.out.println("result list searched article count@@@@@@@@@@@@@" );
+//		System.out.println("result list searched article count@@@@@@@@@@@@@" );
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
