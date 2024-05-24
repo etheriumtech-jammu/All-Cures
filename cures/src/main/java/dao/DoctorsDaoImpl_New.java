@@ -482,7 +482,7 @@ public class DoctorsDaoImpl_New {
 		// creating seession factory object
 		Session session = HibernateUtil.buildSessionFactory();
 		Constant.log("In DoctorsDAO, Getting Doctors Info For:" + DocID, 1);
-		System.out.println("hhhhhhh");
+//		System.out.println("hhhhhhh");
 		Query query1 = session.createNativeQuery("Select docid,docname_first from doctors doc inner JOin orders  on doc.docid=orders.user_id where docid is not null and End_date >= now();");
 		Integer subscription=0;
 		List<Object[]> results = (List<Object[]>) query1.getResultList();
