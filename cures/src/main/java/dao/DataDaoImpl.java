@@ -111,7 +111,7 @@ public class DataDaoImpl {
 		Query query = session.createNativeQuery(
 				"select image from NewsLetter_File_Upload");
 		List<String> results = (List<String>) query.getResultList();
-		System.out.println(results.size());
+//		System.out.println(results.size());
 		List hmFinal = new ArrayList();
 		for (String objects : results) {
 			hmFinal.add(objects);
@@ -246,7 +246,7 @@ public class DataDaoImpl {
 	Query query = session.createNativeQuery(
 			"select Title,Description,Link,image,Alt_Text from WebStories_Data where WebID= " + webID + "");
 	List<Object[]> results = (List<Object[]>) query.getResultList();
-	System.out.println(results.size());
+//	System.out.println(results.size());
 	List hmFinal = new ArrayList();
 	for (Object[] objects : results) {
 		LinkedHashMap<String, String> hm= new LinkedHashMap<String, String>();
