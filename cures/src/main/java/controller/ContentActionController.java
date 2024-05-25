@@ -390,8 +390,7 @@ public class ContentActionController extends HttpServlet {
 		javax.servlet.http.HttpSession ses= request.getSession();
 		 Registration regi=(Registration)ses.getAttribute(Constant.USER);
 //			Registration regi="model.Registration@295f6af8";
-			System.out.println("user"+regi);
-		System.out.println("Reached");
+
 //		doGet(request, response);
 	}
 
