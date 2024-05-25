@@ -88,7 +88,7 @@ public class SubspecialtiesActionController extends HttpServlet {
 			response.getWriter().write(jsondata);
 
 
-			System.out.println("JSON data from database---->"+jsondata);
+//			System.out.println("JSON data from database---->"+jsondata);
 			out.flush();
 		} else{
 			cacheSubsplArray.addAll((Collection<? extends String>) mcc.get(Constant.SUBSPL));
@@ -101,7 +101,7 @@ public class SubspecialtiesActionController extends HttpServlet {
 			response.getWriter().write(jsondata);
 
 
-			System.out.println("JSON data from cache---->"+jsondata);
+	//		System.out.println("JSON data from cache---->"+jsondata);
 			out.flush();
 
 		}
