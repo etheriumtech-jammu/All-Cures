@@ -33,7 +33,7 @@ public class ip_detaildao {
 		HttpSession session = req.getSession(true);
 	
 	//	String cookie1=headers.get("cookie");
-		System.out.println(cookie);
+	//	System.out.println(cookie);
 		IP_Details ip =new IP_Details();
 		if (whats_app.equals("whatsapp"))
 		{
