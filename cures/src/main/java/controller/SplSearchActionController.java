@@ -58,7 +58,7 @@ public class SplSearchActionController extends HttpServlet {
 		
 
 
-		System.out.println("JSON data solr database---->"+jsondata);
+//		System.out.println("JSON data solr database---->"+jsondata);
 		this.getServletContext().setAttribute(Constant.JSONDATA, jsondata);
 		response.sendRedirect("/cures/search.jsp");
 		
