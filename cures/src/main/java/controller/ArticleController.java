@@ -62,7 +62,6 @@ public class ArticleController {
 	public @ResponseBody Article_dc_name getArticleDetails(@PathVariable int article_id, HttpServletRequest request,@RequestHeader Map<String,String> headers) {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpSession session = req.getSession(true);
-		System.out.println("hh");
 		return articleDaoImpl.getArticleDetails(article_id);
 
 	}
@@ -204,7 +203,7 @@ public class ArticleController {
 		// path = path+"/uitest";
 		String filename = image.getOriginalFilename();
 
-		System.out.println(path + " " + filename);
+//		System.out.println(path + " " + filename);
 		try {
 			byte barr[] = image.getBytes();
 
@@ -247,7 +246,7 @@ public class ArticleController {
 
 		String filename = urlExt.toString().substring(urlExt.toString().lastIndexOf('/') + 1,
 				urlExt.toString().length());
-		System.out.println(path + File.separator + filename);
+//		System.out.println(path + File.separator + filename);
 		try {
 			try (InputStream in = urlExt.openStream()) {
 				Files.copy(in, Paths.get(path + File.separator + filename));
@@ -297,7 +296,7 @@ public class ArticleController {
 	{
 		HttpSession session = request.getSession(false);
 		Registration regi=(Registration)session.getAttribute(Constant.USER);
-		System.out.println(regi);
+		
 		try {
 			return ArticleDaoImpl.createArticle(request,response,regi);
 		} catch (IOException e) {
