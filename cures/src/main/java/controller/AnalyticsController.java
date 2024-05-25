@@ -77,7 +77,7 @@ public class AnalyticsController {
 		String strDate1 = dateFormat.format(limit1);
 	    String strDate2;
 		
-		System.out.println(strDate1);
+		
 		if (limit2==null)
 		{
 			Date d=new Date();
@@ -88,7 +88,7 @@ public class AnalyticsController {
 		 strDate2 = dateFormat.format(limit2);
 		}
 		
-		System.out.println(strDate2);
+		
 		
 		return AnalyticsDao.Daterange(strDate1,strDate2,column,order);
 
@@ -108,7 +108,7 @@ public class AnalyticsController {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String strDate1 = dateFormat.format(limit1);
 	   String strDate2=dateFormat.format(limit2);
-		System.out.println("hello");
+		
 		return AnalyticsDao.rating1(strDate1,strDate2);
 		
 	}
