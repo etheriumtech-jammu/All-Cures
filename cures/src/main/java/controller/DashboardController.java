@@ -47,7 +47,7 @@ public class DashboardController {
 			Constant.log("#########USER IS IN SESSION########", 0);
 			user = (Registration) session.getAttribute(Constant.USER);
 			reg_id = user.getRegistration_id();
-			System.out.println(reg_id);
+	//		System.out.println(reg_id);
 		}
 		HashMap<String, ArrayList<Article>> map = new HashMap<String, ArrayList<Article>>();
 		map.put("published_article", articleDaoImpl.findPublishedArticle(user));
@@ -149,7 +149,7 @@ public class DashboardController {
 			    }
 			    e.printStackTrace(); // Handle the exception appropriately
 			}
-			System.out.println(baseUrl);
+	//		System.out.println(baseUrl);
 			hm2.put("url", baseUrl + "/"+cures_articleimages+"/" + filename);
 			hm.put("file", hm2);
 			return 1;
