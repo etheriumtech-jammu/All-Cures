@@ -28,7 +28,7 @@ public class SubspecialtiesDaoImp {
 
 		Query query = session.createNativeQuery("select sspl_name from subspecialties;");
 		ArrayList<Subspecialties> list= (ArrayList<Subspecialties>) query.getResultList();
-		System.out.println("result list SubSpl@@@@@@@@@@@@@"+list.size());
+//		System.out.println("result list SubSpl@@@@@@@@@@@@@"+list.size());
 //		session.getTransaction().commit();   //session.close();
 		return list;
 	}
