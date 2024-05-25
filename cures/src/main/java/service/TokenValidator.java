@@ -24,7 +24,7 @@ public class TokenValidator {
 			token = token.substring("Bearer ".length());
 		}
 
-		System.out.println("Token: " + token);
+//		System.out.println("Token: " + token);
 		Session session = HibernateUtil.buildSessionFactory();
 		int res = 0;
 
