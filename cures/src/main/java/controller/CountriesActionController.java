@@ -32,16 +32,16 @@ public class CountriesActionController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
-		System.out.println("Inside the dopost bhjhhjhjhj");
+//		System.out.println("Inside the dopost bhjhhjhjhj");
 		countriesDaoImpl country= new countriesDaoImpl();
 		ArrayList<countries> countryArray= country.findAllCountries();
 		//JsonArray jsArray = new JsonArray(countryArray.toArray());
-		System.out.println("list*****************"+countryArray);
+//		System.out.println("list*****************"+countryArray);
 		if(countryArray.isEmpty()){
 			response.sendRedirect("/error.jsp");
 		}
 		request.setAttribute("countryList",countryArray) ;
-		System.out.println(countryArray);
+//		System.out.println(countryArray);
 		RequestDispatcher view = request.getRequestDispatcher("/CountryList.jsp");
 		//getServletConfig().getServletContext().getRequestDispatcher("/index.jsp").forward(request,response);
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
