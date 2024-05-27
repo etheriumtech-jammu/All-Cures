@@ -25,12 +25,12 @@
     <title data-react-helmet="true">All-Cures - Around health and about it</title>
     <meta data-property="og:title" content="All-Cures - Around health and about it" data-react-helmet="true"/>
     <meta data-property="og:description" content="Now a centralized, user powered platform for bringing information on Alternate Systems of medicine from across the world. Covering Ayurveda, Unani, Persian & other systems of medicine, it focuses on your health and well being" data-react-helmet="true"/>
-    <script  src="https://www.googletagmanager.com/gtag/js?id=G-E0TVGLDV3W"></script>
+    <script defer src="https://www.googletagmanager.com/gtag/js?id=G-E0TVGLDV3W"></script>
     <script data-ad-client="ca-pub-1868323564522249"  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" data-integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" data-crossorigin="anonymous"></script>
+    <script defer src="https://code.jquery.com/jquery-3.6.0.min.js" data-integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" data-crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" data-integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" data-crossorigin="anonymous" data-referrerpolicy="no-referrer"/>
     <meta name="google-site-verification" content="EOijam__k7Lgtidf1PQ4LGCLserfGYXC3LFwHZvXEbo"/>
-    <script  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1868323564522249" data-crossorigin="anonymous"></script>
+    <script defer src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1868323564522249" data-crossorigin="anonymous"></script>
     <link href="https://uat.all-cures.com/static/css/2.8eccb163.chunk.css" rel="stylesheet">
     <link href="https://uat.all-cures.com/static/css/main.c5d8836b.chunk.css" rel="stylesheet">
 </head>
@@ -38,9 +38,9 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <div id="modal-root"></div>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" data-integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" data-crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" data-integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" data-crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" data-integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" data-crossorigin="anonymous"></script>
+    <script defer src="https://code.jquery.com/jquery-3.2.1.slim.min.js" data-integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" data-crossorigin="anonymous"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" data-integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" data-crossorigin="anonymous"></script>
+    <script defer src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" data-integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" data-crossorigin="anonymous"></script>
     <script>
         !function(e){
             function r(r){
@@ -134,8 +134,8 @@
             t()
         }([])
     </script>
-    <script src="https://uat.all-cures.com/static/js/2.525aa04f.chunk.js"></script>
-    <script src="https://uat.all-cures.com/static/js/main.26e9695f.chunk.js"></script>
+    <script defer src="https://uat.all-cures.com/static/js/2.525aa04f.chunk.js"></script>
+    <script defer src="https://uat.all-cures.com/static/js/main.26e9695f.chunk.js"></script>
 </body>
 <footer>
     <script type="text/javascript">
