@@ -7,7 +7,7 @@ public class AppController {
 
     @GetMapping("/*")
     public String handleRequest() {
-        return "header"; // The view name (index.jsp)
+        return "success"; // The view name (index.jsp)
     }
     
     @GetMapping("/AboutUs")
