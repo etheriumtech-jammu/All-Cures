@@ -169,8 +169,8 @@
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" data-integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" data-crossorigin="anonymous"></script>
     <script defer src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" data-integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" data-crossorigin="anonymous"></script>
    
- <script defer src="https://uat.all-cures.com/static/js/2.525aa04f.chunk.js"></script>
-    <script defer src="https://uat.all-cures.com/static/js/main.5219c466.chunk.js"></script>
+     <script defer src="https://uat.all-cures.com/static/js/2.525aa04f.chunk.js"></script>
+    <script src="https://uat.all-cures.com/static/js/main.5219c466.chunk.js"></script>
 </body>
 </html>
                
