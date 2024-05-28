@@ -2,35 +2,47 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <script>
-        !function(e,t,a,n,g){
-            e[n]=e[n]||[],e[n].push({"gtm.start":(new Date).getTime(),event:"gtm.js"});
-            var m=t.getElementsByTagName(a)[0],r=t.createElement(a);
-            r.async=!0;
-            r.src="https://www.googletagmanager.com/gtm.js?id=GTM-W85XSQGP";
-            m.parentNode.insertBefore(r,m)
-        }(window,document,"script","dataLayer")
-    </script>
     <meta charset="utf-8"/>
     <link rel="icon" href="https://all-cures.com/static/media/heart.30b5f0b3.png"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="theme-color" content="#000000"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" data-integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" data-crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800">
-    <meta name="facebook-domain-verification" content="ky63qweq958pfps5qfb4to6xmysrm7"/>
-    <meta name="msapplication-TileColor" content="#ffffff"/>
-    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png"/>
-    <meta name="theme-color" content="#ffffff"/>
-    <meta name="description" content="Centralized, user powered platform for bringing information on Alternate Systems of medicine from across the world. Ayurveda, Unani, Persian, Homeopathy" data-react-helmet="true"/>
-    <title data-react-helmet="true">All-Cures - Around health and about it</title>
-    <meta data-property="og:title" content="All-Cures - Around health and about it" data-react-helmet="true"/>
-    <meta data-property="og:description" content="Now a centralized, user powered platform for bringing information on Alternate Systems of medicine from across the world. Covering Ayurveda, Unani, Persian & other systems of medicine, it focuses on your health and well being" data-react-helmet="true"/>
-    <script defer src="https://www.googletagmanager.com/gtag/js?id=G-E0TVGLDV3W"></script>
-    <script data-ad-client="ca-pub-1868323564522249"  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script defer src="https://code.jquery.com/jquery-3.6.0.min.js" data-integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" data-crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" data-integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" data-crossorigin="anonymous" data-referrerpolicy="no-referrer"/>
+    <meta name="description" content="Centralized, user powered platform for bringing information on Alternate Systems of medicine from across the world. Ayurveda, Unani, Persian, Homeopathy"/>
+    <title>All-Cures - Around health and about it</title>
+    <meta data-property="og:title" content="All-Cures - Around health and about it"/>
+    <meta data-property="og:description" content="Now a centralized, user powered platform for bringing information on Alternate Systems of medicine from across the world. Covering Ayurveda, Unani, Persian & other systems of medicine, it focuses on your health and well being"/>
+     <!-- Asynchronously load Google Tag Manager script -->
+<script>
+    var gtmScript = document.createElement("script");
+    gtmScript.src = "https://www.googletagmanager.com/gtag/js?id=G-E0TVGLDV3W";
+    gtmScript.async = true;
+    document.head.appendChild(gtmScript);
+</script><script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-E0TVGLDV3W');
+    </script>
+    <!-- Asynchronously load Google Adsense script -->
+    <script>
+        var adsenseScript = document.createElement("script");
+        adsenseScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
+        adsenseScript.async = true;
+        document.head.appendChild(adsenseScript);
+    </script>
+
+    <!-- Asynchronously load jQuery -->
+    <script>
+        var jqueryScript = document.createElement("script");
+        jqueryScript.src = "https://code.jquery.com/jquery-3.6.0.min.js";
+        jqueryScript.integrity = "sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=";
+        jqueryScript.crossOrigin = "anonymous";
+        jqueryScript.async = true;
+        document.head.appendChild(jqueryScript);
+    </script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" data-integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" data-crossorigin="anonymous" data-referrerpolicy="no-referrer"/>
     <meta name="google-site-verification" content="EOijam__k7Lgtidf1PQ4LGCLserfGYXC3LFwHZvXEbo"/>
-    <script defer src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1868323564522249" data-crossorigin="anonymous"></script>
     <link href="https://uat.all-cures.com/static/css/2.8eccb163.chunk.css" rel="stylesheet">
     <link href="https://uat.all-cures.com/static/css/main.c5d8836b.chunk.css" rel="stylesheet">
 </head>
