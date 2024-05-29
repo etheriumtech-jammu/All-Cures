@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <link rel="icon" href="https://all-cures.com/static/media/heart.30b5f0b3.png"/>
+    <link rel="icon" href="https://ik.imagekit.io/qi0xxmh2w/productimages/static/media/heart.30b5f0b3.png"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="theme-color" content="#000000"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" data-integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" data-crossorigin="anonymous">
@@ -43,8 +43,8 @@
     </script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" data-integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" data-crossorigin="anonymous" data-referrerpolicy="no-referrer"/>
     <meta name="google-site-verification" content="EOijam__k7Lgtidf1PQ4LGCLserfGYXC3LFwHZvXEbo"/>
-    <link href="https://uat.all-cures.com/static/css/2.8eccb163.chunk.css" rel="stylesheet">
-    <link href="https://uat.all-cures.com/static/css/main.c5d8836b.chunk.css" rel="stylesheet">
+    <link href="https://ik.imagekit.io/qi0xxmh2w/productimages/static/css/2.8eccb163.chunk.css" rel="stylesheet">
+    <link href="https://ik.imagekit.io/qi0xxmh2w/productimages/static/css/main.c5d8836b.chunk.css" rel="stylesheet">
 </head>
 <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
