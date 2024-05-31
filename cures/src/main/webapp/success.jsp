@@ -147,7 +147,7 @@
         }([])
     </script>
     <script defer src="https://ik.imagekit.io/qi0xxmh2w/productimages/static/js/2.525aa04f.chunk.js"></script>
-    <script src="https://ik.imagekit.io/qi0xxmh2w/productimages/static/js/main.d95f0c43.chunk.js"></script>
+    <script defer src="https://ik.imagekit.io/qi0xxmh2w/productimages/static/js/main.d95f0c43.chunk.js"></script>
 </body>
 <footer>
     <script type="text/javascript">
