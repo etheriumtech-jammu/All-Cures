@@ -90,7 +90,7 @@ public class ArticleUtils {
 				boolean isCreated = artDir.mkdirs();
 				file = getContentLocation(articleId, userId, true);
 				// file = file.replace("\\", "/");//.replace("/", "/");
-
+				System.out.println(file);
 				artFile = new File(file);
 				System.out.println("111111111>>>>" + artFile);
 				artFile.createNewFile();
