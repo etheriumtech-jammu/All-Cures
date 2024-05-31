@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <link rel="icon" href="https://ik.imagekit.io/qi0xxmh2w/productimages/static/media/heart.30b5f0b3.png"/>
+    <link rel="icon" href="https://all-cures.com/static/media/heart.30b5f0b3.png"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="theme-color" content="#000000"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" data-integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" data-crossorigin="anonymous">
@@ -146,8 +146,8 @@
             t()
         }([])
     </script>
-    <script defer src="https://ik.imagekit.io/qi0xxmh2w/productimages/static/js/2.525aa04f.chunk.js"></script>
-    <script defer src="https://ik.imagekit.io/qi0xxmh2w/productimages/static/js/main.d95f0c43.chunk.js"></script>
+    <script defer src="https://uat.all-cures.com/static/js/2.525aa04f.chunk.js"></script>
+    <script src="https://uat.all-cures.com/static/js/main.5219c466.chunk.js"></script>
 </body>
 <footer>
     <script type="text/javascript">
