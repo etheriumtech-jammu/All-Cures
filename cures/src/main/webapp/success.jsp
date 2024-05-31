@@ -147,7 +147,7 @@
         }([])
     </script>
     <script defer src="https://uat.all-cures.com/static/js/2.525aa04f.chunk.js"></script>
-    <script defer src="https://uat.all-cures.com/static/js/main.d95f0c43.chunk.js"></script>
+    <script src="https://uat.all-cures.com/static/js/main.d95f0c43.chunk.js"></script>
 </body>
 <footer>
     <script type="text/javascript">
