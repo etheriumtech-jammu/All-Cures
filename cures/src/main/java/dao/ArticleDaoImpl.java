@@ -1196,7 +1196,8 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 		Integer iDiseaseConditionId = artExisting.getDisease_condition_id();
 		String diseaseConditionIdStr = "";
 		if (articleMap.containsKey("disease_condition_id") || articleMap.containsKey("type")) {
-
+		System.out.println(type);
+		System.out.println(iDiseaseConditionId);
 			if (articleMap.containsKey("type"))
 				type = (String) articleMap.get("type").toString();
 			if (articleMap.containsKey("disease_condition_id")) {
@@ -1231,7 +1232,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 		try {
 			ret = query.executeUpdate();
 			session.getTransaction().commit();
-//			System.out.println("updated article table for article_id =  " + article_id);
+			System.out.println("updated article table for article_id =  " + article_id);
 			Boolean value = true;
 			String article_location_relative_full =  "https://etheriumtech.com/images/illustrations/favicon.png";
 
@@ -1239,7 +1240,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 				// Update the Content First
 				Article_dc_name art = new ArticleDaoImpl().getArticleDetails(article_id);
 				String art_location = art.getContent_location();
-
+				System.out.println(article_id + art_location);
 				// String content =
 				// "{\"time\":1625577023180,\"blocks\":[{\"id\":\"w6K2r9k_v4\",\"type\":\"paragraph\",\"data\":{\"text\":\"hellow
 				// anil article
