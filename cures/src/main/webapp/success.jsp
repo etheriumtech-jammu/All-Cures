@@ -43,7 +43,7 @@
     </script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" data-integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" data-crossorigin="anonymous" data-referrerpolicy="no-referrer"/>
     <meta name="google-site-verification" content="EOijam__k7Lgtidf1PQ4LGCLserfGYXC3LFwHZvXEbo"/>
-    <link href="https://ik.imagekit.io/qi0xxmh2w/2.8eccb163.chunk.css?updatedAt=1717139859910" rel="stylesheet">
+    <link href="https://ik.imagekit.io/qi0xxmh2w/productimages/static/css/2.8eccb163.chunk.css" rel="stylesheet">
     <link href="https://ik.imagekit.io/qi0xxmh2w/productimages/static/css/main.c5d8836b.chunk.css" rel="stylesheet">
 </head>
 <body>
@@ -146,8 +146,8 @@
             t()
         }([])
     </script>
-    <script defer src="https://ik.imagekit.io/qi0xxmh2w/2.525aa04f.chunk.js?updatedAt=1717143092343"></script>
-    <script defer src="https://ik.imagekit.io/qi0xxmh2w/productimages/static/js/main.d95f0c43.chunk.js"></script>
+    <script defer src="https://ik.imagekit.io/qi0xxmh2w/productimages/static/js/2.525aa04f.chunk.js"></script>
+    <script src="https://ik.imagekit.io/qi0xxmh2w/productimages/static/js/main.d95f0c43.chunk.js"></script>
 </body>
 <footer>
     <script type="text/javascript">
