@@ -124,5 +124,25 @@ public class AnalyticsController {
 		return AnalyticsDao.comment(strDate1,strDate2);
 		
 	}
+
+	@RequestMapping(value = "/clicks", method = RequestMethod.POST, produces = "application/json")
+	public void logClick(@RequestParam("articleID") Long articleId) {
+		LocalDate today = LocalDate.now();
+        ArticleClickCount clickCount = AnalyticsDao.findByArticleIdAndClickDate(articleId, today);
+        if (clickCount == null) {
+        	System.out.println("hii");
+            clickCount = new ArticleClickCount();
+            clickCount.setArticleId(articleId);
+            clickCount.setClickDate(today);
+            clickCount.setClickCount(1L);
+            
+        } else {
+        	System.out.println("hello");
+            clickCount.setClickCount(clickCount.getClickCount() + 1);
+           
+        }
+        AnalyticsDao.save(clickCount);
+	      // Redirect to the list of clicks or some other page
+	    }
 			
 }
