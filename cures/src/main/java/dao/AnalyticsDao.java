@@ -6,10 +6,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
+import java.time.LocalDate;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-
+import model.ArticleClickCount;
 import model.Article;
 
 import util.HibernateUtil;
