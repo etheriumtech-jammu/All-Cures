@@ -126,7 +126,7 @@ public class AnalyticsController {
 	}
 
 	@RequestMapping(value = "/clicks", produces = "application/json", method = RequestMethod.POST)
-	public @ResponseBody void  logClick(@RequestParam(required = false)  Long articleID, HttpServletRequest request) {
+	public @ResponseBody int  logClick(@RequestParam(required = false)  Long articleID, HttpServletRequest request) {
 	
 	LocalDate today = LocalDate.now();
         ArticleClickCount clickCount = AnalyticsDao.findByArticleIdAndClickDate(articleID, today);
@@ -142,7 +142,7 @@ public class AnalyticsController {
             clickCount.setClickCount(clickCount.getClickCount() + 1);
            
         }
-        AnalyticsDao.save(clickCount);
+         return AnalyticsDao.save(clickCount);
 	      // Redirect to the list of clicks or some other page
 	    }
 			
