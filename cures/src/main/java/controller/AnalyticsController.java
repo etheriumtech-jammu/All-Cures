@@ -9,7 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
+import java.time.LocalDate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -133,7 +133,7 @@ public class AnalyticsController {
         if (clickCount == null) {
         	
             clickCount = new ArticleClickCount();
-            clickCount.setArticleId(articleId);
+            clickCount.setArticleId(articleID);
             clickCount.setClickDate(today);
             clickCount.setClickCount(1L);
             
