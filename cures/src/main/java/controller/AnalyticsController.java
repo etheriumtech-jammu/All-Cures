@@ -131,14 +131,14 @@ public class AnalyticsController {
 	LocalDate today = LocalDate.now();
         ArticleClickCount clickCount = AnalyticsDao.findByArticleIdAndClickDate(articleID, today);
         if (clickCount == null) {
-        	System.out.println("hii");
+        	
             clickCount = new ArticleClickCount();
             clickCount.setArticleId(articleId);
             clickCount.setClickDate(today);
             clickCount.setClickCount(1L);
             
         } else {
-        	System.out.println("hello");
+        	
             clickCount.setClickCount(clickCount.getClickCount() + 1);
            
         }
