@@ -3,6 +3,7 @@ package model;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+import java.sql.Timestamp;
 @Entity
 public class ArticleClickCount {
 
