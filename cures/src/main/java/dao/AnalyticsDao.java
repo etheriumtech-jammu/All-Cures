@@ -449,15 +449,17 @@ public static ArticleClickCount findByArticleIdAndClickDate(Long articleID, Loca
     }
 
 
-    public static void save(ArticleClickCount articleClickCount) {
+    public static int save(ArticleClickCount articleClickCount) {
     	Session session = HibernateUtil.buildSessionFactory();
 		
         try {
             org.hibernate.Transaction transaction = session.beginTransaction();
             session.saveOrUpdate(articleClickCount);
             transaction.commit();
+		return 1;
         } catch (Exception e) {
             e.printStackTrace(); // Handle exceptions properly in a real application
+		return 0;
         }
     }
 		
