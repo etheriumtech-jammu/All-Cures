@@ -19,6 +19,14 @@ public class ArticleClickCount {
     @Column(name = "click_count", nullable = false)
     private Long clickCount;
 
+    @Column(name = "CreatedDate")
+    private Timestamp CreatedDate;
+
+    @Column(name = "LastUpdatedDate")
+    private Timestamp LastUpdatedDate;
+
+    @Column(name = "Status")
+    private Integer Status;
     // Getters and Setters
 
     public Long getId() {
