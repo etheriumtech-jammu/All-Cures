@@ -4,11 +4,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class AppController {
-
-    @GetMapping("/*")
-    public String handleRequest() {
-        return "success"; // The view name (index.jsp)
-    }
     
     @GetMapping("/AboutUs")
     public String handleRequest1() {
