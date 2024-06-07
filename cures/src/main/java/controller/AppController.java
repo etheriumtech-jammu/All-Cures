@@ -6,16 +6,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AppController {
     
     @GetMapping("/AboutUs")
-    public String handleRequest1() {
+    public String handleRequest2() {
           System.out.println("aboutUs");
         return "success"; // The view name (index.jsp)
     }
     
-  @GetMapping({"/searchmedicine/medicinetype/*", "searchcategory/disease/*","/webstories","/*"})
-    public String handleRequest2() {
-        System.out.println("webstories");
+   @GetMapping("/*")
+	    public String handleRequest4() {
+		 System.out.println("all");
+	        return "success"; // The view name (index.jsp)
+	    }
+    
+   
+	 @GetMapping({"/searchmedicine/medicinetype/*", "searchcategory/disease/*","/webstories","/cure/*"})
+    public String handleRequest1() {
+		 System.out.println("webstories");
         return "success"; // The view name (index.jsp)
     }
+      
     
 }
 
