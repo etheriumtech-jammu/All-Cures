@@ -31,7 +31,7 @@ public class ContentDaoImpl {
 			,String type, Integer imedicineTypeId,String featured_article,String description) {
 			
 		boolean artCrtStatus = false;		
-		Constant.log("Saving Content in DB", 1);
+//		Constant.log("Saving Content in DB", 1);
 		Session session = HibernateUtil.buildSessionFactory();
 
 		// creating session object
