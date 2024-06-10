@@ -1291,7 +1291,9 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 		if (articleMap.containsKey("featured_article")) {
 			updatestr += "`featured_article` = '" + articleMap.get("featured_article") + "',\r\n";
 		}
-		
+		if (articleMap.containsKey("description")) {
+			updatestr += "`description` = '" + articleMap.get("description") + "',\r\n";
+		}
 		/*
 		 * if (articleMap.containsKey("articleContent")) { updatestr += "`content` = '"
 		 * + articleMap.get("articleContent") + "',\r\n"; }
@@ -1912,7 +1914,7 @@ public static Map<String, Integer> getLikesAndDislikesCount(Long articleId) {
 		
 		String featured_article=(String) requestJsonMap.get("featured_article");
 		Constant.log("Creating Article with Featured Article:"+featured_article, 0);
-		
+		String description= (String) requestJsonMap.get("description");
 		String status= (String) ""+ requestJsonMap.get("articleStatus");
 		System.out.println("Test articleStatus Val"+status);
 		int iStatus = 1; //WIP By Default
@@ -1994,7 +1996,7 @@ public static Map<String, Integer> getLikesAndDislikesCount(Long articleId) {
 //			Constant.log("User object is in session; User is logged In; Adding Article Now", 0);
 			boolean bResult = contentDao.createArticle(iStatus, iLang, iDiscId, iCopyId, authIdS, title, artFrndlyNm, subHead, 
 					content_type, keyword, window_title, null, user.getRegistration_id().intValue(), articlecontent, iDiseaseConditionId, iCountryId,comments,
-					ipromoId,promoStage,type,imedicineTypeId,featured_article);
+					ipromoId,promoStage,type,imedicineTypeId,featured_article,description);
 			if(bResult == true){
 				result = 1;
 			}
