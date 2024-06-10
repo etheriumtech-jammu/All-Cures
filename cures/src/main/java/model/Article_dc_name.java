@@ -87,7 +87,28 @@ public class Article_dc_name implements Serializable {
 	
 	@Column(name = "featured_article")
 	private String featured_article;
+	@Column(name = "introduction")
+	private String introduction;
 	
+	@Column(name = "description")
+	private String description;
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getIntroduction() {
+		return introduction;
+	}
+
+	public void setIntroduction(String introduction) {
+		this.introduction = introduction;
+	}
+
 	public String getFeatured_article() {
 		return featured_article;
 	}
