@@ -89,7 +89,9 @@ public class Article implements Serializable{
 	
 	@Column(name = "featured_article")
 	private String featured_article;
-		
+
+	@Column(name = "description")
+	private String description;
 	/*
 	@OneToOne(targetEntity = Author.class)
 	private String author_firstname;
@@ -132,7 +134,13 @@ public class Article implements Serializable{
 	@JoinColumn(referencedColumnName="author_id", name="authored_by" , insertable=false, updatable=false)
 	private Author author;
 	*/
-	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 	public String getContent() {
 		return content;
