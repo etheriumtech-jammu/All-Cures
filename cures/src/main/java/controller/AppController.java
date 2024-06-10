@@ -11,14 +11,14 @@ public class AppController {
         return "success"; // The view name (index.jsp)
     }
     
-   @GetMapping("/*")
+  // @GetMapping("/*")
 	    public String handleRequest4() {
 		 System.out.println("all");
 	        return "success"; // The view name (index.jsp)
 	    }
     
    
-	 @GetMapping({"/searchmedicine/medicinetype/*", "searchcategory/disease/*","/webstories","/cure/*"})
+	 @GetMapping({"/searchmedicine/medicinetype/*", "searchcategory/disease/*","/webstories","/cure/*","/doctor/*"})
     public String handleRequest1() {
 		 System.out.println("webstories");
         return "success"; // The view name (index.jsp)
