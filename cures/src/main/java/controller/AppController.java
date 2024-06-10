@@ -18,7 +18,7 @@ public class AppController {
 	    }
     
    
-	 @GetMapping({"/searchmedicine/medicinetype/*", "searchcategory/disease/*","/webstories","/cure/*","/doctor/*"})
+	 @GetMapping({"/searchmedicine/medicinetype/*", "searchcategory/disease/*","/webstories","/cures/*","/doctor/*"})
     public String handleRequest1() {
 		 System.out.println("webstories");
         return "success"; // The view name (index.jsp)
