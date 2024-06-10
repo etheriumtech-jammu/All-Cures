@@ -252,7 +252,9 @@ public class ArticleDaoImpl {
 					+ "        LEFT JOIN medicinetype p ON m.parent_med_type = p.id\r\n"
 					+ "        WHERE m.id = `article`.`medicine_type`\r\n"
 					+ "    ) AS parent_medicine_type,\r\n"
-					+ "    `article`.`featured_article`\r\n"
+					+ "    `article`.`featured_article`,\r\n"
+					+ "    `article`.`introduction`,\r\n"
+					+ "    `article`.`description`\r\n"
 				+ " FROM `article`\r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` \r\n"
 				+ " where article_id =  " + article_id + ";");
@@ -354,6 +356,8 @@ public class ArticleDaoImpl {
 			article.setMedicine_type_name((String) obj[28]);
 			article.setParent_Medicine_type((String) obj[29]);
 			article.setFeatured_article((String) obj[30]);
+			article.setIntroduction((String) obj[31]);
+			article.setDescription((String) obj[32]);
 		}
 //		session.getTransaction().commit();   
 		//session.close();
@@ -1130,7 +1134,9 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 		if (articleMap.containsKey("language_id")) {
 			updatestr += "`language_id` = " + articleMap.get("language_id") + ",\r\n";
 		}
-		
+		if (articleMap.containsKey("introduction")) {
+			updatestr += "`introduction` = " + articleMap.get("introduction") + ",\r\n";
+		}
 		if (articleMap.containsKey("content_small")) {
 			String content_small = (String ) articleMap.get("content_small");
 			updatestr += "`content` = '" + content_small + "',\r\n";
@@ -1182,7 +1188,9 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 		if (articleMap.containsKey("featured_article")) {
 			updatestr += "`featured_article` = '" + articleMap.get("featured_article") + "',\r\n";
 		}
-		
+		if (articleMap.containsKey("description")) {
+			updatestr += "`description` = '" + articleMap.get("description") + "',\r\n";
+		}
 		/*
 		 * if (articleMap.containsKey("articleContent")) { updatestr += "`content` = '"
 		 * + articleMap.get("articleContent") + "',\r\n"; }
