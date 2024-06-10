@@ -50,12 +50,12 @@ import util.ArticleUtils;
  * TODO: Article Publication Status related stuff
  */
 public class ContentActionController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+/*	private static final long serialVersionUID = 1L;
 	public static final int defAuthorRegId = 9999999;
 	ContentDaoImpl contentDao = new ContentDaoImpl();
     /**
      * @see HttpServlet#HttpServlet()
-     */
+     
     public ContentActionController() {
         super();
         // TODO Auto-generated constructor stub
@@ -240,7 +240,7 @@ public class ContentActionController extends HttpServlet {
 	 * 			4. Promote Article - cmd = promoteArticle
 	 * 			5. Demote Article - cmd = demoteArticle 
 	 * 			6. Find Article - cmd = findArticle - Done
-	 */
+	 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String article_id = request.getParameter("article_id") == null ? "" : request.getParameter("article_id");
@@ -384,7 +384,7 @@ public class ContentActionController extends HttpServlet {
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		javax.servlet.http.HttpSession ses= request.getSession();
@@ -393,5 +393,5 @@ public class ContentActionController extends HttpServlet {
 
 //		doGet(request, response);
 	}
-
+*/
 }
