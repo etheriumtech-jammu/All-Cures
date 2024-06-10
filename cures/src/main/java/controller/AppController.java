@@ -11,7 +11,7 @@ public class AppController {
         return "success"; // The view name (index.jsp)
     }
     
-  // @GetMapping("/*")
+   @GetMapping("/*")
 	    public String handleRequest4() {
 		 System.out.println("all");
 	        return "success"; // The view name (index.jsp)
