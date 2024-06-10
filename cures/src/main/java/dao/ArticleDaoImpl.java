@@ -1873,6 +1873,7 @@ public static Map<String, Integer> getLikesAndDislikesCount(Long articleId) {
 		
 		Constant.log("Saving Content in Dao", 1);
 		String comments= (String) requestJsonMap.get("comments");
+		String description= (String) requestJsonMap.get("description");
 		Constant.log("comments:"+comments, 0);
 		//User Object in Session is coming Null Here and Causing a Null Pointer Exception on the next line
 		//This should never be the case as the user has to be logged  in to create an article
@@ -1893,7 +1894,7 @@ public static Map<String, Integer> getLikesAndDislikesCount(Long articleId) {
 //			Constant.log("User object is in session; User is logged In; Adding Article Now", 0);
 			boolean bResult = contentDao.createArticle(iStatus, iLang, iDiscId, iCopyId, authIdS, title, artFrndlyNm, subHead, 
 					content_type, keyword, window_title, null, user.getRegistration_id().intValue(), articlecontent, iDiseaseConditionId, iCountryId,comments,
-					ipromoId,promoStage,type,imedicineTypeId,featured_article);
+					ipromoId,promoStage,type,imedicineTypeId,featured_article,description);
 			if(bResult == true){
 				result = 1;
 			}
