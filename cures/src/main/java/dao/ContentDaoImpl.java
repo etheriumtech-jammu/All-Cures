@@ -28,7 +28,7 @@ public class ContentDaoImpl {
 	public boolean createArticle(Integer pubStatus, Integer lang, Integer disclaimerId, Integer copyrightId, String authById, String title, String frndlyName, 
 			String subhead, String contentTypeId, String keywords, String windowTitle, 
 			String contentLocation, Integer reg_id, String articleContent, Integer diseaseConditionId, Integer countryId, String comments, Integer promoId, Integer promoStage
-			,String type, Integer imedicineTypeId,String featured_article,String description) {
+			,String type, Integer imedicineTypeId,String featured_article,String description, String introduction) {
 			
 		boolean artCrtStatus = false;		
 	//	Constant.log("Saving Content in DB", 1);
@@ -63,6 +63,7 @@ public class ContentDaoImpl {
 			if(null != windowTitle) article.setWindow_title(windowTitle);
 			if(null != imedicineTypeId && imedicineTypeId != -1 ) article.setMedicine_type(imedicineTypeId);
 			if(null != description) article.setDescription(description);
+			if(null != introduction) article.setIntroduction(introduction);
 			//update content location after you know the id of the row that was just inserted
 			//article.setContent_location(content_loc);
 			article.setEdited_by(reg_id);
