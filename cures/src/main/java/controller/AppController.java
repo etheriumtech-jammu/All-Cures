@@ -15,21 +15,36 @@ import org.springframework.ui.Model;
 public class AppController {
     
     @GetMapping("/AboutUs")
-    public String handleRequest2() {
+    public String handleRequest2(Model model) {
           System.out.println("aboutUs");
+	    String title = "All-Cures - Around health and about it";
+        String desc = "Centralized, user-powered platform for bringing information on Alternate Systems of medicine from across the world. Ayurveda, Unani, Persian, Homeopathy";
+         model.addAttribute("Title", title);
+        model.addAttribute("Description", desc);
+
         return "success"; // The view name (index.jsp)
     }
     
    @GetMapping("/*")
-	    public String handleRequest4() {
+	    public String handleRequest4(Model model) {
 		 System.out.println("all");
+		    String title = "All-Cures - Around health and about it";
+        String desc = "Centralized, user-powered platform for bringing information on Alternate Systems of medicine from across the world. Ayurveda, Unani, Persian, Homeopathy";
+         model.addAttribute("Title", title);
+        model.addAttribute("Description", desc);
+
 	        return "success"; // The view name (index.jsp)
 	    }
     
    
 	 @GetMapping({"/searchmedicine/medicinetype/*", "searchcategory/disease/*","/webstories","/doctor/*"})
-    public String handleRequest1() {
+    public String handleRequest1(Model model) {
 		 System.out.println("webstories");
+	    String title = "All-Cures - Around health and about it";
+        String desc = "Centralized, user-powered platform for bringing information on Alternate Systems of medicine from across the world. Ayurveda, Unani, Persian, Homeopathy";
+         model.addAttribute("Title", title);
+        model.addAttribute("Description", desc);
+
         return "success"; // The view name (index.jsp)
     }
 
