@@ -51,10 +51,20 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <div id="modal-root"></div>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" data-integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" data-crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" data-integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" data-crossorigin="anonymous"></script>
-    <script  src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" data-integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" data-crossorigin="anonymous"></script>
     <script>
+    // Function to load scripts asynchronously
+    function loadScriptAsync(src) {
+        var script = document.createElement('script');
+        script.src = src;
+        script.async = true;
+        document.head.appendChild(script);
+    }
+
+    // Load each script asynchronously
+    loadScriptAsync("https://code.jquery.com/jquery-3.2.1.slim.min.js");
+    loadScriptAsync("https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js");
+    loadScriptAsync("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js");
+</script><script>
         !function(e){
             function r(r){
                 for(var n,a,i=r[0],c=r[1],l=r[2],f=0,p=[];f<i.length;f++)a=i[f],Object.prototype.hasOwnProperty.call(o,a)&&o[a]&&p.push(o[a][0]),o[a]=0;
@@ -147,7 +157,7 @@
             t()
         }([])
     </script>
-    <script src="https://uat.all-cures.com/static/js/2.8c1316ba.chunk.js"></script>
+    <script defer src="https://uat.all-cures.com/static/js/2.8c1316ba.chunk.js"></script>
     <script src="https://uat.all-cures.com/static/js/main.1f408cc3.chunk.js"></script>
 </body>
 <footer>
