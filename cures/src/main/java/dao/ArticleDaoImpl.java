@@ -1843,7 +1843,7 @@ public static Map<String, Integer> getLikesAndDislikesCount(Long articleId) {
 		String keyword=(String) requestJsonMap.get("keywords");
 		String window_title=(String) requestJsonMap.get("winTitle");;
 		String articlecontent= (String) (String) requestJsonMap.get("articleContent");
-		System.out.println("##############articlecontent###"+articlecontent);
+	//	System.out.println("##############articlecontent###"+articlecontent);
 		String countryId = (String) requestJsonMap.get("countryId");;
 		int iCountryId = -1; //Negative indicates error
 		if(countryId != null && !"".equals(countryId.trim())){
