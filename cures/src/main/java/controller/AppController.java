@@ -1,6 +1,15 @@
 package controller;
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import util.HibernateUtil;
+
+import org.springframework.ui.Model;
 
 @Controller
 public class AppController {
