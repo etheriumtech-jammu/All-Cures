@@ -73,9 +73,9 @@ public class TargetAds {
 		        // Iterate through the keys and add them to the List
 		        dcCondSet = new HashSet<>(adsByCondition.keySet());
 		     // Print D_AdCount, adsByCondition, and dcCondList
-		        System.out.println("D_AdCount: " + D_AdCount);
-		        System.out.println("adsByCondition: " + adsByCondition);
-		        System.out.println("dcCondSet: " + dcCondSet);
+	//	        System.out.println("D_AdCount: " + D_AdCount);
+	//	        System.out.println("adsByCondition: " + adsByCondition);
+	//	        System.out.println("dcCondSet: " + dcCondSet);
 		        
 		    }
 				 HashMap<String, HashMap<Integer, Integer>> resultMap = new HashMap<>();
@@ -106,27 +106,27 @@ public class TargetAds {
 	            Set<String> keyList = new HashSet<>();
 	            HashMap<Integer, Integer> valuesCounts = entry.getValue();
 	            LinkedHashMap<String, Integer> AdCount = new LinkedHashMap<>();
-	            System.out.println("Condition: " + condition);
+	//            System.out.println("Condition: " + condition);
 	            String[] parts = condition.split("_");
-	            System.out.println("hhh" + parts[1]);
+	//            System.out.println("hhh" + parts[1]);
 	            for (HashMap.Entry<Integer, Integer> subEntry : valuesCounts.entrySet()) {
 	                Integer adID = subEntry.getKey();
 	                Integer count = subEntry.getValue();
 	               rotationCount=rotationCount +count;
-	               System.out.println("  AdID: " + adID + ", Count: " + count);
+	//               System.out.println("  AdID: " + adID + ", Count: " + count);
 	                AdCount.put("Banner_" + parts[1] + "_"+ adID, count);
 	                keyList.add("Banner_" + parts[1] + "_"+ adID);
-	                System.out.println(AdCount);
+	//                System.out.println(AdCount);
 	                
 	            }
-	            System.out.println("KEYLIST"+keyList);
+	//            System.out.println("KEYLIST"+keyList);
 	            List<String> ads = new ArrayList<>();
 	            if(AdCount.size() ==1)
 	      	       {
-	      	    	   System.out.println("Single AD");
+	   //   	    	   System.out.println("Single AD");
 	      	    	 for ( String key1 : keyList) {
 	      	    		 
-	      	    		System.out.println(key1);
+	  //    	    		System.out.println(key1);
 	      	    		 Integer count = AdCount.get(key1);
 	      	    	 
 	      	    		 for (int i = 0; i < count; i++) {
@@ -137,18 +137,17 @@ public class TargetAds {
 	            else
 	            {
 	            LinkedHashMap<String, Double> Result= SimplifiedRatioCalculator.CalculateRatio(AdCount);
-		           System.out.println("Size:"+AdCount.size());  
+		          
 	            
 		            ads =DynamicAdPattern.generateAds(Result);
-		            System.out.println(ads);
+		          
 	            }
 	            if (mcc == null) {
 	     			initializeCacheClient();
 	     		}
-	            System.out.println("AdURL"+AdURL);
+	            
 	            DC_AdCount.put(parts[1],rotationCount+ ":0");
-	            System.out.println("DC_AdCount"+DC_AdCount);
-	            System.out.println("rotationCount"+rotationCount);
+	         
 		            DailyTaskScheduler.displayRotatedAds(ads, rotationCount,AdCount,AdURL,Integer.parseInt(condition));
 	        }
 	        
@@ -199,9 +198,7 @@ public class TargetAds {
 			        // Iterate through the keys and add them to the List
 			        dcCondSet = new HashSet<>(adsByCondition.keySet());
 			     // Print D_AdCount, adsByCondition, and dcCondList
-			        System.out.println("D_AdCount: " + D_AdCount);
-			        System.out.println("adsByCondition: " + adsByCondition);
-			        System.out.println("dcCondSet: " + dcCondSet);
+			        
 			        
 			    }
 					 HashMap<String, HashMap<Integer, Integer>> resultMap = new HashMap<>();
@@ -232,27 +229,27 @@ public class TargetAds {
 		            Set<String> keyList = new HashSet<>();
 		            HashMap<Integer, Integer> valuesCounts = entry.getValue();
 		            LinkedHashMap<String, Integer> AdCount = new LinkedHashMap<>();
-		            System.out.println("Condition: " + condition);
+		           
 		            String[] parts = condition.split("_");
-		            System.out.println("hhh" + parts[1]);
+		  
 		            for (HashMap.Entry<Integer, Integer> subEntry : valuesCounts.entrySet()) {
 		                Integer adID = subEntry.getKey();
 		                Integer count = subEntry.getValue();
 		               rotationCount=rotationCount +count;
-		               System.out.println("  AdID: " + adID + ", Count: " + count);
+		              
 		                AdCount.put("Left_" + parts[1] + "_"+ adID, count);
 		                keyList.add("Left_" + parts[1] + "_"+ adID);
-		                System.out.println(AdCount);
+		              
 		                
 		            }
-		            System.out.println("KEYLIST"+keyList);
+		           
 		            List<String> ads = new ArrayList<>();
 		            if(AdCount.size() ==1)
 		      	       {
-		      	    	   System.out.println("Single AD");
+		      	    	   
 		      	    	 for ( String key1 : keyList) {
 		      	    		 
-		      	    		System.out.println(key1);
+		      	    		
 		      	    		 Integer count = AdCount.get(key1);
 		      	    		 rotationCount=count;
 		      	    		 for (int i = 0; i < count; i++) {
@@ -263,19 +260,15 @@ public class TargetAds {
 		            else
 		            {
 		            LinkedHashMap<String, Double> Result= SimplifiedRatioCalculator.CalculateRatio(AdCount);
-			           System.out.println("Size:"+AdCount.size());  
-		            
 			            ads =DynamicAdPattern.generateAds(Result);
-			            System.out.println(ads);
+			        
 		            }
 		            if (mcc == null) {
 		     			initializeCacheClient();
 		     		}
-		            System.out.println("AdURL"+AdURL);
+		           
 		            DC_AdCount.put(parts[1],rotationCount+ ":0");
-		            System.out.println("DC_AdCount"+DC_AdCount);
-		            System.out.println("rotationCount"+rotationCount);
-		            
+		           
 			      DailyTaskScheduler.displayRotatedAds(ads, rotationCount,AdCount,AdURL,Integer.parseInt(parts[1]));
 		        }
 	}
@@ -305,7 +298,7 @@ public static int calculateAdCountPerDay(List<Object[]> ad) {
    //     System.out.println("Days" + daysDiff);
         int adCountPerDay = (int) Math.ceil(adCount / (double) daysDiff);
         
-        System.out.println("DailyCount" + adCountPerDay);
+ //       System.out.println("DailyCount" + adCountPerDay);
         return adCountPerDay;
     }
 	public static Date convertLocalDateToDate(LocalDate localDate) {
