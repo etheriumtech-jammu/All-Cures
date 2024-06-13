@@ -33,7 +33,9 @@ public class DataController {
 
 	@Autowired
 	private DataDaoImpl dataDaoImpl;
-
+	private static SocketIOServer1 server;
+    private static boolean isRunning = false;
+	private static final int PORT = 8080;
 	
 
 	@RequestMapping(value = "/create", produces = "application/json", method = RequestMethod.POST)
@@ -65,29 +67,33 @@ public class DataController {
 	}
 	
 	@RequestMapping(value = "/startWebSocketServer", method = RequestMethod.GET)
-	@ResponseBody
-	public String startWebSocketServer() {
-//	  try {
-//	    WebSocketImpl.DEBUG = true;
-	    int port = 8000; // port number
-	    SocketIOServer1 s = new SocketIOServer1(port);
-	      s.start();
-		System.out.println("ChatServer started on port: " + s.getPort());
-/*	    if (!isRunning == true) {
-	    	SocketIOServer1 s = new SocketIOServer1(port);
-	      s.start();
-	      isRunning = true;
-	   
-	      System.out.println("ChatServer started on port: " + s.getPort());
-	    } else {
-	      System.out.println("ChatServer continues on port: " );
+	    @ResponseBody
+	    public String startWebSocketServer() throws IOException, InterruptedException {
+	        if (!isRunning) {
+	            server = new SocketIOServer1(PORT);
+	            server.start();
+	            isRunning = true;
+	            System.out.println("ChatServer started on port: " + server.getPort());
+			new ClientExample();
+	            return "WebSocket server started!";
+	        } else {
+	            System.out.println("ChatServer is already running on port: " + PORT);
+	            return "WebSocket server is already running!";
+	        }
 	    }
-*/
-	    new ClientExample();
-	   
-	  return "WebSocket server started!";
-	  }
 
+	    @RequestMapping(value = "/stopWebSocketServer", method = RequestMethod.GET)
+	    @ResponseBody
+	    public String stopWebSocketServer() throws IOException, InterruptedException {
+	        if (isRunning) {
+	            server.stop();
+	            isRunning = false;
+	            System.out.println("ChatServer stopped.");
+	            return "WebSocket server stopped!";
+	        } else {
+	            return "WebSocket server is not running!";
+	        }
+	    }
 	@RequestMapping(value = "/newsletter/upload", produces = "application/json", method = RequestMethod.POST)
 	public int NewsLetter_fileupload(@RequestParam("image") CommonsMultipartFile image) throws IOException {
 		return DataDaoImpl.file_upload_NewsLetter(image);
