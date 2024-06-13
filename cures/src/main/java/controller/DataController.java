@@ -67,34 +67,52 @@ public class DataController {
 		
 	}
 	
-	 @RequestMapping(value = "/startWebSocketServer", method = RequestMethod.GET)
-    @ResponseBody
-    public String startWebSocketServer() throws IOException, InterruptedException {
-        if (!isRunning) {
-            server = new SocketIOServer1(PORT);
-            server.start();
-            isRunning = true;
-            System.out.println("ChatServer started on port: " + server.getPort());
+	  @RequestMapping(value = "/startWebSocketServer", method = RequestMethod.GET)
+	    @ResponseBody
+	    public String startWebSocketServer() throws IOException, InterruptedException {
+	        if (!isRunning) {
+	            server = new SocketIOServer1(PORT);
+	            server.start();
+	            isRunning = true;
+	            System.out.println("ChatServer started on port: " + server.getPort());
 
-            new ClientExample();
+	            new ClientExample();
 
-            Scanner scanner = new Scanner(System.in);
-            new Thread(() -> {
-                while (true) {
-                    String line = scanner.nextLine();
-                    if (line.equals("exit")) {
-                        stopWebSocketServer();
-                        break;
-                    }
-                }
-            }).start();
+	            Scanner scanner = new Scanner(System.in);
+	            new Thread(() -> {
+	                while (true) {
+	                    String line = scanner.nextLine();
+	                    if (line.equals("exit")) {
+	                        try {
+								stopWebSocketServer();
+							} catch (IOException | InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+	                        break;
+	                    }
+	                }
+	            }).start();
 
-            return "WebSocket server started!";
-        } else {
-            System.out.println("ChatServer is already running on port: " + PORT);
-            return "WebSocket server is already running!";
-        }
-    }
+	            return "WebSocket server started!";
+	        } else {
+	            System.out.println("ChatServer is already running on port: " + PORT);
+	            return "WebSocket server is already running!";
+	        }
+	    }
+
+	    @RequestMapping(value = "/stopWebSocketServer", method = RequestMethod.GET)
+	    @ResponseBody
+	    public String stopWebSocketServer() throws IOException, InterruptedException {
+	        if (isRunning) {
+	            server.stop();
+	            isRunning = false;
+	            System.out.println("ChatServer stopped.");
+	            return "WebSocket server stopped!";
+	        } else {
+	            return "WebSocket server is not running!";
+	        }
+	    }
 
     @RequestMapping(value = "/stopWebSocketServer", method = RequestMethod.GET)
     @ResponseBody
