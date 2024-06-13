@@ -96,19 +96,6 @@ public class DataController {
 	        }
 	    }
 
-    @RequestMapping(value = "/stopWebSocketServer", method = RequestMethod.GET)
-    @ResponseBody
-    public String stopWebSocketServer() throws IOException {
-        if (isRunning) {
-            server.stop();
-            isRunning = false;
-            System.out.println("ChatServer stopped.");
-            return "WebSocket server stopped!";
-        } else {
-            return "WebSocket server is not running!";
-        }
-    }
-	
 	@RequestMapping(value = "/newsletter/upload", produces = "application/json", method = RequestMethod.POST)
 	public int NewsLetter_fileupload(@RequestParam("image") CommonsMultipartFile image) throws IOException {
 		return DataDaoImpl.file_upload_NewsLetter(image);
