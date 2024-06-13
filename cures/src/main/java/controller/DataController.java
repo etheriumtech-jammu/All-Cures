@@ -98,7 +98,7 @@ public class DataController {
 
     @RequestMapping(value = "/stopWebSocketServer", method = RequestMethod.GET)
     @ResponseBody
-    public String stopWebSocketServer() {
+    public String stopWebSocketServer() throws IOException {
         if (isRunning) {
             server.stop();
             isRunning = false;
