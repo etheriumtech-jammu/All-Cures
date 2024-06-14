@@ -237,7 +237,7 @@ public class ChatDaoImpl {
 		{
 			e.printStackTrace(); 
 		}
-		}
+		
 	        System.out.println("Cache String: " + cacheString); // 
 	        HashMap<String, Object> chatData = null;
 	        if (cacheString != null) {
