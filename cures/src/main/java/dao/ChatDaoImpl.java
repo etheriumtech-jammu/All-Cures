@@ -237,10 +237,6 @@ public class ChatDaoImpl {
 		{
 			e.printStackTrace(); 
 		}
-		finally{
-			if (mcc != null) {
-	               mcc.shutdown(); // Release the MemcachedClient resources
-	            }
 		}
 	        System.out.println("Cache String: " + cacheString); // 
 	        HashMap<String, Object> chatData = null;
