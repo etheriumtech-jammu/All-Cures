@@ -35,7 +35,7 @@ public class DataController {
 	private DataDaoImpl dataDaoImpl;
 	private static SocketIOServer1 server;
     private static boolean isRunning = false;
-	private static final int PORT = 8080;
+	private static final int PORT = 8000;
 	
 
 	@RequestMapping(value = "/create", produces = "application/json", method = RequestMethod.POST)
