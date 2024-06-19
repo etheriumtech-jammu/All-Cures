@@ -159,7 +159,7 @@
     </script>
 <script defer src="https://uat.all-cures.com/static/js/2.06af5af6.chunk.js"></script>
 <script>
-    loadScriptAsync("https://uat.all-cures.com/static/js/main.59598deb.chunk.js");
+    loadScriptAsync("https://uat.all-cures.com/static/js/main.e458b453.chunk.js");
     </script> 
 </body>
 <footer>
