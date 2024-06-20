@@ -82,7 +82,7 @@ public class DataController {
 	      System.out.println("ChatServer continues on port: " );
 		  }
 */
-	    new ClientExample();
+//	    new ClientExample();
 
 	  return "WebSocket server started!";
 	  }
