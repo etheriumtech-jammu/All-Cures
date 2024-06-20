@@ -50,7 +50,7 @@ public class SocketIOServer1 extends WebSocketServer {
 	
 		
 	      public SocketIOServer1(int port) {
-	          super(new InetSocketAddress("127.0.0.1",port));
+	          super(new InetSocketAddress("0.0.0.0",port));
 		   SSLContext sslContext = getSSLContext();
 	    setWebSocketFactory(new DefaultSSLWebSocketServerFactory(sslContext));   
 		      
