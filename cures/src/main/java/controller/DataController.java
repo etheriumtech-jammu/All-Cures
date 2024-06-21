@@ -63,7 +63,7 @@ public class DataController {
 		
 	}
 
-	  @RequestMapping(value = "/startWebSocketServer", method = RequestMethod.GET)
+	  @RequestMapping(value = "/WebSocketStart", method = RequestMethod.GET)
 	    @ResponseBody
 	public String startWebSocketServer() {
   try {
