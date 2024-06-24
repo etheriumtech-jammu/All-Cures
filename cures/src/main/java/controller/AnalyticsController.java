@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import dao.AnalyticsDao;
-
+import model.ArticleClickCount;
 
 
 @RestController
@@ -124,5 +124,26 @@ public class AnalyticsController {
 		return AnalyticsDao.comment(strDate1,strDate2);
 		
 	}
+
+	@RequestMapping(value = "/clicks", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody int  logClick(@RequestParam(required = false)  Long articleID, HttpServletRequest request) {
+	
+	LocalDate today = LocalDate.now();
+        ArticleClickCount clickCount = AnalyticsDao.findByArticleIdAndClickDate(articleID, today);
+        if (clickCount == null) {
+        	
+            clickCount = new ArticleClickCount();
+            clickCount.setArticleId(articleID);
+            clickCount.setClickDate(today);
+            clickCount.setClickCount(1L);
+            
+        } else {
+        	
+            clickCount.setClickCount(clickCount.getClickCount() + 1);
+           
+        }
+         return AnalyticsDao.save(clickCount);
+	      // Redirect to the list of clicks or some other page
+	    }
 			
 }
