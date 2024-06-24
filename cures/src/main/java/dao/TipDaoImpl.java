@@ -260,7 +260,7 @@ public static ArrayList getTipDetailsById(int tip_id) {
 			String id="";
 			List<String> recipientTokens = FCMDao.getTokens();
 			NotificationService.sendNotification(recipientTokens,title,  tip_title,action,id);
-//			System.out.println("Message Sent");
+			System.out.println("Message Sent");
 						
 		}
 
