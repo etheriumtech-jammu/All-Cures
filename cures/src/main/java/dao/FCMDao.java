@@ -31,7 +31,7 @@ public class FCMDao {
 		Session session = HibernateUtil.buildSessionFactory();
 		String res = null;
 		List<String> titles = new ArrayList<>();
-		Query query = session.createNativeQuery("SELECT token_name FROM tip_token");
+		Query query = session.createNativeQuery("SELECT token_name FROM tip_token where status!=0");
 		List<String> results = query.getResultList();
 
 		titles.addAll(results);
