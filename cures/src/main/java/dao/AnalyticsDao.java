@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-
+import model.ArticleClickCount;
 import model.Article;
 
 import util.HibernateUtil;
@@ -428,5 +428,40 @@ public class AnalyticsDao {
 		return hmFinal;
 
 	}
+
+	public static ArticleClickCount findByArticleIdAndClickDate(Long articleID, LocalDate clickDate) {
+		Session session = HibernateUtil.buildSessionFactory();
+		
+        Query<ArticleClickCount> query = session.createNativeQuery(
+            "Select * from ArticleClickCount where article_id = " + articleID + " and click_date ='" + clickDate + "' ", ArticleClickCount.class);
+       System.out.println(query.uniqueResult());
+        return query.uniqueResult();
+    }
+
+
+    public List<ArticleClickCount> findAllByClickDate(LocalDate clickDate) {
+    	Session session = HibernateUtil.buildSessionFactory();
+			
+        Query<ArticleClickCount> query = session.createNativeQuery(
+            " Select * from ArticleClickCount where click_date =' " + clickDate + "'", ArticleClickCount.class);
+       
+        return query.list();
+    }
+
+
+    public static int save(ArticleClickCount articleClickCount) {
+    	Session session = HibernateUtil.buildSessionFactory();
+		
+        try {
+            org.hibernate.Transaction transaction = session.beginTransaction();
+            session.saveOrUpdate(articleClickCount);
+            transaction.commit();
+		return 1;
+        } catch (Exception e) {
+            e.printStackTrace(); // Handle exceptions properly in a real application
+		return 0;
+        }
+    }
+
 	
 }
