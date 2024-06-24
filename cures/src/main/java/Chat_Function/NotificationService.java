@@ -10,7 +10,10 @@ import com.google.firebase.messaging.Notification;
 import com.google.firebase.messaging.SendResponse;
 import java.io.IOException;
 import java.util.List;
-
+import java.util.Map;
+import util.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Service;
 
 // ...
