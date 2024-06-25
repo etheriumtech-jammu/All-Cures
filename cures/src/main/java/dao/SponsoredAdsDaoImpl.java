@@ -1217,10 +1217,7 @@ public static List ListCampaigns() {
 			 {
 			e.printStackTrace();	 
 			 }
-			 finally {
-		            if (mcc != null) {
-		                mcc.shutdown(); // Release the MemcachedClient resources
-		            }}	 
+			 
 			 }
 			 
 		 }
