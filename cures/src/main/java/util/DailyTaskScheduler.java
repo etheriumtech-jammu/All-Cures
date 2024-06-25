@@ -142,7 +142,7 @@ public class DailyTaskScheduler {
     	String AdID =AdType+"_"+adId.toString();
    // 	System.out.println(AdType);
     	String value = imageLocation + ":" + adCount;
-
+	System.out.println("value" +value);
         // Store and track keys in Memcached
 	
         storeAndTrackKey(mcc, AdID, value,AdType);
