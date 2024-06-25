@@ -146,10 +146,7 @@ public class DailyTaskScheduler {
         // Store and track keys in Memcached
 	
         storeAndTrackKey(mcc, AdID, value,AdType);
-       if (mcc != null) {
-            mcc.shutdown(); // Release the MemcachedClient resources
-         }
-
+    
 	    
         }
     	
@@ -395,9 +392,7 @@ public class DailyTaskScheduler {
                adIndex = (adIndex + 1) % totalAds;
            }
 
-       }  if (mcc != null) {
-               mcc.shutdown(); // Release the MemcachedClient resources
-            }
+       }  
        }
 		
        else
