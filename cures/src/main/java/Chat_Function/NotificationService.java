@@ -11,9 +11,6 @@ import com.google.firebase.messaging.SendResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import util.HibernateUtil;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.springframework.stereotype.Service;
 
 // ...
@@ -40,21 +37,12 @@ public class NotificationService {
 			System.out.println(response.getSuccessCount() + " messages were sent successfully");
 			// Iterate through the responses to get the tokens of successfully sent messages
 	        List<SendResponse> responses = response.getResponses();
-	        int ret=0;
-	        Session session = HibernateUtil.buildSessionFactory();
-			session.beginTransaction();
 	        for (int i = 0; i < responses.size(); i++) {
 	            SendResponse sendResponse = responses.get(i);
 	            if (sendResponse.isSuccessful()) {
 	                System.out.println("Successfully sent to token: " + recipientTokens.get(i));
-	                Query query = session
-	        				.createNativeQuery("UPDATE tip SET status = 1 WHERE token = " + recipientTokens.get(i) + ";");
-	                ret = query.executeUpdate();
-	    			session.getTransaction().commit();
-	                   
 	            } else {
 	                System.out.println("Failed to send to token: " + recipientTokens.get(i));
-	                System.out.println("Error: " + sendResponse.getException().getMessage());
 	            }
 	        }
 	        }
