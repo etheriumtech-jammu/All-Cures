@@ -37,7 +37,7 @@ public class AppController {
 	    }
     
    
-	 @GetMapping({"/searchmedicine/medicinetype/*", "searchcategory/disease/*","/webstories","/doctor/*","/user/profile","/searchcures/*","/searchName/*","/search/*"})
+	 @GetMapping({"/searchmedicine/medicinetype/*", "searchcategory/disease/*","/webstories","/doctor/*","/user/profile","/searchcures/*","/searchName/*","/search/*","/loginForm/verify"})
     public String handleRequest1(Model model) {
 		 System.out.println("webstories");
 	    String title = "All-Cures - Around health and about it";
