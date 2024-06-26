@@ -1173,7 +1173,7 @@ public static List ListCampaigns() {
 		{
 			int count = LeftCountMap.getOrDefault(currentDate, 0);
 			System.out.println(count);
-			key="Left_0_"+String.valueOf(count);
+			key="left_0_"+String.valueOf(count);
 			System.out.println("Key" + key);
 			 URL=(String) mcc.get(key);
 			System.out.println("URL" + URL);
