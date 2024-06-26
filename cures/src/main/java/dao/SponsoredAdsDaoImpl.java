@@ -1176,6 +1176,7 @@ public static List ListCampaigns() {
 			key="Left_0_"+String.valueOf(count);
 			System.out.println("Key" + key);
 			 URL=(String) mcc.get(key);
+			System.out.println("URL" + URL);
 			 if (lastRequestDate == null || !lastRequestDate.equals(currentDate)) {
 		            LeftCountMap.clear();
 		            lastRequestDate = currentDate;
