@@ -1159,6 +1159,7 @@ public static List ListCampaigns() {
 		if(AdType ==1)
 		{
 			int count = BannerCountMap.getOrDefault(currentDate, 0);
+			System.out.println(count);
 			key="Banner_0_"+String.valueOf(count);
 			System.out.println(key);
 			 URL=(String) mcc.get(key);
@@ -1171,6 +1172,7 @@ public static List ListCampaigns() {
 		if(AdType ==2)
 		{
 			int count = LeftCountMap.getOrDefault(currentDate, 0);
+			System.out.println(count);
 			key="Left_0_"+String.valueOf(count);
 			System.out.println("Key" + key);
 			 URL=(String) mcc.get(key);
