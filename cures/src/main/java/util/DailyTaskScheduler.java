@@ -176,7 +176,7 @@ public class DailyTaskScheduler {
         
         else  if (AdType.equalsIgnoreCase("Left"))
         {
-  //      	System.out.println(key + value);
+        	System.out.println("Key + value" + key + value);
         	
         	memcachedClient.set(key, 0, value);
         	// Append the key to the list
