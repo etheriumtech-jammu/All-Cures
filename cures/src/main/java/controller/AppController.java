@@ -52,6 +52,8 @@ public class AppController {
             Query query = session.createNativeQuery("SELECT title, description FROM article WHERE article_id = :articleId");
             query.setParameter("articleId", article_id);
             List<Object[]> articleList = query.getResultList();
+	    System.out.println(articleList.size());
+            
             // If article is found, update title and description
             if (!articleList.isEmpty()) {
                 Object[] obj = articleList.get(0);
