@@ -58,13 +58,15 @@ public class AppController {
             if (!articleList.isEmpty()) {
                 Object[] obj = articleList.get(0);
                 title = obj[0] != null ? (String) obj[0] : title;
+		System.out.println("title"+title);
                 desc = obj[1] != null ? (String) obj[1] : desc;
+		System.out.println("desc"+desc);
             }
         } catch (Exception e) {
             // Handle any exceptions here
             e.printStackTrace();
         }
-	System.out.println("desc"+desc);
+	
         // Pass title and description to the view
         model.addAttribute("Title", title);
         model.addAttribute("Description", desc);
