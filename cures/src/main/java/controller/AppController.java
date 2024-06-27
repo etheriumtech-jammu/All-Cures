@@ -60,7 +60,7 @@ public class AppController {
                 title = obj[0] != null ? (String) obj[0] : title;
 		System.out.println("title"+title);
 		
-              if (obj[1] != null || !obj[1].equals("null")) {
+              if (obj[1] != null && !obj[1].equals("null")) {
                     desc = (String) obj[1];
                 }
 		
