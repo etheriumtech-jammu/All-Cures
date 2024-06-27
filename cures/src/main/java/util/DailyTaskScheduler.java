@@ -135,11 +135,9 @@ public class DailyTaskScheduler {
     private static void updateMemCache(Integer  adId, String imageLocation, Integer adCount, String AdType) {
         // Update Memcached with the calculated adCountPerDay value
         // ...
-	try{
     	if (mcc == null) {
 			initializeCacheClient();
 		}
-    	
     	String AdID =AdType+"_"+adId.toString();
    // 	System.out.println(AdType);
     	String value = imageLocation + ":" + adCount;
@@ -147,17 +145,11 @@ public class DailyTaskScheduler {
         // Store and track keys in Memcached
 	
         storeAndTrackKey(mcc, AdID, value,AdType);
-	}finally {
-        if (mcc != null) {
-            mcc.shutdown(); // Release the MemcachedClient resources
-        }
-    }
-	    
-        }
+	}
     	
     private static void storeAndTrackKey(MemcachedClient memcachedClient, String key, String value,String AdType) {
         // Store the data in Memcached
-    	
+    	try{
         
         if (AdType.equalsIgnoreCase("Banner"))
         {
@@ -200,6 +192,12 @@ public class DailyTaskScheduler {
             memcachedClient.set(LEFT_KEY_LIST_KEY, 0, keyList);
  //           System.out.println("Left:Value " + memcachedClient.get(LEFT_KEY_LIST_KEY));
         }
+    }
+	    finally {
+        if (mcc != null) {
+            mcc.shutdown(); // Release the MemcachedClient resources
+        }
+    }
         
     }
     public static MemcachedClient initializeCacheClient() {
