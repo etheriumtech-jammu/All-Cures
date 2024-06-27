@@ -135,6 +135,7 @@ public class DailyTaskScheduler {
     private static void updateMemCache(Integer  adId, String imageLocation, Integer adCount, String AdType) {
         // Update Memcached with the calculated adCountPerDay value
         // ...
+	try{
     	if (mcc == null) {
 			initializeCacheClient();
 		}
@@ -146,7 +147,11 @@ public class DailyTaskScheduler {
         // Store and track keys in Memcached
 	
         storeAndTrackKey(mcc, AdID, value,AdType);
-    
+	}finally {
+        if (mcc != null) {
+            mcc.shutdown(); // Release the MemcachedClient resources
+        }
+    }
 	    
         }
     	
@@ -223,7 +228,7 @@ public class DailyTaskScheduler {
     	 LinkedHashMap<String, Integer> RightAdCount = new LinkedHashMap<>();
     	 LinkedHashMap<String, String> RightAdURL = new LinkedHashMap<>();
     	 
-    	 
+    	 try{
     	
     	 if (mcc == null) {
  			initializeCacheClient();
@@ -292,6 +297,11 @@ public class DailyTaskScheduler {
  	            System.out.println("No keys found in the list.");
  	            
  	        }  
+	 }finally {
+        if (mcc != null) {
+            mcc.shutdown(); // Release the MemcachedClient resources
+        }
+    }
  	            }
  	             
  	             
@@ -347,95 +357,82 @@ public class DailyTaskScheduler {
            displayRotatedAds(ads, rotationCount1,AdCount,AdURL,DC_Cond);
     	
     }
-	static void displayRotatedAds(List<String> ads, int rotationCount, Map<String, Integer> brandSkipCounts,LinkedHashMap<String, String> AdURL, Integer DC_Cond) throws JsonProcessingException {
-       if(DC_Cond!=0)
-       {
-    	   String result="";
-    	   int totalAds = ads.size();
-           String match=ads.get(0);
-           
-           String[] parts = match.split("_");
-           if (parts.length >=2) {
-               result = parts[0] + "_" + parts[1] + "_"; // Concatenate the first two parts
-              System.out.println("Result: " + result);
-          } 
-          if (mcc == null) {
-	 initializeCacheClient();
-	 }
-           int adIndex = 0;
-           int index=0;
-           
-           for (int i = 0; i < rotationCount; i++) {
-               String currentAd = ads.get(adIndex);
-               // Check if the current AD should be skipped
-               if (brandSkipCounts.containsKey(currentAd) && brandSkipCounts.get(currentAd) > 0) {
-               	System.out.println("hello");
-               	brandSkipCounts.put(currentAd, brandSkipCounts.get(currentAd) - 1);
-               	System.out.println(currentAd); 
-               	String URL=AdURL.get(currentAd);
-               	
-   //            	String key="Banner" + String.valueOf(index);
-               	String key=result + String.valueOf(index);
-               	System.out.println("Key:" + key);
-               	System.out.println("URL:" + URL);
-               	index=index+1;
-               	
-               	// Append the URL to the list
-                 mcc.set(key,0,URL );
-                System.out.println("in memcached" + (String)mcc.get(key)); 
-               	
-       //        } else {
-               	System.out.println("hh");
-       //       	rotationCount=rotationCount +1;
-               	
-       //        }
-               adIndex = (adIndex + 1) % totalAds;
-           }
+	static void displayRotatedAds(List<String> ads, int rotationCount, Map<String, Integer> brandSkipCounts, LinkedHashMap<String, String> AdURL, Integer DC_Cond) throws JsonProcessingException {
+    try {
+        if (DC_Cond != 0) {
+            String result = "";
+            int totalAds = ads.size();
+            String match = ads.get(0);
 
-       }  
-       }
-		
-       else
-       {
-    	   String result="";
-    	   int totalAds = ads.size();
-           String match=ads.get(0);
-           
-           String[] parts = match.split("_");
-           
-           int adIndex = 0;
-           int index=0;
-           
-           for (int i = 0; i < rotationCount; i++) {
-               String currentAd = ads.get(adIndex);
-               // Check if the current AD should be skipped
-               if (brandSkipCounts.containsKey(currentAd) && brandSkipCounts.get(currentAd) > 0) {
-               	System.out.println("hello");
-               	brandSkipCounts.put(currentAd, brandSkipCounts.get(currentAd) - 1);
-               	System.out.println(currentAd); 
-               	String URL=AdURL.get(currentAd);
-               	
-   //            	String key="Banner" + String.valueOf(index);
-               	String key=parts[0] + "_0_"  + String.valueOf(index) ;
-               	System.out.println("Key:" + key);
-               	System.out.println("URL:" + URL);
-               	index=index+1;
-               	
-               	// Append the URL to the list
-                 mcc.set(key,0,URL );
-                System.out.println("in memcached" + (String)mcc.get(key)); 
-               	
-       //        } else {
-               	System.out.println("hh");
-       //       	rotationCount=rotationCount +1;
-               	
-       //        }
-               adIndex = (adIndex + 1) % totalAds;
-           }
+            String[] parts = match.split("_");
+            if (parts.length >= 2) {
+                result = parts[0] + "_" + parts[1] + "_"; // Concatenate the first two parts
+                System.out.println("Result: " + result);
+            }
+            if (mcc == null) {
+                initializeCacheClient();
+            }
+            int adIndex = 0;
+            int index = 0;
 
-       }
-           
-       }
+            for (int i = 0; i < rotationCount; i++) {
+                String currentAd = ads.get(adIndex);
+                // Check if the current AD should be skipped
+                if (brandSkipCounts.containsKey(currentAd) && brandSkipCounts.get(currentAd) > 0) {
+                    System.out.println("hello");
+                    brandSkipCounts.put(currentAd, brandSkipCounts.get(currentAd) - 1);
+                    System.out.println(currentAd);
+                    String URL = AdURL.get(currentAd);
+
+                    String key = result + String.valueOf(index);
+                    System.out.println("Key:" + key);
+                    System.out.println("URL:" + URL);
+                    index = index + 1;
+
+                    // Append the URL to the list
+                    mcc.set(key, 0, URL);
+                    System.out.println("in memcached" + (String) mcc.get(key));
+                }
+                adIndex = (adIndex + 1) % totalAds;
+            }
+        } else {
+            String result = "";
+            int totalAds = ads.size();
+            String match = ads.get(0);
+
+            String[] parts = match.split("_");
+
+            int adIndex = 0;
+            int index = 0;
+
+            for (int i = 0; i < rotationCount; i++) {
+                String currentAd = ads.get(adIndex);
+                // Check if the current AD should be skipped
+                if (brandSkipCounts.containsKey(currentAd) && brandSkipCounts.get(currentAd) > 0) {
+                    System.out.println("hello");
+                    brandSkipCounts.put(currentAd, brandSkipCounts.get(currentAd) - 1);
+                    System.out.println(currentAd);
+                    String URL = AdURL.get(currentAd);
+
+                    String key = parts[0] + "_0_" + String.valueOf(index);
+                    System.out.println("Key:" + key);
+                    System.out.println("URL:" + URL);
+                    index = index + 1;
+
+                    // Append the URL to the list
+                    mcc.set(key, 0, URL);
+                    System.out.println("in memcached" + (String) mcc.get(key));
+                }
+                adIndex = (adIndex + 1) % totalAds;
+            }
+        }
+    } finally {
+        if (mcc != null) {
+            mcc.shutdown(); // Release the MemcachedClient resources
+        }
+    }
+}
+
 		
         
        
