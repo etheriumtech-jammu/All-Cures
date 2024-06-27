@@ -59,6 +59,7 @@ public class AppController {
                 Object[] obj = articleList.get(0);
                 title = obj[0] != null ? (String) obj[0] : title;
 		System.out.println("title"+title);
+		System.out.println("desc"+desc);
                 desc = obj[1] != null ? (String) obj[1] : desc;
 		System.out.println("desc"+desc);
             }
