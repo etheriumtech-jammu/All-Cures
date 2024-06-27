@@ -22,7 +22,7 @@ public class AppController {
          model.addAttribute("Title", title);
         model.addAttribute("Description", desc);
 
-	        return "success"; // The view name (success.jsp)
+	        return "success.html"; // The view name (success.jsp)
 	    }
     
    
@@ -32,7 +32,7 @@ public class AppController {
         String desc = "Centralized, user-powered platform for bringing information on Alternate Systems of medicine from across the world. Ayurveda, Unani, Persian, Homeopathy";
          model.addAttribute("Title", title);
         model.addAttribute("Description", desc);
-        return "success"; // The view name (success.jsp)
+        return "success.html"; // The view name (success.jsp)
     }
 
 
@@ -72,7 +72,7 @@ public class AppController {
         model.addAttribute("Description", desc);
 
         // Return the name of the view (success.jsp)
-        return "success";
+        return "success.html";
     }
 
     
