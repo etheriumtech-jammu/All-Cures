@@ -59,11 +59,11 @@ public class AppController {
                 Object[] obj = articleList.get(0);
                 title = obj[0] != null ? (String) obj[0] : title;
 		System.out.println("title"+title);
-		System.out.println("desc"+desc);
-               if (obj[1] != null) {
-                desc = (String) obj[1];
-            }
-		System.out.println("desc"+desc);
+		
+              if (obj[1] != null || !obj[1].equals("null")) {
+                    desc = (String) obj[1];
+                }
+		
             }
         } catch (Exception e) {
             // Handle any exceptions here
