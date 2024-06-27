@@ -63,7 +63,7 @@ public class AppController {
             // Handle any exceptions here
             e.printStackTrace();
         }
-
+	System.out.println("desc"+desc);
         // Pass title and description to the view
         model.addAttribute("Title", title);
         model.addAttribute("Description", desc);
