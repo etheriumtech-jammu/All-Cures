@@ -158,8 +158,7 @@
         }([])
     </script>
 <script defer src="https://all-cures.com/static/js/2.b6ac9cb1.chunk.js"></script>
-<script>
-    loadScriptAsync("https://all-cures.com/static/js/main.54233911.chunk.js");
+<script src="https://all-cures.com/static/js/main.54233911.chunk.js">
     </script> 
 </body>
 <footer>
