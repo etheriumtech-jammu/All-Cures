@@ -37,7 +37,7 @@
 	<!-- Configure JSP view resolver -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/" />
-        <property name="suffix" value=".jsp" />
+        <property name="suffix" value=".html" />
     </bean>
 	<!-- SpringResourceTemplateResolver automatically integrates with Spring's 
 		own -->
