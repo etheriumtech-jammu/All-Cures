@@ -26,7 +26,7 @@ public class AppController {
 	    }
     
    
-	 @GetMapping({"/searchmedicine/medicinetype/*", "searchcategory/disease/*","/webstories","/doctor/*","/user/profile","/searchcures/*","/searchName/*","/search/*","/loginForm/verify"})
+	 @GetMapping({"/searchmedicine/medicinetype/*", "searchcategory/disease/*","/webstories","/doctor/*","/user/profile","/searchcures/*","/searchName/*","/search/*","/loginForm/verify","/loginForm/ResetPass/*"})
     public String handleRequest1(Model model) {
 	    String title = "All-Cures - Around health and about it";
         String desc = "Centralized, user-powered platform for bringing information on Alternate Systems of medicine from across the world. Ayurveda, Unani, Persian, Homeopathy";
