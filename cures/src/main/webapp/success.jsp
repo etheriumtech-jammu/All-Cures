@@ -29,7 +29,7 @@
         var adsenseScript = document.createElement("script");
         adsenseScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
         adsenseScript.async = true;
-//       adsScript.setAttribute("data-ad-client", "ca-pub-1868323564522249");
+       adsenseScript.setAttribute("data-ad-client", "ca-pub-1868323564522249");
         document.head.appendChild(adsenseScript);
     </script>
 
