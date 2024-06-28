@@ -17,7 +17,10 @@
     var gtmScript = document.createElement("script");
     gtmScript.src = "https://www.googletagmanager.com/gtag/js?id=G-E0TVGLDV3W";
     gtmScript.async = true;
-//    document.head.appendChild(gtmScript);
+gtmScript.onerror = function(e) {
+            console.error('Error loading script:', src, e);
+        };
+    document.head.appendChild(gtmScript);
 </script><script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -29,7 +32,10 @@
         var adsenseScript = document.createElement("script");
         adsenseScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
         adsenseScript.async = true;
-//       adsenseScript.setAttribute("data-ad-client", "ca-pub-1868323564522249");
+       adsenseScript.setAttribute("data-ad-client", "ca-pub-1868323564522249");
+adsenseScript.onerror = function(e) {
+            console.error('Error loading script:', src, e);
+        };
         document.head.appendChild(adsenseScript);
     </script>
 
@@ -40,6 +46,9 @@
         jqueryScript.integrity = "sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=";
         jqueryScript.crossOrigin = "anonymous";
         jqueryScript.async = true;
+jqueryScript.onerror = function(e) {
+            console.error('Error loading script:', src, e);
+        };
         document.head.appendChild(jqueryScript);
     </script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" data-integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" data-crossorigin="anonymous" data-referrerpolicy="no-referrer"/>
