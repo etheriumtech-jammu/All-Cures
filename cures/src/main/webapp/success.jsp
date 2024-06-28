@@ -17,7 +17,7 @@
     var gtmScript = document.createElement("script");
     gtmScript.src = "https://www.googletagmanager.com/gtag/js?id=G-E0TVGLDV3W";
     gtmScript.async = true;
-    document.head.appendChild(gtmScript);
+//    document.head.appendChild(gtmScript);
 </script><script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -29,7 +29,7 @@
         var adsenseScript = document.createElement("script");
         adsenseScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
         adsenseScript.async = true;
-       adsenseScript.setAttribute("data-ad-client", "ca-pub-1868323564522249");
+//       adsenseScript.setAttribute("data-ad-client", "ca-pub-1868323564522249");
         document.head.appendChild(adsenseScript);
     </script>
 
