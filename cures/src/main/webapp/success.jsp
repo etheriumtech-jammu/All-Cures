@@ -155,7 +155,7 @@ jqueryScript.onerror = function(e) {
             a.o=function(e,r){
                 return Object.prototype.hasOwnProperty.call(e,r)
             },
-            a.p="https://uat.all-cures.com/",
+            a.p="https://all-cures.com/",
             a.oe=function(e){
                 throw console.error(e),e
             };
