@@ -577,7 +577,7 @@ public class ChatDaoImpl {
 
 
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-	//	System.out.println(results.size());
+		System.out.println(results.size());
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
 			LinkedHashMap<String, Object> hm = new LinkedHashMap<>();   
