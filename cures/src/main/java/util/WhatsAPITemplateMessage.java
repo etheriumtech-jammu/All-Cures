@@ -244,7 +244,7 @@ public class WhatsAPITemplateMessage {
 	{
 		String template_name = params[0];
 		String mobile = params[1];
-		String header1_imgpath="https://all-cures.com/static/tip Final.jpg";
+		String header1_imgpath="https://www.all-cures.com/assets/img/tip.jpg";
 		String countryCode = params[2];
 		String title=params[3];
 		
