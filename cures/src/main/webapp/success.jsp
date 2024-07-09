@@ -166,8 +166,8 @@ jqueryScript.onerror = function(e) {
             t()
         }([])
     </script>
-<script defer src="https://all-cures.com/static/js/2.ff1a157d.chunk.js"></script>
-<script src="https://all-cures.com/static/js/main.54233911.chunk.js">
+<script defer src="https://all-cures.com/static/js/2.b6ac9cb1.chunk.js"></script>
+<script src="https://all-cures.com/static/js/main.31cc2007.chunk.js">
     </script> 
 </body>
 <footer>
