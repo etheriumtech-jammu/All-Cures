@@ -174,9 +174,7 @@ public class DailyTaskScheduler {
     	String AdID =AdType+"_"+adId.toString();
    // 	System.out.println(AdType);
     	String value = imageLocation + ":" + adCount;
-	if (mcc != null) {
-            mcc.shutdown(); // Release the MemcachedClient resources
-         }
+	
         // Store and track keys in Memcached
         storeAndTrackKey(mcc, AdID, value,AdType);
        
@@ -227,6 +225,11 @@ public class DailyTaskScheduler {
             memcachedClient.set(LEFT_KEY_LIST_KEY, 0, keyList);
  //           System.out.println("Left:Value " + memcachedClient.get(LEFT_KEY_LIST_KEY));
         }
+	     finally {
+        if (mcc != null) {
+            mcc.shutdown(); // Release the MemcachedClient resources
+        }
+    }
         
     }
     public static MemcachedClient initializeCacheClient() {
@@ -379,8 +382,10 @@ public class DailyTaskScheduler {
            displayRotatedAds(ads, rotationCount1,AdCount,AdURL,DC_Cond);
     	
     }
-	static void displayRotatedAds(List<String> ads, int rotationCount, Map<String, Integer> brandSkipCounts,LinkedHashMap<String, String> AdURL, Integer DC_Cond) throws JsonProcessingException {
-       if(DC_Cond!=0)
+	static void displayRotatedAds(List<String> ads, int rotationCount, Map<String, Integer> brandSkipCounts,LinkedHashMap<String, String> AdURL, Integer DC_Cond) throws JsonProcessingException
+	{
+      try {
+	      if(DC_Cond!=0)
        {
     	   String result="";
     	   int totalAds = ads.size();
@@ -423,7 +428,7 @@ public class DailyTaskScheduler {
        //        }
                adIndex = (adIndex + 1) % totalAds;
            }
-
+	   
        }
 	       if (mcc != null) {
                mcc.shutdown(); // Release the MemcachedClient resources
@@ -468,11 +473,16 @@ public class DailyTaskScheduler {
        //        }
                adIndex = (adIndex + 1) % totalAds;
            }
-
+	   }
        }
            
        }
-		
+		finally {
+        if (mcc != null) {
+            mcc.shutdown(); // Release the MemcachedClient resources
+        }
+    }
+	}	
         
        
   //      if(ads.stream().anyMatch(ad -> ad.contains("Banner")))
@@ -509,7 +519,7 @@ public class DailyTaskScheduler {
         }
        */ 	
         	
-    }   
+      
   
 }
 
