@@ -1,5 +1,4 @@
 package util;
-
 import java.io.IOException;
 import java.math.BigInteger;
 import java.time.Duration;
@@ -19,10 +18,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import net.spy.memcached.AddrUtil;
 import net.spy.memcached.ConnectionFactoryBuilder;
@@ -330,10 +327,7 @@ public class DailyTaskScheduler {
  	//            System.out.println("No keys found in the list.");
  	            
  	        }  
- 	            }
- 	             
- 	             
- 	        
+ 	            }        
  	     
  /*	      AdCount.put("9", 15);
  	     AdCount.put("13", 45);
@@ -344,11 +338,7 @@ public class DailyTaskScheduler {
 	 AdURL.put("11","/home/uat/Production/installers/tomcat/webapps/cures_adsimages/Ad_15.jpg" );
  //	AdURL.put("12","/home/uat/Production/installers/tomcat/webapps/cures_adsimages/Ad_12.jpg" );
  	*/
- 	
-            
-    
-
-    
+ 
     static void createPattern( LinkedHashMap<String, Integer> AdCount,LinkedHashMap<String, String> AdURL, Integer rotationCount1 , String KEY_LIST_KEY) throws JsonProcessingException
     {
     	int count =0;
@@ -385,6 +375,7 @@ public class DailyTaskScheduler {
            displayRotatedAds(ads, rotationCount1,AdCount,AdURL,DC_Cond);
     	
     }
+	
 	static void displayRotatedAds(List<String> ads, int rotationCount, Map<String, Integer> brandSkipCounts,LinkedHashMap<String, String> AdURL, Integer DC_Cond) throws JsonProcessingException
 	{
       try {
@@ -436,9 +427,7 @@ public class DailyTaskScheduler {
 	       if (mcc != null) {
                mcc.shutdown(); // Release the MemcachedClient resources
             }
-       }
-       
-		
+       }	
        else
        {
     	   String result="";
