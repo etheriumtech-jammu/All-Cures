@@ -180,7 +180,9 @@ public class DailyTaskScheduler {
        
         }
     	
-    private static void storeAndTrackKey(MemcachedClient memcachedClient, String key, String value,String AdType) {
+    private static void storeAndTrackKey(MemcachedClient memcachedClient, String key, String value,String AdType) 
+	{
+		try {
         // Store the data in Memcached
     	
         
@@ -225,6 +227,7 @@ public class DailyTaskScheduler {
             memcachedClient.set(LEFT_KEY_LIST_KEY, 0, keyList);
  //           System.out.println("Left:Value " + memcachedClient.get(LEFT_KEY_LIST_KEY));
         }
+		}
 	     finally {
         if (mcc != null) {
             mcc.shutdown(); // Release the MemcachedClient resources
