@@ -1095,7 +1095,7 @@ public static List ListCampaigns() {
 		return arrayDataList;
 
 		}
-	public static String AdsURL(Integer AdType, Integer DC_Cond) throws JsonProcessingException {
+	public static String AdsURL(Integer AdType, Integer DC_Cond,Integer Med_Type) throws JsonProcessingException {
     String URL = null;
     System.out.println("AdType" + AdType);
     Integer total = 0;
@@ -1114,6 +1114,7 @@ public static List ListCampaigns() {
         DailyTaskScheduler.performDailyCalculationsAndCacheUpdate();
         DailyTaskScheduler.DisplayPattern();
         TargetAds.update();
+	TargetAds.update_med_type();
         flag = true;
     }
     try {
@@ -1137,6 +1138,34 @@ public static List ListCampaigns() {
                     AdType = 2;
                 }
             }
+		 else if(Med_Type!=0)
+		 {
+		String count1=TargetAds.DC_AdCount.get(Med_Type.toString());
+		System.out.println("count1"+count1);
+		if(count1!=null)
+		{
+			String []parts=count1.split(":");
+			total=Integer.parseInt(parts[0]);
+			displayed=Integer.parseInt(parts[1]);
+			System.out.println(total + displayed);
+			if(displayed<total)
+			{
+				String key1="Banner_" + Med_Type + "_" + displayed;
+				 URL=(String) mcc.get(key1);
+				 
+			}
+			else
+			{
+				System.out.println("Med_Types are served");
+				AdType=1;
+			}
+			
+			 }
+		else
+		{
+			AdType=1;
+		}
+		}
             if (AdType == 1) {
                 int count = BannerCountMap.getOrDefault(currentDate, 0);
                 key = "Banner_0_" + String.valueOf(count);
