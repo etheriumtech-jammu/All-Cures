@@ -175,19 +175,22 @@ public class SponsoredAdsController {
 	}
 
 	@RequestMapping(value = "/list/ads/url/{AdType}", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody String listadsURL(@PathVariable  (required=false) int AdType,@RequestParam(required = false) Integer DC_Cond,HttpServletRequest request) throws Exception {
+	public @ResponseBody String listadsURL(@PathVariable  (required=false) int AdType,@RequestParam(required = false) Integer DC_Cond,@RequestParam(required = false) Integer Med_Type, HttpServletRequest request) throws Exception {
 		LocalDate currentDate = LocalDate.now();
 		String Res=null;
 		if(DC_Cond!=null)
 		{
-			AdType=0;
+			Med_Type=0;
 		}
-			  // Reset the request counter if a new day has started
-		else {
+		else if(Med_Type!=null) {
+			AdType=1;
 			DC_Cond=0;
 		}
-
-	       Res= SponsoredAdsDaoImpl.AdsURL(AdType,DC_Cond);
+		else {
+			DC_Cond=0;
+			Med_Type=0;
+		}
+	       Res= SponsoredAdsDaoImpl.AdsURL(AdType,DC_Cond,Med_Type);
 //	       request.setAttribute("customData", Res );
 		
 		
