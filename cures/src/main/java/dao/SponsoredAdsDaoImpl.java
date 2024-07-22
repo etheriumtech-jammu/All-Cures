@@ -1193,13 +1193,27 @@ public static List ListCampaigns() {
 			}
             }
             if (AdType == 2) {
-                int count = LeftCountMap.getOrDefault(currentDate, 0);
-                key = "Left_0_" + String.valueOf(count);
-                URL = (String) mcc.get(key);
-                if (lastRequestDate == null || !lastRequestDate.equals(currentDate)) {
-                    LeftCountMap.clear();
-                    lastRequestDate = currentDate;
-                }
+		    
+               if(DC_Cond!=0) {
+				int count = LeftCountMap.getOrDefault(currentDate, 0);
+				key="Left_" + DC_Cond +"_"+String.valueOf(count);
+				 URL=(String) mcc.get(key);
+				 if (lastRequestDate == null || !lastRequestDate.equals(currentDate)) {
+			            LeftCountMap.clear();
+			            lastRequestDate = currentDate;
+			        }
+			}
+			else {
+				
+				int count = LeftCountMap.getOrDefault(currentDate, 0);
+				key="Left_0_"+String.valueOf(count);
+				 URL=(String) mcc.get(key);
+				 if (lastRequestDate == null || !lastRequestDate.equals(currentDate)) {
+			            LeftCountMap.clear();
+			            lastRequestDate = currentDate;
+			        }
+			}
+			
             }
             if (URL == null) {
                 URL = "All Ads are Served";
