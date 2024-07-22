@@ -180,6 +180,7 @@ public class SponsoredAdsController {
 		String Res=null;
 		if(DC_Cond!=null)
 		{
+			AdType=0;
 			Med_Type=0;
 		}
 		else if(Med_Type!=null) {
