@@ -691,4 +691,36 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
         return 0; // Return 0 if email sending fails
     }
 }
+	public static  List<HashMap<String, Object>> getDoctorsList() {
+	        Session session = HibernateUtil.buildSessionFactory();
+	        Query query1 = session.createNativeQuery("SELECT d.docid, d.prefix, d.docname_first, d.docname_middle, d.docname_last, " +
+	                "mt.name AS MedicineTypeName, h.hospital_affliated " +
+	                "FROM Doctors_New d " +
+	                "JOIN registration r ON d.docid = r.DocID " +
+	                "JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID " +
+	                "LEFT JOIN hospital AS h ON d.hospital_affliated = h.hospitalid " +
+	                "JOIN medicinetype AS mt ON d.MedicineTypeID = mt.id " +
+	                "WHERE sr.ServiceID=2 and EndDate>=current_date();");
+
+	        List<HashMap<String, Object>> doctorList = new ArrayList<>();
+
+	        List<Object[]> resultList = query1.getResultList();
+	        Constant.log("Executed Query and Got: " + resultList.size() + " Doctor Lists back", 1);
+
+	        for (Object[] obj : resultList) {
+	            HashMap<String, Object> doctor = new HashMap<>();
+
+	            doctor.put("docId", obj[0] != null ? (Integer) obj[0] : 0);
+	            doctor.put("prefix", obj[1] != null ? (String) obj[1] : "");
+	            doctor.put("docname_first", obj[2] != null ? (String) obj[2] : "");
+	            doctor.put("docname_middle", obj[3] != null ? (String) obj[3] : "");
+	            doctor.put("docname_last", obj[4] != null ? (String) obj[4] : "");
+	            doctor.put("MedicineTypeName", obj[5] != null ? (String) obj[5] : "");
+	            doctor.put("hospital_affliated", obj[6] != null ? (String) obj[6] : "");
+
+	            doctorList.add(doctor);
+	        }
+	        return doctorList;
+	    }
+	    
 }
