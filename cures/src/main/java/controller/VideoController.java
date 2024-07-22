@@ -110,5 +110,11 @@ public class VideoController {
 			return "Error";
 		}
     }
+
+	@RequestMapping(value = "/get/doctors/list", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List<HashMap<String, Object>> getDoctorsList(HttpServletRequest request) throws Exception {
+
+		return VideoDaoImpl.getDoctorsList();
+	}
 	
 }
