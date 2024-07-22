@@ -293,7 +293,7 @@ public class TargetAds {
 	  	  int adCountPerDay=0;
 			Query query = session.createNativeQuery(
 					"SELECT AdID,ImageLocation, StartDate, EndDate,AdCount,(AdCount-AdDelivered), AdTypeName,MedTypeID\r\n"
-					+ "				FROM campaignads c join adstypes t\r\n"
+					+ "				FROM CampaignAds c join AdsTypes t\r\n"
 					+ "				WHERE CURDATE() BETWEEN StartDate AND EndDate and ReviewStatus=1 and c.AdTypeID=t.AdTypeID and MedTypeID!=0");
 			List<Object[]> results = (List<Object[]>) query.getResultList();
 			System.out.println(results.size());
