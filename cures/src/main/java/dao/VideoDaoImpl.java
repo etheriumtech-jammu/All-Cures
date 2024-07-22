@@ -693,7 +693,7 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
 }
 	public static  List<HashMap<String, Object>> getDoctorsList() {
 	        Session session = HibernateUtil.buildSessionFactory();
-	        Query query1 = session.createNativeQuery("SELECT d.docid, d.prefix, d.docname_first, d.docname_middle, d.docname_last, " +
+	        Query query1 = session.createNativeQuery("SELECT d.docid, d.prefix, d.docname_first, d.docname_middle, d.docname_last,,d.img_Loc " +
 	                "mt.name AS MedicineTypeName, h.hospital_affliated " +
 	                "FROM Doctors_New d " +
 	                "JOIN registration r ON d.docid = r.DocID " +
@@ -717,7 +717,7 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
 	            doctor.put("docname_last", obj[4] != null ? (String) obj[4] : "");
 	            doctor.put("MedicineTypeName", obj[5] != null ? (String) obj[5] : "");
 	            doctor.put("hospital_affliated", obj[6] != null ? (String) obj[6] : "");
-
+		    doctor.put("imgLoc", obj[7] != null ? (String) obj[7] : "");
 	            doctorList.add(doctor);
 	        }
 	        return doctorList;
