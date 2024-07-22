@@ -1967,6 +1967,7 @@ public static List ListCampaigns() {
 	    	return ret;
 	    	
 	    }
+	
 	  public static List<ServiceContract> getAllContracts() {
 		    Session session = HibernateUtil.buildSessionFactory();
 		    Query query1 = session.createNativeQuery("SELECT\r\n"
@@ -2125,9 +2126,7 @@ public static List ListCampaigns() {
 	    }
 
 	  public static int deleteContract(int ContractID) {
-			
 			Session session = HibernateUtil.buildSessionFactory();
-
 			// creating session object
 			//Session session = factory;
 			// creating transaction object
@@ -2205,21 +2204,18 @@ public static List ListCampaigns() {
 	            contract.setContractId(obj[0] != null ? (Integer) obj[0] : 0);
 	            contract.setServiceId(obj[1] != null ? (Integer) obj[1] : 0);
 	            contract.setServiceName((String) obj[2] != null ? (String) obj[2] : "");
-		    	contract.setUserName((String) obj[3] != null? ((String) obj[17] != null? (String) obj[3] + " " + (String) obj[17]: (String) obj[3]) : "");
+		    contract.setUserName((String) obj[3] != null? ((String) obj[17] != null? (String) obj[3] + " " + (String) obj[17]: (String) obj[3]) : "");
 		    	
 	            contract.setUserId(obj[4] != null ? (Integer) obj[4] : 0);
 	            contract.setContactFirstName((String) obj[5] != null ? (String) obj[5] : "");
 	            contract.setContactLastName((String) obj[6] != null ? (String) obj[6] : "");
 	            contract.setCreatedBy(obj[7] != null ? (Integer) obj[7] : 0);
 	            contract.setDocumentPath((String) obj[8] != null ? (String) obj[8] : "");
-
 	            // Convert obj[7] and obj[8] to String, assuming they are Date fields
 	            contract.setStartDate((obj[9] != null ? obj[9].toString() : null));
 	            contract.setEndDate((obj[10] != null ? obj[10].toString() : null));
-
 	            // Convert obj[9] to String, assuming it's a DECIMAL field
 	            contract.setFee((obj[11] != null ? obj[11].toString() : null));
-
 	            contract.setCurrency((String) (obj[12] != null ? obj[12] : null));
 	            contract.setCreatedDate((Timestamp) (obj[13] != null ? obj[13] : null));
 	            contract.setLastUpdatedDate((Timestamp) (obj[14] != null ? obj[14] : null));
