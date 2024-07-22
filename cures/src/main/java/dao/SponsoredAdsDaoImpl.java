@@ -1167,15 +1167,30 @@ public static List ListCampaigns() {
 		}
 		}
             if (AdType == 1) {
-                int count = BannerCountMap.getOrDefault(currentDate, 0);
-                key = "Banner_0_" + String.valueOf(count);
-                System.out.println(key);
-                URL = (String) mcc.get(key);
-                System.out.println(key + URL);
-                if (lastRequestDate == null || !lastRequestDate.equals(currentDate)) {
-                    BannerCountMap.clear();
-                    lastRequestDate = currentDate;
-                }
+		    if (Med_Type != 0) {
+			    int count = BannerCountMap.getOrDefault(currentDate, 0);
+			    System.out.println(count);
+			     key = "Banner_" + Med_Type + "_" + String.valueOf(count);
+				System.out.println("Key"+key);
+				 URL=(String) mcc.get(key);
+				 System.out.println(key + URL);
+				 if (lastRequestDate == null || !lastRequestDate.equals(currentDate)) {
+			            BannerCountMap.clear();
+			            lastRequestDate = currentDate;
+			        }	
+			}
+              else {
+				int count = BannerCountMap.getOrDefault(currentDate, 0);
+				System.out.println(count);
+				key="Banner_0_"+String.valueOf(count);
+				System.out.println("Key"+key);
+				 URL=(String) mcc.get(key);
+				 System.out.println(key + URL);
+				 if (lastRequestDate == null || !lastRequestDate.equals(currentDate)) {
+			            BannerCountMap.clear();
+			            lastRequestDate = currentDate;
+			        }
+			}
             }
             if (AdType == 2) {
                 int count = LeftCountMap.getOrDefault(currentDate, 0);
