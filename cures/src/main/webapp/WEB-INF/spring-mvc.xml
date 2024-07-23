@@ -191,7 +191,12 @@
 </bean>
 
 </mvc:interceptor>
+<mvc:interceptor>
+<mvc:mapping path="/sponsored/list/ads/url/*"/>
+<bean class="service.SimpleInterceptor">
+</bean>
 
+</mvc:interceptor>
 </mvc:interceptors>
 	<context:component-scan
 		base-package="controller,dao,service" />
