@@ -101,7 +101,7 @@ public class PaymentController {
     	String meeting=dailyCoService.createMeeting();
     	String res= PaymentGatewayDaoImpl.saveTransactionResults(request,meeting);
     	System.out.println(meeting);
-	response.sendRedirect("https://www.all-cures.com/paymentStatus"); 
+	response.sendRedirect("https://all-cures.com/paymentStatus"); 
     	return res;
     }
 	
