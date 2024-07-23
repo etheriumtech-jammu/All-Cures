@@ -71,7 +71,7 @@ public class SimpleInterceptor implements HandlerInterceptor {
 		{
 			System.out.println("Current Date in Milliseconds: before insert " + System.currentTimeMillis());
 			Query query = session.createNativeQuery(
-	    			"INSERT INTO AdsStats (AdID, Impressions) SELECT c.AdID, 1 FROM CampaignAds c WHERE c.ImageLocation = '" + URL + "';");
+	    			"INSERT INTO AdsStats (AdID, Impressions,SlotID,AdTypeID) SELECT c.AdID, 1,c.SlotID,c.AdTypeID FROM CampaignAds c WHERE c.ImageLocation = '" + URL + "';");
 	   // 		System.out.println(query);
 	    	try {
 			System.out.println("Current Date in Milliseconds: before execution of insert " + System.currentTimeMillis());
