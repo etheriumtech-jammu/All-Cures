@@ -192,7 +192,7 @@ public class SponsoredAdsController {
 			Med_Type=0;
 		}
 	       Res= SponsoredAdsDaoImpl.AdsURL(AdType,DC_Cond,Med_Type);
-//	       request.setAttribute("customData", Res );
+	       request.setAttribute("customData", Res );
 		
 		
 		  
