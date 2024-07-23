@@ -238,9 +238,7 @@ public class DoctorsDaoImpl_New {
 			session.getTransaction().rollback();
 		} finally {
 //			session.getTransaction().commit();   //session.close();
-			if (mcc != null) {
-	               mcc.shutdown(); // Release the MemcachedClient resources
-	            }
+			
 		}
 		System.out.println(ret+ret1+ret2);
 		return ret+ret1+ret2;
