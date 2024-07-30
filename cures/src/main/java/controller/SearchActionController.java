@@ -82,18 +82,22 @@ public class SearchActionController extends HttpServlet {
 
 			if(doc_details == "" && city_pin == "" )
 			{
-				Query query1 = session.createNativeQuery("SELECT docid, prefix " +
-				        "FROM Doctors_New  where MedicineTypeID is Not NULL and docid<=63 " +
-				        "ORDER BY CASE\r\n"
-				        + "            WHEN docid = 11 THEN 1\r\n"
-				        + "            WHEN docid = 23 THEN 2\r\n"
-				        + "            WHEN docid = 37 THEN 3\r\n"
-				        + "            WHEN docid = 44 THEN 4\r\n"
-				        + "            WHEN docid = 4 THEN 5\r\n"
-				        + "            WHEN docid = 20 THEN 6\r\n"
-				        + "            WHEN docid = 58 THEN 7\r\n"
-				        + "            ELSE 8 \r\n"
-				        + "         END "  + ";");
+				Query query1 = session.createNativeQuery("SELECT d.docid, \r\n"
+						+ "       d.prefix, \r\n"
+						+ "       CASE WHEN sr.ServiceID = 2 THEN 1 ELSE 0 END AS videoService\r\n"
+						+ "FROM Doctors_New d\r\n"
+						+ "LEFT JOIN (\r\n"
+						+ "    SELECT r.DocID,sr.ServiceID\r\n"
+						+ "    FROM registration r\r\n"
+						+ "    JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID\r\n"
+						+ "    WHERE sr.ServiceID = 2 AND EndDate >= CURRENT_DATE\r\n"
+						+ ") AS sr ON d.docid = sr.DocID\r\n"
+						+ "LEFT JOIN hospital h ON d.hospital_affliated = h.hospitalid\r\n"
+						+ "JOIN medicinetype mt ON d.MedicineTypeID = mt.id\r\n"
+						+ "WHERE d.MedicineTypeID IS NOT NULL\r\n"
+						+ "  AND (d.docid <= 63 OR d.docid >= 14487)\r\n"
+						+ "ORDER BY d.docid DESC\r\n"
+						  + ";");
 		//		List<Integer> rownoList = query1.getResultList();
 				List<Object[]> resultList = query1.getResultList();
 
