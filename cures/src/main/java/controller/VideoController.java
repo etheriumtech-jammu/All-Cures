@@ -20,6 +20,12 @@ import model.ServiceContract;
 import model.VideoFailure;
 import service.DailyCoService;
 import model.VideoLeads;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import util.HibernateUtil;
 @RestController
 @RequestMapping(path = "/video")
 public class VideoController {
