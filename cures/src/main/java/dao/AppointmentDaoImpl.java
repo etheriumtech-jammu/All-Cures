@@ -119,7 +119,7 @@ public class AppointmentDaoImpl {
 	public static List<Appointment> getAppointmentsOfDoc(Integer docID) {
 		Session session = HibernateUtil.buildSessionFactory();
 		Query query1 = session.createNativeQuery(
-				"SELECT * FROM Appointment where DocID=" +docID + ";");
+				"SELECT r.first_name,r.last_name,AppointmentDate,StartTime,Status  FROM allcures_schema.Appointment a Join registration r on r.registration_id=a.UserID where a.DocID=" +docID + ";");
 		List<Appointment> AppointmentList = new ArrayList<>();
 
 		List<Object[]> resultList = query1.getResultList();
@@ -127,26 +127,24 @@ public class AppointmentDaoImpl {
 
 		for (Object[] obj : resultList) {
 			Appointment appointment = new Appointment();
-			appointment.setAppointmentID(obj[0] != null ? (Integer) obj[0] : 0);
-			appointment.setDocID(obj[1] != null ? (Integer) obj[1] : 0);
-			appointment.setUserID(obj[2] != null ? (Integer) obj[2] : 0);
-			Date date=(Date)obj[3];
-			appointment.setAppointmentDate(date);
-			appointment.setStartTime(obj[4] != null ? (String) obj[4] : "");
-			appointment.setEndTime(obj[5] != null ? (String) obj[5] : "");
-			appointment.setRequestStatus(obj[6] != null ? (Integer) obj[6] : 0);
-			appointment.setPaymentStatus(obj[7] != null ? (Integer) obj[7] : 0);
-			appointment.setFailureID(obj[8] != null ? (Integer) obj[8] : 0);
-			appointment.setCreatedDate((Timestamp) (obj[9] != null ? obj[9] : null));
-			appointment.setLastUpdatedDate((Timestamp) (obj[10] != null ? obj[10] : null));
-			appointment.setStatus(obj[11] != null ? (Integer) obj[11] : 0);
 			
+	        // Extracting first and last names
+	        String firstName = obj[0] != null ? (String) obj[0] : "";
+	        String lastName = obj[1] != null ? (String) obj[1] : "";
+	        
+	        // Setting concatenated username
+	        String username = firstName + " " + lastName;
+	        appointment.setUserName(username);
+			Date date=(Date)obj[2];
+			appointment.setAppointmentDate(date);
+			appointment.setStartTime(obj[3] != null ? (String) obj[3] : "");
+			appointment.setStatus(obj[4] != null ? (Integer) obj[4] : 0);
 			AppointmentList.add(appointment);
 		}
 
 		return AppointmentList;
 	}
-
+	
 	//To get Appointments of a particular User
 		public static List<Appointment> getAppointmentsOfUser(Integer docID,Integer userID) {
 			Session session = HibernateUtil.buildSessionFactory();
