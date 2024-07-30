@@ -32,6 +32,7 @@ public class Doctor {
 	@Field public String imgLoc ;
 	@Field public Integer docActive ;
 	@Field public String medicineType ;
+	@Field public Integer videoService ;
 	public Doctor(String DocID, Integer gender, String hospital_affliated,
 			Integer insurance_accept, String board_certifcate, String membership, 
 			String telephone_nos, String primary_spl,
@@ -314,6 +315,12 @@ public class Doctor {
 		medicineType = MedicineType;
 		
 	}
+	public Integer getVideoService() {
+		return videoService;
+	}
 
+	public void setVideoService(Integer videoService) {
+		this.videoService = videoService;
+	}
 	
 }
