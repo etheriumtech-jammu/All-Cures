@@ -39,7 +39,7 @@ public class Doctor {
 			String other_spls, String sub_spls, String address1, String address2, String city, String state,
 			String country_code, String over_allrating, String create_date, Integer docactive, String prefix,
 			String docname_first, String docname_middle, String docname_last, String name, String email, String waiting_time,
-		 String about,String img_Loc,String MedicineType) {
+		 String about,String img_Loc,String MedicineType,Integer videoService) {
 		super();
 		this.docID = DocID;
 		this.gender = gender;
@@ -68,6 +68,7 @@ public class Doctor {
 		this.waitingTime = waiting_time;
 		this.medicineType=MedicineType;
 		this.about = about;
+		this.videoService=videoService;
 		
 	}
 	
