@@ -173,7 +173,7 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry(),
 					doc.getOverAllRating(), doc.getPrefix(),
 					doc.getFirstName(), doc.getMiddleName(), doc.getLastName(), doc.getFullName(),
-					doc.getEmail(), doc.getAbout(),doc.getImgLoc(),doc.getMedicineType()));
+					doc.getEmail(), doc.getAbout(),doc.getImgLoc(),doc.getMedicineType(),doc.getVideoService()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}
@@ -335,7 +335,7 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry(),
 					doc.getOverAllRating(), doc.getPrefix(),
 					doc.getFirstName(), doc.getMiddleName(), doc.getLastName(), doc.getFullName(),
-					doc.getEmail(),   doc.getAbout(),doc.getImgLoc(),doc.getMedicineType()));
+					doc.getEmail(),   doc.getAbout(),doc.getImgLoc(),doc.getMedicineType(),doc.getVideoService()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}
@@ -468,7 +468,7 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry(),
 					doc.getOverAllRating(), doc.getPrefix(),
 					doc.getFirstName(), doc.getMiddleName(), doc.getLastName(), doc.getFullName(),
-					doc.getEmail(), doc.getAbout(),doc.getImgLoc(),doc.getMedicineType()));
+					doc.getEmail(), doc.getAbout(),doc.getImgLoc(),doc.getMedicineType(),doc.getVideoService()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}
