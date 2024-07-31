@@ -591,7 +591,7 @@ public class SearchDaoImpl {
 			doc.setImgLoc(img_Loc);
 			String MedicineType = (String) document.getFieldValue("medicine_type");
 			 doc.setMedicineType(MedicineType);
-			 String videoService = (String) document.getFieldValue("videoService");
+			 String videoService = (String) document.getFieldValue("videoservice");
               		 doc.setVideoService(videoService);
 			 System.out.println("MedicineType"+doc.getMedicineType());
 			/*
