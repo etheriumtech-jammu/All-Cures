@@ -490,26 +490,8 @@ public class SearchDaoImpl {
 		// //queryParamMap.put("sort", "id asc");
 		// MapSolrParams queryParams = new MapSolrParams(queryParamMap);
 			
-		String[] featuredDocArr_copy = featureddocdetails.split(",");
-		String[] featuredDocArr = new String[2];
-		Integer videoService ;
+		String[] featuredDocArr = featureddocdetails.split(",");
 		String queryStr = "";
-		if (featuredDocArr_copy.length >= 2) {
-            featuredDocArr[0] = featuredDocArr_copy[0];
-            featuredDocArr[1] = featuredDocArr_copy[1];
-        }
-
-        // Check if the array has at least three elements
-		 // Check if the array has at least three elements
-        if (featuredDocArr_copy.length >= 3) {
-            try {
-                // Parse the third element as an Integer
-                videoService = Integer.parseInt(featuredDocArr_copy[2]);
-            } catch (NumberFormatException e) {
-                // Handle the case where the third element is not a valid integer
-                System.out.println("Invalid number format for videoService: " + featuredDocArr_copy[2]);
-            }
-        }
 		for (String featuredDoc : featuredDocArr) {
 			queryStr = queryStr + Constant.DOCID + ":" + featuredDoc + Constant.OR;
 		}
@@ -609,7 +591,12 @@ public class SearchDaoImpl {
 			doc.setImgLoc(img_Loc);
 			String MedicineType = (String) document.getFieldValue("medicine_type");
 			 doc.setMedicineType(MedicineType);
-		
+			 if(docid=="14485" || docid=="14490" || docid=="14491") {
+				doc.setVideoService(1); 
+			 }
+			 else {
+				 doc.setVideoService(0);  
+			 }
 
 			 System.out.println("MedicineType"+doc.getMedicineType());
 			/*
@@ -632,7 +619,7 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry(),
 					doc.getOverAllRating(), doc.getPrefix(),
 					doc.getFirstName(), doc.getMiddleName(), doc.getLastName(), doc.getFullName(),
-					doc.getEmail(), doc.getAbout(),doc.getImgLoc(),doc.getMedicineType()));
+					doc.getEmail(), doc.getAbout(),doc.getImgLoc(),doc.getMedicineType(),doc.getVideoService()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 			
 		}
