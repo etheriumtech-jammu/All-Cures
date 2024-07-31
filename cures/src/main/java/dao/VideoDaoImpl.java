@@ -690,18 +690,34 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
         e.printStackTrace(); // Log the exception or handle it appropriately
         return 0; // Return 0 if email sending fails
     }
-}
-	public static  List<HashMap<String, Object>> getDoctorsList() {
+}public static  List<HashMap<String, Object>> getDoctorsList() {
 	        Session session = HibernateUtil.buildSessionFactory();
-	        Query query1 = session.createNativeQuery("SELECT d.docid, d.prefix, d.docname_first, d.docname_middle, d.docname_last, " +
-	                "mt.name AS MedicineTypeName, h.hospital_affliated ,d.img_Loc " +
+/*	        Query query1 = session.createNativeQuery("SELECT d.docid, d.prefix, d.docname_first, d.docname_middle, d.docname_last,d.img_Loc " +
+	                "mt.name AS MedicineTypeName, h.hospital_affliated " +
 	                "FROM Doctors_New d " +
+	                " LEFT JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID " +
 	                "JOIN registration r ON d.docid = r.DocID " +
-	                "JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID " +
+	                
 	                "LEFT JOIN hospital AS h ON d.hospital_affliated = h.hospitalid " +
 	                "JOIN medicinetype AS mt ON d.MedicineTypeID = mt.id " +
 	                "WHERE sr.ServiceID=2 and EndDate>=current_date();");
-
+*/
+	        Query query1 = session.createNativeQuery("SELECT d.docid, \r\n"
+					+ "       d.prefix,d.docname_first, d.docname_middle, d.docname_last,mt.name AS MedicineTypeName, h.hospital_affliated,d.img_Loc, " 
+					+ "       CASE WHEN sr.ServiceID = 2 THEN 1 ELSE 0 END AS videoService\r\n"
+					+ "FROM Doctors_New d \r\n"
+					+ "LEFT JOIN (\r\n"
+					+ "    SELECT r.DocID,sr.ServiceID\r\n"
+					+ "    FROM registration r\r\n"
+					+ "    JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID\r\n"
+					+ "    WHERE sr.ServiceID = 2 AND EndDate >= CURRENT_DATE\r\n"
+					+ ") AS sr ON d.docid = sr.DocID\r\n"
+					+ "LEFT JOIN hospital h ON d.hospital_affliated = h.hospitalid\r\n"
+					+ "JOIN medicinetype mt ON d.MedicineTypeID = mt.id\r\n"
+					+ "WHERE d.MedicineTypeID IS NOT NULL\r\n"
+					+ "  AND (d.docid <= 63 OR d.docid >= 14485)\r\n"
+					+ "ORDER BY d.docid DESC\r\n"
+					  + ";");
 	        List<HashMap<String, Object>> doctorList = new ArrayList<>();
 
 	        List<Object[]> resultList = query1.getResultList();
@@ -710,14 +726,15 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
 	        for (Object[] obj : resultList) {
 	            HashMap<String, Object> doctor = new HashMap<>();
 
-	            doctor.put("docId", obj[0] != null ? (Integer) obj[0] : 0);
+	            doctor.put("docID", obj[0] != null ? (Integer) obj[0] : 0);
 	            doctor.put("prefix", obj[1] != null ? (String) obj[1] : "");
-	            doctor.put("docname_first", obj[2] != null ? (String) obj[2] : "");
-	            doctor.put("docname_middle", obj[3] != null ? (String) obj[3] : "");
-	            doctor.put("docname_last", obj[4] != null ? (String) obj[4] : "");
-	            doctor.put("MedicineTypeName", obj[5] != null ? (String) obj[5] : "");
-	            doctor.put("hospital_affliated", obj[6] != null ? (String) obj[6] : "");
-		    doctor.put("imgLoc", obj[7] != null ? (String) obj[7] : "");
+	            doctor.put("firstName", obj[2] != null ? (String) obj[2] : "");
+	            doctor.put("middleName", obj[3] != null ? (String) obj[3] : "");
+	            doctor.put("lastName", obj[4] != null ? (String) obj[4] : "");
+	            doctor.put("medicineType", obj[5] != null ? (String) obj[5] : "");
+	            doctor.put("hospitalAffiliated", obj[6] != null ? (String) obj[6] : "");
+	            doctor.put("imgLoc", obj[7] != null ? (String) obj[7] : "");
+	            doctor.put("videoService", obj[8] != null ? (BigInteger) obj[8] : 0);
 	            doctorList.add(doctor);
 	        }
 	        return doctorList;
