@@ -82,22 +82,10 @@ public class SearchActionController extends HttpServlet {
 
 			if(doc_details == "" && city_pin == "" )
 			{
-				Query query1 = session.createNativeQuery("SELECT d.docid, \r\n"
-						+ "       d.prefix, \r\n"
-						+ "       CASE WHEN sr.ServiceID = 2 THEN 1 ELSE 0 END AS videoService\r\n"
-						+ "FROM Doctors_New d\r\n"
-						+ "LEFT JOIN (\r\n"
-						+ "    SELECT r.DocID,sr.ServiceID\r\n"
-						+ "    FROM registration r\r\n"
-						+ "    JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID\r\n"
-						+ "    WHERE sr.ServiceID = 2 AND EndDate >= CURRENT_DATE\r\n"
-						+ ") AS sr ON d.docid = sr.DocID\r\n"
-						+ "LEFT JOIN hospital h ON d.hospital_affliated = h.hospitalid\r\n"
-						+ "JOIN medicinetype mt ON d.MedicineTypeID = mt.id\r\n"
-						+ "WHERE d.MedicineTypeID IS NOT NULL\r\n"
-						+ "  AND (d.docid <= 63 OR d.docid >= 14487)\r\n"
-						+ "ORDER BY d.docid DESC\r\n"
-						  + ";");
+				
+				Query query1 = session.createNativeQuery("SELECT docid, prefix " +
+				        "FROM Doctors_New  where MedicineTypeID is Not NULL and (docid<=63 or docid>=14485) " +
+				        "ORDER BY docid desc "  + ";");
 		//		List<Integer> rownoList = query1.getResultList();
 				List<Object[]> resultList = query1.getResultList();
 
