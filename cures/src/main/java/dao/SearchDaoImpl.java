@@ -591,13 +591,8 @@ public class SearchDaoImpl {
 			doc.setImgLoc(img_Loc);
 			String MedicineType = (String) document.getFieldValue("medicine_type");
 			 doc.setMedicineType(MedicineType);
-			 if(docid.equals(14485) || docid=="14490" || docid=="14491") {
-				doc.setVideoService(1); 
-			 }
-			 else {
-				 doc.setVideoService(0);  
-			 }
-
+			 String videoService = (String) document.getFieldValue("videoService");
+              		 doc.setVideoService(videoService);
 			 System.out.println("MedicineType"+doc.getMedicineType());
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
