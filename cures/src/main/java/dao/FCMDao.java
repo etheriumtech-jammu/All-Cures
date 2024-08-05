@@ -1,6 +1,7 @@
 package dao;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,7 +15,8 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 
 import Chat_Function.NotificationService;
 import util.HibernateUtil;
-
+import model.Token;
+import org.hibernate.Transaction;
 public class FCMDao {
 
 	public static void Tip_Send(HashMap<String, Object> TipMap) throws FirebaseMessagingException, IOException {
@@ -74,5 +76,58 @@ public class FCMDao {
 		return ret;
 	}
 
+	public static Integer Token_Add(String token, Integer registration_id) {
+	    Session session = HibernateUtil.buildSessionFactory();
+	    Transaction transaction = null;
+	    Integer ret = 0;
+
+	    try {
+	        
+	        transaction = session.beginTransaction();
+
+	        Query<Token> query = session.createQuery(
+	                "FROM Token WHERE tokenName = :token", Token.class);
+	        query.setParameter("token", token);
+
+	        Token existingToken = query.uniqueResult();
+
+	        if (existingToken != null) {
+	            // Case 1: Token exists
+	            if (registration_id != null && !registration_id.equals(0) ) {
+	                // Update registration_id
+	                existingToken.setRegistrationId(registration_id);
+	                session.update(existingToken);
+	                ret = 1;
+	                System.out.println("Token updated with registration_id");
+	            } else {
+	                // registration_id not provided
+	                System.out.println("Registration_id not provided. No update made.");
+	            }
+	        } else {
+	            // Case 2 & 3: Token doesn't exist
+	            Token newToken = new Token();
+	            newToken.setTokenName(token);
+	            if (registration_id != null ) {
+	                // Case 2: registration_id provided
+	                newToken.setRegistrationId(registration_id);
+	                System.out.println("Token not found. Added with registration_id");
+	            } else {
+	                // Case 3: registration_id not provided
+	                System.out.println("Token not found. Added without registration_id");
+	            }
+	            session.save(newToken);
+	            ret = 1;
+	        }
+
+	        transaction.commit();
+	    } catch (NoResultException e) {
+	        if (transaction != null) {
+	            transaction.rollback();
+	        }
+	        e.printStackTrace();
+	    } 
+
+	    return ret;
+	}
 	
 }
