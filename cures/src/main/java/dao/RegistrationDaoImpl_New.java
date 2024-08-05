@@ -22,7 +22,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
-
+import org.json.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -744,7 +744,8 @@ public class RegistrationDaoImpl_New {
 	}
 	public static String RegisterUser( HashMap<String, Object> RegisterMap,HttpServletRequest request,HttpServletResponse response) { 
 		  Registration user = null;
-          String errMsg = "";
+          	  String errMsg = "";
+		  String FCM="";
 	        try {
 	            // Assuming your HashMap has keys matching the property names in Service
 	            // Adjust these names based on your actual Service class
@@ -767,7 +768,7 @@ public class RegistrationDaoImpl_New {
 	             Boolean accPolicy = Constant.ON.equalsIgnoreCase(acceptPolicy);
 	             Integer state = 1;
 	             Integer age=(Integer)RegisterMap.get(Constant.Age)!= null ? (Integer)RegisterMap.get(Constant.Age) : 0;
-	             
+	              FCM=(String)RegisterMap.get("FCM")!= null ? (String)RegisterMap.get("FCM") : "";
 	             try { 
 	                 if (alreadyExists(email)) {
 	                     errMsg = "Email Address already exists in the system";
@@ -796,7 +797,12 @@ public class RegistrationDaoImpl_New {
           	      String jsonData = gson.toJson(user);
           	      System.out.println("jsonData"+jsonData);
          	       // Convert JSON string to JSON object
-         	       Object jsonObject = gson.fromJson(jsonData, Object.class);
+    //     	       Object jsonObject = gson.fromJson(jsonData, Object.class);
+		 // Parse the JSON body and extract the value of the key "registration_id"
+                JSONObject jsonObject = new JSONObject(jsonData);
+                int registrationId = jsonObject.getInt("registration_id");
+               
+		FCMDao.Token_Add(FCM, registrationId);
          	       return jsonData;
 	 	       }
 	        	else
