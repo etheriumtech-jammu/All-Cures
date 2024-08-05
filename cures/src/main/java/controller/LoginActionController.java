@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
@@ -16,9 +17,10 @@ import javax.servlet.http.HttpSession;
 import service.JWTTokenValidationInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
+import org.json.JSONObject;
 import dao.RegistrationDaoImpl_New;
 import model.Registration;
+import dao.FCMDao;
 import util.Constant;
 import util.CookieManager;
 import util.Encryption;
@@ -48,7 +50,15 @@ public class LoginActionController extends HttpServlet {
 		Encryption encrypt = new Encryption();
 		CookieManager cook = new CookieManager();
 		String idcook =null;
-		
+		// Reading data from the body of a POST request
+	    StringBuilder stringBuilder = new StringBuilder();
+	    BufferedReader reader = request.getReader();
+	    String line;
+	    while ((line = reader.readLine()) != null) {
+	        stringBuilder.append(line);
+	    }
+	    String body = stringBuilder.toString();
+
 		response.setContentType("text/html");
 		String email = request.getParameter(Constant.EMAIL);
 		String saltedPassword = request.getParameter(Constant.PSW);
@@ -77,6 +87,17 @@ public class LoginActionController extends HttpServlet {
 			}
 			
 			RegistrationDaoImpl_New.resetLoginDetails(user.getRegistration_id());
+			//Calling method to send the token to the user
+			 // Parse the JSON body and extract the value of the key "FCM"
+		    if(body != null && !body.isEmpty()) {
+		    	 JSONObject jsonObject = new JSONObject(body);
+		 	    String fcmValue = jsonObject.getString("FCM");
+
+		 	    // Print the value of "FCM"
+		 	    System.out.println("FCM value: " + fcmValue);
+		 	   FCMDao.Token_Add(fcmValue, user.getRegistration_id());
+		    }
+		   
 			user.setValue(value);
 			
 			//User should be logged in now
