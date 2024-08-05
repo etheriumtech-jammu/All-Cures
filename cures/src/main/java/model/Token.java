@@ -29,7 +29,7 @@ public class Token {
     private Date lastUpdatedDate;
 
     @Column(name = "Status")
-    private int status;
+    private Integer status;
 
     public Integer getTokenID() {
 		return tokenID;
