@@ -21,10 +21,7 @@ public class Token {
 
     @Column(name = "registration_id")
     private Integer registrationID;
-
-    @Column(name = "CreatedDate")
-    private Date createdDate;
-
+	
     @Column(name = "LastUpdatedDate")
     private Date lastUpdatedDate;
 
@@ -45,14 +42,6 @@ public class Token {
 
 	public void setRegistrationID(Integer registrationID) {
 		this.registrationID = registrationID;
-	}
-
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
 	}
 
 	public Date getLastUpdatedDate() {
