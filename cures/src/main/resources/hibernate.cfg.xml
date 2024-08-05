@@ -89,6 +89,7 @@
 	    	<mapping class="model.PaymentGatewayTransaction"/>
 	    	<mapping class="model.ArticleClickCount"/>
 	    	<mapping class="model.VideoLeads"/>
+	    	<mapping class="model.Token"/>
    <!--   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password">root</property>
