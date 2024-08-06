@@ -70,9 +70,17 @@ public class AppointmentDaoImpl {
 	        session.save(appointment);
 	        tx.commit();
 
+		Query<Long> query = session.createQuery(
+                    "SELECT COUNT(a) FROM Appointment a WHERE a.userID = :userID", Long.class);
+            query.setParameter("userID", (Integer) appointmentMap.get("userID"));
+            Long appointmentCount = query.uniqueResult();
 	        // Initiate payment process
 	        HashMap<String, String> res = PaymentGatewayDaoImpl.setPayment(appointmentMap, appointment.getAppointmentID());
-	        
+	         if (appointmentCount == 2) {
+                res.put("Count", "0");
+            } else {
+                res.put("Count", "1");
+            }
 	        	 return res; // Return encRequest if insertion is successful
 	        
 	    } catch (Exception e) {
