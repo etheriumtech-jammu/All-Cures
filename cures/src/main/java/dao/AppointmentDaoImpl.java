@@ -71,7 +71,7 @@ public class AppointmentDaoImpl {
 	        tx.commit();
 
 		Query<Long> query = session.createQuery(
-                    "SELECT COUNT(a) FROM Appointment a WHERE a.userID = :userID", Long.class);
+                    "SELECT COUNT(AppointmentID) FROM Appointment a WHERE a.userID = :userID", Long.class);
             query.setParameter("userID", (Integer) appointmentMap.get("userID"));
             Long appointmentCount = query.uniqueResult();
 	        // Initiate payment process
