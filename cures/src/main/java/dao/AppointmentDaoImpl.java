@@ -119,7 +119,7 @@ public class AppointmentDaoImpl {
 	public static List<Appointment> getAppointmentsOfDoc(Integer docID) {
 		Session session = HibernateUtil.buildSessionFactory();
 		Query query1 = session.createNativeQuery(
-				"SELECT r.first_name,r.last_name,AppointmentDate,StartTime,Status  FROM allcures_schema.Appointment a Join registration r on r.registration_id=a.UserID where a.DocID=" +docID + ";");
+				"SELECT r.first_name,r.last_name,AppointmentDate,StartTime,EndTime,Status  FROM allcures_schema.Appointment a Join registration r on r.registration_id=a.UserID where a.DocID=" +docID + ";");
 		List<Appointment> AppointmentList = new ArrayList<>();
 
 		List<Object[]> resultList = query1.getResultList();
@@ -138,7 +138,8 @@ public class AppointmentDaoImpl {
 			Date date=(Date)obj[2];
 			appointment.setAppointmentDate(date);
 			appointment.setStartTime(obj[3] != null ? (String) obj[3] : "");
-			appointment.setStatus(obj[4] != null ? (Integer) obj[4] : 0);
+			appointment.setEndTime(obj[4] != null ? (String) obj[4] : "");
+			appointment.setStatus(obj[5] != null ? (Integer) obj[5] : 0);
 			AppointmentList.add(appointment);
 		}
 
