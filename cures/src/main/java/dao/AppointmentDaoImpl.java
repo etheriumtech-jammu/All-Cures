@@ -76,7 +76,7 @@ public class AppointmentDaoImpl {
             Long appointmentCount = query.uniqueResult();
 	        // Initiate payment process
 	        HashMap<String, String> res = PaymentGatewayDaoImpl.setPayment(appointmentMap, appointment.getAppointmentID());
-	         if (appointmentCount == 2) {
+	         if (appointmentCount <= 2) {
                 res.put("Count", "0");
             } else {
                 res.put("Count", "1");
