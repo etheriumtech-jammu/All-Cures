@@ -35,59 +35,136 @@ import util.HibernateUtil;
 public class AppointmentDaoImpl {
 	 
 	//To add a new Appointment
-	public static HashMap<String, String> setAppointment(HashMap<String, Object> appointmentMap) {
-		Session session = HibernateUtil.buildSessionFactory();
-		 Transaction tx = session.beginTransaction();
-	    try  {
-	        Appointment appointment = new Appointment();
-	       
-	        
-	        // Set appointment details
-	        appointment.setDocID((Integer) appointmentMap.get("docID"));
-	        appointment.setUserID((Integer) appointmentMap.get("userID"));
-	        String dateString = (String) appointmentMap.get("appointmentDate");
-	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	        java.util.Date parsedDate = dateFormat.parse(dateString);
-	        java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
-	        appointment.setAppointmentDate(sqlDate);
+	public static HashMap<String, Object> setAppointment(HashMap<String, Object> appointmentMap) {
+        HashMap<String, Object> response = new HashMap<>();
+        Session session = HibernateUtil.buildSessionFactory();
+        String fullName="";
+        Query<Long> query = session.createQuery(
+                "SELECT COUNT(a) FROM Appointment a WHERE a.userID = :userID", Long.class);
+        query.setParameter("userID", (Integer) appointmentMap.get("userID"));
+        Long appointmentCount = query.uniqueResult();
 
-	        // Retrieve doctor's availability to get the slot duration
-	        AvailabilitySchedule doctorAvailability = session.get(AvailabilitySchedule.class, (Integer) appointmentMap.get("docID"));
-	        if (doctorAvailability != null) {
-	            int slotDuration = doctorAvailability.getSlotDuration();
-	            LocalTime startTime = LocalTime.parse((String) appointmentMap.get("startTime"));
-	            // Calculate end time by adding start time and slot duration
-	            LocalTime endTime = startTime.plusMinutes(slotDuration);
+        Query query1 = session.createNativeQuery(
+                "SELECT token_name FROM tip_token WHERE registration_id = :userID");
+        query1.setParameter("userID", (Integer) appointmentMap.get("userID"));
+        String tokenName =(String) query1.uniqueResult();
+        
+        Query query2 = session.createNativeQuery(
+                "SELECT prefix, docname_first, docname_middle, docname_last FROM Doctors_New WHERE docid = :docID");
+        query2.setParameter("docID", (Integer) appointmentMap.get("docID"));
+        List<Object[]> results = query2.getResultList();
 
-	            appointment.setStartTime(startTime.toString());
-	            appointment.setEndTime(endTime.toString());
-	        } else {
-	            throw new Exception("Doctor availability not found for docID: " + appointmentMap.get("docID"));
-	        }
+        if (!results.isEmpty()) {
+            Object[] row = results.get(0);
+            String prefix = row[0] != null ? row[0].toString() : "";
+            String firstName = row[1] != null ? row[1].toString() : "";
+            String middleName = row[2] != null ? row[2].toString() : "";
+            String lastName = row[3] != null ? row[3].toString() : "";
 
-	        appointment.setPaymentStatus((Integer) appointmentMap.get("paymentStatus"));
-	        appointment.setStatus(0);
-	        session.save(appointment);
-	        tx.commit();
-
-		Query<Long> query = session.createQuery(
-                    "SELECT COUNT(AppointmentID) FROM Appointment a WHERE a.userID = :userID", Long.class);
-            query.setParameter("userID", (Integer) appointmentMap.get("userID"));
-            Long appointmentCount = query.uniqueResult();
-	        // Initiate payment process
-	        HashMap<String, String> res = PaymentGatewayDaoImpl.setPayment(appointmentMap, appointment.getAppointmentID());
-	         if (appointmentCount <= 2) {
-                res.put("Count", "0");
-            } else {
-                res.put("Count", "1");
+         // Build the full name with spaces only between the names, not between prefix and first name
+            StringBuilder fullNameBuilder = new StringBuilder();
+            fullNameBuilder.append(prefix +" " + firstName);
+           
+            if (!middleName.isEmpty()) {
+                fullNameBuilder.append(" ").append(middleName);
             }
-	        	 return res; // Return encRequest if insertion is successful
-	        
-	    } catch (Exception e) {
-	        e.printStackTrace(); // Log the exception or handle it appropriately
-	        return null; // Return 0 if insertion fails
-	    }
-	}
+            if (!lastName.isEmpty()) {
+                fullNameBuilder.append(" ").append(lastName);
+            }
+             fullName = fullNameBuilder.toString().trim();
+            System.out.println(fullName);
+        } else {
+            System.out.println("No doctor found with the given docID.");
+        }
+        try {
+            Appointment appointment = new Appointment();
+            Transaction tx = session.beginTransaction();
+
+            // Set appointment details
+            appointment.setDocID((Integer) appointmentMap.get("docID"));
+            appointment.setUserID((Integer) appointmentMap.get("userID"));
+            String dateString = (String) appointmentMap.get("appointmentDate");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date parsedDate = (Date) dateFormat.parse(dateString);
+            java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
+            appointment.setAppointmentDate(sqlDate);
+
+            // Retrieve doctor's availability to get the slot duration
+            AvailabilitySchedule doctorAvailability = session.get(AvailabilitySchedule.class, (Integer) appointmentMap.get("docID"));
+            if (doctorAvailability != null) {
+                int slotDuration = doctorAvailability.getSlotDuration();
+                LocalTime startTime = LocalTime.parse((String) appointmentMap.get("startTime"));
+                // Calculate end time by adding start time and slot duration
+                LocalTime endTime = startTime.plusMinutes(slotDuration);
+
+                appointment.setStartTime(startTime.toString());
+                appointment.setEndTime(endTime.toString());
+
+                // Save the appointment
+                appointment.setPaymentStatus((Integer) appointmentMap.get("paymentStatus"));
+                appointment.setStatus(2);
+                session.save(appointment);
+                tx.commit();
+
+              
+                // Initiate payment process
+                HashMap<String, String> paymentResponse = PaymentGatewayDaoImpl.setPayment(appointmentMap, appointment.getAppointmentID());
+                response.putAll(paymentResponse);
+                // Count the number of appointments scheduled by the user
+              
+                // Check appointment count and set the appropriate count value in the response
+                if (appointmentCount <= 2) {
+                    response.put("Count", "0");
+                } else {
+                    response.put("Count", "1");
+                }
+
+               
+                System.out.println(response + " res");
+              
+                // Check if the gap is sufficient (24 hours) before scheduling the notification
+                if (isGapSufficient(startTime, sqlDate)) {
+                    SchedulerService schedulerService = new SchedulerService();
+                    try {
+                        schedulerService.scheduleNotification(tokenName, startTime, sqlDate,fullName);
+                        System.out.println("Notification scheduled successfully.");
+                    } catch (SchedulerException e) {
+                        e.printStackTrace();
+                        System.out.println("Failed to schedule notification: " + e.getMessage());
+                    }
+                } else {
+                    System.out.println("Gap is less than 24 hours; notification not scheduled.");
+                }
+
+                return response; // Return response with payment response and appointment count
+
+            } else {
+                throw new Exception("Doctor availability not found for docID: " + appointmentMap.get("docID"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception or handle it appropriately
+            return null; // Return null if insertion fails
+        }
+    }
+
+    private static boolean isGapSufficient(LocalTime appointmentStartTime, Date appointmentDate) {
+        // Get the current time
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
+
+        // Convert appointmentStartTime and appointmentDate to ZonedDateTime
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(appointmentDate);
+        calendar.set(Calendar.HOUR_OF_DAY, appointmentStartTime.getHour());
+        calendar.set(Calendar.MINUTE, appointmentStartTime.getMinute());
+        calendar.set(Calendar.SECOND, 0);
+        ZonedDateTime appointmentDateTime = ZonedDateTime.ofInstant(calendar.toInstant(), ZoneId.systemDefault());
+
+        // Calculate the gap between the current time and the appointment start time
+        long hoursGap = java.time.Duration.between(now, appointmentDateTime).toHours();
+
+        // Check if the gap is at least 24 hours
+        return hoursGap >= 24;
+    }
 
 
 
