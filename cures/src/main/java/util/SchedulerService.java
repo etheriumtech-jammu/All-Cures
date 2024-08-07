@@ -12,7 +12,7 @@ public class SchedulerService {
         try  {
             
             // Calculate notification time (30 minutes before the appointment start time)
-            LocalTime notificationTime = appointmentStartTime.minusMinutes(30);
+            LocalTime notification_Time = appointmentStartTime.minusMinutes(30);
             
             // Convert notification time to java.util.Date
             Calendar calendar = Calendar.getInstance();
