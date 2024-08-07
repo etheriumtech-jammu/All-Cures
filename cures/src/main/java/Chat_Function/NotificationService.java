@@ -42,4 +42,32 @@ public class NotificationService {
 	        }
         
     }
+
+	public void sendNotification( String body, String recipientToken, String action, String id) throws IOException {
+        // Create the message for a single recipient
+        Message message = Message.builder()
+                .setNotification(Notification.builder()
+        //                .setTitle(title)
+                        .setBody(body)
+                        .build())
+                .setToken(recipientToken) // Use setToken for a single recipient
+                .putData("action", action)
+                .putData("id", id)
+                .build();
+        System.out.println("Notification message created: " + message.toString() + "\n");
+        // Check if Firebase is initialized
+        boolean isInitialized = !FirebaseApp.getApps().isEmpty();
+        if (!isInitialized) {
+            FirebaseInitializer.initialize(); // Ensure Firebase is initialized
+        }
+
+        System.out.println("Firebase initialized: " + isInitialized);
+        try {
+            // Send the notification
+            String response = FirebaseMessaging.getInstance().send(message);
+            System.out.println("Message sent successfully with response ID: " + response);
+        } catch (Exception e) {
+            e.printStackTrace(); // Handle exceptions as needed
+        }
+	}
 }
