@@ -11,6 +11,8 @@ import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,12 +27,14 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.quartz.SchedulerException;
 import model.Appointment;
 import model.AvailabilitySchedule;
 import model.Doctor_New;
 import model.ServicePayment;
 import util.Constant;
 import util.HibernateUtil;
+import util.SchedulerService;
 
 public class AppointmentDaoImpl {
 	 
