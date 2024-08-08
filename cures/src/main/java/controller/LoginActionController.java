@@ -91,6 +91,7 @@ public class LoginActionController extends HttpServlet {
 			 // Parse the JSON body and extract the value of the key "FCM"
 		    if(body != null && !body.isEmpty()) {
 		    	 JSONObject jsonObject = new JSONObject(body);
+			    System.out.println(jsonObject);
 		 	    String fcmValue = jsonObject.getString("FCM");
 
 		 	    // Print the value of "FCM"
