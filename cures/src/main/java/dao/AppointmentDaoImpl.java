@@ -119,7 +119,7 @@ public class AppointmentDaoImpl {
                 // Count the number of appointments scheduled by the user
               
                 // Check appointment count and set the appropriate count value in the response
-                if (appointmentCount <= 2) {
+                if (appointmentCount < 2) {
                     response.put("Count", "0");
                 } else {
                     response.put("Count", "1");
