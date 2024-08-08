@@ -1,7 +1,7 @@
 package dao;
 
 import java.math.BigInteger;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
