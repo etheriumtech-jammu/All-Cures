@@ -329,7 +329,7 @@ public class AppointmentDaoImpl {
 	                "SELECT sc.Fee,d.docname_first " +
 	                "FROM allcures_schema.ServiceContractDetails sc " +
 	                "JOIN registration r ON r.registration_id = sc.UserID " +
-	                "JOIN doctors_new d ON d.docid = r.DocID " +
+	                "JOIN Doctors_New d ON d.docid = r.DocID " +
 	                "WHERE d.DocID = :doctorId"
 	            );
 	        query.setParameter("doctorId", doctorId);
