@@ -1,5 +1,6 @@
 package dao;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.sql.SQLException;
@@ -319,17 +320,27 @@ public class AppointmentDaoImpl {
 	    List<LocalDate> completelyBookedDates = new ArrayList<>();
 	    Map<LocalDate, Set<LocalTime>> availableDates = new TreeMap<>();
 	    Map<LocalDate, Set<LocalTime>> unbookedSlots = new TreeMap<>();
-
+		  BigDecimal amount = null;
 	    try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 	        Transaction tx = session.beginTransaction();
 
 	        // Check if the doctor exists
-	        Query query = session.createNativeQuery("SELECT docid FROM Doctors_New WHERE docid = :doctorId");
+	     Query query = session.createNativeQuery(
+	                "SELECT sc.Fee,d.docname_first " +
+	                "FROM allcures_schema.servicecontractdetails sc " +
+	                "JOIN registration r ON r.registration_id = sc.UserID " +
+	                "JOIN doctors_new d ON d.docid = r.DocID " +
+	                "WHERE d.DocID = :doctorId"
+	            );
 	        query.setParameter("doctorId", doctorId);
 	        List<Object[]> resultList = query.getResultList();
 
 	        if (!resultList.isEmpty()) {
 	            // Doctor found
+			for (Object[] row : resultList) {
+	    	                // Assuming the fee is the first column and doctor's name is the second column in the result set
+	    	                 amount = (BigDecimal) row[0];
+	                	}
 	            LocalDate today = LocalDate.now();
 	            LocalDate end = today.plusDays(30); // Next 30 days
 
@@ -366,7 +377,7 @@ public class AppointmentDaoImpl {
 	    datesMap.put("totalDates", availableDates);
 	    datesMap.put("completelyBookedDates", completelyBookedDates);
 	    datesMap.put("unbookedSlots", unbookedSlots);
-
+	    datesMap.put("amount", amount.toString());
 	    return datesMap;
 	}
 
