@@ -79,11 +79,13 @@
 			<scope>provided</scope>
 		</dependency>
 
+<!-- https://mvnrepository.com/artifact/com.google.firebase/firebase-admin -->
 <dependency>
     <groupId>com.google.firebase</groupId>
     <artifactId>firebase-admin</artifactId>
-    <version>7.2.0</version>
+    <version>9.2.0</version>
 </dependency>
+
 
 <!-- https://mvnrepository.com/artifact/org.springframework/spring-tx -->
 <dependency>
