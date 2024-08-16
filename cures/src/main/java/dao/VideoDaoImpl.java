@@ -735,7 +735,7 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
 	            doctor.put("medicineType", obj[5] != null ? (String) obj[5] : "");
 	            doctor.put("hospitalAffiliated", obj[6] != null ? (String) obj[6] : "");
 	            doctor.put("imgLoc", obj[7] != null ? (String) obj[7] : "");
-	            doctor.put("videoService", obj[8] != null ? (BigInteger) obj[8] : 0);
+	            doctor.put("videoService", obj[8] != null ? (Integer) obj[8] : 0);
 	            doctorList.add(doctor);
 	        }
 	        return doctorList;
