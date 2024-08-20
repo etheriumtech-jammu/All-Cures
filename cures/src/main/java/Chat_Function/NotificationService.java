@@ -40,9 +40,9 @@ public class NotificationService {
 	        for (int i = 0; i < responses.size(); i++) {
 	            SendResponse sendResponse = responses.get(i);
 	            if (sendResponse.isSuccessful()) {
-	                System.out.println("Successfully sent to token: " + recipientTokens.get(i));
+	//                System.out.println("Successfully sent to token: " + recipientTokens.get(i));
 	            } else {
-	                System.out.println("Failed to send to token: " + recipientTokens.get(i));
+	//                System.out.println("Failed to send to token: " + recipientTokens.get(i));
 	            }
 	        }
 	        }
