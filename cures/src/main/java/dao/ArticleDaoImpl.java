@@ -1315,7 +1315,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 						String article_title=(String) articleMap.get("title");
 						List<String> recipientTokens = FCMDao.getTokens();
 						String id=Integer.toString(article_id);
-	//					NotificationService.sendNotification(recipientTokens,title,  article_title,action,id);
+						NotificationService.sendNotification(recipientTokens,title,  article_title,action,id);
 	//					System.out.println("Notification Sent");
 	//					WhatsAPITrackEvents.POSTRequestTrackEventsByArticleId(article_id);
 						WhatsAPITemplateMessage.POSTRequestTrackEventsByArticleId(art.getTitle()+"?whatsapp", article_id, type, art.getDisease_condition_id(), article_location_relative_full, author_medicine_type, disease_name);
