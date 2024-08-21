@@ -272,8 +272,8 @@ public class WhatsAPITemplateMessage {
 		os.close();
 
 		int responseCode = postConnection.getResponseCode();
-//		System.out.println("POST Response Code :  " + responseCode);
-//		System.out.println("POST Response Message : " + postConnection.getResponseMessage());
+		System.out.println("POST Response Code :  " + responseCode);
+		System.out.println("POST Response Message : " + postConnection.getResponseMessage());
 
 		if (responseCode == HttpURLConnection.HTTP_CREATED || responseCode == HttpURLConnection.HTTP_ACCEPTED) { // success
 			BufferedReader in = new BufferedReader(new InputStreamReader(postConnection.getInputStream()));
