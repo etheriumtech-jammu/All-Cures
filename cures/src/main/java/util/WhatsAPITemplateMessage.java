@@ -257,7 +257,7 @@ public class WhatsAPITemplateMessage {
 				+ "\",\"languageCode\": \"en\"," + " \"headerValues\": [\"" + header1_imgpath + "\"],"
 				+ " \"bodyValues\": [ \"" + title + "\"]"
 				+ "}}";
-//		System.out.println(POST_PARAMS);
+		System.out.println(POST_PARAMS);
 
 		URL obj = new URL(prop.getProperty("URL_API_TEMPLATES"));
 		HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
