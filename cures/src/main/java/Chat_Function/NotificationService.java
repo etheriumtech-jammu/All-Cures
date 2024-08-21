@@ -50,6 +50,10 @@ public class NotificationService {
 	        {
 	      	  e.printStackTrace();
 	        }
+		catch (Exception e) {
+  		  System.out.println("Unexpected error: " + e.getMessage());
+ 		   e.printStackTrace();
+}
         
     }
 }
