@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import util.HibernateUtil;
 
 import org.springframework.ui.Model;
-
+/*
 @Controller
 public class AppController {
     
@@ -77,4 +77,4 @@ public class AppController {
 
     
 }
-
+*/
