@@ -60,29 +60,49 @@ public class NotificationService {
 	public static void sendNotification(String recipientToken, String title, String body, String action, String id)
 			throws IOException, FirebaseMessagingException {
 		
-		if(id==null)
-		{
-			id="";
-		}
-		
-		// Create the message for a single recipient
-		Message message = Message.builder()
-				.setNotification(Notification.builder().setTitle(title).setBody(body).build()).setToken(recipientToken) 																								// recipient
-				.putData("action", action).putData("id", id).build();
-		System.out.println("Notification message created: " + message.toString() + "\n");
-		// Check if Firebase is initialized
-		boolean isInitialized = !FirebaseApp.getApps().isEmpty();
-		if (!isInitialized) {
-			FirebaseInitializer.initialize(); // Ensure Firebase is initialized
-		}
+		    // Build a single message for each token
+		    Message message = Message.builder()
+		            .setNotification(Notification.builder().setTitle(title).setBody(body).build())
+		            .setToken(recipientToken)
+		            .putData("action", action)
+		            .putData("id", id)
+		            .build();
 
-		System.out.println("Firebase initialized: " + isInitialized);
-		try {
-			// Send the notification
-			String response = FirebaseMessaging.getInstance().send(message);
-			System.out.println("Message sent successfully with response ID: " + response);
-		} catch (Exception e) {
-			e.printStackTrace(); // Handle exceptions as needed
+		    boolean isInitialized = FirebaseApp.getApps().size() > 0;
+		    if (!isInitialized) {
+		        FirebaseInitializer.initialize();
+		    }
+		    System.out.println("Firebase Initialized: " + isInitialized);
+		    
+		    try {
+		        // Send the message individually
+		        String response = FirebaseMessaging.getInstance().send(message);
+		        System.out.println("Message sent successfully to token: " + recipientToken + " with response ID: " + response);
+		        
+		        // Update the database for the successfully sent token
+		        Session session = HibernateUtil.buildSessionFactory();
+		        session.beginTransaction();
+		        Query query = session.createNativeQuery("UPDATE tip_token SET status = 1 WHERE token = :token");
+		        query.setParameter("token", recipientToken);
+		        int ret = query.executeUpdate();
+		        session.getTransaction().commit();
+		        
+		    } catch (FirebaseMessagingException e) {
+		        System.out.println("Failed to send message to token: " + recipientToken);
+		        if ("UNREGISTERED".equals(e.getErrorCode())) {
+		            System.out.println("Token is unregistered. Updating the database with status 0 for token: " + recipientToken);
+		            Session session = HibernateUtil.buildSessionFactory();
+		            session.beginTransaction();
+		            Query query = session.createNativeQuery("UPDATE tip_token SET status = 0 WHERE token = :token");
+		            query.setParameter("token", recipientToken);
+		            int ret = query.executeUpdate();
+		            session.getTransaction().commit();
+		        } else {
+		            e.printStackTrace();
+		        }
+		    } catch (Exception e) {
+		        System.out.println("An unexpected exception occurred:");
+		        e.printStackTrace();
+		    }
 		}
-	}
 }
