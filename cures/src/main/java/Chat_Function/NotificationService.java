@@ -11,6 +11,9 @@ import com.google.firebase.messaging.SendResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+import util.HibernateUtil;
 import org.springframework.stereotype.Service;
 
 // ...
