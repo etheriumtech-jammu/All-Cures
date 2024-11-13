@@ -77,7 +77,7 @@ public class AnalyticsController {
 		String strDate1 = dateFormat.format(limit1);
 	    String strDate2;
 		
-		System.out.println(strDate1);
+	//	System.out.println(strDate1);
 		if (limit2==null)
 		{
 			Date d=new Date();
