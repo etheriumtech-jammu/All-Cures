@@ -14,7 +14,7 @@ import org.springframework.ui.Model;
 @Controller
 public class AppController {
     
-    @GetMapping("/AboutUs")
+//    @GetMapping("/AboutUs")
     public String handleRequest2(Model model) {
           System.out.println("aboutUs");
 	    String title = "All-Cures - Around health and about it";
