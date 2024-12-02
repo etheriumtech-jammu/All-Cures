@@ -19,6 +19,13 @@ import model.AvailabilitySchedule;
 import model.ServiceContract;
 import model.VideoFailure;
 import service.DailyCoService;
+import model.VideoLeads;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import util.HibernateUtil;
 @RestController
 @RequestMapping(path = "/video")
 public class VideoController {
@@ -110,5 +117,37 @@ public class VideoController {
 			return "Error";
 		}
     }
+
+	@RequestMapping(value = "/get/doctors/list", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List<HashMap<String, Object>> getDoctorsList(HttpServletRequest request) throws Exception {
+
+		return VideoDaoImpl.getDoctorsList();
+	}
+	@RequestMapping(value = "/post/leads", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody int postLeads(HttpServletRequest request,@RequestParam(required=false) Integer userID,@RequestParam(required=false) Integer docID) throws Exception {
+
+		String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
+        // Create a UserActivity instance
+		VideoLeads userActivity = new VideoLeads(userID,docID, timestamp);
+        
+        // Save user activity
+        return saveUserActivity(userActivity);
+		
+	}
+	private int saveUserActivity(VideoLeads userActivity) {
+		// TODO Auto-generated method stub
+		Session session = HibernateUtil.buildSessionFactory();
+		try {
+		Transaction tx = session.beginTransaction();
+		session.save(userActivity);
+		tx.commit();
+		return 1;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	
+	}
+
 }
