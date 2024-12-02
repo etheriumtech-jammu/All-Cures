@@ -687,4 +687,55 @@ public class VideoDaoImpl {
 	            return 0;
 	        }
 	    }
+
+	public static  List<HashMap<String, Object>> getDoctorsList() {
+	        Session session = HibernateUtil.buildSessionFactory();
+/*	        Query query1 = session.createNativeQuery("SELECT d.docid, d.prefix, d.docname_first, d.docname_middle, d.docname_last,d.img_Loc " +
+	                "mt.name AS MedicineTypeName, h.hospital_affliated " +
+	                "FROM Doctors_New d " +
+	                " LEFT JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID " +
+	                "JOIN registration r ON d.docid = r.DocID " +
+	                
+	                "LEFT JOIN hospital AS h ON d.hospital_affliated = h.hospitalid " +
+	                "JOIN medicinetype AS mt ON d.MedicineTypeID = mt.id " +
+	                "WHERE sr.ServiceID=2 and EndDate>=current_date();");
+*/
+	        Query query1 = session.createNativeQuery("SELECT d.docid, \r\n"
+					+ "       d.prefix,d.docname_first, d.docname_middle, d.docname_last,mt.name AS MedicineTypeName, h.hospital_affliated,d.img_Loc, " 
+					+ "       CASE WHEN sr.ServiceID = 2 THEN 1 ELSE 0 END AS videoService\r\n"
+					+ "FROM Doctors_New d \r\n"
+					+ "LEFT JOIN (\r\n"
+					+ "    SELECT r.DocID,sr.ServiceID\r\n"
+					+ "    FROM registration r\r\n"
+					+ "    JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID\r\n"
+					+ "    WHERE sr.ServiceID = 2 AND EndDate >= CURRENT_DATE\r\n"
+					+ ") AS sr ON d.docid = sr.DocID\r\n"
+					+ "LEFT JOIN hospital h ON d.hospital_affliated = h.hospitalid\r\n"
+					+ "JOIN medicinetype mt ON d.MedicineTypeID = mt.id\r\n"
+					+ "WHERE d.MedicineTypeID IS NOT NULL\r\n"
+					+ "  AND (d.docid <= 63 OR d.docid >= 14485)\r\n"
+					+ "ORDER BY d.docid DESC\r\n"
+					  + ";");
+	        List<HashMap<String, Object>> doctorList = new ArrayList<>();
+
+	        List<Object[]> resultList = query1.getResultList();
+	        Constant.log("Executed Query and Got: " + resultList.size() + " Doctor Lists back", 1);
+
+	        for (Object[] obj : resultList) {
+	            HashMap<String, Object> doctor = new HashMap<>();
+
+	            doctor.put("docID", obj[0] != null ? (Integer) obj[0] : 0);
+	            doctor.put("prefix", obj[1] != null ? (String) obj[1] : "");
+	            doctor.put("firstName", obj[2] != null ? (String) obj[2] : "");
+	            doctor.put("middleName", obj[3] != null ? (String) obj[3] : "");
+	            doctor.put("lastName", obj[4] != null ? (String) obj[4] : "");
+	            doctor.put("medicineType", obj[5] != null ? (String) obj[5] : "");
+	            doctor.put("hospitalAffiliated", obj[6] != null ? (String) obj[6] : "");
+	            doctor.put("imgLoc", obj[7] != null ? (String) obj[7] : "");
+	            doctor.put("videoService", obj[8] != null ? (Integer) obj[8] : 0);
+	            doctorList.add(doctor);
+	        }
+	        return doctorList;
+	    }
+	    
 }
