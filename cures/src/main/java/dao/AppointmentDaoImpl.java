@@ -280,13 +280,13 @@ public class AppointmentDaoImpl {
 	                DayOfWeek dayOfWeek = date.getDayOfWeek();
 
 	                if (isDoctorAvailableOnDay(session, doctorId, dayOfWeek)) {
-	                    Set<LocalTime> bookedSlotsTime = getAppointmentsStartTimesForDate(doctorId, date);
-	                    Set<LocalTime> slotStartTimes = calculateTotalSlots(doctorId);
+	                    TreeSet<LocalTime> bookedSlotsTime = getAppointmentsStartTimesForDate(doctorId, date);
+	                    TreeSet<LocalTime> slotStartTimes = calculateTotalSlots(doctorId);
 
 	                    availableDates.put(date, slotStartTimes);
 
 	                    // Find unbooked slots
-	                    Set<LocalTime> unbookedSlotsTime = new HashSet<>(slotStartTimes);
+	                    TreeSet<LocalTime> unbookedSlotsTime = new TreeSet<>(slotStartTimes);
 	                    unbookedSlotsTime.removeAll(bookedSlotsTime);
 	                    unbookedSlots.put(date, unbookedSlotsTime);
 			    System.out.println("slotStartTimes.size()"+slotStartTimes.size());
