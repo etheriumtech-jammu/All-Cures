@@ -246,22 +246,33 @@ public class AppointmentDaoImpl {
 	return AppointmentList;
 	}
 	//To get Total , unbooked slots and Completely Booked Dates of a particular doctor
+	//To get Total , unbooked slots and Completely Booked Dates of a particular doctor
 	public static Map<String, Object> findCompletelyBookedAndAvailableDates(int doctorId) {
 	    Map<String, Object> datesMap = new HashMap<>();
 	    List<LocalDate> completelyBookedDates = new ArrayList<>();
 	    Map<LocalDate, Set<LocalTime>> availableDates = new TreeMap<>();
 	    Map<LocalDate, Set<LocalTime>> unbookedSlots = new TreeMap<>();
-
+		  BigDecimal amount = null;
 	    try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 	        Transaction tx = session.beginTransaction();
 
 	        // Check if the doctor exists
-	        Query query = session.createNativeQuery("SELECT docid FROM Doctors_New WHERE docid = :doctorId");
+	     Query query = session.createNativeQuery(
+	                "SELECT sc.Fee,d.docname_first " +
+	                "FROM allcures_schema.ServiceContractDetails sc " +
+	                "JOIN registration r ON r.registration_id = sc.UserID " +
+	                "JOIN Doctors_New d ON d.docid = r.DocID " +
+	                "WHERE d.DocID = :doctorId"
+	            );
 	        query.setParameter("doctorId", doctorId);
 	        List<Object[]> resultList = query.getResultList();
 
 	        if (!resultList.isEmpty()) {
 	            // Doctor found
+			for (Object[] row : resultList) {
+	    	                // Assuming the fee is the first column and doctor's name is the second column in the result set
+	    	                 amount = (BigDecimal) row[0];
+	                	}
 	            LocalDate today = LocalDate.now();
 	            LocalDate end = today.plusDays(30); // Next 30 days
 
@@ -269,17 +280,17 @@ public class AppointmentDaoImpl {
 	                DayOfWeek dayOfWeek = date.getDayOfWeek();
 
 	                if (isDoctorAvailableOnDay(session, doctorId, dayOfWeek)) {
-	                    TreeSet<LocalTime> bookedSlotsTime = getAppointmentsStartTimesForDate(doctorId, date);
-	                    TreeSet<LocalTime> slotStartTimes = calculateTotalSlots(doctorId);
-				System.out.println("slotStartTimes"+slotStartTimes);
+	                    Set<LocalTime> bookedSlotsTime = getAppointmentsStartTimesForDate(doctorId, date);
+	                    Set<LocalTime> slotStartTimes = calculateTotalSlots(doctorId);
+
 	                    availableDates.put(date, slotStartTimes);
 
 	                    // Find unbooked slots
-	                    TreeSet<LocalTime> unbookedSlotsTime = new TreeSet<>(slotStartTimes);
+	                    Set<LocalTime> unbookedSlotsTime = new HashSet<>(slotStartTimes);
 	                    unbookedSlotsTime.removeAll(bookedSlotsTime);
 	                    unbookedSlots.put(date, unbookedSlotsTime);
-//			    System.out.println("slotStartTimes.size()"+slotStartTimes.size());
-//			    System.out.println("bookedSlotsTime.size()"+bookedSlotsTime.size());
+			    System.out.println("slotStartTimes.size()"+slotStartTimes.size());
+			    System.out.println("bookedSlotsTime.size()"+bookedSlotsTime.size());
 	                    if (bookedSlotsTime.size() >= slotStartTimes.size()) {
 	                        completelyBookedDates.add(date);
 	                    }
@@ -298,7 +309,7 @@ public class AppointmentDaoImpl {
 	    datesMap.put("totalDates", availableDates);
 	    datesMap.put("completelyBookedDates", completelyBookedDates);
 	    datesMap.put("unbookedSlots", unbookedSlots);
-
+	    datesMap.put("amount", amount.toString());
 	    return datesMap;
 	}
 
