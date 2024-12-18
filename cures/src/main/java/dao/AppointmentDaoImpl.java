@@ -74,7 +74,14 @@ public class AppointmentDaoImpl {
 
 	        // Initiate payment process
 	        HashMap<String, String> res = PaymentGatewayDaoImpl.setPayment(appointmentMap, appointment.getAppointmentID());
-	
+
+		     // Check appointment count and set the appropriate count value in the response
+                if (appointmentCount < 2) {
+                    res.put("Count", "0");
+                } else {
+                    res.put("Count", "1");
+                }
+
 	        	 return res; // Return encRequest if insertion is successful
 	        
 	    } catch (Exception e) {
