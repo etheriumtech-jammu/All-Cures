@@ -248,8 +248,8 @@ public class AppointmentDaoImpl {
 	                DayOfWeek dayOfWeek = date.getDayOfWeek();
 
 	                if (isDoctorAvailableOnDay(session, doctorId, dayOfWeek)) {
-	                    Set<LocalTime> bookedSlotsTime = getAppointmentsStartTimesForDate(doctorId, date);
-	                    Set<LocalTime> slotStartTimes = calculateTotalSlots(doctorId);
+	                    TreeSet<LocalTime> bookedSlotsTime = getAppointmentsStartTimesForDate(doctorId, date);
+	                    TreeSet<LocalTime> slotStartTimes = calculateTotalSlots(doctorId);
 
 	                    availableDates.put(date, slotStartTimes);
 
@@ -318,8 +318,8 @@ public class AppointmentDaoImpl {
 	    }
 	}
 
-	private static Set<LocalTime> calculateTotalSlots(int doctorId) {
-		Set<LocalTime> slotStartTimes = new TreeSet<>();
+	private static TreeSet<LocalTime> calculateTotalSlots(int doctorId) {
+		TreeSet<LocalTime> slotStartTimes = new TreeSet<>();
 		Session session = HibernateUtil.getSessionFactory().openSession();
 	    try  {
 	        // Retrieve doctor's information from the database
@@ -360,8 +360,8 @@ public class AppointmentDaoImpl {
 	}
 
 
-	private static Set<LocalTime> getAppointmentsStartTimesForDate(int docID, LocalDate date) throws SQLException {
-	    Set<LocalTime> appointmentStartTimes = new HashSet<>();
+	private static TreeSet<LocalTime> getAppointmentsStartTimesForDate(int docID, LocalDate date) throws SQLException {
+	    TreeSet<LocalTime> appointmentStartTimes = new TreeSet<>();
 	    Session session = HibernateUtil.buildSessionFactory();
 	    try {
 	        Query query = session.createNativeQuery(
