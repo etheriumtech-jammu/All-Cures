@@ -26,7 +26,7 @@ public class ChatController {
 	 
 		@RequestMapping(value = "/chat/msg", produces = "application/json", method = RequestMethod.POST)
 		public @ResponseBody int chat_store(@RequestParam(required = false) Integer chat_id, @RequestBody HashMap chatMap, HttpServletRequest request) {
-		
+			System.out.println("entered");
 			System.out.println("chatMap"+chatMap);
 			if (chat_id==null)
 			{
