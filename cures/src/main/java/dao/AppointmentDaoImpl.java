@@ -40,7 +40,11 @@ public class AppointmentDaoImpl {
 	public static HashMap<String, String> setAppointment(HashMap<String, Object> appointmentMap) {
 		Session session = HibernateUtil.buildSessionFactory();
 		  Transaction tx = session.beginTransaction();
-	        
+	        Query<Long> query = session.createQuery(
+                "SELECT COUNT(a) FROM Appointment a WHERE a.userID = :userID", Long.class);
+        query.setParameter("userID", (Integer) appointmentMap.get("userID"));
+        Long appointmentCount = query.uniqueResult();
+
 	    try  {
 	        Appointment appointment = new Appointment();
 	      
