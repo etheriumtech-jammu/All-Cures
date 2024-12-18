@@ -38,61 +38,71 @@ public class AppointmentDaoImpl {
 	 
 	//To add a new Appointment
 	public static HashMap<String, String> setAppointment(HashMap<String, Object> appointmentMap) {
-		Session session = HibernateUtil.buildSessionFactory();
-		  Transaction tx = session.beginTransaction();
-	        Query<Long> query = session.createQuery(
-                "SELECT COUNT(a) FROM Appointment a WHERE a.userID = :userID", Long.class);
+    Session session = null;
+    Transaction tx = null;
+    HashMap<String, String> res = new HashMap<>();
+
+    try {
+        session = HibernateUtil.buildSessionFactory();
+        tx = session.beginTransaction();
+
+        // Retrieve appointment count
+        Query<Long> query = session.createQuery(
+            "SELECT COUNT(a) FROM Appointment a WHERE a.userID = :userID", Long.class);
         query.setParameter("userID", (Integer) appointmentMap.get("userID"));
         Long appointmentCount = query.uniqueResult();
 
-	    try  {
-	        Appointment appointment = new Appointment();
-	      
-	        // Set appointment details
-	        appointment.setDocID((Integer) appointmentMap.get("docID"));
-	        appointment.setUserID((Integer) appointmentMap.get("userID"));
-	        String dateString = (String) appointmentMap.get("appointmentDate");
-	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	        java.util.Date parsedDate = dateFormat.parse(dateString);
-	        java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
-	        appointment.setAppointmentDate(sqlDate);
+        // Create new appointment
+        Appointment appointment = new Appointment();
+        appointment.setDocID((Integer) appointmentMap.get("docID"));
+        appointment.setUserID((Integer) appointmentMap.get("userID"));
 
-	        // Retrieve doctor's availability to get the slot duration
-	        AvailabilitySchedule doctorAvailability = session.get(AvailabilitySchedule.class, (Integer) appointmentMap.get("docID"));
-	        if (doctorAvailability != null) {
-	            int slotDuration = doctorAvailability.getSlotDuration();
-	            LocalTime startTime = LocalTime.parse((String) appointmentMap.get("startTime"));
-	            // Calculate end time by adding start time and slot duration
-	            LocalTime endTime = startTime.plusMinutes(slotDuration);
+        // Parse and set appointment date
+        String dateString = (String) appointmentMap.get("appointmentDate");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date parsedDate = dateFormat.parse(dateString);
+        appointment.setAppointmentDate(new java.sql.Date(parsedDate.getTime()));
 
-	            appointment.setStartTime(startTime.toString());
-	            appointment.setEndTime(endTime.toString());
-	        } else {
-	            throw new Exception("Doctor availability not found for docID: " + appointmentMap.get("docID"));
-	        }
+        // Retrieve doctor's availability
+        AvailabilitySchedule doctorAvailability = session.get(
+            AvailabilitySchedule.class, (Integer) appointmentMap.get("docID"));
 
-	        appointment.setPaymentStatus((Integer) appointmentMap.get("paymentStatus"));
-	        appointment.setStatus(0);
-	        session.save(appointment);
-	        tx.commit();
+        if (doctorAvailability != null) {
+            int slotDuration = doctorAvailability.getSlotDuration();
+            LocalTime startTime = LocalTime.parse((String) appointmentMap.get("startTime"));
+            LocalTime endTime = startTime.plusMinutes(slotDuration);
 
-	        // Initiate payment process
-	        HashMap<String, String> res = PaymentGatewayDaoImpl.setPayment(appointmentMap, appointment.getAppointmentID());
+            appointment.setStartTime(startTime.toString());
+            appointment.setEndTime(endTime.toString());
+        } else {
+            throw new Exception("Doctor availability not found for docID: " + appointmentMap.get("docID"));
+        }
 
-		     // Check appointment count and set the appropriate count value in the response
-                if (appointmentCount < 2) {
-                    res.put("Count", "0");
-                } else {
-                    res.put("Count", "1");
-                }
+        // Set other appointment details
+        appointment.setPaymentStatus((Integer) appointmentMap.get("paymentStatus"));
+        appointment.setStatus(0);
 
-	        	 return res; // Return encRequest if insertion is successful
-	        
-	    } catch (Exception e) {
-	        e.printStackTrace(); // Log the exception or handle it appropriately
-	        return null; // Return 0 if insertion fails
-	    }
-	}
+        // Save the appointment
+        session.save(appointment);
+        tx.commit();
+
+        // Initiate payment process
+        res = PaymentGatewayDaoImpl.setPayment(appointmentMap, appointment.getAppointmentID());
+
+        // Set appointment count response
+        res.put("Count", (appointmentCount < 2) ? "0" : "1");
+
+        return res;
+    } catch (Exception e) {
+        if (tx != null) {
+            tx.rollback();
+        }
+        e.printStackTrace(); // Replace with proper logging
+        res.put("Error", "Failed to set appointment: " + e.getMessage());
+        return res;
+    } 
+}
+
 
 
 	
