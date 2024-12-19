@@ -65,7 +65,7 @@ public class SocketIOServer1 extends WebSocketServer {
     }
 
     @Override
-    public void start() throws IOException {
+    public void start() {
         super.start();
         running = true;
         System.out.println("WebSocket server started on port: " + this.getPort());
