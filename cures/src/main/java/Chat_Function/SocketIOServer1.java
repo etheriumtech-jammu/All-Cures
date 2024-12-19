@@ -36,7 +36,8 @@ public class SocketIOServer1 extends WebSocketServer {
     private static SocketIOServer1 serverInstance; // Singleton instance
     private boolean running = false;
 
-    private SocketIOServer1(int port) {
+    // Change constructor access to public for instantiation
+    public SocketIOServer1(int port) {
         super(new InetSocketAddress("0.0.0.0", port));
         SSLContext sslContext = getSSLContext();
         if (sslContext != null) {
@@ -64,12 +65,19 @@ public class SocketIOServer1 extends WebSocketServer {
     }
 
     @Override
-    public void start() {
+    public void start() throws IOException {
         super.start();
         running = true;
+        System.out.println("WebSocket server started on port: " + this.getPort());
     }
 
-   
+    @Override
+    public void stop() throws IOException, InterruptedException {
+        super.stop();
+        running = false;
+        SocketIOServer1.serverInstance = null; // Reset singleton instance
+        System.out.println("WebSocket server instance has been stopped and cleared.");
+    }
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
@@ -149,15 +157,6 @@ public class SocketIOServer1 extends WebSocketServer {
     public void onStart() {
         System.out.println("WebSocket server started successfully.");
     }
-
-    @Override
-public void stop() throws InterruptedException {
-    super.stop();
-    running = false;
-    SocketIOServer1.serverInstance = null; // Reset singleton instance
-    System.out.println("WebSocket server instance has been stopped and cleared.");
-}
-
 
     private SSLContext getSSLContext() {
         try {
