@@ -70,9 +70,9 @@ public String startWebSocketServer() {
 
     try {
         // Check if the port is in use
-        if (!SocketIOServer1.isPortAvailable(port)) {
-            return "Port " + port + " is already in use. WebSocket server will not start.";
-        }
+ //       if (!SocketIOServer1.isPortAvailable(port)) {
+ //           return "Port " + port + " is already in use. WebSocket server will not start.";
+ //       }
 
         // Get the singleton WebSocket server instance
         SocketIOServer1 server = SocketIOServer1.getInstance(port);
