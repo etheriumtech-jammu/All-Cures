@@ -72,7 +72,7 @@ public class SocketIOServer1 extends WebSocketServer {
     }
 
     @Override
-    public void stop() throws InterruptedException {
+    public void stop() throws IOException, InterruptedException {
         super.stop();
         running = false;
         SocketIOServer1.serverInstance = null; // Reset singleton instance
