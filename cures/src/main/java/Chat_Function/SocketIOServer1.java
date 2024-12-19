@@ -76,7 +76,7 @@ public class SocketIOServer1 extends WebSocketServer {
         super.stop();
         running = false;
         SocketIOServer1.serverInstance = null; // Reset singleton instance
-        System.out.println("WebSocket server instance has been stopped and cleared.");
+//        System.out.println("WebSocket server instance has been stopped and cleared.");
     }
 
     @Override
