@@ -64,16 +64,12 @@ public class SocketIOServer1 extends WebSocketServer {
     }
 
     @Override
-    public void start() throws InterruptedException, IOException {
+    public void start() {
         super.start();
         running = true;
     }
 
-    @Override
-    public void stop() throws IOException, InterruptedException {
-        super.stop();
-        running = false;
-    }
+   
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
@@ -155,7 +151,7 @@ public class SocketIOServer1 extends WebSocketServer {
     }
 
     @Override
-public void stop() throws IOException, InterruptedException {
+public void stop() throws InterruptedException {
     super.stop();
     running = false;
     SocketIOServer1.serverInstance = null; // Reset singleton instance
