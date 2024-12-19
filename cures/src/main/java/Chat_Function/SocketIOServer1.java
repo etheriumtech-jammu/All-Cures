@@ -71,13 +71,17 @@ public class SocketIOServer1 extends WebSocketServer {
         System.out.println("WebSocket server started on port: " + this.getPort());
     }
 
-    @Override
-    public void stop() throws IOException, InterruptedException {
+  @Override
+public void stop() throws IOException, InterruptedException {
+    if (isRunning()) {
         super.stop();
         running = false;
-        SocketIOServer1.serverInstance = null; // Reset singleton instance
-//        System.out.println("WebSocket server instance has been stopped and cleared.");
+        SocketIOServer1.serverInstance = null; // Reset the singleton instance
+        System.out.println("WebSocket server instance has been stopped and cleared.");
+    } else {
+        System.out.println("WebSocket server is not running.");
     }
+}
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
