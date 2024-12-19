@@ -154,6 +154,15 @@ public class SocketIOServer1 extends WebSocketServer {
         System.out.println("WebSocket server started successfully.");
     }
 
+    @Override
+public void stop() throws IOException, InterruptedException {
+    super.stop();
+    running = false;
+    SocketIOServer1.serverInstance = null; // Reset singleton instance
+    System.out.println("WebSocket server instance has been stopped and cleared.");
+}
+
+
     private SSLContext getSSLContext() {
         try {
             KeyStore keyStore = KeyStore.getInstance("JKS");
