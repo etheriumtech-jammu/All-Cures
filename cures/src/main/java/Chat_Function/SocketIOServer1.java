@@ -3,6 +3,7 @@ package Chat_Function;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.security.KeyStore;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -32,13 +33,46 @@ public class SocketIOServer1 extends WebSocketServer {
     private static final AtomicInteger connectionCount = new AtomicInteger(0);
     private static final Map<String, Set<WebSocket>> rooms = new ConcurrentHashMap<>();
     private static final Map<WebSocket, String> clients = new ConcurrentHashMap<>();
+    private static SocketIOServer1 serverInstance; // Singleton instance
+    private boolean running = false;
 
-    public SocketIOServer1(int port) {
+    private SocketIOServer1(int port) {
         super(new InetSocketAddress("0.0.0.0", port));
         SSLContext sslContext = getSSLContext();
         if (sslContext != null) {
             setWebSocketFactory(new DefaultSSLWebSocketServerFactory(sslContext));
         }
+    }
+
+    public static SocketIOServer1 getInstance(int port) {
+        if (serverInstance == null) {
+            serverInstance = new SocketIOServer1(port);
+        }
+        return serverInstance;
+    }
+
+    public static boolean isPortAvailable(int port) {
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
+            return true; // Port is available
+        } catch (IOException e) {
+            return false; // Port is in use
+        }
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    @Override
+    public void start() throws InterruptedException, IOException {
+        super.start();
+        running = true;
+    }
+
+    @Override
+    public void stop() throws IOException, InterruptedException {
+        super.stop();
+        running = false;
     }
 
     @Override
@@ -70,7 +104,7 @@ public class SocketIOServer1 extends WebSocketServer {
                 String roomName = json.getString("Room_No");
                 rooms.computeIfAbsent(roomName, k -> new CopyOnWriteArraySet<>()).add(conn);
                 clients.put(conn, roomName);
-            }  else {
+            } else {
                 handleMessage(conn, message);
             }
         } catch (Exception e) {
