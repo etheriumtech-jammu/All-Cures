@@ -30,7 +30,7 @@ import dao.DeleteDaoImpl;
 @RestController
 @RequestMapping(path = "/data")
 public class DataController {
-
+private SocketIOServer1 socketServer;
 	@Autowired
 	private DataDaoImpl dataDaoImpl;
 	
@@ -64,29 +64,32 @@ public class DataController {
 	}
 	
 @RequestMapping(value = "/startWebSocketServer", method = RequestMethod.GET)
-	    @ResponseBody
+	@ResponseBody
 	public String startWebSocketServer() {
-//	  try {
-//	    WebSocketImpl.DEBUG = true;
-	    int port = 8000; // port number
-	    SocketIOServer1 s = new SocketIOServer1(port);
-	      s.start();
-		System.out.println("ChatServer started on port: " + s.getPort());
-/*	    if (!isRunning == true) {
-	    	SocketIOServer1 s = new SocketIOServer1(port);
-	      s.start();
-	      isRunning = true;
-	   
-	      System.out.println("ChatServer started on port: " + s.getPort());
+	    int port = 8001; // port number
+	    if (socketServer == null) { // Check if the server is already running
+	        socketServer = new SocketIOServer1(port);
+	        socketServer.start();
+	        System.out.println("ChatServer started on port: " + port);
+	        return "WebSocket server started!";
 	    } else {
-	      System.out.println("ChatServer continues on port: " );
-		  }
-*/
-	    new ClientExample();
+	        return "WebSocket server is already running!";
+	    }
+	}	
 
-	  return "WebSocket server started!";
-	  }
-	
+	@RequestMapping(value = "/stopWebSocketServer", method = RequestMethod.GET)
+	@ResponseBody
+	public String stopWebSocketServer() throws InterruptedException {
+	    if (socketServer != null) {
+	        socketServer.stop(); // Stop the server
+	        System.out.println("ChatServer stopped.");
+	        socketServer = null; // Set to null so it can be restarted later
+	        return "WebSocket server stopped!";
+	    } else {
+	        return "WebSocket server is not running.";
+	    }
+	}
+
 	@RequestMapping(value = "/newsletter/upload", produces = "application/json", method = RequestMethod.POST)
 	public int NewsLetter_fileupload(@RequestParam("image") CommonsMultipartFile image) throws IOException {
 		return DataDaoImpl.file_upload_NewsLetter(image);
