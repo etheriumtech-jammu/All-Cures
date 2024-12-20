@@ -64,22 +64,32 @@ public class SocketIOServer1 extends WebSocketServer {
         return running;
     }
 
-    @Override
-    public void start() {
-        super.start();
-        running = true;
-        System.out.println("WebSocket server started on port: " + this.getPort());
-    }
-
   @Override
+public void start() {
+    try {
+        super.start(); // Call parent class start method
+        running = true; // Update running status
+        System.out.println("WebSocket server started on port: " + this.getPort());
+    } catch (Exception e) {
+        System.err.println("Error starting WebSocket server: " + e.getMessage()); // Improved error handling
+        e.printStackTrace();
+    }
+}
+
+    @Override
 public void stop() throws IOException, InterruptedException {
-    if (isRunning()) {
-        super.stop();
-        running = false;
-        SocketIOServer1.serverInstance = null; // Reset the singleton instance
-        System.out.println("WebSocket server instance has been stopped and cleared.");
-    } else {
-        System.out.println("WebSocket server is not running.");
+    try {
+        if (isRunning()) { // Check if the server is running before stopping
+            super.stop(); // Call parent class stop method
+            running = false; // Update running status
+            serverInstance = null; // Reset singleton instance
+            System.out.println("WebSocket server instance has been stopped and cleared.");
+        } else {
+            System.out.println("WebSocket server is not running.");
+        }
+    } catch (Exception e) {
+        System.err.println("Error stopping WebSocket server: " + e.getMessage()); // Improved error handling
+        e.printStackTrace();
     }
 }
 
