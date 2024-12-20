@@ -289,8 +289,8 @@ public class AppointmentDaoImpl {
 	                    TreeSet<LocalTime> unbookedSlotsTime = new TreeSet<>(slotStartTimes);
 	                    unbookedSlotsTime.removeAll(bookedSlotsTime);
 	                    unbookedSlots.put(date, unbookedSlotsTime);
-			    System.out.println("slotStartTimes.size()"+slotStartTimes.size());
-			    System.out.println("bookedSlotsTime.size()"+bookedSlotsTime.size());
+	//		    System.out.println("slotStartTimes.size()"+slotStartTimes.size());
+	//		    System.out.println("bookedSlotsTime.size()"+bookedSlotsTime.size());
 	                    if (bookedSlotsTime.size() >= slotStartTimes.size()) {
 	                        completelyBookedDates.add(date);
 	                    }
