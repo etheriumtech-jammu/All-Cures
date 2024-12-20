@@ -79,7 +79,7 @@ private SocketIOServer1 socketServer;
 
 	@RequestMapping(value = "/stopWebSocketServer", method = RequestMethod.GET)
 	@ResponseBody
-	public String stopWebSocketServer() throws InterruptedException {
+	public String stopWebSocketServer() throws IOExcepton, InterruptedException {
 	    if (socketServer != null) {
 	        socketServer.stop(); // Stop the server
 	        System.out.println("ChatServer stopped.");
