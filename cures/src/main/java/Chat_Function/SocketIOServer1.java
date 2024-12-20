@@ -95,7 +95,7 @@ public void stop() throws IOException, InterruptedException {
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
-        System.out.println("A client has connected: " + conn.getRemoteSocketAddress());
+ //       System.out.println("A client has connected: " + conn.getRemoteSocketAddress());
         clients.put(conn, null);
         connectionCount.incrementAndGet();
     }
