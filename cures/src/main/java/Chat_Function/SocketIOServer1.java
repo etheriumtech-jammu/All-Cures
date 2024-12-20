@@ -96,7 +96,8 @@ public void stop() throws IOException, InterruptedException {
     @Override
 public void onOpen(WebSocket conn, ClientHandshake handshake) {
     System.out.println(conn);
-       
+       System.out.println("ClientHandshake: " + handshake.toString());
+
     System.out.println("A client has connected: " + conn.getRemoteSocketAddress());
     try {
         // Avoid null values in ConcurrentHashMap
