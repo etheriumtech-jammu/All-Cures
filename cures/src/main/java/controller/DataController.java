@@ -66,7 +66,7 @@ private SocketIOServer1 socketServer;
 @RequestMapping(value = "/startWebSocketServer", method = RequestMethod.GET)
 	@ResponseBody
 	public String startWebSocketServer() {
-	    int port = 8001; // port number
+	    int port = 8000; // port number
 	    if (socketServer == null) { // Check if the server is already running
 	        socketServer = new SocketIOServer1(port);
 	        socketServer.start();
