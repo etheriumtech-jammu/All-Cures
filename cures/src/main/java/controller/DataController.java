@@ -81,6 +81,7 @@ public String startWebSocketServer() {
         if (!server.isRunning()) {
             server.start();
             System.out.println("WebSocket server started on port: " + server.getPort());
+		 System.out.println("WebSocket server started on port: " + server.getPort());
             return "WebSocket server started successfully on port " + port + "!";
         } else {
             return "WebSocket server is already running on port " + port + ".";
