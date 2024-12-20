@@ -102,7 +102,7 @@ public void stop() throws IOException, InterruptedException {
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-        System.out.println("A client has disconnected: " + conn.getRemoteSocketAddress());
+//        System.out.println("A client has disconnected: " + conn.getRemoteSocketAddress());
         connectionCount.decrementAndGet();
         String roomName = clients.get(conn);
         if (roomName != null && rooms.containsKey(roomName)) {
