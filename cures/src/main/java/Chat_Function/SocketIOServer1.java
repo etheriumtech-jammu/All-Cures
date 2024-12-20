@@ -94,11 +94,18 @@ public void stop() throws IOException, InterruptedException {
 }
 
     @Override
-    public void onOpen(WebSocket conn, ClientHandshake handshake) {
- //       System.out.println("A client has connected: " + conn.getRemoteSocketAddress());
-        clients.put(conn, null);
+public void onOpen(WebSocket conn, ClientHandshake handshake) {
+    System.out.println("A client has connected: " + conn.getRemoteSocketAddress());
+    try {
+        // Avoid null values in ConcurrentHashMap
+        clients.put(conn, ""); // Use an empty string as a placeholder instead of null
         connectionCount.incrementAndGet();
+    } catch (Exception e) {
+        System.err.println("Error during onOpen: " + e.getMessage());
+        e.printStackTrace();
     }
+}
+
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
