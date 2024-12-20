@@ -64,59 +64,28 @@ public class DataController {
 	}
 	
 @RequestMapping(value = "/startWebSocketServer", method = RequestMethod.GET)
-@ResponseBody
-public String startWebSocketServer() {
-    int port = 8000; // Port number for the WebSocket server
+	    @ResponseBody
+	public String startWebSocketServer() {
+//	  try {
+//	    WebSocketImpl.DEBUG = true;
+	    int port = 8000; // port number
+	    SocketIOServer1 s = new SocketIOServer1(port);
+	      s.start();
+		System.out.println("ChatServer started on port: " + s.getPort());
+/*	    if (!isRunning == true) {
+	    	SocketIOServer1 s = new SocketIOServer1(port);
+	      s.start();
+	      isRunning = true;
+	   
+	      System.out.println("ChatServer started on port: " + s.getPort());
+	    } else {
+	      System.out.println("ChatServer continues on port: " );
+		  }
+*/
+	    new ClientExample();
 
-    try {
-        // Check if the port is already in use
-        if (!SocketIOServer1.isPortAvailable(port)) {
-            return "Port " + port + " is already in use. WebSocket server will not start."; // Marked for clarity
-        }
-
-        // Get the singleton WebSocket server instance
-        SocketIOServer1 server = SocketIOServer1.getInstance(port);
-
-        // Start the server if it's not already running
-        if (!server.isRunning()) { // Added check to prevent multiple starts
-            server.start(); // Corrected start method
-            System.out.println("WebSocket server started on port: " + server.getPort());
-            return "WebSocket server started successfully on port " + port + "!";
-        } else {
-            return "WebSocket server is already running on port " + port + ".";
-        }
-    } catch (Exception e) {
-        System.err.println("Failed to start WebSocket server on port " + port + ": " + e.getMessage()); // Improved error logging
-        e.printStackTrace();
-        return "Error: Failed to start WebSocket server.";
-    }
-}
-
-
-
-	@RequestMapping(value = "/stopWebSocketServer", method = RequestMethod.GET)
-@ResponseBody
-public String stopWebSocketServer() {
-    try {
-        // Get the singleton WebSocket server instance
-        SocketIOServer1 server = SocketIOServer1.getInstance(8000); // Use consistent port management
-
-        // Stop the server if it's running
-        if (server.isRunning()) { // Added running check
-            server.stop(); // Gracefully stop the server and reset singleton
-            return "WebSocket server stopped successfully.";
-        } else {
-            return "WebSocket server is not running."; // Added message for not running state
-        }
-    } catch (Exception e) {
-        System.err.println("Failed to stop WebSocket server: " + e.getMessage()); // Improved error logging
-        e.printStackTrace();
-        return "Error: Failed to stop WebSocket server.";
-    }
-}
-
-
-
+	  return "WebSocket server started!";
+	  }
 	
 	@RequestMapping(value = "/newsletter/upload", produces = "application/json", method = RequestMethod.POST)
 	public int NewsLetter_fileupload(@RequestParam("image") CommonsMultipartFile image) throws IOException {
