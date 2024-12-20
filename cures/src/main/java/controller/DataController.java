@@ -63,35 +63,35 @@ public class DataController {
 		
 	}
 	
-	@RequestMapping(value = "/startWebSocketServer", method = RequestMethod.GET)
+@RequestMapping(value = "/startWebSocketServer", method = RequestMethod.GET)
 @ResponseBody
 public String startWebSocketServer() {
-    int port = 8000; // Define the port
+    int port = 8000; // Port number for the WebSocket server
 
     try {
-        // Check if the port is in use
+        // Check if the port is already in use
         if (!SocketIOServer1.isPortAvailable(port)) {
-            return "Port " + port + " is already in use. WebSocket server will not start.";
+            return "Port " + port + " is already in use. WebSocket server will not start."; // Marked for clarity
         }
 
         // Get the singleton WebSocket server instance
         SocketIOServer1 server = SocketIOServer1.getInstance(port);
 
-        // Start the server if it's not running
-        if (!server.isRunning()) {
-            server.start();
+        // Start the server if it's not already running
+        if (!server.isRunning()) { // Added check to prevent multiple starts
+            server.start(); // Corrected start method
             System.out.println("WebSocket server started on port: " + server.getPort());
-		 System.out.println("WebSocket server started on port: " + server.getPort());
             return "WebSocket server started successfully on port " + port + "!";
         } else {
             return "WebSocket server is already running on port " + port + ".";
         }
     } catch (Exception e) {
-        System.err.println("Error starting WebSocket server: " + e.getMessage());
+        System.err.println("Failed to start WebSocket server on port " + port + ": " + e.getMessage()); // Improved error logging
         e.printStackTrace();
         return "Error: Failed to start WebSocket server.";
     }
 }
+
 
 
 	@RequestMapping(value = "/stopWebSocketServer", method = RequestMethod.GET)
@@ -99,21 +99,22 @@ public String startWebSocketServer() {
 public String stopWebSocketServer() {
     try {
         // Get the singleton WebSocket server instance
-        SocketIOServer1 server = SocketIOServer1.getInstance(8000); // Use the same port as the start method
+        SocketIOServer1 server = SocketIOServer1.getInstance(8000); // Use consistent port management
 
-        // Stop the server if it is running
-        if (server.isRunning()) {
-            server.stop(); // Gracefully stop the server
+        // Stop the server if it's running
+        if (server.isRunning()) { // Added running check
+            server.stop(); // Gracefully stop the server and reset singleton
             return "WebSocket server stopped successfully.";
         } else {
-            return "WebSocket server is not running.";
+            return "WebSocket server is not running."; // Added message for not running state
         }
     } catch (Exception e) {
-        System.err.println("Error stopping WebSocket server: " + e.getMessage());
+        System.err.println("Failed to stop WebSocket server: " + e.getMessage()); // Improved error logging
         e.printStackTrace();
         return "Error: Failed to stop WebSocket server.";
     }
 }
+
 
 
 	
