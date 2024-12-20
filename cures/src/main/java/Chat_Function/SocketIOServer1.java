@@ -60,7 +60,7 @@ public class SocketIOServer1 extends WebSocketServer {
 	  public void onOpen(WebSocket conn, ClientHandshake handshake) {
 		  
 	//	  roomName = handshake.getFieldValue("Room_No");
-		  System.out.println("A client has connected"); 
+	//	  System.out.println("A client has connected"); 
 		 
 	    System.out.println("A client has connected");
 	    clients.put(conn, null);
