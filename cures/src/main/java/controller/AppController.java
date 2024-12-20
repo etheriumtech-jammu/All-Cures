@@ -16,7 +16,7 @@ public class AppController {
     
    @GetMapping("/*")
 	    public String handleRequest4(Model model) {
-		 System.out.println("all");
+	//	 System.out.println("all");
 		    String title = "All-Cures - Around health and about it";
         String desc = "Centralized, user-powered platform for bringing information on Alternate Systems of medicine from across the world. Ayurveda, Unani, Persian, Homeopathy";
          model.addAttribute("Title", title);
