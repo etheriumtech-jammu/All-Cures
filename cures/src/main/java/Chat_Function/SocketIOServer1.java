@@ -3,7 +3,6 @@ package Chat_Function;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.ServerSocket;
 import java.security.KeyStore;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -33,10 +32,7 @@ public class SocketIOServer1 extends WebSocketServer {
     private static final AtomicInteger connectionCount = new AtomicInteger(0);
     private static final Map<String, Set<WebSocket>> rooms = new ConcurrentHashMap<>();
     private static final Map<WebSocket, String> clients = new ConcurrentHashMap<>();
-    private static SocketIOServer1 serverInstance; // Singleton instance
-    private boolean running = false;
 
-    // Change constructor access to public for instantiation
     public SocketIOServer1(int port) {
         super(new InetSocketAddress("0.0.0.0", port));
         SSLContext sslContext = getSSLContext();
@@ -45,70 +41,12 @@ public class SocketIOServer1 extends WebSocketServer {
         }
     }
 
-    public static SocketIOServer1 getInstance(int port) {
-        if (serverInstance == null) {
-            serverInstance = new SocketIOServer1(port);
-        }
-        return serverInstance;
-    }
-
-    public static boolean isPortAvailable(int port) {
-        try (ServerSocket serverSocket = new ServerSocket(port)) {
-            return true; // Port is available
-        } catch (IOException e) {
-            return false; // Port is in use
-        }
-    }
-
-    public boolean isRunning() {
-        return running;
-    }
-
-  @Override
-public void start() {
-    try {
-        super.start(); // Call parent class start method
-        running = true; // Update running status
-        System.out.println("WebSocket server started on port: " + this.getPort());
-    } catch (Exception e) {
-        System.err.println("Error starting WebSocket server: " + e.getMessage()); // Improved error handling
-        e.printStackTrace();
-    }
-}
-
     @Override
-public void stop() throws IOException, InterruptedException {
-    try {
-        if (isRunning()) { // Check if the server is running before stopping
-            super.stop(); // Call parent class stop method
-            running = false; // Update running status
-            serverInstance = null; // Reset singleton instance
-            System.out.println("WebSocket server instance has been stopped and cleared.");
-        } else {
-            System.out.println("WebSocket server is not running.");
-        }
-    } catch (Exception e) {
-        System.err.println("Error stopping WebSocket server: " + e.getMessage()); // Improved error handling
-        e.printStackTrace();
-    }
-}
-
-    @Override
-public void onOpen(WebSocket conn, ClientHandshake handshake) {
-    System.out.println(conn);
-       System.out.println("ClientHandshake: " + handshake.toString());
-
-    System.out.println("A client has connected: " + conn.getRemoteSocketAddress());
-    try {
-        // Avoid null values in ConcurrentHashMap
-        clients.put(conn, ""); // Use an empty string as a placeholder instead of null
+    public void onOpen(WebSocket conn, ClientHandshake handshake) {
+        System.out.println("A client has connected: " + conn.getRemoteSocketAddress());
+        clients.put(conn, null);
         connectionCount.incrementAndGet();
-    } catch (Exception e) {
-        System.err.println("Error during onOpen: " + e.getMessage());
-        e.printStackTrace();
     }
-}
-
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
@@ -132,7 +70,7 @@ public void onOpen(WebSocket conn, ClientHandshake handshake) {
                 String roomName = json.getString("Room_No");
                 rooms.computeIfAbsent(roomName, k -> new CopyOnWriteArraySet<>()).add(conn);
                 clients.put(conn, roomName);
-            } else {
+            }  else {
                 handleMessage(conn, message);
             }
         } catch (Exception e) {
