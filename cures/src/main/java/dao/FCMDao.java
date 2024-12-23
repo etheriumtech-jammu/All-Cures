@@ -131,5 +131,40 @@ public class FCMDao {
 
 	    return ret;
 	}
+
+	public static Object[] getTokenAndUserDetails(Integer id, Integer isDocID) {
+	    Object[] result = null;
+	    Session session = HibernateUtil.buildSessionFactory();
+
+	    try {
+	        String queryStr;
+
+	        if (isDocID==0) {
+	            // Query when the ID corresponds to a docID
+	            queryStr = "SELECT t.token_name, d.first_name, d.last_name " +
+	                       "FROM tip_token t " +
+	                       "JOIN registration r ON t.registration_id = r.registration_id " +
+	                       "JOIN doctors_new d ON r.DocID = d.doc_id " +
+	                       "WHERE t.status != 0 AND d.doc_id = :id";
+	        } else {
+	            // Query when the ID corresponds to a registrationID
+	            queryStr = "SELECT t.token_name, r.first_name, r.last_name " +
+	                       "FROM tip_token t " +
+	                       "JOIN registration r ON t.registration_id = r.registration_id " +
+	                       "WHERE t.status != 0 AND r.registration_id = :id";
+	        }
+
+	        Query<Object[]> query = session.createNativeQuery(queryStr, Object[].class);
+	        query.setParameter("id", id);
+
+	        result = query.uniqueResult();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return result;
+	}
+
+
 	
 }
