@@ -28,6 +28,9 @@ public class Token {
     @Column(name = "Status")
     private Integer status;
 
+    @Column(name = "deviceType")
+    private String deviceType;
+    
     public Integer getTokenID() {
 		return tokenID;
 	}
@@ -91,4 +94,13 @@ public class Token {
     public void setRegistrationId(Integer registrationId) {
         this.registrationID = registrationId;
     }
+
+	public String getDeviceType() {
+		return deviceType;
+	}
+
+	public void setDeviceType(String deviceType) {
+		this.deviceType = deviceType;
+	}
+    
 }
