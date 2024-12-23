@@ -93,10 +93,10 @@ public class LoginActionController extends HttpServlet {
 		    	 JSONObject jsonObject = new JSONObject(body);
 			    System.out.println(jsonObject);
 		 	    String fcmValue = jsonObject.getString("FCM");
-
+				   String deviceType=jsonObject.getString("deviceType");
 		 	    // Print the value of "FCM"
 		 	    System.out.println("FCM value: " + fcmValue);
-		 	   FCMDao.Token_Add(fcmValue, user.getRegistration_id());
+		 	   FCMDao.Token_Add(fcmValue, user.getRegistration_id(),deviceType);
 		    }
 		   
 			user.setValue(value);
