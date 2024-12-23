@@ -48,7 +48,7 @@ import util.ArticleUtils;
 import util.Constant;
 import util.Encryption;
 import util.HibernateUtil;
-
+import Chat_Function.NotificationService;
 
 public class ChatDaoImpl {
 
