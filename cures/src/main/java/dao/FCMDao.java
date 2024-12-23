@@ -144,8 +144,8 @@ public class FCMDao {
 	            queryStr = "SELECT t.token_name, d.first_name, d.last_name " +
 	                       "FROM tip_token t " +
 	                       "JOIN registration r ON t.registration_id = r.registration_id " +
-	                       "JOIN doctors_new d ON r.DocID = d.doc_id " +
-	                       "WHERE t.status != 0 AND d.doc_id = :id";
+	                       "JOIN doctors_new d ON r.DocID = d.docid " +
+	                       "WHERE t.status != 0 AND d.docid = :id";
 	        } else {
 	            // Query when the ID corresponds to a registrationID
 	            queryStr = "SELECT t.token_name, r.first_name, r.last_name " +
