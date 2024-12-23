@@ -76,7 +76,7 @@ public class FCMDao {
 		return ret;
 	}
 
-	public static Integer Token_Add(String token, Integer registration_id) {
+	public static Integer Token_Add(String token, Integer registration_id,String deviceType) {
 	    Session session = HibernateUtil.buildSessionFactory();
 	    Transaction transaction = null;
 	    Integer ret = 0;
@@ -96,6 +96,7 @@ public class FCMDao {
 	            if (registration_id != null && !registration_id.equals(0) ) {
 	                // Update registration_id
 	                existingToken.setRegistrationId(registration_id);
+			 existingToken.setDeviceType(deviceType);
 	                session.update(existingToken);
 	                ret = 1;
 	                System.out.println("Token updated with registration_id");
@@ -107,6 +108,7 @@ public class FCMDao {
 	            // Case 2 & 3: Token doesn't exist
 	            Token newToken = new Token();
 	            newToken.setTokenName(token);
+			newToken.setDeviceType(deviceType);
 	            if (registration_id != null ) {
 	                // Case 2: registration_id provided
 	                newToken.setRegistrationId(registration_id);
