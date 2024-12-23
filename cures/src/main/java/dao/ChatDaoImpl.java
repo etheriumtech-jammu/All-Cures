@@ -55,14 +55,15 @@ public class ChatDaoImpl {
 	public static MemcachedClient mcc = null;
 	// static Session session = HibernateUtil.buildSessionFactory();
 	@Transactional
-	public static Integer Chat_Store(Integer chat_id, HashMap<String, Object> chatMap) {
+	public static Integer Chat_Store(Integer chat_id, HashMap<String, Object> chatMap,Integer isDoc) {
 //		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
 		Session session = HibernateUtil.buildSessionFactory();
 
 		session.beginTransaction();
-		System.out.println(chat_id);
-		System.out.println(session.isOpen());
+		Integer regID=(Integer)chatMap.get("To_id");
+		String message= (String )chatMap.get("message");
+		
 		ZonedDateTime now = ZonedDateTime.now();
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 	        String timestamp= now.format(formatter);
@@ -91,7 +92,6 @@ public class ChatDaoImpl {
 			insertStr = insertStr.substring(0, insertStr.lastIndexOf(","));
 			insertStr_values = insertStr_values.substring(0, insertStr_values.lastIndexOf(","));
 			String completInsertStr = insertStr + ")" + " values " + insertStr_values + " );";
-			System.out.println("Query is " +completInsertStr);
 
 			Query query = session.createNativeQuery(completInsertStr);
 
@@ -100,6 +100,7 @@ public class ChatDaoImpl {
 			session.getTransaction().commit();
 		//calling method to add in memcached
 		Add_memcached( chat_id,  chatMap);
+		ChatDaoImpl.ChatNotification(regID,message,isDoc );
 	//		session.close();
 		
 		} catch (Exception e) {
@@ -123,7 +124,7 @@ public class ChatDaoImpl {
 		// mcc.delete("Chat_id" + "_" + chat_id);
 		// // Retrieve the existing chat data from memcached
 		String cacheString = (String) mcc.get("Chat_id_" + chat_id);
-		System.out.println("Cache String: " + cacheString); //
+		//
 		HashMap<String, Object> chatData = null;
 		if (cacheString != null) {
 			chatData = new Gson().fromJson(cacheString, new TypeToken<HashMap<String, Object>>() {
@@ -156,7 +157,7 @@ public class ChatDaoImpl {
 		Gson gson = new GsonBuilder().create();
 		String jsonData = gson.toJson(chatData);
 		mcc.set("Chat_id_" + chat_id, 3600, jsonData);
-		System.out.println("Added to memcached");
+		
 	}
 	public static Integer ChatStore() {
 		Session session = HibernateUtil.buildSessionFactory();
@@ -235,7 +236,7 @@ public class ChatDaoImpl {
 			e.printStackTrace(); 
 		}
 		
-	        System.out.println("Cache String: " + cacheString); // 
+	         
 	        HashMap<String, Object> chatData = null;
 	        if (cacheString != null) {
 	            chatData = new Gson().fromJson(cacheString, new TypeToken<HashMap<String, Object>>() {}.getType());
@@ -269,7 +270,7 @@ public class ChatDaoImpl {
 		                 allMessages.add(hm);
 		            }
 		        }
-		        System.out.println(allMessages);
+		       
 	   
 	        
 	        
@@ -282,7 +283,7 @@ public class ChatDaoImpl {
 		Constant.log("Got Req for Chat_ID: " + chat_id, 1);
 		List allMessages = findChatInCache(chat_id);
 
-		System.out.println(allMessages);
+		
 		String jsondata = null;
 	if (allMessages.size() == 0) {
 			// Chat Not Found in MemCache
@@ -320,7 +321,7 @@ public class ChatDaoImpl {
 				+ "" + chat_id + " ;");
 		
 		List<Object[]> results = (List<Object[]>) query.getResultList();
-		System.out.println("Getting results:" );
+		
 		List hmFinal = new ArrayList();
 		for (Object[] objects : results) {
 			HashMap hm = new HashMap();
@@ -625,6 +626,27 @@ public class ChatDaoImpl {
 
 		return hmFinal;
 		
+	}
+
+	public static void ChatNotification(Integer registrationID,String message,Integer isDoc) throws FirebaseMessagingException, IOException
+	{
+				
+		 Object[] result = FCMDao.getTokenAndUserDetails(registrationID,isDoc);
+
+		    if (result != null) {
+		        String tokenName = (String) result[0];
+		        String firstName = (String) result[1];
+		        String lastName = result[2] != null ? (String) result[2] : "";
+		        // Concatenate firstName and lastName without extra space if lastName is null
+		        String fullName = lastName != null && !lastName.isEmpty() ? firstName + " " + lastName : firstName;
+		        NotificationService.sendChatNotification(message,fullName,tokenName);
+		        
+		    } else {
+		        System.out.println("No data found for the given registration ID.");
+		    }
+			
+		System.out.println("Message Sent");
+					
 	}
 
 	
