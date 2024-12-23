@@ -35,7 +35,7 @@ public class ChatController {
 			System.out.println(chat_id);
 			}
 			
-			return ChatDaoImpl.Chat_Store(chat_id, chatMap);
+			return ChatDaoImpl.Chat_Store(chat_id, chatMap,1);
 		
 		
 		}
