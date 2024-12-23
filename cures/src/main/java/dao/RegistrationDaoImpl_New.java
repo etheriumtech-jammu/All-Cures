@@ -746,6 +746,7 @@ public class RegistrationDaoImpl_New {
 		  Registration user = null;
           	  String errMsg = "";
 		  String FCM="";
+		 String deviceType="";
 	        try {
 	            // Assuming your HashMap has keys matching the property names in Service
 	            // Adjust these names based on your actual Service class
@@ -769,6 +770,7 @@ public class RegistrationDaoImpl_New {
 	             Integer state = 1;
 	             Integer age=(Integer)RegisterMap.get(Constant.Age)!= null ? (Integer)RegisterMap.get(Constant.Age) : 0;
 	              FCM=(String)RegisterMap.get("FCM")!= null ? (String)RegisterMap.get("FCM") : "";
+			deviceType=(String)RegisterMap.get("deviceType")!= null ? (String)RegisterMap.get("deviceType") : "";
 	             try { 
 	                 if (alreadyExists(email)) {
 	                     errMsg = "Email Address already exists in the system";
@@ -802,7 +804,7 @@ public class RegistrationDaoImpl_New {
                 JSONObject jsonObject = new JSONObject(jsonData);
                 int registrationId = jsonObject.getInt("registration_id");
                
-		FCMDao.Token_Add(FCM, registrationId);
+		FCMDao.Token_Add(FCM, registrationId,deviceType);
          	       return jsonData;
 	 	       }
 	        	else
