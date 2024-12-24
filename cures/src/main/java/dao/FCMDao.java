@@ -141,7 +141,7 @@ public static Object[] getTokenAndUserDetails(Integer id, String isDocString) {
         String queryStr;
 
         if ("1".equals(isDocString)) {
-            queryStr = "SELECT t.token_name, d.first_name, d.last_name " +
+            queryStr = "SELECT t.token_name, d.docname_first, d.docname_last " +
                        "FROM tip_token t " +
                        "JOIN registration r ON t.registration_id = r.registration_id " +
                        "JOIN Doctors_New d ON r.DocID = d.docid " +
