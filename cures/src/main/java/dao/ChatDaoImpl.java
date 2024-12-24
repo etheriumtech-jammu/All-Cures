@@ -59,7 +59,8 @@ public class ChatDaoImpl {
 //		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
 		Session session = HibernateUtil.buildSessionFactory();
-		Integer regID=(Integer)chatMap.get("To_id");
+		String toIdString = (String) chatMap.get("To_id"); // Get the value as a String
+		Integer regID = Integer.parseInt(toIdString); // Convert the String to Integer
 		String message= (String )chatMap.get("message");
 		
 		ZonedDateTime now = ZonedDateTime.now();
