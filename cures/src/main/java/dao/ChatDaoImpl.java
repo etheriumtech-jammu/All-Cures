@@ -55,7 +55,7 @@ public class ChatDaoImpl {
 	public static MemcachedClient mcc = null;
 	// static Session session = HibernateUtil.buildSessionFactory();
 	@Transactional
-	public static Integer Chat_Store(Integer chat_id, HashMap<String, Object> chatMap,Integer isDoc) {
+	public static Integer Chat_Store(Integer chat_id, HashMap<String, Object> chatMap,String isDocString) {
 //		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
 		Session session = HibernateUtil.buildSessionFactory();
@@ -100,7 +100,7 @@ public class ChatDaoImpl {
 			session.getTransaction().commit();
 		//calling method to add in memcached
 		Add_memcached( chat_id,  chatMap);
-		ChatDaoImpl.ChatNotification(regID,message,isDoc );
+		ChatDaoImpl.ChatNotification(regID,message,isDocString );
 	//		session.close();
 		
 		} catch (Exception e) {
@@ -628,10 +628,10 @@ public class ChatDaoImpl {
 		
 	}
 
-	public static void ChatNotification(Integer registrationID,String message,Integer isDoc) throws FirebaseMessagingException, IOException
+	public static void ChatNotification(Integer registrationID,String message,String isDocString) throws FirebaseMessagingException, IOException
 	{
 				
-		 Object[] result = FCMDao.getTokenAndUserDetails(registrationID,isDoc);
+		 Object[] result = FCMDao.getTokenAndUserDetails(registrationID,isDocString);
 
 		    if (result != null) {
 		        String tokenName = (String) result[0];
