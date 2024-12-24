@@ -132,38 +132,39 @@ public class FCMDao {
 	    return ret;
 	}
 
-	public static Object[] getTokenAndUserDetails(Integer id,String isDocString) {
-	    Object[] result = null;
-	    Session session = HibernateUtil.buildSessionFactory();
+	@Transactional
+public static Object[] getTokenAndUserDetails(Integer id, String isDocString) {
+    Object[] result = null;
+    Session session = HibernateUtil.buildSessionFactory();
 
-	    try {
-	        String queryStr;
+    try {
+        String queryStr;
 
-	         if (isDocString.equals("0")) {
-	            // Query when the ID corresponds to a docID
-	            queryStr = "SELECT t.token_name, d.first_name, d.last_name " +
-	                       "FROM tip_token t " +
-	                       "JOIN registration r ON t.registration_id = r.registration_id " +
-	                       "JOIN doctors_new d ON r.DocID = d.docid " +
-	                       "WHERE t.status != 0 AND d.docid = :id";
-	        } else {
-	            // Query when the ID corresponds to a registrationID
-	            queryStr = "SELECT t.token_name, r.first_name, r.last_name " +
-	                       "FROM tip_token t " +
-	                       "JOIN registration r ON t.registration_id = r.registration_id " +
-	                       "WHERE t.status != 0 AND r.registration_id = :id";
-	        }
+        if ("0".equals(isDocString)) {
+            queryStr = "SELECT t.token_name, d.first_name, d.last_name " +
+                       "FROM tip_token t " +
+                       "JOIN registration r ON t.registration_id = r.registration_id " +
+                       "JOIN doctors_new d ON r.DocID = d.docid " +
+                       "WHERE t.status != 0 AND d.docid = :id";
+        } else {
+            queryStr = "SELECT t.token_name, r.first_name, r.last_name " +
+                       "FROM tip_token t " +
+                       "JOIN registration r ON t.registration_id = r.registration_id " +
+                       "WHERE t.status != 0 AND r.registration_id = :id";
+        }
 
-	        Query<Object[]> query = session.createNativeQuery(queryStr, Object[].class);
-	        query.setParameter("id", id);
+        Query query = session.createNativeQuery(queryStr);
+        query.setParameter("id", id);
 
-	        result = query.uniqueResult();
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+        result = (Object[]) query.getSingleResult(); // Retrieve result as Object[]
+    } catch (NoResultException e) {
+        System.out.println("No data found for the given registration ID.");
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
 
-	    return result;
-	}
+    return result;
+}
 
 
 	
