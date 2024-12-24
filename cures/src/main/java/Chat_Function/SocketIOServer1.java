@@ -138,7 +138,8 @@ public class SocketIOServer1 extends WebSocketServer {
 			String recipientId = message.substring(separatorIndex + 1, separatorIndex1);
 			String roomName = message.substring(separatorIndex1 + 1, separatorIndex2);
 			Integer chat_id = Integer.parseInt(roomName);
-			String message1 = message.substring(separatorIndex2 + 1);
+			String message1 = message.substring(separatorIndex2 + 1,separatorIndex3);
+           		 Integer isDoc=Integer.parseInt(message1.substring(separatorIndex3 + 1));
 			String enmsg = null;
 			final String secretKey = Constant.SECRETE;
 			Encryption encrypt = new Encryption();
@@ -154,7 +155,7 @@ public class SocketIOServer1 extends WebSocketServer {
 
 			
 
-			Integer result = ChatDaoImpl.Chat_Store(chat_id, hm);
+			Integer result = ChatDaoImpl.Chat_Store(chat_id, hm, isDoc);
 			// broadcast the message to all clients in the room
 
 			// broadcast(roomName, message1);
