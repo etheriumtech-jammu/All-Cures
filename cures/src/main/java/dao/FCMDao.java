@@ -132,14 +132,14 @@ public class FCMDao {
 	    return ret;
 	}
 
-	public static Object[] getTokenAndUserDetails(Integer id, Integer isDocID) {
+	public static Object[] getTokenAndUserDetails(Integer id,String isDocString) {
 	    Object[] result = null;
 	    Session session = HibernateUtil.buildSessionFactory();
 
 	    try {
 	        String queryStr;
 
-	        if (isDocID==0) {
+	         if (isDocString.equals("0")) {
 	            // Query when the ID corresponds to a docID
 	            queryStr = "SELECT t.token_name, d.first_name, d.last_name " +
 	                       "FROM tip_token t " +
