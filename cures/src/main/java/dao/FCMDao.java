@@ -140,17 +140,17 @@ public static Object[] getTokenAndUserDetails(Integer id, String isDocString) {
     try {
         String queryStr;
 
-        if ("0".equals(isDocString)) {
+        if ("1".equals(isDocString)) {
             queryStr = "SELECT t.token_name, d.first_name, d.last_name " +
                        "FROM tip_token t " +
                        "JOIN registration r ON t.registration_id = r.registration_id " +
                        "JOIN doctors_new d ON r.DocID = d.docid " +
-                       "WHERE t.status != 0 AND d.docid = :id";
+                       "WHERE d.docid = :id";
         } else {
             queryStr = "SELECT t.token_name, r.first_name, r.last_name " +
                        "FROM tip_token t " +
                        "JOIN registration r ON t.registration_id = r.registration_id " +
-                       "WHERE t.status != 0 AND r.registration_id = :id";
+                       "WHERE r.registration_id = :id";
         }
 
         Query query = session.createNativeQuery(queryStr);
