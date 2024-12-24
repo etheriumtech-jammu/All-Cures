@@ -139,7 +139,9 @@ public class SocketIOServer1 extends WebSocketServer {
 			String roomName = message.substring(separatorIndex1 + 1, separatorIndex2);
 			Integer chat_id = Integer.parseInt(roomName);
 			String message1 = message.substring(separatorIndex2 + 1,separatorIndex3);
+			System.out.println("message1"+message1);
            		 Integer isDoc=Integer.parseInt(message1.substring(separatorIndex3 + 1));
+			System.out.println("isDoc"+isDoc);
 			String enmsg = null;
 			final String secretKey = Constant.SECRETE;
 			Encryption encrypt = new Encryption();
