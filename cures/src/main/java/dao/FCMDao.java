@@ -12,7 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import javax.persistence.NoResultException;
 import com.google.firebase.messaging.FirebaseMessagingException;
-
+import javax.transaction.Transactional;
 import Chat_Function.NotificationService;
 import util.HibernateUtil;
 import model.Token;
