@@ -59,6 +59,7 @@ public class ChatDaoImpl {
 //		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
 		Session session = HibernateUtil.buildSessionFactory();
+			session.beginTransaction();
 		String toIdString = (String) chatMap.get("To_id"); // Get the value as a String
 		Integer regID = Integer.parseInt(toIdString); // Convert the String to Integer
 		String message= (String )chatMap.get("message");
