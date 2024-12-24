@@ -60,7 +60,7 @@ public class SocketIOServer1 extends WebSocketServer {
 	  public void onOpen(WebSocket conn, ClientHandshake handshake) {
 		  
 	//	  roomName = handshake.getFieldValue("Room_No");
-	//	  System.out.println("A client has connected" + clientId); 
+	//	  System.out.println("A client has connected"); 
 		 
 	    System.out.println("A client has connected");
 	    clients.put(conn, null);
@@ -80,10 +80,9 @@ public class SocketIOServer1 extends WebSocketServer {
 
 	  @Override
 	  public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-	    System.out.println("A client has disconnected");
+//	    System.out.println("A client has disconnected");
 		connectionCount.decrementAndGet();
-	    System.out.println(connectionCount);
-	  System.out.println(connectionCount);
+	   
 	    String roomName = clients.get(conn);
         if (roomName != null) {
             rooms.get(roomName).remove(conn);
@@ -109,12 +108,12 @@ public class SocketIOServer1 extends WebSocketServer {
 
 	  @Override
 	  public void onMessage(WebSocket conn, String message) {
-		  System.out.println("Received message is" + message);
+//		  System.out.println("Received message is" + message);
 
 		if (message.contains("Room_No") == true) {
 			JSONObject json = new JSONObject(message);
 			String roomName = json.getString("Room_No");
-			System.out.println("Chat_Room is " + roomName);
+//			System.out.println("Chat_Room is " + roomName);
 			 // Add the client to the chat room
 			if (!rooms.containsKey(roomName)) {
 				rooms.put(roomName, new CopyOnWriteArraySet<>());
@@ -127,18 +126,6 @@ public class SocketIOServer1 extends WebSocketServer {
 		else {
 			WebSocket sender = conn;
 
-			if (message.equals("exit")) {
-				try {
-				    this.stop();
-				} catch (IOException e) {
-				    // Handle the exception here
-					e.printStackTrace();
-				}
-			  	catch (InterruptedException e) {
-    				// Handle the InterruptedException here
-				e.printStackTrace();	
-			}
-			}
 
 			// Find the separator index of the recipient ID
 			int separatorIndex = message.indexOf(":");
@@ -151,16 +138,13 @@ public class SocketIOServer1 extends WebSocketServer {
 			String recipientId = message.substring(separatorIndex + 1, separatorIndex1);
 			String roomName = message.substring(separatorIndex1 + 1, separatorIndex2);
 			Integer chat_id = Integer.parseInt(roomName);
-			String message1 = message.substring(separatorIndex2 + 1,separatorIndex3);
-			Integer isDoc=Integer.parseInt(message1.substring(separatorIndex3 + 1));
+			String message1 = message.substring(separatorIndex2 + 1);
 			String enmsg = null;
 			final String secretKey = Constant.SECRETE;
 			Encryption encrypt = new Encryption();
 
 			enmsg = encrypt.encrypt(message1, secretKey);
-			System.out.println(roomName);
-
-			System.out.println("Encrypted Message:" + enmsg);
+			
 
 			// Store the message in the database
 			HashMap hm = new HashMap();
@@ -168,10 +152,9 @@ public class SocketIOServer1 extends WebSocketServer {
 			hm.put("To_id", recipientId);
 			hm.put("Message", enmsg);
 
-			System.out.println("Send_ID" + sendId);
-			System.out.println("Recipient_ID" + recipientId);
+			
 
-			Integer result = ChatDaoImpl.Chat_Store(chat_id, hm,isDoc);
+			Integer result = ChatDaoImpl.Chat_Store(chat_id, hm);
 			// broadcast the message to all clients in the room
 
 			// broadcast(roomName, message1);
