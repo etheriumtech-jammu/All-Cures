@@ -639,6 +639,7 @@ public class ChatDaoImpl {
 		        String lastName = result[2] != null ? (String) result[2] : "";
 		        // Concatenate firstName and lastName without extra space if lastName is null
 		        String fullName = lastName != null && !lastName.isEmpty() ? firstName + " " + lastName : firstName;
+ 			System.out.println(fullName);
 		        NotificationService.sendChatNotification(message,fullName,tokenName);
 		        
 		    } else {
