@@ -142,7 +142,7 @@ public class SocketIOServer1 extends WebSocketServer {
 			String message1 = message.substring(separatorIndex2 + 1,separatorIndex3);
 			System.out.println("message1"+message1);
            		String isDocString = message.substring(separatorIndex3 + 1).trim();
-            		Integer isDoc = Integer.parseInt(isDocString); 
+            		
 			System.out.println("isDoc"+isDoc);
 			String enmsg = null;
 			final String secretKey = Constant.SECRETE;
@@ -159,7 +159,7 @@ public class SocketIOServer1 extends WebSocketServer {
 
 			
 
-			Integer result = ChatDaoImpl.Chat_Store(chat_id, hm, isDoc);
+			Integer result = ChatDaoImpl.Chat_Store(chat_id, hm, isDocString);
 			// broadcast the message to all clients in the room
 
 			// broadcast(roomName, message1);
