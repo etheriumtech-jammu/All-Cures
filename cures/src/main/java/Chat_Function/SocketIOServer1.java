@@ -135,6 +135,7 @@ public class SocketIOServer1 extends WebSocketServer {
 			int separatorIndex1 = message.indexOf(":", separatorIndex + 1);
 			int separatorIndex2 = message.indexOf(":", separatorIndex1 + 1);
 			int separatorIndex3 = message.indexOf(":", separatorIndex2 + 1);
+			System.out.println("separatorIndex3"+separatorIndex3);
 			String recipientId = message.substring(separatorIndex + 1, separatorIndex1);
 			String roomName = message.substring(separatorIndex1 + 1, separatorIndex2);
 			Integer chat_id = Integer.parseInt(roomName);
