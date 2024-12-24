@@ -89,6 +89,7 @@ public class LoginActionController extends HttpServlet {
 			RegistrationDaoImpl_New.resetLoginDetails(user.getRegistration_id());
 			//Calling method to send the token to the user
 			 // Parse the JSON body and extract the value of the key "FCM"
+			 System.out.println("body"+body);
 		    if(body != null && !body.isEmpty()) {
 		    	 JSONObject jsonObject = new JSONObject(body);
 			    System.out.println(jsonObject);
