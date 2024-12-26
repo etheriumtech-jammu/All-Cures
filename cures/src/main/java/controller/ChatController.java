@@ -26,16 +26,15 @@ public class ChatController {
 	 
 		@RequestMapping(value = "/chat/msg", produces = "application/json", method = RequestMethod.POST)
 		public @ResponseBody int chat_store(@RequestParam(required = false) Integer chat_id, @RequestBody HashMap chatMap, HttpServletRequest request) {
-			System.out.println("entered");
-			System.out.println("chatMap"+chatMap);
+			
 			if (chat_id==null)
 			{
 			
 			chat_id= ChatDaoImpl.ChatStore();
-			System.out.println(chat_id);
+			
 			}
 			
-			return ChatDaoImpl.Chat_Store(chat_id, chatMap,"1");
+			return ChatDaoImpl.Chat_Store(chat_id, chatMap,"1","");
 		
 		
 		}
