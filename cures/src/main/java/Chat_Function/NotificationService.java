@@ -7,7 +7,7 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.MulticastMessage;
 import com.google.firebase.messaging.Notification;
-
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.List;
 
@@ -82,7 +82,9 @@ public class NotificationService {
                 .setToken(recipientToken) // Use setToken for a single recipient
                
                 .build();
-        System.out.println("Notification message created: " + message.toString() + "\n");
+		 Gson gson = new Gson();
+        String jsonPayload = gson.toJson(message);
+        System.out.println("Payload: " + jsonPayload);
         // Check if Firebase is initialized
         boolean isInitialized = !FirebaseApp.getApps().isEmpty();
         if (!isInitialized) {
