@@ -72,6 +72,7 @@ public class NotificationService {
 	}
 
 	public static void sendChatNotification( String body,String title, String recipientToken) throws IOException {
+		System.out.println("body"+body);
         // Create the message for a single recipient
         Message message = Message.builder()
                 .setNotification(Notification.builder()
