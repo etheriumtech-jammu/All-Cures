@@ -64,7 +64,7 @@ public class ChatDaoImpl {
 		Integer toID = Integer.parseInt(toIdString); // Convert the String to Integer
 		String fromIdString = (String) chatMap.get("From_id"); // Get the value as a String
 		Integer fromID = Integer.parseInt(fromIdString); 
-		String message= (String )chatMap.get("message");
+		String message= (String )chatMap.get("Message");
 		
 		ZonedDateTime now = ZonedDateTime.now();
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
