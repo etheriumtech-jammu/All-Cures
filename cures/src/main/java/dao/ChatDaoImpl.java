@@ -55,7 +55,7 @@ public class ChatDaoImpl {
 	public static MemcachedClient mcc = null;
 	// static Session session = HibernateUtil.buildSessionFactory();
 	@Transactional
-	public static Integer Chat_Store(Integer chat_id, HashMap<String, Object> chatMap,String isDocString) {
+	public static Integer Chat_Store(Integer chat_id, HashMap<String, Object> chatMap,String isDocString,String message) {
 //		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
 		Session session = HibernateUtil.buildSessionFactory();
@@ -63,9 +63,7 @@ public class ChatDaoImpl {
 		String toIdString = (String) chatMap.get("To_id"); // Get the value as a String
 		Integer toID = Integer.parseInt(toIdString); // Convert the String to Integer
 		String fromIdString = (String) chatMap.get("From_id"); // Get the value as a String
-		Integer fromID = Integer.parseInt(fromIdString); 
-		String message= (String )chatMap.get("Message");
-		
+		Integer fromID = Integer.parseInt(fromIdString); 		
 		ZonedDateTime now = ZonedDateTime.now();
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 	        String timestamp= now.format(formatter);
