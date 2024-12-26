@@ -61,7 +61,9 @@ public class ChatDaoImpl {
 		Session session = HibernateUtil.buildSessionFactory();
 			session.beginTransaction();
 		String toIdString = (String) chatMap.get("To_id"); // Get the value as a String
-		Integer regID = Integer.parseInt(toIdString); // Convert the String to Integer
+		Integer toID = Integer.parseInt(toIdString); // Convert the String to Integer
+		String fromIdString = (String) chatMap.get("From_id"); // Get the value as a String
+		Integer fromID = Integer.parseInt(fromIdString); 
 		String message= (String )chatMap.get("message");
 		
 		ZonedDateTime now = ZonedDateTime.now();
@@ -100,7 +102,7 @@ public class ChatDaoImpl {
 			session.getTransaction().commit();
 		//calling method to add in memcached
 		Add_memcached( chat_id,  chatMap);
-		ChatDaoImpl.ChatNotification(regID,message,isDocString );
+		ChatNotification(fromID,toID,message,isDocString );
 	//		session.close();
 		
 		} catch (Exception e) {
@@ -627,12 +629,9 @@ public class ChatDaoImpl {
 		return hmFinal;
 		
 	}
-
-	public static void ChatNotification(Integer registrationID,String message,String isDocString) throws FirebaseMessagingException, IOException
-	{
-				
-		 Object[] result = FCMDao.getTokenAndUserDetails(registrationID,isDocString);
-
+		public static void ChatNotification(Integer fromID,Integer toID,String message,String isDocString) throws FirebaseMessagingException, IOException
+		{
+		 Object[] result = FCMDao.getTokenAndUserDetails(fromID,toID,isDocString);
 		    if (result != null) {
 		        String tokenName = (String) result[0];
 		        String firstName = (String) result[1];
