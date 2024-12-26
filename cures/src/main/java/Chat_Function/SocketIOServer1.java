@@ -157,7 +157,7 @@ public class SocketIOServer1 extends WebSocketServer {
 
 			
 
-			Integer result = ChatDaoImpl.Chat_Store(chat_id, hm, isDocString);
+			Integer result = ChatDaoImpl.Chat_Store(chat_id, hm, isDocString,message1);
 			// broadcast the message to all clients in the room
 
 			// broadcast(roomName, message1);
