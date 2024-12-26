@@ -133,38 +133,56 @@ public class FCMDao {
 	}
 
 	@Transactional
-public static Object[] getTokenAndUserDetails(Integer id, String isDocString) {
-    Object[] result = null;
-    Session session = HibernateUtil.buildSessionFactory();
+	public static Object[] getTokenAndUserDetails(Integer from_id, Integer to_id, String to_isDocString) {
+	    Object[] result = new Object[3]; // To store token_name, first_name, and last_name
+	    Session session = HibernateUtil.buildSessionFactory();
 
-    try {
-        String queryStr;
+	    try {
+	        String queryStr_name;
+	        String queryStr_token;
 
-        if ("1".equals(isDocString)) {
-            queryStr = "SELECT t.token_name, d.docname_first, d.docname_last " +
-                       "FROM tip_token t " +
-                       "JOIN registration r ON t.registration_id = r.registration_id " +
-                       "JOIN Doctors_New d ON r.DocID = d.docid " +
-                       "WHERE d.docid = :id";
-        } else {
-            queryStr = "SELECT t.token_name, r.first_name, r.last_name " +
-                       "FROM tip_token t " +
-                       "JOIN registration r ON t.registration_id = r.registration_id " +
-                       "WHERE r.registration_id = :id";
-        }
+	        // Define the queries based on `to_isDocString`
+	        if ("0".equals(to_isDocString)) {
+	            queryStr_name = "SELECT r.first_name, r.last_name " +
+	                            "FROM registration r " +
+	                            "WHERE r.registration_id = :fromId";
+	            queryStr_token = "SELECT t.token_name " +
+	                             "FROM tip_token t " +
+	                             "JOIN registration r ON t.registration_id = r.registration_id " +
+	                             "JOIN Doctors_New d ON r.DocID = d.docid " +
+	                             "WHERE d.docid = :toId";
+	        } else {
+	            queryStr_name = "SELECT d.docname_first, d.docname_last " +
+	                            "FROM Doctors_New d " +
+	                            "WHERE d.docid = :fromId";
+	            queryStr_token = "SELECT t.token_name " +
+	                             "FROM tip_token t " +
+	                             "JOIN registration r ON t.registration_id = r.registration_id " +
+	                             "WHERE r.registration_id = :toId";
+	        }
 
-        Query query = session.createNativeQuery(queryStr);
-        query.setParameter("id", id);
+	        // Execute the query for name details
+	        Query<Object[]> nameQuery = session.createNativeQuery(queryStr_name);
+	        nameQuery.setParameter("fromId", from_id);
+	        List<Object[]> nameResults = nameQuery.getResultList();
+	        Object[] nameResult = nameResults.isEmpty() ? new Object[]{null, null} : nameResults.get(0);
 
-        result = (Object[]) query.getSingleResult(); // Retrieve result as Object[]
-    } catch (NoResultException e) {
-        System.out.println("No data found for the given registration ID.");
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
+	        // Execute the query for token_name
+	        Query<String> tokenQuery = session.createNativeQuery(queryStr_token);
+	        tokenQuery.setParameter("toId", to_id);
+	        List<String> tokenResults = tokenQuery.getResultList();
+	        String tokenResult = tokenResults.isEmpty() ? null : tokenResults.get(0);
 
-    return result;
-}
+	        // Combine results into a single Object array
+	        result[0] = tokenResult;          // token_name
+	        result[1] = nameResult[0];       // first_name
+	        result[2] = nameResult[1];       // last_name
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return result;
+	}
 
 
 	
