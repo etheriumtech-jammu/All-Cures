@@ -74,13 +74,10 @@ public class NotificationService {
 	public static void sendChatNotification( String body,String title, String recipientToken) throws IOException {
 		System.out.println("body"+body);
         // Create the message for a single recipient
-        Message message = Message.builder()
-                .setNotification(Notification.builder()
-                        .setTitle(title)
-                        .setBody(body)
-                        .build())
+       Message message = Message.builder()
+        		.setNotification(Notification.builder().setTitle(title).setBody(body).build())
+                        .putData("action", "chat")
                 .setToken(recipientToken) // Use setToken for a single recipient
-               
                 .build();
 		 Gson gson = new Gson();
         String jsonPayload = gson.toJson(message);
