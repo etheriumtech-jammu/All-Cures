@@ -156,9 +156,9 @@
             t()
         }([])
     </script>
-<script defer src="https://uat.all-cures.com/static/js/2.4b7f5e01.chunk.js"></script>
+<script defer src="https://uat.all-cures.com/static/js/2.3f800805.chunk.js"></script>
 <script>
-    loadScriptAsync("https://uat.all-cures.com/static/js/main.085cc802.chunk.js");
+    loadScriptAsync("https://uat.all-cures.com/static/js/main.4b2e62cb.chunk.js");
     </script> 
 </body>
 <footer>
