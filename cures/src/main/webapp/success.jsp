@@ -97,7 +97,7 @@
                     r.push(t[2]=n);
                     var u,i=document.createElement("script");
                     i.charset="utf-8",i.timeout=120,a.nc&&i.setAttribute("nonce",a.nc),i.src=function(e){
-                        return a.p+"static/js/"+({}[e]||e)+"."+{3:"70c6ed0d"}[e]+".chunk.js"
+                        return a.p+"static/js/"+({}[e]||e)+"."+{3:"21050039"}[e]+".chunk.js"
                     }(e);
                     var c=new Error;
                     u=function(r){
@@ -156,9 +156,9 @@
             t()
         }([])
     </script>
-<script defer src="https://uat.all-cures.com/static/js/2.3f800805.chunk.js"></script>
+<script defer src="https://uat.all-cures.com/static/js/2.9f11043a.chunk.js"></script>
 <script>
-    loadScriptAsync("https://uat.all-cures.com/static/js/main.4b2e62cb.chunk.js");
+    loadScriptAsync("https://uat.all-cures.com/static/js/main.68172e53.chunk.js");
     </script> 
 </body>
 <footer>
