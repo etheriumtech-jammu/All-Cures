@@ -148,4 +148,9 @@ public class DataController {
 		return DataDaoImpl.viewMedicines();
 	}
 
+	@RequestMapping(value = "/all/categories", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List AllCategories() {
+		return DataDaoImpl.AllCategories();
+	}
+
 }
