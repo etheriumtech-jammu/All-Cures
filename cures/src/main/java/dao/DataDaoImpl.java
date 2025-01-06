@@ -356,7 +356,7 @@ public class DataDaoImpl {
 
 	}
 
-	public static List viewCategories() {
+	public static List AllCategories() {
 		Session session = HibernateUtil.buildSessionFactory();
 		
 		Query query = session.createNativeQuery("SELECT dc_id,dc_desc FROM disease_condition;");
