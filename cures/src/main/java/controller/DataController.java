@@ -39,11 +39,7 @@ private SocketIOServer1 socketServer;
 	public @ResponseBody int addDataDetails(@RequestBody HashMap dataMasterMap) {
 		return dataDaoImpl.addDataDetails(dataMasterMap);
 	}
-	@RequestMapping(value = "/all/categories", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody List AllCategories() {
-		return DataDaoImpl.AllCategories();
-	}
-	
+		
 	@RequestMapping(value = "/deactivate", produces = "application/json", method = RequestMethod.PUT)
 	public @ResponseBody int delete_update(@RequestBody HashMap dataMasterMap ) throws SQLException {
 		System.out.println("Request to deactivate");
@@ -147,5 +143,10 @@ private SocketIOServer1 socketServer;
 	@RequestMapping(value = "/categories", produces = "application/json", method = RequestMethod.GET)
 	public  List Categories() {
 		return DataDaoImpl.viewCategories();
+	}
+
+	@RequestMapping(value = "/all/categories", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List AllCategories() {
+		return DataDaoImpl.AllCategories();
 	}
 }
