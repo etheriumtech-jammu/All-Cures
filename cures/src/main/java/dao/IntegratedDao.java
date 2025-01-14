@@ -104,4 +104,54 @@ public class IntegratedDao {
             return new ArrayList<>();
         }
     }
+    
+    
+    public List<String> searchCities(String query) {
+        boolean isNumeric = query.matches("\\d+"); // ✅ Check if query contains only digits (PIN)
+        Session session = HibernateUtil.buildSessionFactory();
+        try  {
+            String sql;
+            Query<Object[]> dbQuery;
+
+            if (isNumeric) {
+                // ✅ Search by PIN
+                sql = "SELECT cityname, pincode FROM city WHERE pincode LIKE LOWER(:pin) "  +
+                      "ORDER BY CASE WHEN pincode <= 10000 OR pincode >= 90000 THEN 1 ELSE 2 END, cityname ASC LIMIT 10";
+                dbQuery = session.createNativeQuery(sql);
+                dbQuery.setParameter("pin", query + "%"); // ✅ Convert query to integer safely
+            } else {
+                // ✅ Search by City Name Prefix
+                sql = "SELECT cityname, pincode FROM city WHERE LOWER(cityname) LIKE LOWER(:query) " +
+                      "ORDER BY CASE WHEN pincode <= 10000 OR pincode >= 90000 THEN 1 ELSE 2 END, cityname ASC LIMIT 10";
+                dbQuery = session.createNativeQuery(sql);
+                dbQuery.setParameter("query", query + "%"); // ✅ Add wildcard for prefix search
+            }
+
+   //         dbQuery.setMaxResults(10);
+            List<Object[]> resultList = dbQuery.getResultList();
+            List<String> cityList = new ArrayList<>();
+            for (Object[] row : resultList) {
+                String cityName = row[0] != null ? (String) row[0] : "";
+
+                int pinCode = 0; // ✅ Default to 0
+                if (row[1] != null) {
+                    try {
+                        pinCode = Integer.parseInt(row[1].toString()); // ✅ Convert safely from String
+                    } catch (NumberFormatException e) {
+                        pinCode = 0; // ✅ Handle invalid values
+                    }
+                }
+
+                // ✅ Construct city display string
+                String cityDisplay = cityName + " (" + pinCode + ")";
+                cityList.add(cityDisplay);
+            }
+
+            return cityList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+  
 }
