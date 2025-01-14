@@ -19,8 +19,8 @@ public class AppController {
 	//	 System.out.println("all");
 		    String title = "All-Cures - Around health and about it";
         String desc = "Centralized, user-powered platform for bringing information on Alternate Systems of medicine from across the world. Ayurveda, Unani, Persian, Homeopathy";
-         model.addAttribute("Title", title);
-        model.addAttribute("Description", desc);
+         model.addAttribute("Title", title + "| All-Cures");
+        model.addAttribute("Description", desc + "| All-Cures");
 
 	        return "success"; // The view name (success.jsp)
 	    }
@@ -30,8 +30,8 @@ public class AppController {
     public String handleRequest1(Model model) {
 	    String title = "All-Cures - Around health and about it";
         String desc = "Centralized, user-powered platform for bringing information on Alternate Systems of medicine from across the world. Ayurveda, Unani, Persian, Homeopathy";
-         model.addAttribute("Title", title);
-        model.addAttribute("Description", desc);
+         model.addAttribute("Title", title + "| All-Cures");
+        model.addAttribute("Description", desc + "| All-Cures");
         return "success"; // The view name (success.jsp)
     }
 
@@ -68,8 +68,8 @@ public class AppController {
         }
 	
         // Pass title and description to the view
-        model.addAttribute("Title", title);
-        model.addAttribute("Description", desc);
+        model.addAttribute("Title", title + "| All-Cures");
+        model.addAttribute("Description", desc + "| All-Cures");
 
         // Return the name of the view (success.jsp)
         return "success";
