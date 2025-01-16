@@ -19,7 +19,7 @@ public class JWTTokenValidationInterceptor implements HandlerInterceptor {
     // Define constants
     private static final String AUTH_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
-    private static final String[] VALID_USERNAMES = {"amangill@etheriumtech.com", "ruler.here@gmail.com", "kauraman198495@gmail.com"};
+    private static final String[] VALID_USERNAMES = {"amangill@etheriumtech.com", "ruler.here@gmail.com", "kauraman198495@gmail.com","divya1111sharma@gmail.com"};
     private static final List<String> VALID_USERNAMES_LIST = Arrays.asList(VALID_USERNAMES);
     private static final String SECRET_KEY_BASE64 = "ti0dG0Jy9RCttNVauQ1bjo0oYXNxfgHjfpAm/mKZaak=";
     
