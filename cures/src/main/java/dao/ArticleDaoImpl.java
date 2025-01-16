@@ -1773,6 +1773,7 @@ public static Map<String, Integer> getLikesAndDislikesCount(Long articleId) {
 	{
 		
 		String requestJsonStr = IOUtils.toString(request.getInputStream(), "UTF-8");
+		System.out.println("requestJsonStr"+requestJsonStr);
 		ObjectMapper mapper = new ObjectMapper();
     	Map<String,Object> requestJsonMap = mapper.readValue(requestJsonStr, Map.class);
     	
