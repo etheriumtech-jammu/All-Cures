@@ -1771,11 +1771,9 @@ public static Map<String, Integer> getLikesAndDislikesCount(Long articleId) {
 
 	public static int createArticle(HttpServletRequest request, HttpServletResponse response, Registration user) throws IOException
 	{
-		System.out.println("request.getInputStream()"+ request.getInputStream());
 		String requestJsonStr = null;
 		try {
 		    requestJsonStr = IOUtils.toString(request.getInputStream(), "UTF-8");
-		    System.out.println("Request JSON String: " + requestJsonStr);
 		} catch (IOException e) {
 		    e.printStackTrace();
 		}
