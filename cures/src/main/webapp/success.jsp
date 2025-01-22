@@ -158,7 +158,7 @@
     </script>
 <script defer src="https://uat.all-cures.com/static/js/2.1a983ebc.chunk.js"></script>
 <script>
-    loadScriptAsync("https://uat.all-cures.com/static/js/main.b033e4db.chunk.js");
+    loadScriptAsync("https://uat.all-cures.com/static/js/main.3d481bdd.chunk.js");
     </script> 
 </body>
 <footer>
