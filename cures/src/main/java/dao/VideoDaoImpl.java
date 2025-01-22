@@ -688,9 +688,10 @@ public class VideoDaoImpl {
 	        }
 	    }
 
-	public static  List<HashMap<String, Object>> getDoctorsList() {
+	public static  List<HashMap<String, Object>> getDoctorsList(Integer offset) {
 	        Session session = HibernateUtil.buildSessionFactory();
-/*	        Query query1 = session.createNativeQuery("SELECT d.docid, d.prefix, d.docname_first, d.docname_middle, d.docname_last,d.img_Loc " +
+	        	
+			/*	        Query query1 = session.createNativeQuery("SELECT d.docid, d.prefix, d.docname_first, d.docname_middle, d.docname_last,d.img_Loc " +
 	                "mt.name AS MedicineTypeName, h.hospital_affliated " +
 	                "FROM Doctors_New d " +
 	                " LEFT JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID " +
@@ -714,7 +715,8 @@ public class VideoDaoImpl {
 	        		+ "    mdd.DegDesc, dd.YearOfGrad, mun.UnivName,\r\n"
 	        		+ "    uc.cityname AS univ_city, us.statename AS univ_state, uco.countryname AS univ_country,\r\n"
 	        		+ "    mt.id, address_states.codeid, uc.citycode, co.countrycodeid,\r\n"
-	        		+ "    mdd.DegID, s.splid, h.hospitalid, AVG(dr.ratingVal) AS ratingValAVG\r\n"
+	        		+ "    mdd.DegID, s.splid, h.hospitalid, AVG(dr.ratingVal) AS ratingValAVG, sr.fee,\r\n"
+	        		+ "       CASE WHEN sr.ServiceID = 2 THEN 1 ELSE 0 END AS videoService\r\n"
 	        		+ "FROM\r\n"
 	        		+ "    Doctors_New AS doctors\r\n"
 	        		+ "LEFT JOIN\r\n"
@@ -747,14 +749,15 @@ public class VideoDaoImpl {
 	        		+ "    countries AS uco ON mun.UnivCountry = uco.countrycodeid\r\n"
 	        		+ "LEFT JOIN\r\n"
 	        		+ "    masteraddresstype AS mat ON da.AddressTypeID = mat.ID\r\n"
-	        		+ "JOIN (\r\n"
-	        		+ "    SELECT r.DocID, sr.ServiceID\r\n"
+	        		+ "LEFT JOIN (\r\n"
+	        		+ "    SELECT r.DocID, sr.ServiceID, sr.fee\r\n"
 	        		+ "    FROM registration r\r\n"
 	        		+ "    JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID\r\n"
 	        		+ "    WHERE sr.ServiceID = 2 AND EndDate >= CURRENT_DATE\r\n"
 	        		+ ") AS sr ON doctors.docid = sr.DocID\r\n"
 	        		+ "LEFT JOIN \r\n"
 	        		+ "    doctorsrating AS dr ON dr.target_id = doctors.docid AND dr.target_type_id = 1\r\n"
+	        		+ "WHERE doctors.docid <= 63 OR doctors.docid >= 14487\r\n"
 	        		+ "GROUP BY doctors.docid, doctors.gender, doctors.insurance_accept, doctors.awards, \r\n"
 	        		+ "    doctors.telephone_nos, doctors.other_spls, doctors.over_allrating, doctors.prefix, \r\n"
 	        		+ "    doctors.docname_first, doctors.docname_middle, doctors.docname_last, doctors.email, \r\n"
@@ -764,8 +767,13 @@ public class VideoDaoImpl {
 	        		+ "    h.hospital_affliated, s.spl_name, st.statename, mt.name, da.Address1, da.Address2, c.cityname, \r\n"
 	        		+ "    address_states.statename, co.countryname, mat.AddressType, mdd.DegDesc, dd.YearOfGrad, mun.UnivName, \r\n"
 	        		+ "    uc.cityname, us.statename, uco.countryname, mt.id, address_states.codeid, uc.citycode, co.countrycodeid, \r\n"
-	        		+ "    mdd.DegID, s.splid, h.hospitalid\r\n"
-	        		+ "ORDER BY doctors.docid DESC\r\n"
+	        		+ "    mdd.DegID, s.splid, h.hospitalid, sr.fee,sr.ServiceID \r\n"
+	        		+ "ORDER BY \r\n"
+	        		+ "    CASE \r\n"
+	        		+ "        WHEN sr.ServiceID = 2 THEN 0\r\n"
+	        		+ "        ELSE 1\r\n"
+	        		+ "    END,\r\n"
+	        		+ "    doctors.docid DESC Limit 10 OFFSET\r\n " + offset 
 					  + ";");
 	        List<HashMap<String, Object>> doctorList = new ArrayList<>();
 
@@ -825,9 +833,12 @@ public class VideoDaoImpl {
                 doctor.put("specialtyID", row[47]);
                 doctor.put("hospitalID", row[48]);
                 doctor.put("ratingValueAverage", row[49]);
-
-                doctorList.add(doctor);	        }
+                doctor.put("fee", row[50]);
+                doctor.put("videoService", row[51] != null ? (Integer) row[51] : 0);
+                doctorList.add(doctor);	        
+                }
 	        return doctorList;
 	    }
+
 	    
 }
