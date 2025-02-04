@@ -848,7 +848,7 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
 	   public static int incrementCount() {
 	        Session session = null;
 	        Transaction transaction = null;
-	        Integer newCount = 41; // Default starting value
+	        Integer newCount = 40; // Default starting value
 
 	        try {
 	            session = HibernateUtil.buildSessionFactory();
