@@ -23,6 +23,7 @@ import util.Constant;
 import util.HibernateUtil;
 import model.VideoFailure;
 import java.io.IOException;
+import model.ConsultCount;
 @Component
 public class VideoDaoImpl {
 
