@@ -840,5 +840,49 @@ public class VideoDaoImpl {
 	        return doctorList;
 	    }
 
+	public static int incrementCount() {
+	        Session session = null;
+	        Transaction transaction = null;
+	        Integer newCount = 40; // Default starting value
+
+	        try {
+	            session = HibernateUtil.buildSessionFactory();
+	            transaction = session.beginTransaction();
+
+	            // Retrieve the latest ID
+	            Long latestId = (Long) session.createQuery(
+	                    "SELECT MAX(c.id) FROM ConsultCount c", Long.class)
+	                    .uniqueResult();
+
+	            if (latestId != null) {
+	                // Retrieve the latest count
+	                Integer currentCount = (Integer) session.createQuery(
+	                        "SELECT c.count FROM ConsultCount c WHERE c.id = :latestId")
+	                        .setParameter("latestId", latestId)
+	                        .uniqueResult();
+
+	                newCount = (currentCount != null) ? currentCount + 1 : 41;
+
+	                // Update the latest row
+	                session.createQuery("UPDATE ConsultCount c SET c.count = :newCount WHERE c.id = :latestId")
+	                        .setParameter("newCount", newCount)
+	                        .setParameter("latestId", latestId)
+	                        .executeUpdate();
+	            } else {
+	                // If no records exist, insert new row with count = 41
+	                ConsultCount newEntry = new ConsultCount(41);
+	                session.save(newEntry);
+	            }
+
+	            transaction.commit();
+	        } catch (Exception e) {
+	            if (transaction != null) {
+	                transaction.rollback();
+	            }
+	            e.printStackTrace();
+	        } 
+	        return newCount;
+	    }
+
 	    
 }
