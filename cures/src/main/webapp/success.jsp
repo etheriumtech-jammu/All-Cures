@@ -45,7 +45,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" data-integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" data-crossorigin="anonymous" data-referrerpolicy="no-referrer"/>
     <meta name="google-site-verification" content="EOijam__k7Lgtidf1PQ4LGCLserfGYXC3LFwHZvXEbo"/>
     <link href="https://uat.all-cures.com/static/css/2.5f9f5d6c.chunk.css" rel="stylesheet">
-    <link href="https://uat.all-cures.com/static/css/main.d227563e.chunk.css" rel="stylesheet">
+    <link href="https://uat.all-cures.com/static/css/main.dc1dd65b.chunk.css" rel="stylesheet">
 </head>
 <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -97,7 +97,7 @@
                     r.push(t[2]=n);
                     var u,i=document.createElement("script");
                     i.charset="utf-8",i.timeout=120,a.nc&&i.setAttribute("nonce",a.nc),i.src=function(e){
-                        return a.p+"static/js/"+({}[e]||e)+"."+{3:"1a9dbdef"}[e]+".chunk.js"
+                        return a.p+"static/js/"+({}[e]||e)+"."+{3:"482d6f07"}[e]+".chunk.js"
                     }(e);
                     var c=new Error;
                     u=function(r){
@@ -156,9 +156,9 @@
             t()
         }([])
     </script>
-<script defer src="https://uat.all-cures.com/static/js/2.d39aca97.chunk.js"></script>
+<script defer src="https://uat.all-cures.com/static/js/2.bec76393.chunk.js"></script>
 <script>
-    loadScriptAsync("https://uat.all-cures.com/static/js/main.7776b33d.chunk.js");
+    loadScriptAsync("https://uat.all-cures.com/static/js/main.31db93ba.chunk.js");
     </script> 
 </body>
 <footer>
