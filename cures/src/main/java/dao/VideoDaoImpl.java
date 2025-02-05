@@ -24,6 +24,7 @@ import util.HibernateUtil;
 import model.VideoFailure;
 import java.io.IOException;
 import model.ConsultCount;
+import java.math.BigInteger;
 @Component
 public class VideoDaoImpl {
 
