@@ -124,6 +124,11 @@ public class VideoController {
 		return VideoDaoImpl.getDoctorsList(offset);
 	}
 
+	@RequestMapping(value = "/get/doctors", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List<HashMap<String, Object>> getDoctors(HttpServletRequest request,@RequestParam(required=false) Integer userID,@RequestParam(required=false) Integer offset,@RequestParam(required=false) Integer medTypeID) throws Exception {
+    
+		return VideoDaoImpl.getDoctors(offset,medTypeID);
+	}
 
 	@RequestMapping(value = "/post/leads", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody int postLeads(HttpServletRequest request,@RequestParam(required=false) Integer userID,@RequestParam(required=false) Integer docID) throws Exception {
