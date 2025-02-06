@@ -45,7 +45,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" data-integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" data-crossorigin="anonymous" data-referrerpolicy="no-referrer"/>
     <meta name="google-site-verification" content="EOijam__k7Lgtidf1PQ4LGCLserfGYXC3LFwHZvXEbo"/>
     <link href="https://uat.all-cures.com/static/css/2.5f9f5d6c.chunk.css" rel="stylesheet">
-    <link href="https://uat.all-cures.com/static/css/main.dc1dd65b.chunk.css" rel="stylesheet">
+    <link href="https://uat.all-cures.com/static/css/main.1d9142ce.chunk.css" rel="stylesheet">
 </head>
 <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -158,7 +158,7 @@
     </script>
 <script defer src="https://uat.all-cures.com/static/js/2.bec76393.chunk.js"></script>
 <script>
-    loadScriptAsync("https://uat.all-cures.com/static/js/main.b86c0a7f.chunk.js");
+    loadScriptAsync("https://uat.all-cures.com/static/js/main.9514f1e5.chunk.js");
     </script> 
 </body>
 <footer>
