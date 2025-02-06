@@ -693,7 +693,7 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
         return 0; // Return 0 if email sending fails
     }
 }
-	 public static  List<HashMap<String, Object>> getDoctors(Integer offset, Integer medTypeID) {
+	 public static HashMap<String, Object> getDoctors(Integer offset, Integer medTypeID) {
 	        Session session = HibernateUtil.buildSessionFactory();
 	        	
 			/*	        Query query1 = session.createNativeQuery("SELECT d.docid, d.prefix, d.docname_first, d.docname_middle, d.docname_last,d.img_Loc " +
@@ -862,8 +862,11 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
                 doctorList.add(doctor);	
                 
                 }
-            doctorList.add(totalPagesCount);
-	        return doctorList;
+           // **Wrap the data in a single response object**
+            HashMap<String, Object> response = new HashMap<>();
+            response.put("data", doctorList);
+            response.put("totalPagesCount", totalPagesCount);
+	        return response;
 	    }
 	    
 	  public static  List<HashMap<String, Object>> getDoctorsList(Integer offset) {
