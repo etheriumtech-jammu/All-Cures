@@ -562,10 +562,10 @@ ul.social li{
         <tr>
           <td class="bg_light" style="text-align: center;">
           	<p>
-			<a href="https://www.facebook.com/All-Cures-100610265834385" target="_blank"><img src="https://ik.imagekit.io/hg4fpytvry/product-images/assets/img/facebook.svg" alt="Facebook Link" height="30px" width="30px"/></a>
-			<a href="https://www.instagram.com/allcuresinfo/" target="_blank"><img src="https://ik.imagekit.io/hg4fpytvry/product-images/assets/img/instagram.svg" alt="Instagram Link" height="30px" width="30px"/></a>
-			<a href="https://twitter.com/allcuresinfo" target="_blank"><img src="https://ik.imagekit.io/hg4fpytvry/product-images/assets/img/twitter.svg" alt="Twitter Link" height="30px" width="30px"/></a>
-			<a href="https://www.linkedin.com/company/etherium-technologies/" target="_blank"><img src="https://ik.imagekit.io/hg4fpytvry/product-images/assets/img/linkedin.svg" alt="Linkedin Link" height="30px" width="30px"/></a>
+			<a href="https://www.facebook.com/All-Cures-100610265834385" target="_blank"><img src="https://ik.imagekit.io/hg4fpytvry/product-images/assets/img/facebook.png" alt="Facebook Link" height="30px" width="30px"/></a>
+			<a href="https://www.instagram.com/allcuresinfo/" target="_blank"><img src="https://ik.imagekit.io/hg4fpytvry/product-images/assets/img/instagram.png" alt="Instagram Link" height="30px" width="30px"/></a>
+			<a href="https://twitter.com/allcuresinfo" target="_blank"><img src="https://ik.imagekit.io/hg4fpytvry/product-images/assets/img/twitter.png" alt="Twitter Link" height="30px" width="30px"/></a>
+			<a href="https://www.linkedin.com/company/etherium-technologies/" target="_blank"><img src="https://ik.imagekit.io/hg4fpytvry/product-images/assets/img/linkedin.png" alt="Linkedin Link" height="30px" width="30px"/></a>
 			
 			</p>
           </td>
