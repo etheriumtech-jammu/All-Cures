@@ -781,8 +781,10 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
 	        		+ "    mdd.DegID, s.splid, h.hospitalid\r\n"
 	        		+ "ORDER BY \r\n"
 	        		+ "    CASE \r\n"
-	        		+ "        WHEN MAX(sr.ServiceID) = 2 THEN 0\r\n"
-	        		+ "        ELSE 1\r\n"
+	        		+ "        WHEN doctors.MedicineTypeID = 1 AND doctors.docid IN (14500) THEN 0\r\n"
+	        		+ "         WHEN doctors.MedicineTypeID = 8 AND doctors.docid IN (14506,14511) THEN 1\r\n"
+	        		+ "        WHEN MAX(sr.ServiceID) = 2 THEN 2\r\n"
+	        		+ "        ELSE 3\r\n"
 	        		+ "    END,\r\n"
 	        		+ "    doctors.docid DESC \r\n"
 	   //     		+ " LIMIT 10 OFFSET "  + offset 
