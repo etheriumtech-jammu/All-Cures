@@ -125,7 +125,7 @@ public class VideoController {
 	}
 
 	@RequestMapping(value = "/get/doctors", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody List<HashMap<String, Object>> getDoctors(HttpServletRequest request,@RequestParam(required=false) Integer userID,@RequestParam(required=false) Integer offset,@RequestParam(required=false) Integer medTypeID) throws Exception {
+	public @ResponseBody HashMap<String, Object> getDoctors(HttpServletRequest request,@RequestParam(required=false) Integer userID,@RequestParam(required=false) Integer offset,@RequestParam(required=false) Integer medTypeID) throws Exception {
     
 		return VideoDaoImpl.getDoctors(offset,medTypeID);
 	}
