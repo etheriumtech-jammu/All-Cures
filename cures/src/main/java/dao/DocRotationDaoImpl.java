@@ -32,7 +32,7 @@ public class DocRotationDaoImpl {
                 "    WHERE sr.ServiceID = 2 AND sr.EndDate >= CURRENT_DATE " +
                 ") AS sr ON doctors.docid = sr.DocID " +
                 "WHERE (doctors.docid <= 63 OR doctors.docid >= 14487) " +
-                "ORDER BY doctors.docid DESC")
+               "ORDER BY doctors.docid DESC Limit 3 offset " + lastIndex)
                 .addScalar("docid", org.hibernate.type.IntegerType.INSTANCE); // Map docid as Integer
 
             List<Integer> docIds = query.list();
