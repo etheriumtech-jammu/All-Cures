@@ -3,6 +3,8 @@ package dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.hibernate.Transaction;
+
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
@@ -14,96 +16,83 @@ import util.HibernateUtil;
 
 public class DocRotationDaoImpl {
 
-	public static List<Integer> getRotatedDocIds() {
-	Session session = HibernateUtil.buildSessionFactory();
+	private static final int LIMIT = 3; // Fetch 3 doctors at a time
 
+    public static List<Integer> getRotatedDocIds() {
+        Session session = HibernateUtil.buildSessionFactory();
+       
         try {
-            // Fetch last rotation index
-            int lastIndex = getLastIndex(session);
-
-         // Corrected native query
-            NativeQuery<Integer> query = session.createNativeQuery(
-                "SELECT doctors.docid " +
-                "FROM Doctors_New AS doctors " +
-                "JOIN ( " +
-                "    SELECT r.DocID, sr.ServiceID, sr.fee " +
-                "    FROM registration r " +
-                "    JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID " +
-                "    WHERE sr.ServiceID = 2 AND sr.EndDate >= CURRENT_DATE " +
-                ") AS sr ON doctors.docid = sr.DocID " +
-                "WHERE (doctors.docid <= 63 OR doctors.docid >= 14487) " +
-               "ORDER BY doctors.docid DESC Limit 3 offset " + lastIndex)
-                .addScalar("docid", org.hibernate.type.IntegerType.INSTANCE); // Map docid as Integer
-
-            List<Integer> docIds = query.list();
-		 System.out.println("docIds"+docIds);
-            if (!docIds.isEmpty()) {
-                // Update the index for the next rotation
-                int totalCount = getTotalDoctorCount();
-		 System.out.println("totalCount"+totalCount);
-                int newOffset = (lastIndex) % totalCount;
-		    System.out.println("newOffset"+newOffset);
-                updateLastIndex(session, newOffset);
+            // Fetch last rotation state
+            RotationTracker rotationTracker = getRotationTracker(session);
+            Transaction tx = session.beginTransaction();
+            int lastIndex = rotationTracker.getLastIndex();
+            List<Integer> docIds = rotationTracker.getDocIds();
+            
+            // If docIds list is empty, fetch from DB initially
+            if (docIds == null || docIds.isEmpty()) {
+                docIds = fetchAllDoctors(session);
+                rotationTracker.setDocIds(docIds);
+                session.update(rotationTracker);
             }
-            return docIds;
+
+            // Get the rotated batch of docIDs
+            List<Integer> rotatedDocs = new ArrayList<>();
+            for (int i = 0; i < LIMIT; i++) {
+                rotatedDocs.add(docIds.get((lastIndex + i) % docIds.size()));
+            }
+
+            System.out.println("Rotated DocIDs: " + rotatedDocs);
+
+            // Update lastIndex for next rotation
+            int newOffset = (lastIndex + LIMIT) % docIds.size();
+            rotationTracker.setLastIndex(newOffset);
+            rotationTracker.setUpdatedAt(LocalDateTime.now());
+            
+            session.update(rotationTracker);
+            tx.commit();
+            return rotatedDocs;
 
         } catch (Exception e) {
-            
+           
             e.printStackTrace();
             return null;
         } 
     }
-	private static int getTotalDoctorCount() {
-		Session session = HibernateUtil.buildSessionFactory();
-		Query query1 = session.createNativeQuery("SELECT doctors.docid  \r\n"
-				+ " FROM Doctors_New AS doctors  \r\n"
-				+ " JOIN (  \r\n"
-				+ " SELECT r.DocID, sr.ServiceID, sr.fee \r\n"
-				+ "    FROM registration r  \r\n"
-				+ "      JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID  \r\n"
-				+ "     WHERE sr.ServiceID = 2 AND sr.EndDate >= CURRENT_DATE  \r\n"
-				+ "  ) AS sr ON doctors.docid = sr.DocID \r\n"
-				+ "WHERE (doctors.docid <= 63 OR doctors.docid >= 14487) \r\n"
-				+ "ORDER BY doctors.docid \r\n"
-				+ ";");
-              int size = query1.getResultList().size();
-  		   return size;
-		
-	}
 
-	// Retrieve the last rotation index
-	private static int getLastIndex(Session session) {
-	    List<Integer> result = session.createQuery("SELECT r.lastIndex FROM RotationTracker r WHERE r.id = 1", Integer.class)
-	                                  .list();
-	    
-	    if (!result.isEmpty()) {
-	        return result.get(0);
-	    } else {
-	        // If no record exists, initialize it
-	        RotationTracker rotationTracker = new RotationTracker();
-	        rotationTracker.setId(1);
-	        rotationTracker.setLastIndex(0);
-	        rotationTracker.setUpdatedAt(LocalDateTime.now());
-	        session.save(rotationTracker);
-	        
-	        return 0;
-	    }
-	}
+    // Fetches all doctor IDs once and stores them in RotationTracker
+    private static List<Integer> fetchAllDoctors(Session session) {
+        NativeQuery<Integer> query = session.createNativeQuery(
+            "SELECT doctors.docid " +
+            "FROM Doctors_New AS doctors " +
+            "JOIN ( " +
+            "    SELECT r.DocID, sr.ServiceID, sr.fee " +
+            "    FROM registration r " +
+            "    JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID " +
+            "    WHERE sr.ServiceID = 2 AND sr.EndDate >= CURRENT_DATE " +
+            ") AS sr ON doctors.docid = sr.DocID " +
+            "WHERE (doctors.docid <= 63 OR doctors.docid >= 14487) " +
+            "ORDER BY doctors.docid DESC")
+            .addScalar("docid", org.hibernate.type.IntegerType.INSTANCE);
 
-    
- // Update the last rotation index
-	private static void updateLastIndex(Session session, int newOffset) {
-		session.beginTransaction();
-	    session.createQuery("UPDATE RotationTracker r SET r.lastIndex = :newIndex, r.updatedAt = :updatedAt WHERE r.id = 1")
-	           .setParameter("newIndex", newOffset)
-	           .setParameter("updatedAt", LocalDateTime.now()) // Set updated timestamp
-	           .executeUpdate();
-	}
+        return query.list();
+    }
 
+    private static RotationTracker getRotationTracker(Session session) {
+        RotationTracker tracker = session.get(RotationTracker.class, 1);
+        if (tracker == null) {
+            tracker = new RotationTracker();
+            tracker.setId(1);
+            tracker.setLastIndex(0);
+            tracker.setDocIds(new ArrayList<>()); // Initialize empty list
+            session.save(tracker);
+        }
+        return tracker;
+    }
     
     public static  List<HashMap<String, Object>> getDoctorsList() {
         Session session = HibernateUtil.buildSessionFactory();
-        int offset = getLastIndex(session);
+        List<Integer> rotatedDocIds = getRotatedDocIds();
+        
 		/*	        Query query1 = session.createNativeQuery("SELECT d.docid, d.prefix, d.docname_first, d.docname_middle, d.docname_last,d.img_Loc " +
                 "mt.name AS MedicineTypeName, h.hospital_affliated " +
                 "FROM Doctors_New d " +
@@ -170,7 +159,7 @@ public class DocRotationDaoImpl {
         		+ ") AS sr ON doctors.docid = sr.DocID\r\n"
         		+ "LEFT JOIN \r\n"
         		+ "    doctorsrating AS dr ON dr.target_id = doctors.docid AND dr.target_type_id = 1\r\n"
-        		+ "WHERE doctors.docid <= 63 OR doctors.docid >= 14487\r\n"
+        		+  "WHERE doctors.docid IN (:docIds) " 
         		+ "GROUP BY doctors.docid, doctors.gender, doctors.insurance_accept, doctors.awards, \r\n"
         		+ "    doctors.telephone_nos, doctors.other_spls, doctors.over_allrating, doctors.prefix, \r\n"
         		+ "    doctors.docname_first, doctors.docname_middle, doctors.docname_last, doctors.email, \r\n"
@@ -181,13 +170,9 @@ public class DocRotationDaoImpl {
         		+ "    address_states.statename, co.countryname, mat.AddressType, mdd.DegDesc, dd.YearOfGrad, mun.UnivName, \r\n"
         		+ "    uc.cityname, us.statename, uco.countryname, mt.id, address_states.codeid, uc.citycode, co.countrycodeid, \r\n"
         		+ "    mdd.DegID, s.splid, h.hospitalid, sr.fee,sr.ServiceID \r\n"
-        		+ "ORDER BY \r\n"
-        		+ "    CASE \r\n"
-        		+ "        WHEN sr.ServiceID = 2 THEN 0\r\n"
-        		+ "        ELSE 1\r\n"
-        		+ "    END,\r\n"
-        		+ "    doctors.docid DESC Limit 3 OFFSET\r\n " + offset 
-				  + ";");
+        		+ "ORDER BY doctors.docid DESC  \r\n"
+				  + ";").setParameter("docIds", rotatedDocIds);;
+        
         List<HashMap<String, Object>> doctorList = new ArrayList<>();
 
         List<Object[]> resultList = query1.getResultList();
