@@ -36,10 +36,12 @@ public class DocRotationDaoImpl {
                 .addScalar("docid", org.hibernate.type.IntegerType.INSTANCE); // Map docid as Integer
 
             List<Integer> docIds = query.list();
+		 System.out.println("docIds"+docIds);
             if (!docIds.isEmpty()) {
                 // Update the index for the next rotation
                 int totalCount = docIds.size();
                 int newOffset = (lastIndex + 3) % totalCount;
+		    System.out.println("newOffset"+newOffset);
                 updateLastIndex(session, newOffset);
             }
             return docIds;
