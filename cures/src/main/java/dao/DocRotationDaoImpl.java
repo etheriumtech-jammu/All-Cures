@@ -40,7 +40,7 @@ public class DocRotationDaoImpl {
             if (!docIds.isEmpty()) {
                 // Update the index for the next rotation
                 int totalCount = getTotalDoctorCount();
-                int newOffset = (lastIndex + 3) % totalCount;
+                int newOffset = (lastIndex) % totalCount;
 		    System.out.println("newOffset"+newOffset);
                 updateLastIndex(session, newOffset);
             }
