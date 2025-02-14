@@ -16,7 +16,6 @@ public class DocRotationDaoImpl {
 
 	public static List<Integer> getRotatedDocIds() {
 	Session session = HibernateUtil.buildSessionFactory();
-       session.beginTransaction();
 
         try {
             // Fetch last rotation index
