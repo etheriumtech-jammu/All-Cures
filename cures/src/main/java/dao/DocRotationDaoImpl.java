@@ -54,21 +54,19 @@ public class DocRotationDaoImpl {
     }
 	private static int getTotalDoctorCount() {
 		Session session = HibernateUtil.buildSessionFactory();
-		Query query1 = session.createNativeQuery("SELECT doctors.docid  +\r\n"
-				+ " FROM Doctors_New AS doctors  +\r\n"
-				+ " JOIN (  +\r\n"
-				+ " SELECT r.DocID, sr.ServiceID, sr.fee  +\r\n"
-				+ "    FROM registration r  +\r\n"
-				+ "      JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID  +\r\n"
-				+ "     WHERE sr.ServiceID = 2 AND sr.EndDate >= CURRENT_DATE  +\r\n"
-				+ "  ) AS sr ON doctors.docid = sr.DocID +\r\n"
-				+  "WHERE (doctors.docid <= 63 OR doctors.docid >= 14487) +\r\n"
-				+ "ORDER BY doctors.docid + \r\n"
-				  + ";");
-       
-
-       int size = query1.getResultList().size();
-       return size;
+		Query query1 = session.createNativeQuery("SELECT doctors.docid  \r\n"
+				+ " FROM Doctors_New AS doctors  \r\n"
+				+ " JOIN (  \r\n"
+				+ " SELECT r.DocID, sr.ServiceID, sr.fee \r\n"
+				+ "    FROM registration r  \r\n"
+				+ "      JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID  \r\n"
+				+ "     WHERE sr.ServiceID = 2 AND sr.EndDate >= CURRENT_DATE  \r\n"
+				+ "  ) AS sr ON doctors.docid = sr.DocID \r\n"
+				+ "WHERE (doctors.docid <= 63 OR doctors.docid >= 14487) \r\n"
+				+ "ORDER BY doctors.docid \r\n"
+				+ ";");
+              int size = query1.getResultList().size();
+  		   return size;
 		
 	}
 
