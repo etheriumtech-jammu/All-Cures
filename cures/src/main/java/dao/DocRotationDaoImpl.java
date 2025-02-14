@@ -54,7 +54,7 @@ public class DocRotationDaoImpl {
     }
 	private static int getTotalDoctorCount() {
 		Session session = HibernateUtil.buildSessionFactory();
-		Query query1 = session.createNativeQuery("SELECT doctors.docid \" +\r\n"
+		Query query1 = session.createNativeQuery("SELECT doctors.docid  +\r\n"
 				+ " FROM Doctors_New AS doctors  +\r\n"
 				+ " JOIN (  +\r\n"
 				+ " SELECT r.DocID, sr.ServiceID, sr.fee  +\r\n"
