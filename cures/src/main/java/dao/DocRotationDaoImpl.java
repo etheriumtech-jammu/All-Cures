@@ -75,6 +75,7 @@ public class DocRotationDaoImpl {
     
  // Update the last rotation index
 	private static void updateLastIndex(Session session, int newOffset) {
+		session.beginTransaction();
 	    session.createQuery("UPDATE RotationTracker r SET r.lastIndex = :newIndex, r.updatedAt = :updatedAt WHERE r.id = 1")
 	           .setParameter("newIndex", newOffset)
 	           .setParameter("updatedAt", LocalDateTime.now()) // Set updated timestamp
