@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import javax.persistence.NoResultException;
@@ -1023,49 +1024,46 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
 	        return doctorList;
 	    }
 
-	   public static int incrementCount() {
-	        Session session = null;
-	        Transaction transaction = null;
-	        Integer newCount = 40; // Default starting value
+	  public static int incrementCount(Integer userId) {
+			    Session session = null;
+			    Transaction transaction = null;
+			    Integer newCount = 1; // Default starting value for a new user
 
-	        try {
-	            session = HibernateUtil.buildSessionFactory();
-	            transaction = session.beginTransaction();
+			    try {
+			        session = HibernateUtil.buildSessionFactory();
+			        transaction = session.beginTransaction();
 
-	            // Retrieve the latest ID
-	            Long latestId = (Long) session.createQuery(
-	                    "SELECT MAX(c.id) FROM ConsultCount c", Long.class)
-	                    .uniqueResult();
+			        // Retrieve the latest count for the given userId
+			        Integer currentCount = (Integer) session.createQuery(
+			                "SELECT c.count FROM ConsultCount c WHERE c.userID = :userId")
+			                .setParameter("userId", userId)
+			                .uniqueResult();
 
-	            if (latestId != null) {
-	                // Retrieve the latest count
-	                Integer currentCount = (Integer) session.createQuery(
-	                        "SELECT c.count FROM ConsultCount c WHERE c.id = :latestId")
-	                        .setParameter("latestId", latestId)
-	                        .uniqueResult();
+			        if (currentCount != null) {
+			            newCount = currentCount + 1;
+			            // Update the existing count for the user
+			            session.createQuery("UPDATE ConsultCount c SET c.count = :newCount, c.updatedAt=:date WHERE c.userID = :userId")
+			                    .setParameter("newCount", newCount)
+			                    .setParameter("userId", userId)
+			                    .setParameter("date", LocalDateTime.now())
+			                    .executeUpdate();
+			        } else {
+			            // If no records exist for the user, insert new row with count = 1
+			            ConsultCount newEntry = new ConsultCount(userId, 1,LocalDateTime.now());
+			            session.save(newEntry);
+			        }
 
-	                newCount = (currentCount != null) ? currentCount + 1 : 41;
+			        transaction.commit();
+			    } catch (Exception e) {
+			        if (transaction != null) {
+			            transaction.rollback();
+			        }
+			        e.printStackTrace();
+			    } 
+			    return newCount;
+			}
 
-	                // Update the latest row
-	                session.createQuery("UPDATE ConsultCount c SET c.count = :newCount WHERE c.id = :latestId")
-	                        .setParameter("newCount", newCount)
-	                        .setParameter("latestId", latestId)
-	                        .executeUpdate();
-	            } else {
-	                // If no records exist, insert new row with count = 41
-	                ConsultCount newEntry = new ConsultCount(41);
-	                session.save(newEntry);
-	            }
 
-	            transaction.commit();
-	        } catch (Exception e) {
-	            if (transaction != null) {
-	                transaction.rollback();
-	            }
-	            e.printStackTrace();
-	        } 
-	        return newCount;
-	    }
 
 
 	    
