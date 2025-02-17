@@ -157,11 +157,12 @@ public class VideoController {
 	
 	}
 
-	@RequestMapping(value = "/consult/counts", produces = "application/json", method = RequestMethod.POST)
-	public @ResponseBody int consultCounts(HttpServletRequest request) throws Exception {
+	@RequestMapping(value = "/consult/counts/{userID}", produces = "application/json", method = RequestMethod.POST)
+	public @ResponseBody int consultCounts(HttpServletRequest request,@PathVariable Integer userID) throws Exception {
 
-		return VideoDaoImpl.incrementCount();
+		return VideoDaoImpl.incrementCount(userID);
 		
 	}
+	
 
 }
