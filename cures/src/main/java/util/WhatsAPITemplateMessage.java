@@ -202,7 +202,7 @@ public class WhatsAPITemplateMessage {
 			try {
 				WhatsAPITemplateMessage.POSTRequestTemplateMessage(params);
 					try {
-					Thread.sleep(2000);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -229,7 +229,7 @@ public class WhatsAPITemplateMessage {
 		params[3]=title;
 		WhatsAPITemplateMessage.runInterakt(params);
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
