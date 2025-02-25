@@ -364,6 +364,9 @@ public class SearchDaoImpl {
 				Constant.NAME + ":" + docdetails + Constant.OR + Constant.PRIMARY_SPL + ":" + docdetails + Constant.OR
 						+ Constant.SUB_SPLS + ":" + docdetails + Constant.AND + Constant.CITYVALUE + ":" + cityname
 						+ Constant.OR + Constant.PIN + ":" + cityname);
+		System.out.println(Constant.NAME + ":" + docdetails + Constant.OR + Constant.PRIMARY_SPL + ":" + docdetails + Constant.OR
+				+ Constant.SUB_SPLS + ":" + docdetails + Constant.AND + Constant.CITYVALUE + ":" + cityname
+				+ Constant.OR + Constant.PIN + ":" + cityname);
 		// query.set("q", "city:"+cityname +" or pincode:"+ cityname );
 		// query.set("q", "name:"+docdetails +" or primary_spl:"+ docdetails +"
 		// or sub_spls:"+ docdetails);
