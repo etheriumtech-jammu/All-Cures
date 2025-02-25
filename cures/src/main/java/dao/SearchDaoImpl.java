@@ -520,12 +520,12 @@ public class SearchDaoImpl {
 		
 		final SolrDocumentList documents = response.getResults();
 		
-		System.out.println("Found " + documents.getNumFound() + " documents");
+	//	System.out.println("Found " + documents.getNumFound() + " documents");
 		for (SolrDocument document : documents) {
 			String docid = (String) document.getFirstValue(Constant.DOCID);
 				if (null!=docid) {
 				doc.setDocID(docid);
-				System.out.println("DocID from Solr:" +docid);
+	//			System.out.println("DocID from Solr:" +docid);
 			}
 
 	//		Object rowno_ = document.getFieldValue(Constant.ROWNO);
@@ -564,7 +564,7 @@ public class SearchDaoImpl {
 			String state = (String) document.getFieldValue(Constant.STATE);
 			doc.setState(state);
 			String country = (String) document.getFieldValue("country");
-			System.out.println("country"+country);
+//			System.out.println("country"+country);
 			doc.setCountry(country);
 			String over_allrating = (String) document.getFieldValue(Constant.OVER_ALLRATING);
 			doc.setOverAllRating(over_allrating);
@@ -590,13 +590,13 @@ public class SearchDaoImpl {
 			String about = (String) document.getFieldValue("about");
 			doc.setAbout(about);
 			String img_Loc = (String) document.getFieldValue("img_Loc");
-			System.out.println("img_Loc"+img_Loc);
+	//		System.out.println("img_Loc"+img_Loc);
 			doc.setImgLoc(img_Loc);
 			String MedicineType = (String) document.getFieldValue("medicine_type");
 			 doc.setMedicineType(MedicineType);
 			 String videoService = (String) document.getFieldValue("videoservice");
               		 doc.setVideoService(videoService);
-			 System.out.println("MedicineType"+doc.getMedicineType());
+	//		 System.out.println("MedicineType"+doc.getMedicineType());
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
 			 * doc.setLatitude(latitude); String longitude = (String)
