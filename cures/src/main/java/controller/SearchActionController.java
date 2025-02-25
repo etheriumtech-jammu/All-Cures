@@ -107,12 +107,15 @@ public class SearchActionController extends HttpServlet {
 			}else {		
 				if(!city_pin.equals("") && doc_details.equals("")){
 					Constant.log("Searching By City Pin:"+city_pin, 1);
+					System.out.println("Searching By City Pin:"+city_pin);
 					docSolr = search.searchByCityPin(city_pin);
 				}else if (!doc_details.equals("") && city_pin.equals("")) {
 					Constant.log("Searching By Doc Details:"+doc_details, 1);
+					System.out.println("Searching By Doc Details:"+doc_details);
 					docSolr = search.searchByDocSpl(doc_details);
 				}else {
 					Constant.log("Searching By Both City:"+city_pin, 1);
+					System.out.println("Searching By Both City:"+city_pin);
 					docSolr = search.searchByBoth(doc_details, city_pin);
 				}
 			}
