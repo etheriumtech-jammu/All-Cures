@@ -201,6 +201,7 @@ public class SearchDaoImpl {
 //		System.out.println("Lon" + lon);
 		
 		SolrQuery query = new SolrQuery();
+		query.set("defType", "edismax");
 		String[] dname = docdetails.split(" ");
 		System.out.println("length" + dname.length);
 		StringBuilder queryStringBuilder = new StringBuilder();
@@ -233,7 +234,7 @@ public class SearchDaoImpl {
 //		query.add("pt", docloc);
 //		query.add("sfield", "docloc1");
 //		query.add("d", "50");
-
+			query.set("bq", "featured:true^2.0");
 		System.out.println("Query: " + queryStringBuilder.toString());
 		QueryResponse response = null;
 		try {
