@@ -933,7 +933,7 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
 	        		+ "    countries AS uco ON mun.UnivCountry = uco.countrycodeid\r\n"
 	        		+ "LEFT JOIN\r\n"
 	        		+ "    masteraddresstype AS mat ON da.AddressTypeID = mat.ID\r\n"
-	        		+ "LEFT JOIN (\r\n"
+	        		+ " JOIN (\r\n"
 	        		+ "    SELECT r.DocID, sr.ServiceID, sr.fee\r\n"
 	        		+ "    FROM registration r\r\n"
 	        		+ "    JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID\r\n"
