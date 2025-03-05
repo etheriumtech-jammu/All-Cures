@@ -960,6 +960,7 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
 	        		+ "    doctors.docid DESC Limit 10 OFFSET\r\n " + offset 
 					  + ";");
 	        List<HashMap<String, Object>> doctorList = new ArrayList<>();
+		System.out.println("SQL Query: " + query1.toString());
 
 	        List<Object[]> resultList = query1.getResultList();
 	        Constant.log("Executed Query and Got: " + resultList.size() + " Doctor Lists back", 1);
