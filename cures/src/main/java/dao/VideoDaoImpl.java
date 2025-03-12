@@ -783,7 +783,7 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
 	        		+ "ORDER BY \r\n"
 	        		+ "    CASE \r\n"
 	        		+ "        WHEN doctors.MedicineTypeID = 1 AND doctors.docid IN (14500,46,14505,44,26,18,4,2,14520,8) THEN 0\r\n"
-	        		+ "         WHEN doctors.MedicineTypeID = 8 AND doctors.docid IN (14511,14506,14507,20,14494,30,45,63,24) THEN 1\r\n"
+	        		+ "         WHEN doctors.MedicineTypeID = 8 AND doctors.docid IN (14511,14506,14507,20,39,14494,30,45,63,24) THEN 1\r\n"
 	        		+ "        WHEN MAX(sr.ServiceID) = 2 THEN 2\r\n"
 	        		+ "        ELSE 3\r\n"
 	        		+ "    END,\r\n"
