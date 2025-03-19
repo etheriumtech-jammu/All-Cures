@@ -359,7 +359,7 @@ public class DataDaoImpl {
 	public static List AllCategories() {
 		Session session = HibernateUtil.buildSessionFactory();
 		
-		Query query = session.createNativeQuery("SELECT dc_id,dc_desc FROM disease_condition;");
+		Query query = session.createNativeQuery("SELECT dc_id,dc_desc FROM disease_condition order by dc_desc;");
 		
 		List<Object[]> results = (List<Object[]>) query.getResultList();
 		
