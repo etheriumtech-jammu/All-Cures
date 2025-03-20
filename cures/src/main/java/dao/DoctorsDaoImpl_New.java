@@ -793,7 +793,40 @@ public class DoctorsDaoImpl_New {
 //		session.getTransaction().commit();   //session.close();
 		return doctors;
 	}
-	
+
+	 @Transactional
+	    public static String getNextVideoUrl(Integer docid) {
+	        String selectedUrl = null;
+	        Session session = HibernateUtil.buildSessionFactory();
+	        try  { // ✅ Open a new session
+	            Transaction transaction = session.beginTransaction();
+
+	            // 1. Fetch the least recently used active URL
+	            List<String> result = session.createNativeQuery(
+	                "SELECT videoUrl FROM DoctorVideos " +
+	                "WHERE docId = :docid AND status=1 " +
+	                "ORDER BY lastUsed ASC LIMIT 1", String.class) // ✅ Use String.class to avoid deprecation warning
+	                .setParameter("docid", docid)
+	                .getResultList();
+
+	            if (!result.isEmpty()) {
+	                selectedUrl = result.get(0);
+
+	                // 2. Update last_used timestamp for the selected URL
+	                session.createNativeQuery(
+	                    "UPDATE DoctorVideos SET lastUsed = NOW() " +
+	                    "WHERE videoUrl = :videoUrl")
+	                    .setParameter("videoUrl", selectedUrl)
+	                    .executeUpdate();
+	            }
+
+	            transaction.commit(); // ✅ Commit transaction
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+
+	        return selectedUrl;
+	    }
 	
 	
 	
