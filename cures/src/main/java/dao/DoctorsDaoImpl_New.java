@@ -805,7 +805,7 @@ public class DoctorsDaoImpl_New {
 	            List<String> result = session.createNativeQuery(
 	                "SELECT videoUrl FROM DoctorVideos " +
 	                "WHERE docId = :docid AND status=1 " +
-	                "ORDER BY lastUsed ASC LIMIT 1", String.class) // ✅ Use String.class to avoid deprecation warning
+	                "ORDER BY lastUsed ASC LIMIT 1") // ✅ Use String.class to avoid deprecation warning
 	                .setParameter("docid", docid)
 	                .getResultList();
 
