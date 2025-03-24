@@ -3,6 +3,7 @@ package controller;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,4 +35,8 @@ public class DoctorsController {
 		return doctorsDaoImpl.updateProfile(profileMap);
 	}
 
+	@RequestMapping(value = "/{docid}/url", produces = "application/json", method = RequestMethod.GET)
+	    public String getNextUrl(@PathVariable Integer docid) {
+	        return doctorsDaoImpl.getNextVideoUrl(docid);
+	    }
 }
