@@ -107,7 +107,7 @@ public class WhatsAPITemplateMessage {
 	       System.setProperty("javax.net.ssl.trustStore", "/etc/ssl/certs/java/cacerts");
 	        System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
 
-//		System.out.println(POST_PARAMS);
+		System.out.println("POST_PARAMS"+POST_PARAMS);
 
 //		URL obj = new URL("https://api.interakt.ai/v1/public/track/events/");
 		URL obj = new URL(prop.getProperty("URL_API_TEMPLATES"));
