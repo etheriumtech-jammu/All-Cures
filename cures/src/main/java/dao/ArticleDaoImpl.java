@@ -1292,7 +1292,7 @@ public static List getArticlesListAllKeysFavourite(Integer limit, Integer offset
 			            // Show if the file exists
 //			            System.out.println("Image File Exists");
 //						System.out.println(baseUrl);
-						article_location_relative_full =  baseUrl + "/"+cures_articleimages+"/" + article_location_relative_image;
+						article_location_relative_full =  baseUrl + "/"+cures_articleimages + article_location_relative_image;
 //						System.out.println(article_location_relative_full);
 			        }
 			        String author_medicine_type = "";
