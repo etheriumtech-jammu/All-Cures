@@ -33,13 +33,15 @@ public class Doctor {
 	@Field public Integer docActive ;
 	@Field public String medicineType ;
 	@Field public String videoService ;
+	@Field public String degDesc ;
+	
 	public Doctor(String DocID, Integer gender, String hospital_affliated,
 			Integer insurance_accept, String board_certifcate, String membership, 
 			String telephone_nos, String primary_spl,
 			String other_spls, String sub_spls, String address1, String address2, String city, String state,
 			String country_code, String over_allrating, String create_date, Integer docactive, String prefix,
 			String docname_first, String docname_middle, String docname_last, String name, String email, String waiting_time,
-		 String about,String img_Loc,String MedicineType,String videoService) {
+		 String about,String img_Loc,String MedicineType,String VideoService, String DegDesc) {
 		super();
 		this.docID = DocID;
 		this.gender = gender;
@@ -68,7 +70,8 @@ public class Doctor {
 		this.waitingTime = waiting_time;
 		this.medicineType=MedicineType;
 		this.about = about;
-		this.videoService=videoService;
+		this.videoService=VideoService;
+		this.degDesc=DegDesc;
 		
 	}
 	
@@ -77,7 +80,7 @@ public class Doctor {
 			String telephone_nos, String primary_spl, String address1, String city, String state,
 			String country_code, String over_allrating, String prefix,
 			String docname_first, String docname_middle, String docname_last, String name, String email,
-			 String about,String img_Loc,String MedicineType,String videoService) {
+			 String about,String img_Loc,String MedicineType,String VideoService, String DegDesc) {
 		super();
 		this.docID = DocID;
 		this.gender = gender;
@@ -100,7 +103,8 @@ public class Doctor {
 		this.email = email;
 		this.about = about;
 		this.medicineType=MedicineType;
-		this.videoService=videoService;
+		this.videoService=VideoService;
+		this.degDesc=DegDesc;
 	}
 	
 	
@@ -324,5 +328,14 @@ public class Doctor {
 	public void setVideoService(String videoService) {
 		this.videoService = videoService;
 	}
+
+	public String getDegDesc() {
+		return degDesc;
+	}
+
+	public void setDegDesc(String degDesc) {
+		this.degDesc = degDesc;
+	}
+
 	
 }
