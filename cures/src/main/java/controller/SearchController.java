@@ -81,9 +81,9 @@ public class SearchController {
 	
 	@RequestMapping(value = "/combo/{search_string}", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List listDataMatchingStrDiseaseConditonAndArticleTables(@PathVariable String search_string) {
-	//	return diseaseANDconditionDaoImpl.listDataMatchingStrDiseaseConditonAndArticleTables(search_string);
+		return diseaseANDconditionDaoImpl.listDataMatchingStrDiseaseConditonAndArticleTables(search_string);
 		 // Solr server URL
-        String solrUrl = "http://localhost:8983/solr/article_new_core";
+     /*   String solrUrl = "http://localhost:8983/solr/article_new_core";
 
       
         // Perform search with relevance ranking and debug mode
@@ -115,6 +115,7 @@ public class SearchController {
         	hmFinal.add(title);
         } 
         return hmFinal;
+	*/
 	}
 	
 	@RequestMapping(value = "/treatmentregions/{dc_id}", produces = "application/json", method = RequestMethod.GET)
