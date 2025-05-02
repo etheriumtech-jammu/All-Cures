@@ -827,7 +827,30 @@ public class DoctorsDaoImpl_New {
 
 	        return selectedUrl;
 	    }
-	
+
+	 @Transactional
+	    public static List<String> getAllVideosUrl() {
+	        String selectedUrl = null;
+	        List<String> result=null;
+	        Session session = HibernateUtil.buildSessionFactory();
+	        try  { // ✅ Open a new session
+	            Transaction transaction = session.beginTransaction();
+
+	            // 1. Fetch the least recently used active URL
+	             result = session.createNativeQuery(
+	                "SELECT videoUrl FROM DoctorVideos " +
+	                "WHERE status=1 ")     
+	                .getResultList();
+
+	        System.out.println(result.get(0));
+
+	            transaction.commit(); // ✅ Commit transaction
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+
+	        return result;
+	    }
 	
 	
 }
