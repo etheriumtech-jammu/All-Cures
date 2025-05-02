@@ -153,4 +153,9 @@ public class DataController {
 		return DataDaoImpl.AllCategories();
 	}
 
+	@RequestMapping(value = "/all/trending/categories", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List TrendingAllCategories() {
+		return DataDaoImpl.TrendingCategories();
+	}
+
 }
