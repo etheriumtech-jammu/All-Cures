@@ -149,4 +149,9 @@ private SocketIOServer1 socketServer;
 	public @ResponseBody List AllCategories() {
 		return DataDaoImpl.AllCategories();
 	}
+
+	@RequestMapping(value = "/all/trending/categories", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List TrendingAllCategories() {
+		return DataDaoImpl.TrendingCategories();
+	}
 }
