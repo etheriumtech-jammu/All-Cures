@@ -380,5 +380,34 @@ public class DataDaoImpl {
 
 	}
 
+	public static List TrendingCategories() {
+		Session session = HibernateUtil.buildSessionFactory();
+		
+		Query query = session.createNativeQuery(
+			    "SELECT dc_id, dc_desc FROM disease_condition " +
+			    "WHERE dc_id IN (113, 12, 31, 74, 66, 129, 85, 137) " +
+			    "ORDER BY FIELD(dc_id, 113, 12, 31, 74, 66, 129, 85, 137)"
+			);
+
+		List<Object[]> results = (List<Object[]>) query.getResultList();
+		
+		List hmFinal = new ArrayList();
+		
+		for (Object[] objects : results) {
+			HashMap hm = new HashMap();
+			
+			Integer dc_id = (Integer) objects[0];
+		String category = (String) objects[1];
+		
+		    hm.put("dc_id",dc_id);
+		    hm.put("category",category);
+		    hmFinal.add(hm);	
+		}
+			
+		return hmFinal;
+
+	}
+
+
 
 	}
