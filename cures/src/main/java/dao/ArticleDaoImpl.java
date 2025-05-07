@@ -1921,5 +1921,72 @@ public static Map<String, Integer> getLikesAndDislikesCount(Long articleId) {
 		}    	
 		return result;
 	}
-	
+
+	public static List<Map<String, Object>> getArticlesListAllKeysDC() {
+	    Session session = HibernateUtil.buildSessionFactory(); // Consider moving this to a static init block
+
+	    String sql = "WITH ranked_articles AS (\n" +
+	            "    SELECT a.*, ROW_NUMBER() OVER (PARTITION BY a.disease_condition_id ORDER BY a.published_date DESC) AS rn\n" +
+	            "    FROM article a\n" +
+	            "    WHERE a.type = '[2]' AND a.pubstatus_id = 3 AND a.disease_condition_id IN (113, 12, 31, 74, 66, 129, 85, 137)\n" +
+	            ")\n" +
+	            "SELECT ra.article_id, ra.title, ra.friendly_name, ra.subheading, ra.content_type, ra.keywords, ra.window_title,\n" +
+	            "       ra.content_location, ra.authored_by, ra.published_by, ra.edited_by, ra.copyright_id, ra.disclaimer_id,\n" +
+	            "       ra.create_date, ra.published_date, ra.pubstatus_id, ra.language_id, ra.content, dc.dc_name, ra.comments,\n" +
+	            "       ra.type, ra.country_id, ra.over_allrating,\n" +
+	            "       (SELECT GROUP_CONCAT(a.author_firstname, ' ', a.author_lastname)\n" +
+	            "        FROM author a\n" +
+	            "        WHERE a.author_id = CAST(TRIM(TRAILING ']' FROM TRIM(LEADING '[' FROM ra.authored_by)) AS UNSIGNED)) AS authors_name,\n" +
+	            "       (SELECT reg_doc_pat_id FROM author\n" +
+	            "        WHERE author_id = CAST(TRIM(TRAILING ']' FROM TRIM(LEADING '[' FROM ra.authored_by)) AS UNSIGNED)\n" +
+	            "        LIMIT 1) AS docID,\n" +
+	            "       ra.medicine_type,\n" +
+	            "       (SELECT COUNT(*) FROM article) AS count\n" +
+	            "FROM ranked_articles ra\n" +
+	            "LEFT JOIN disease_condition dc ON dc.dc_id = ra.disease_condition_id\n" +
+	            "WHERE ra.rn = 1\n" +
+	            "ORDER BY ra.published_date DESC";
+
+	    Query query = session.createNativeQuery(sql);
+	    List<Object[]> results = query.getResultList();
+
+	    List<Map<String, Object>> finalResult = new ArrayList<>();
+
+	    for (Object[] row : results) {
+	        Map<String, Object> map = new HashMap<>();
+	        map.put("article_id", row[0]);
+	        map.put("title", row[1]);
+	        map.put("friendly_name", row[2]);
+	        map.put("subheading", row[3]);
+	        map.put("content_type", row[4]);
+	        map.put("keywords", row[5]);
+	        map.put("window_title", row[6]);
+	        map.put("content_location", row[7]);
+	        map.put("authored_by", row[8]);
+	        map.put("published_by", row[9] != null ? row[9] : 0);
+	        map.put("edited_by", row[10]);
+	        map.put("copyright_id", row[11]);
+	        map.put("disclaimer_id", row[12]);
+	        map.put("create_date", row[13]);
+	        map.put("published_date", row[14]);
+	        map.put("pubstatus_id", row[15]);
+	        map.put("language_id", row[16]);
+	        map.put("content", row[17]);
+	        map.put("dc_name", row[18]);
+	        map.put("comments", row[19]);
+	        map.put("type", row[20]);
+	        map.put("country_id", row[21] != null ? row[21] : 0);
+	        map.put("over_allrating", row[22] != null ? ((Number) row[22]).floatValue() : 0.0f);
+	        map.put("authors_name", row[23]);
+	        map.put("docID", row[24] != null ? row[24] : 0);
+	        map.put("medicine_type", row[25]);
+	        map.put("count", row[26]);
+
+	        finalResult.add(map);
+	    }
+
+//	    session.close(); // Always close session
+	    return finalResult;
+	}
+
 }
