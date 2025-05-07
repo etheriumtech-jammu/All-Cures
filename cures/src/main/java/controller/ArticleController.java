@@ -306,6 +306,10 @@ public class ArticleController {
 		}
 		
 	}
-	
+
+	@RequestMapping(value = "/allkv/DC", produces = "application/json", method = RequestMethod.GET)
+	public @ResponseBody List listArticlesAllKeysDC() {
+		return articleDaoImpl.getArticlesListAllKeysDC();
+	}
 
 }
