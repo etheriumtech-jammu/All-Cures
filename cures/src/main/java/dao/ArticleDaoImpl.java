@@ -913,8 +913,8 @@ public static List getArticlesListAllKeysFeatured(Integer limit, Integer offset,
 				+ " FROM `article` \r\n"
 				+ " left join disease_condition dc on dc.dc_id = `article`.`disease_condition_id` "
 				+ "left join Doctors_New d  \r\n"
-			   	+ "on d.docid = (trim(trailing ']' from trim(leading '[' from `article`.`authored_by`))) \r\n"
-				+  search_str + orderby_str
+			   	+ "on d.docid =   + "on d.docid =(SELECT reg_doc_pat_id FROM author WHERE author_id = CAST(TRIM(TRAILING ']' FROM TRIM(LEADING '[' FROM article.authored_by)) AS UNSIGNED) LIMIT 1) \r\n"
+	  			+  search_str + orderby_str
 				+ limit_str + offset_str + " ;");
 		// needs other condition too but unable to find correct column
 		List<Object[]> results = (List<Object[]>) query.getResultList();
