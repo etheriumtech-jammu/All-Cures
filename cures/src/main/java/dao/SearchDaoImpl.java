@@ -175,7 +175,7 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry(),
 					doc.getOverAllRating(), doc.getPrefix(),
 					doc.getFirstName(), doc.getMiddleName(), doc.getLastName(), doc.getFullName(),
-					doc.getEmail(), doc.getAbout(),doc.getImgLoc(),doc.getMedicineType()));
+					doc.getEmail(), doc.getAbout(),doc.getImgLoc(),doc.getMedicineType(),doc.getVideoService(),doc.getDegDesc()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}
@@ -340,7 +340,7 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry(),
 					doc.getOverAllRating(), doc.getPrefix(),
 					doc.getFirstName(), doc.getMiddleName(), doc.getLastName(), doc.getFullName(),
-					doc.getEmail(),   doc.getAbout(),doc.getImgLoc(),doc.getMedicineType()));
+					doc.getEmail(),   doc.getAbout(),doc.getImgLoc(),doc.getMedicineType(),doc.getVideoService(),doc.getDegDesc()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}
@@ -477,7 +477,7 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry(),
 					doc.getOverAllRating(), doc.getPrefix(),
 					doc.getFirstName(), doc.getMiddleName(), doc.getLastName(), doc.getFullName(),
-					doc.getEmail(), doc.getAbout(),doc.getImgLoc(),doc.getMedicineType()));
+					doc.getEmail(), doc.getAbout(),doc.getImgLoc(),doc.getMedicineType(),doc.getVideoService(),doc.getDegDesc()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 
 		}
@@ -604,7 +604,10 @@ public class SearchDaoImpl {
 			doc.setImgLoc(img_Loc);
 			String MedicineType = (String) document.getFieldValue("medicine_type");
 			 doc.setMedicineType(MedicineType);
-			
+			String VideoService = (String) document.getFieldValue("videoService");
+			 doc.setVideoService(VideoService);
+			 String DegDesc = (String) document.getFieldValue("degDesc");
+			 doc.setDegDesc(DegDesc);
 			/*
 			 * String latitude = (String) document.getFieldValue(Constant.LATITUDE);
 			 * doc.setLatitude(latitude); String longitude = (String)
@@ -625,7 +628,7 @@ public class SearchDaoImpl {
 					doc.getAddress1(), doc.getCity(), doc.getState(), doc.getCountry(),
 					doc.getOverAllRating(), doc.getPrefix(),
 					doc.getFirstName(), doc.getMiddleName(), doc.getLastName(), doc.getFullName(),
-					doc.getEmail(), doc.getAbout(),doc.getImgLoc(),doc.getMedicineType()));
+					doc.getEmail(), doc.getAbout(),doc.getImgLoc(),doc.getMedicineType(),doc.getVideoService(),doc.getDegDesc()));
 			// System.out.println("id: " + doctorid + "; for: " + docname_first);
 			
 		}
