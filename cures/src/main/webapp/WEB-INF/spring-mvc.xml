@@ -202,6 +202,7 @@
 </mvc:interceptors>
 	<context:component-scan
 		base-package="controller,dao,service" />
+	<context:annotation-config />
 <!--
 	<bean id="mailSender"
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
