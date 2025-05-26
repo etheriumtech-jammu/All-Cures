@@ -434,8 +434,8 @@ public class DiseaseANDConditionDaoImpl {
 //		session.beginTransaction();
 
 		Query query = session.createNativeQuery(
-				"(SELECT a.title, a.window_title FROM article a where a.pubstatus_id = 3 and a.title like '%"
-						+ search_str + "%' or a.keywords like '%"+ search_str +"%')\r\n"
+				"(SELECT a.title, a.window_title FROM article a where a.pubstatus_id = 3 and (a.title like '%"
+						+ search_str + "%' or a.keywords like '%"+ search_str +"%'))\r\n"
 						+ "union (select dc.dc_name, dc.dc_desc from disease_condition dc where dc.dc_status=1 and dc.dc_name like '%"
 						+ search_str + "%')");
 //		System.out.println("result list searched article and dis_condi table query>@@@@@@@@@@@@@" + query.getQueryString());
