@@ -765,7 +765,7 @@ public class VideoDaoImpl {
 	        		+ "WHERE \r\n"
 	        		+ "    (doctors.docid <= 63 OR doctors.docid >= 14487) \r\n"
 	        		+ "    AND doctors.about IS NOT NULL\r\n"
-	        		+ "    AND doctors.MedicineTypeID = " + medTypeID   + "\r\n"
+	        		+ "	AND (:medTypeID IS NULL OR doctors.MedicineTypeID = :medTypeID) \r\n"
 	        		+ "GROUP BY \r\n"
 	        		+ "    doctors.docid, doctors.gender, doctors.insurance_accept, doctors.awards, \r\n"
 	        		+ "    doctors.telephone_nos, doctors.other_spls, doctors.over_allrating, doctors.prefix, \r\n"
@@ -810,7 +810,7 @@ public class VideoDaoImpl {
 					  + ";");
 	       
 	        List<HashMap<String, Object>> doctorList = new ArrayList<>();
-
+		 query1.setParameter("medTypeID", medTypeID);
 	        List<Object[]> resultList = query1.getResultList();
 	        Constant.log("Executed Query and Got: " + resultList.size() + " Doctor Lists back", 1);
 	        int totalPages = (int) Math.ceil(resultList.size() / 10.0); // Rounds up
