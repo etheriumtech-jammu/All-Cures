@@ -72,8 +72,8 @@ public class AppController {
   @GetMapping("/*")
 	    public String handleRequest4(Model model) {
 	//	 System.out.println("all");
-		    String title = "All-Cures - Around health and about it";
-    String desc = "Centralized, user-powered platform for bringing information on Alternate Systems of medicine from across the world. Ayurveda, Unani, Persian, Homeopathy";
+		    String title = "All-Cures: Natural Remedies & Holistic Health Solutions";
+    String desc = "Discover expert-backed natural remedies, personalized wellness plans, and traditional medical insights from Ayurveda, Unani, Chinese, Persian, and more. Heal the natural way with All-Cures.";
         model.addAttribute("Title", title + " | All-Cures");
        model.addAttribute("Description", desc + " | All-Cures");
        return "success"; // The view name (success.jsp)
@@ -82,8 +82,8 @@ public class AppController {
   
 	 @GetMapping({"/searchmedicine/medicinetype/*", "searchcategory/disease/*","/webstories","/doctor/*","/user/profile","/searchcures/*","/searchName/*","/search/*","/loginForm/verify","/loginForm/ResetPass/*","/paymentStatus","/statusPayment","/notification/mensi.daily.co/*"})
     public String handleRequest1(Model model) {
-	    String title = "All-Cures - Around health and about it";
-        String desc = "Centralized, user-powered platform for bringing information on Alternate Systems of medicine from across the world. Ayurveda, Unani, Persian, Homeopathy";
+	    String title = "All-Cures: Natural Remedies & Holistic Health Solutions";
+        String desc = "Discover expert-backed natural remedies, personalized wellness plans, and traditional medical insights from Ayurveda, Unani, Chinese, Persian, and more. Heal the natural way with All-Cures.";
          model.addAttribute("Title", title + "| All-Cures");
         model.addAttribute("Description", desc + "| All-Cures");
         return "success"; // The view name (success.jsp)
@@ -94,8 +94,8 @@ public class AppController {
     public String document(@PathVariable String id, Model model) {
     	Session session = HibernateUtil.buildSessionFactory();
         // Default title and description
-        String title = "All-Cures - Around health and about it";
-        String desc = "Centralized, user-powered platform for bringing information on Alternate Systems of medicine from across the world. Ayurveda, Unani, Persian, Homeopathy";
+        String title = "All-Cures: Natural Remedies & Holistic Health Solutions";
+        String desc = "Discover expert-backed natural remedies, personalized wellness plans, and traditional medical insights from Ayurveda, Unani, Chinese, Persian, and more. Heal the natural way with All-Cures.";
         
         // Replace dashes with spaces to get the article_id
         String article_id = id.replaceAll("-", " ");
