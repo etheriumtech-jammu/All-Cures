@@ -80,7 +80,7 @@ public class AppController {
 	    }
    
   
-	 @GetMapping({"/webstories","/doctor/*","/user/profile","/searchcures/*","/searchName/*","/search/*","/loginForm/verify","/loginForm/ResetPass/*","/paymentStatus","/statusPayment","/notification/mensi.daily.co/*"})
+	 @GetMapping({"/doctor/*","/user/profile","/searchcures/*","/searchName/*","/search/*","/loginForm/verify","/loginForm/ResetPass/*","/paymentStatus","/statusPayment","/notification/mensi.daily.co/*"})
     public String handleRequest1(Model model) {
 	    String title = "All-Cures: Natural Remedies & Holistic Health Solutions";
         String desc = "Discover expert-backed natural remedies, personalized wellness plans, and traditional medical insights from Ayurveda, Unani, Chinese, Persian, and more. Heal the natural way with All-Cures.";
