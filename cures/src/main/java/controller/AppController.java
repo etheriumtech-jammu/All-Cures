@@ -124,7 +124,6 @@ public class AppController {
 	     // Step 4: Pass to model
 	     model.addAttribute("Title", title);
 	     model.addAttribute("Description", desc);
-	     model.addAttribute("H1", h1); // optional, for page heading
 
 	     return "success"; // view name (success.jsp or success.html)
 	 }
