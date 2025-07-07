@@ -150,9 +150,9 @@ public class AppointmentDaoImpl {
 		for (Object[] obj : resultList) {
 			Appointment appointment = new Appointment();
 			appointment.setAppointmentID(obj[0] != null ? (Integer) obj[0] : 0);
-			appointment.setDocID(obj[1] != null ? (Integer) obj[1] : 0);
+			appointment.setDocID(obj[3] != null ? (Integer) obj[3] : 0);
 			appointment.setUserID(obj[2] != null ? (Integer) obj[2] : 0);
-			Date date=(Date)obj[3];
+			Date date=(Date)obj[1];
 			appointment.setAppointmentDate(date);
 			appointment.setStartTime(obj[4] != null ? (String) obj[4] : "");
 			appointment.setEndTime(obj[5] != null ? (String) obj[5] : "");
