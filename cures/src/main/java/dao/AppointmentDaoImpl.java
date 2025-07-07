@@ -352,6 +352,7 @@ public class AppointmentDaoImpl {
 
 	private static TreeSet<LocalTime> calculateTotalSlots(int doctorId) {
 		TreeSet<LocalTime> slotStartTimes = new TreeSet<>();
+		LocalTime now = LocalTime.now();
 		Session session = HibernateUtil.getSessionFactory().openSession();
 	    try  {
 	        // Retrieve doctor's information from the database
@@ -374,7 +375,9 @@ public class AppointmentDaoImpl {
 	            // Calculate the start time of each slot and add it to the map
 	            for (int i = 0; i < totalSlots; i++) {
 	                LocalTime slotStartTime = startTime.plusMinutes(i * (slotDuration));
-	                slotStartTimes.add(slotStartTime);
+	                 if (slotStartTime.isAfter(now)) {  // <-- Only add slots after current time
+	                    slotStartTimes.add(slotStartTime);
+	                }
 	            }
 //	            System.out.println(slotStartTimes);
 	        } else {
