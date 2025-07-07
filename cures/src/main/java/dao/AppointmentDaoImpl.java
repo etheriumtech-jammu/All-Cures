@@ -88,10 +88,10 @@ public class AppointmentDaoImpl {
 
         // Initiate payment process
         res = PaymentGatewayDaoImpl.setPayment(appointmentMap, appointment.getAppointmentID());
-
+	
         // Set appointment count response
         res.put("Count", (appointmentCount < 2) ? "0" : "1");
-
+	 System.out.println("Response"+res);
         return res;
     } catch (Exception e) {
         if (tx != null) {
