@@ -110,7 +110,9 @@ public class AppointmentDaoImpl {
 	public static List<Appointment> getAppointments() {
 		Session session = HibernateUtil.buildSessionFactory();
 		Query query1 = session.createNativeQuery(
-				"SELECT * FROM Appointment ;");
+				"SELECT AppointmentID, DocID, UserID, AppointmentDate, StartTime, EndTime, 
+    RequestStatus, PaymentStatus, FailureID, CreatedDate, LastUpdatedDate, Status 
+    FROM Appointment;");
 		List<Appointment> AppointmentList = new ArrayList<>();
 
 		List<Object[]> resultList = query1.getResultList();
@@ -141,7 +143,9 @@ public class AppointmentDaoImpl {
 	public static List<Appointment> getAppointmentsOfDoc(Integer docID) {
 		Session session = HibernateUtil.buildSessionFactory();
 		Query query1 = session.createNativeQuery(
-				"SELECT * FROM Appointment where DocID=" +docID + ";");
+				"SELECT AppointmentID, DocID, UserID, AppointmentDate, StartTime, EndTime, 
+    RequestStatus, PaymentStatus, FailureID, CreatedDate, LastUpdatedDate, Status 
+    FROM Appointment where DocID=" +docID + ";");
 		List<Appointment> AppointmentList = new ArrayList<>();
 
 		List<Object[]> resultList = query1.getResultList();
@@ -150,9 +154,9 @@ public class AppointmentDaoImpl {
 		for (Object[] obj : resultList) {
 			Appointment appointment = new Appointment();
 			appointment.setAppointmentID(obj[0] != null ? (Integer) obj[0] : 0);
-			appointment.setDocID(obj[3] != null ? (Integer) obj[3] : 0);
+			appointment.setDocID(obj[1] != null ? (Integer) obj[1] : 0);
 			appointment.setUserID(obj[2] != null ? (Integer) obj[2] : 0);
-			Date date=(Date)obj[1];
+			Date date=(Date)obj[3];
 			appointment.setAppointmentDate(date);
 			appointment.setStartTime(obj[4] != null ? (String) obj[4] : "");
 			appointment.setEndTime(obj[5] != null ? (String) obj[5] : "");
@@ -173,7 +177,9 @@ public class AppointmentDaoImpl {
 		public static List<Appointment> getAppointmentsOfUser(Integer docID,Integer userID) {
 			Session session = HibernateUtil.buildSessionFactory();
 			Query query1 = session.createNativeQuery(
-					"SELECT * FROM Appointment where DocID=" +docID + " AND UserID= " + userID + ";");
+					"SELECT AppointmentID, DocID, UserID, AppointmentDate, StartTime, EndTime, 
+    RequestStatus, PaymentStatus, FailureID, CreatedDate, LastUpdatedDate, Status 
+    FROM Appointment where DocID=" +docID + " AND UserID= " + userID + ";");
 			List<Appointment> AppointmentList = new ArrayList<>();
 
 			List<Object[]> resultList = query1.getResultList();
