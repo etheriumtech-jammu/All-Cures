@@ -109,9 +109,8 @@ public class AppointmentDaoImpl {
 	public static List<Appointment> getAppointments() {
 		Session session = HibernateUtil.buildSessionFactory();
 		Query query1 = session.createNativeQuery(
-				"SELECT AppointmentID, DocID, UserID, AppointmentDate, StartTime, EndTime, 
-    RequestStatus, PaymentStatus, FailureID, CreatedDate, LastUpdatedDate, Status 
-    FROM Appointment;");
+				"SELECT AppointmentID, DocID, UserID, AppointmentDate, StartTime, EndTime, RequestStatus, PaymentStatus, FailureID, CreatedDate, LastUpdatedDate, Status" 
+ 		  + " FROM Appointment;");
 		List<Appointment> AppointmentList = new ArrayList<>();
 
 		List<Object[]> resultList = query1.getResultList();
@@ -142,9 +141,9 @@ public class AppointmentDaoImpl {
 	public static List<Appointment> getAppointmentsOfDoc(Integer docID) {
 		Session session = HibernateUtil.buildSessionFactory();
 		Query query1 = session.createNativeQuery(
-				"SELECT AppointmentID, DocID, UserID, AppointmentDate, StartTime, EndTime, 
-    RequestStatus, PaymentStatus, FailureID, CreatedDate, LastUpdatedDate, Status 
-    FROM Appointment where DocID=" +docID + ";");
+				"SELECT AppointmentID, DocID, UserID, AppointmentDate, StartTime, EndTime," 
+   +" RequestStatus, PaymentStatus, FailureID, CreatedDate, LastUpdatedDate, Status " 
+ +"   FROM Appointment where DocID=" +docID + ";");
 		List<Appointment> AppointmentList = new ArrayList<>();
 
 		List<Object[]> resultList = query1.getResultList();
@@ -176,9 +175,9 @@ public class AppointmentDaoImpl {
 		public static List<Appointment> getAppointmentsOfUser(Integer docID,Integer userID) {
 			Session session = HibernateUtil.buildSessionFactory();
 			Query query1 = session.createNativeQuery(
-					"SELECT AppointmentID, DocID, UserID, AppointmentDate, StartTime, EndTime, 
-    RequestStatus, PaymentStatus, FailureID, CreatedDate, LastUpdatedDate, Status 
-    FROM Appointment where DocID=" +docID + " AND UserID= " + userID + ";");
+					"SELECT AppointmentID, DocID, UserID, AppointmentDate, StartTime, EndTime, "
+ +"RequestStatus, PaymentStatus, FailureID, CreatedDate, LastUpdatedDate, Status "
+   +" FROM Appointment where DocID=" +docID + " AND UserID= " + userID + ";");
 			List<Appointment> AppointmentList = new ArrayList<>();
 
 			List<Object[]> resultList = query1.getResultList();
