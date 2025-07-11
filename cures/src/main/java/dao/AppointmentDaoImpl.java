@@ -285,9 +285,9 @@ public class AppointmentDaoImpl {
 
 	                if (isDoctorAvailableOnDay(session, doctorId, dayOfWeek)) {
 	                    TreeSet<LocalTime> bookedSlotsTime = getAppointmentsStartTimesForDate(doctorId, date);
-				 System.out.println("bookedSlotsTime"+bookedSlotsTime);
+				
 	                    TreeSet<LocalTime> slotStartTimes = calculateTotalSlots(doctorId);
-				System.out.println("slotStartTimes"+slotStartTimes);
+				
 				  if (date.equals(today)) {
 	                        LocalTime now = LocalTime.now();
 	                        slotStartTimes.removeIf(slot -> !slot.isAfter(now));
