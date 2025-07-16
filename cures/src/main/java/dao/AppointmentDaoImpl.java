@@ -51,9 +51,6 @@ public class AppointmentDaoImpl {
             "SELECT COUNT(a) FROM Appointment a WHERE a.userID = :userID", Long.class);
         query.setParameter("userID", (Integer) appointmentMap.get("userID"));
         Long appointmentCount = query.uniqueResult();
-	System.out.println("appointmentMap: " + appointmentMap);
-	System.out.println("userID: " + appointmentMap.get("userID"));
-	System.out.println("appointmentCount: " + appointmentCount);
         // Create new appointment
         Appointment appointment = new Appointment();
         appointment.setDocID((Integer) appointmentMap.get("docID"));
@@ -95,9 +92,9 @@ public class AppointmentDaoImpl {
         res.put("Count", (appointmentCount < 2) ? "0" : "1");
         return res;
     } catch (Exception e) {
-        if (tx != null) {
-            tx.rollback();
-        }
+       if (tx != null && tx.getStatus().canRollback()) {
+        tx.rollback();
+    }
         e.printStackTrace(); // Replace with proper logging
         res.put("Error", "Failed to set appointment: " + e.getMessage());
         return res;
