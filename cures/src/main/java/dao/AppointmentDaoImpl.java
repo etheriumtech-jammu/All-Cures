@@ -355,17 +355,22 @@ public class AppointmentDaoImpl {
 	                DayOfWeek dayOfWeek = date.getDayOfWeek();
 
 	                if (isDoctorAvailableOnDay(session, doctorId, dayOfWeek)) {
-	                    Set<LocalTime> bookedSlotsTime = getAppointmentsStartTimesForDate(doctorId, date);
-	                    Set<LocalTime> slotStartTimes = calculateTotalSlots(doctorId);
-
+	                    TreeSet<LocalTime> bookedSlotsTime = getAppointmentsStartTimesForDate(doctorId, date);
+				
+	                    TreeSet<LocalTime> slotStartTimes = calculateTotalSlots(doctorId);
+				
+				  if (date.equals(today)) {
+	                        LocalTime now = LocalTime.now();
+	                        slotStartTimes.removeIf(slot -> !slot.isAfter(now));
+	                    }
 	                    availableDates.put(date, slotStartTimes);
 
 	                    // Find unbooked slots
-	                    Set<LocalTime> unbookedSlotsTime = new HashSet<>(slotStartTimes);
+	                    TreeSet<LocalTime> unbookedSlotsTime = new TreeSet<>(slotStartTimes);
 	                    unbookedSlotsTime.removeAll(bookedSlotsTime);
 	                    unbookedSlots.put(date, unbookedSlotsTime);
-			    System.out.println("slotStartTimes.size()"+slotStartTimes.size());
-			    System.out.println("bookedSlotsTime.size()"+bookedSlotsTime.size());
+	//		    System.out.println("slotStartTimes.size()"+slotStartTimes.size());
+	//		    System.out.println("bookedSlotsTime.size()"+bookedSlotsTime.size());
 	                    if (bookedSlotsTime.size() >= slotStartTimes.size()) {
 	                        completelyBookedDates.add(date);
 	                    }
@@ -387,6 +392,7 @@ public class AppointmentDaoImpl {
 	    datesMap.put("amount", amount.toString());
 	    return datesMap;
 	}
+
 
 
 	private static boolean isDoctorAvailableOnDay(Session session, int doctorId, DayOfWeek dayOfWeek) {
