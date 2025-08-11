@@ -354,7 +354,7 @@ public class AppointmentDaoImpl {
 
 	            for (LocalDate date = today; !date.isAfter(end); date = date.plusDays(1)) {
 	                DayOfWeek dayOfWeek = date.getDayOfWeek();
-
+					 System.out.println(dayOfWeek);
 	                if (isDoctorAvailableOnDay(session, doctorId, dayOfWeek)) {
 	                    TreeSet<LocalTime> bookedSlotsTime = getAppointmentsStartTimesForDate(doctorId, date);
 						 System.out.println("Doctor is Available");
