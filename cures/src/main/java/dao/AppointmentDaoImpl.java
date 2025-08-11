@@ -431,8 +431,8 @@ public class AppointmentDaoImpl {
 	    }
 	}
 
-	private static Set<LocalTime> calculateTotalSlots(int doctorId) {
-		Set<LocalTime> slotStartTimes = new TreeSet<>();
+	private static TreeSet<LocalTime> calculateTotalSlots(int doctorId) {
+		TreeSet<LocalTime> slotStartTimes = new TreeSet<>();
 		Session session = HibernateUtil.getSessionFactory().openSession();
 	    try  {
 	        // Retrieve doctor's information from the database
@@ -457,7 +457,7 @@ public class AppointmentDaoImpl {
 	                LocalTime slotStartTime = startTime.plusMinutes(i * (slotDuration));
 	                slotStartTimes.add(slotStartTime);
 	            }
-	            System.out.println(slotStartTimes);
+//	            System.out.println(slotStartTimes);
 	        } else {
 	            throw new Exception("Doctor not found with id: " + doctorId);
 	        }
@@ -473,8 +473,8 @@ public class AppointmentDaoImpl {
 	}
 
 
-	private static Set<LocalTime> getAppointmentsStartTimesForDate(int docID, LocalDate date) throws SQLException {
-	    Set<LocalTime> appointmentStartTimes = new HashSet<>();
+	private static TreeSet<LocalTime> getAppointmentsStartTimesForDate(int docID, LocalDate date) throws SQLException {
+	    TreeSet<LocalTime> appointmentStartTimes = new TreeSet<>();
 	    Session session = HibernateUtil.buildSessionFactory();
 	    try {
 	        Query query = session.createNativeQuery(
@@ -482,9 +482,9 @@ public class AppointmentDaoImpl {
 	        
 	        List<Object> resultList = query.getResultList();
 	        for (Object startTimeObj : resultList) {
-	            System.out.println("Type of startTimeObj: " + startTimeObj.getClass().getName());
+//	            System.out.println("Type of startTimeObj: " + startTimeObj.getClass().getName());
 	        }
-	        System.out.println(resultList.size());
+//	        System.out.println(resultList.size());
 	        for (Object startTimeObj : resultList) {
 	//            if (startTimeObj instanceof Time) {
 	        	String startTimeStr = (String) startTimeObj;
@@ -496,7 +496,7 @@ public class AppointmentDaoImpl {
 	        // Handle exceptions
 	        e.printStackTrace();
 	    }
-	    System.out.println("appointmentStartTimes"+appointmentStartTimes);
+//	    System.out.println("appointmentStartTimes"+appointmentStartTimes);
 	    return appointmentStartTimes;
 	}
 
