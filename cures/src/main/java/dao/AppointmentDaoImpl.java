@@ -407,7 +407,7 @@ public class AppointmentDaoImpl {
 	    Query query = session.createSQLQuery(sql)
 	                        .setParameter("doctorId", doctorId);
 
-	    Long count = (Long) query.uniqueResult();
+	    BigInteger count = (BigInteger) query.uniqueResult();
 	    
 	    return count.intValue() > 0;
 	}
