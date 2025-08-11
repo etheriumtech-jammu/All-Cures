@@ -106,17 +106,17 @@ public class VideoController {
 		return VideoDaoImpl.getFailure(FailureID);
 	}
 
-	@RequestMapping(value = "/create/room/{DocID}", produces = "application/json", method = RequestMethod.GET)
-	public @ResponseBody String CreateRoom(@PathVariable int DocID,HttpServletRequest request) throws Exception {
-		String meeting=dailyCoService.createMeeting();
-		int res= VideoDaoImpl.sendEmail(DocID,0,meeting,null,null);
-		if(res==1) {
-			return meeting;
-		}
-		else {
-			return "Error";
-		}
-    }
+	// @RequestMapping(value = "/create/room/{DocID}", produces = "application/json", method = RequestMethod.GET)
+	// public @ResponseBody String CreateRoom(@PathVariable int DocID,HttpServletRequest request) throws Exception {
+	// 	String meeting=dailyCoService.createMeeting();
+	// 	int res= VideoDaoImpl.sendEmail(DocID,0,meeting,null,null);
+	// 	if(res==1) {
+	// 		return meeting;
+	// 	}
+	// 	else {
+	// 		return "Error";
+	// 	}
+ //    }
 
 	@RequestMapping(value = "/get/doctors/list", produces = "application/json", method = RequestMethod.GET)
 	public @ResponseBody List<HashMap<String, Object>> getDoctorsList(HttpServletRequest request,@RequestParam(required=false) Integer userID,@RequestParam(required=false) Integer offset) throws Exception {
