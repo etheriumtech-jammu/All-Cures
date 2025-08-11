@@ -344,6 +344,7 @@ public class AppointmentDaoImpl {
 
 	        if (!resultList.isEmpty()) {
 	            // Doctor found
+				 System.out.println("Doctor found");
 			for (Object[] row : resultList) {
 	    	                // Assuming the fee is the first column and doctor's name is the second column in the result set
 	    	                 amount = (BigDecimal) row[0];
@@ -356,7 +357,7 @@ public class AppointmentDaoImpl {
 
 	                if (isDoctorAvailableOnDay(session, doctorId, dayOfWeek)) {
 	                    TreeSet<LocalTime> bookedSlotsTime = getAppointmentsStartTimesForDate(doctorId, date);
-				
+						 System.out.println("Doctor is Available");
 	                    TreeSet<LocalTime> slotStartTimes = calculateTotalSlots(doctorId);
 				
 				  if (date.equals(today)) {
