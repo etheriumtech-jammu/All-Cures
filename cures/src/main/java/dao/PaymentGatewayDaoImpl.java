@@ -25,7 +25,7 @@ import service.DailyCoService;
 import util.AesCryptUtil;
 import util.Constant;
 import util.HibernateUtil;
-
+import util.PaymentUtil;
 
 public class PaymentGatewayDaoImpl {
 
@@ -89,34 +89,7 @@ public class PaymentGatewayDaoImpl {
 	}
 
 	public synchronized  static  String saveTransactionResults(HttpServletRequest request,String meeting) {
-		String workingKey = "039AE11691FCF783D1539D35C6188AF9"; // Enter your 32 Bit Alphanumeric Working Key here
-		String encResp = request.getParameter("encResp"); // Get the encrypted response from the request parameter
-		AesCryptUtil aesUtil = new AesCryptUtil(workingKey);
-		String decResp = aesUtil.decrypt(encResp);
-		Hashtable<String, String> hs = new Hashtable<>();
-		StringTokenizer tokenizer = new StringTokenizer(decResp, "&");
-		while (tokenizer.hasMoreTokens()) {
-			String pair = tokenizer.nextToken();
-			if (pair != null) {
-				StringTokenizer strTok = new StringTokenizer(pair, "=");
-				String pname = "";
-				String pvalue = "";
-				if (strTok.hasMoreTokens()) {
-					pname = strTok.nextToken();
-					if (strTok.hasMoreTokens()) {
-						pvalue = strTok.nextToken();
-					}
-					hs.put(pname, pvalue);
-				}
-			}
-		}
-
-		// Access the key-value pairs in the Hashtable
-		for (String key : hs.keySet()) {
-			String value = hs.get(key);
-			System.out.println("Parameter Name: " + key + ", Value: " + value);
-		}
-
+		Map<String, String> hs = PaymentUtil.decryptResponse(request);
 		Session session = HibernateUtil.buildSessionFactory();
 		Transaction tx = session.beginTransaction();
 	    try {
