@@ -145,6 +145,9 @@ public class Appointment {
 
     @Column(name = "Status")
     private int status;
+
+	private String meetingLink;
+    
     @Transient
     private String doctorName;
 
@@ -202,7 +205,13 @@ public class Appointment {
 		this.userName = userName;
 	}
 
-  
+  public String getMeetingLink() {
+		return meetingLink;
+	}
+
+	public void setMeetingLink(String meetingLink) {
+		this.meetingLink = meetingLink;
+	}
   
     // Getters and setters
 }
