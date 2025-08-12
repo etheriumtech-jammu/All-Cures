@@ -97,6 +97,7 @@ public class AppointmentDaoImpl {
 
             // Retrieve doctor's availability to get the slot duration
             AvailabilitySchedule doctorAvailability = session.get(AvailabilitySchedule.class, (Integer) appointmentMap.get("docID"));
+			  System.out.println("Doctor Availability:" + doctorAvailability);
             if (doctorAvailability != null) {
                 int slotDuration = doctorAvailability.getSlotDuration();
                 LocalTime startTime = LocalTime.parse((String) appointmentMap.get("startTime"));
