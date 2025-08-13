@@ -81,6 +81,7 @@ public class DailyCoService {
                             Appointment appointment = session.get(Appointment.class, appointmentId);
                             if (appointment != null) {
                                 appointment.setMeetingLink(meetingLink);
+                                appointment.setPaid(true);
                                 session.merge(appointment);
                             }
                         }
@@ -88,6 +89,7 @@ public class DailyCoService {
                     } else if (directAppointment != null) {
                         // ---- CASE 2: Non-payment flow ----
                         directAppointment.setMeetingLink(meetingLink);
+                        directAppointment.setPaid(false);
                         session.merge(directAppointment);
                     }
 
