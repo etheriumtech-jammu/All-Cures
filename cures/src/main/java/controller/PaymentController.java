@@ -98,7 +98,7 @@ public class PaymentController {
 
 	@RequestMapping(value = "/ccavenue-payment-udpates", method = RequestMethod.POST)
     public String PaymentUpdates(HttpServletRequest request,HttpServletResponse response) throws IOException {
-    	String meeting=dailyCoService.createMeeting();
+    	String meeting=dailyCoService.createMeeting(request,null);
     	String res= PaymentGatewayDaoImpl.saveTransactionResults(request,meeting);
     	System.out.println(meeting);
 	response.sendRedirect("https://all-cures.com/paymentStatus"); 
