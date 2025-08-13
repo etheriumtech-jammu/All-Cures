@@ -242,33 +242,41 @@ public class AppointmentDaoImpl {
 
 			return AppointmentList;
 		}
+	
 	//To get Appointments of a particular User
-	public static List<Appointment> getAllAppointmentsOfUser(Integer userID) {
+	public static List<Appointment> getAllAppointmentsOfUser(Integer userID, Date currentDate) {
 	Session session = HibernateUtil.buildSessionFactory();
-	Query query1 = session.createNativeQuery(
-		"SELECT \r\n"
-	+ "      a.DocID, \r\n"
-	+ "      a.AppointmentDate, \r\n"
-	+ "      a.StartTime, \r\n"
-	+ "      a.EndTime, \r\n"
-	+ "      a.Status, \r\n"
-	+ "      a.RequestStatus, \r\n"
-	+ "      a.UserID,\r\n"
-	+ "      CONCAT(d.docname_first, ' ', d.docname_middle, ' ', d.docname_last) AS DoctorName,\r\n"
-	+ "      da.SlotDuration,\r\n"
-	+ "      d.img_Loc,\r\n"
-	+ "      m.name\r\n"
-	+ "    FROM \r\n"
-	+ "      Appointment a\r\n"
-	+ "    LEFT JOIN \r\n"
-	+ "      Doctors_New d ON a.DocID = d.docid"
-	+ "    LEFT JOIN \r\n"
-	+ "      DoctorAvailability da ON a.DocID = da.DocID"
-	+ "    LEFT JOIN \r\n"
-	+ "      medicinetype m ON m.id = d.MedicineTypeID"
-	+ " where  a.UserId= " + userID + "");
+
+    StringBuilder sql = new StringBuilder(
+        "SELECT " +
+        "a.DocID, " +
+        "a.AppointmentDate, " +
+        "a.StartTime, " +
+        "a.EndTime, " +
+        "a.Status, " +
+        "a.RequestStatus, " +
+        "a.UserID, " +
+        "CONCAT(d.docname_first, ' ', d.docname_middle, ' ', d.docname_last) AS DoctorName, " +
+        "da.SlotDuration, " +
+        "d.img_Loc, " +
+        "m.name " +
+        "FROM Appointment a " +
+        "LEFT JOIN Doctors_New d ON a.DocID = d.docid " +
+        "LEFT JOIN DoctorAvailability da ON a.DocID = da.DocID " +
+        "LEFT JOIN medicinetype m ON m.id = d.MedicineTypeID " +
+        "WHERE (a.IsPaid = FALSE OR a.PaymentStatus = 1) AND a.UserID = :userID"
+    );
+
+    if (currentDate != null) {
+        sql.append(" AND a.AppointmentDate >= :currentDate");
+    }
+    Query query = session.createNativeQuery(sql.toString());
+    query.setParameter("userID", userID);
+    if (currentDate != null) {
+        query.setParameter("currentDate", currentDate);
+    }
 	List<Appointment> AppointmentList = new ArrayList<>();
-	List<Object[]> resultList = query1.getResultList();
+	List<Object[]> resultList = query.getResultList();
 	Constant.log("Executed Query and Got: " + resultList.size() + " Appointment Lists back", 1);
 	for (Object[] obj : resultList) {
 	Appointment appointment = new Appointment();
