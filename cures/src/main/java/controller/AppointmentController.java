@@ -2,6 +2,7 @@ package controller;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,10 +53,13 @@ public class AppointmentController {
 					
 	    }
 	//To get Appointments of a particular user 
-	@RequestMapping(value = "/get/user/{userID}", produces = "application/json", method = RequestMethod.GET)  
-	public @ResponseBody List<Appointment> getAppointmentsOfUser(@PathVariable int userID) {
-	     return AppointmentDaoImpl.getAllAppointmentsOfUser(userID);
-	    }
+			@RequestMapping(value = "/get/user/{userID}", produces = "application/json", method = RequestMethod.GET)
+		public @ResponseBody List<Appointment> getAppointmentsOfUser(
+		        @PathVariable Integer userID,
+		        @RequestParam(value = "currentDate", required = false) Date currentDate) {
+		    
+		    return AppointmentDaoImpl.getAllAppointmentsOfUser(userID, currentDate);
+		}
 	//To get Total , unbooked slots and Completely Booked Dates of a particular doctor
 	@RequestMapping(value = "/get/Slots/{DocID}", produces = "application/json", method = RequestMethod.GET)  
 	public @ResponseBody Map<String, Object> findCompletelyBookedAndAvailableDates(@PathVariable int DocID) {
