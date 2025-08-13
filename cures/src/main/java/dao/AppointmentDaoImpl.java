@@ -329,7 +329,7 @@ public class AppointmentDaoImpl {
         "LEFT JOIN Doctors_New d ON a.DocID = d.docid " +
         "LEFT JOIN DoctorAvailability da ON a.DocID = da.DocID " +
         "LEFT JOIN medicinetype m ON m.id = d.MedicineTypeID " +
-        "WHERE a.PaymentStatus = 1 AND a.UserID = :userID"
+        "WHERE (a.isPaid = FALSE OR a.PaymentStatus = 1) AND a.UserID = :userID"
     );
 
     if (currentDate != null) {
