@@ -48,7 +48,7 @@ public class AppointmentDaoImpl {
     Session session = null;
     Transaction tx = null;
     HashMap<String, String> res = new HashMap<>();
-
+	LocalTime startTime = null;
     try {
         session = HibernateUtil.buildSessionFactory();
         tx = session.beginTransaction();
@@ -78,7 +78,7 @@ public class AppointmentDaoImpl {
 
         if (doctorAvailability != null) {
             int slotDuration = doctorAvailability.getSlotDuration();
-            LocalTime startTime = LocalTime.parse((String) appointmentMap.get("startTime"));
+            startTime = LocalTime.parse((String) appointmentMap.get("startTime"));
             LocalTime endTime = startTime.plusMinutes(slotDuration);
 
             appointment.setStartTime(startTime.toString());
