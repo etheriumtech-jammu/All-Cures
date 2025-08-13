@@ -132,7 +132,7 @@ public class AppointmentDaoImpl {
             } catch (Exception ex) {
                 // Don’t fail the whole flow if meeting creation fails
                 ex.printStackTrace();
-                res.put("MeetingError", "Failed to create meeting link: " + ex.getMessage());
+                response.put("MeetingError", "Failed to create meeting link: " + ex.getMessage());
             }
 
             if (meeting != null && !meeting.isEmpty()) {
@@ -146,7 +146,7 @@ public class AppointmentDaoImpl {
                     VideoDaoImpl.sendEmail(docId, userId, meeting, dateString, formattedTime);
                 } catch (Exception mailEx) {
                     mailEx.printStackTrace();
-                    res.put("EmailError", "Failed to send email: " + mailEx.getMessage());
+                    response.put("EmailError", "Failed to send email: " + mailEx.getMessage());
                 }
             }
         }
@@ -155,11 +155,7 @@ public class AppointmentDaoImpl {
                     response.put("Count", "0");
                 } else {
                     response.put("Count", "1");
-                }
-
-               
-                System.out.println(response + " res");
-              
+                }              
                 // Check if the gap is sufficient (24 hours) before scheduling the notification
                 if (isGapSufficient(startTime, sqlDate)) {
                     SchedulerService schedulerService = new SchedulerService();
