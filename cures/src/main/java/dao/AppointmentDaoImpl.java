@@ -86,12 +86,15 @@ public class AppointmentDaoImpl {
             System.out.println("No doctor found with the given docID.");
         }
         try {
+			 Integer userId = (Integer)(appointmentMap.get("userID"));
+      		  Integer docId = (Integer)(appointmentMap.get("docID"));
+       
             Appointment appointment = new Appointment();
             Transaction tx = session.beginTransaction();
 
             // Set appointment details
-            appointment.setDocID((Integer) appointmentMap.get("docID"));
-            appointment.setUserID((Integer) appointmentMap.get("userID"));
+           appointment.setDocID(docId);
+        appointment.setUserID(userId);
             String dateString = (String) appointmentMap.get("appointmentDate");
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date parsedDate = (Date) dateFormat.parse(dateString);
@@ -121,17 +124,31 @@ public class AppointmentDaoImpl {
                 HashMap<String, String> paymentResponse = PaymentGatewayDaoImpl.setPayment(appointmentMap, appointment.getAppointmentID());
                 response.putAll(paymentResponse);
                 // Count the number of appointments scheduled by the user
-              	if((appointmentCount < 2)) {
-        	String meeting=dailyCoService.createMeeting(null,appointment);
-        	// Parse the appointment time
-	        SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm");
-	        SimpleDateFormat outputFormat = new SimpleDateFormat("hh:mm a"); // 12-hour pattern with AM/PM
-	        outputFormat.setDateFormatSymbols(new DateFormatSymbols(Locale.ENGLISH)); // Set symbols to English to ensure AM/PM is in English
-	        
-	        java.util.Date time = inputFormat.parse(startTime.toString());
-	        String formattedTime = outputFormat.format(time).toUpperCase(); // Convert AM/PM to uppercase
-	        VideoDaoImpl.sendEmail((Integer) appointmentMap.get("docID"), (Integer) appointmentMap.get("userID"), meeting, dateString, formattedTime);
-            
+                if (appointmentCount < 2 && startTime != null) {
+            String meeting = null;
+            try {
+                // Non-payment path: request = null, pass persisted appointment
+                meeting = dailyCoService.createMeeting(null, appointment);
+            } catch (Exception ex) {
+                // Don’t fail the whole flow if meeting creation fails
+                ex.printStackTrace();
+                res.put("MeetingError", "Failed to create meeting link: " + ex.getMessage());
+            }
+
+            if (meeting != null && !meeting.isEmpty()) {
+                // Format time to 12-hour with AM/PM (English)
+                SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm");
+                SimpleDateFormat outputFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+                java.util.Date time = inputFormat.parse(startTime.toString());
+                String formattedTime = outputFormat.format(time).toUpperCase(Locale.ENGLISH);
+
+                try {
+                    VideoDaoImpl.sendEmail(docId, userId, meeting, dateString, formattedTime);
+                } catch (Exception mailEx) {
+                    mailEx.printStackTrace();
+                    res.put("EmailError", "Failed to send email: " + mailEx.getMessage());
+                }
+            }
         }
                 // Check appointment count and set the appropriate count value in the response
                 if (appointmentCount < 2) {
