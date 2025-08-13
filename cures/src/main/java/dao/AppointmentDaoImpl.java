@@ -32,10 +32,17 @@ import model.Doctor_New;
 import model.ServicePayment;
 import util.Constant;
 import util.HibernateUtil;
-
+import service.DailyCoService;
 
 public class AppointmentDaoImpl {
-	 
+	  // STATIC field used by the static method
+    private static DailyCoService dailyCoService;
+
+    // Let Spring inject the bean into the static field
+    @Autowired
+    public void setDailyCoService(DailyCoService svc) {
+        AppointmentDaoImpl.dailyCoService = svc;
+    }
 	//To add a new Appointment
 	public static HashMap<String, String> setAppointment(HashMap<String, Object> appointmentMap) {
     Session session = null;
@@ -52,9 +59,12 @@ public class AppointmentDaoImpl {
         query.setParameter("userID", (Integer) appointmentMap.get("userID"));
         Long appointmentCount = query.uniqueResult();
         // Create new appointment
+		 Integer userId = (Integer)(appointmentMap.get("userID"));
+      	Integer docId = (Integer)(appointmentMap.get("docID"));
+       
         Appointment appointment = new Appointment();
-        appointment.setDocID((Integer) appointmentMap.get("docID"));
-        appointment.setUserID((Integer) appointmentMap.get("userID"));
+        appointment.setDocID(docId);
+        appointment.setUserID(userId);
 
         // Parse and set appointment date
         String dateString = (String) appointmentMap.get("appointmentDate");
@@ -87,7 +97,36 @@ public class AppointmentDaoImpl {
 
         // Initiate payment process
         res = PaymentGatewayDaoImpl.setPayment(appointmentMap, appointment.getAppointmentID());
-	
+		 // Count the number of appointments scheduled by the user
+                if (appointmentCount < 2 && startTime != null) {
+            String meeting = null;
+            try {
+                // Non-payment path: request = null, pass persisted appointment
+				
+            	DailyCoService svc = new DailyCoService(new org.springframework.web.client.RestTemplate());
+                meeting = svc.createMeeting(null, appointment); 
+                
+            } catch (Exception ex) {
+                // Don’t fail the whole flow if meeting creation fails
+                ex.printStackTrace();
+                res.put("MeetingError", "Failed to create meeting link: " + ex.getMessage());
+            }
+
+            if (meeting != null && !meeting.isEmpty()) {
+                // Format time to 12-hour with AM/PM (English)
+                SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm");
+                SimpleDateFormat outputFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+                java.util.Date time = inputFormat.parse(startTime.toString());
+                String formattedTime = outputFormat.format(time).toUpperCase(Locale.ENGLISH);
+
+                try {
+                    VideoDaoImpl.sendEmail(docId, userId, meeting, dateString, formattedTime);
+                } catch (Exception mailEx) {
+                    mailEx.printStackTrace();
+                    res.put("EmailError", "Failed to send email: " + mailEx.getMessage());
+                }
+            }
+        }
         // Set appointment count response
         res.put("Count", (appointmentCount < 2) ? "0" : "1");
         return res;
