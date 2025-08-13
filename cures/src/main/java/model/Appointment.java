@@ -146,7 +146,11 @@ public class Appointment {
     @Column(name = "Status")
     private int status;
 
- @Transient
+	private String meetingLink;
+	@Column(name = "IsPaid", nullable = true, columnDefinition = "TINYINT(1) DEFAULT NULL")
+    private Boolean isPaid;
+	
+	 @Transient
     private String doctorName;
 
     @Transient
@@ -189,6 +193,22 @@ public class Appointment {
 
 	public void setImgLoc(String imgLoc) {
 		this.imgLoc = imgLoc;
+	}
+
+   public String getMeetingLink() {
+		return meetingLink;
+	}
+
+	public void setMeetingLink(String meetingLink) {
+		this.meetingLink = meetingLink;
+	}
+
+	public Boolean isPaid() {
+		return isPaid;
+	}
+
+	public void setPaid(Boolean isPaid) {
+		this.isPaid = isPaid;
 	}
 
   
