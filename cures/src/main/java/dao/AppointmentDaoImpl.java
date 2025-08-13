@@ -324,8 +324,8 @@ public class AppointmentDaoImpl {
         "CONCAT(d.docname_first, ' ', d.docname_middle, ' ', d.docname_last) AS DoctorName, " +
         "da.SlotDuration, " +
         "d.img_Loc, " +
-        "m.name " +
-		 "a.meetingLink " +
+        "m.name, " +
+		 "a.meetingLink, " +
         "a.IsPaid " +
         "FROM Appointment a " +
         "LEFT JOIN Doctors_New d ON a.DocID = d.docid " +
