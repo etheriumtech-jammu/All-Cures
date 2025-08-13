@@ -133,6 +133,8 @@ public class AppointmentDaoImpl {
             String meeting = null;
             try {
                 // Non-payment path: request = null, pass persisted appointment
+					System.out.println("dailyCoService"+dailyCoService);
+            	System.out.println("appointment"+appointment);
                 meeting = dailyCoService.createMeeting(null, appointment);
             } catch (Exception ex) {
                 // Don’t fail the whole flow if meeting creation fails
