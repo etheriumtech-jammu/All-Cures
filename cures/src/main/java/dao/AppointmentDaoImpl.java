@@ -40,9 +40,14 @@ import util.SchedulerService;
 import service.DailyCoService;
 public class AppointmentDaoImpl {
 
-	 @Autowired
-	    private static DailyCoService dailyCoService;
-	
+	 // STATIC field used by the static method
+    private static DailyCoService dailyCoService;
+
+    // Let Spring inject the bean into the static field
+    @Autowired
+    public void setDailyCoService(DailyCoService svc) {
+        AppointmentDaoImpl.dailyCoService = svc;
+    }
 	//To add a new Appointment
 	public static HashMap<String, Object> setAppointment(HashMap<String, Object> appointmentMap) {
         HashMap<String, Object> response = new HashMap<>();
