@@ -147,7 +147,7 @@ public class Appointment {
     private int status;
 
 	private String meetingLink;
-    
+    private boolean isPaid;
     @Transient
     private String doctorName;
 
@@ -212,6 +212,15 @@ public class Appointment {
 	public void setMeetingLink(String meetingLink) {
 		this.meetingLink = meetingLink;
 	}
+
+	public boolean isPaid() {
+		return isPaid;
+	}
+
+	public void setPaid(boolean isPaid) {
+		this.isPaid = isPaid;
+	}
+
   
     // Getters and setters
 }
