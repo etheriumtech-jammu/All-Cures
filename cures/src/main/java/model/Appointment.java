@@ -148,8 +148,7 @@ public class Appointment {
 
 	private String meetingLink;
 	@Column(name = "IsPaid", nullable = true, columnDefinition = "TINYINT(1) DEFAULT NULL")
-	
-    private boolean isPaid;
+    private Boolean isPaid;
     @Transient
     private String doctorName;
 
@@ -215,11 +214,11 @@ public class Appointment {
 		this.meetingLink = meetingLink;
 	}
 
-	public boolean isPaid() {
+	public Boolean isPaid() {
 		return isPaid;
 	}
 
-	public void setPaid(boolean isPaid) {
+	public void setPaid(Boolean isPaid) {
 		this.isPaid = isPaid;
 	}
 
