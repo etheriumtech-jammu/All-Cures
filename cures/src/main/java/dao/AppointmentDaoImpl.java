@@ -37,9 +37,12 @@ import model.ServicePayment;
 import util.Constant;
 import util.HibernateUtil;
 import util.SchedulerService;
-
+import service.DailyCoService;
 public class AppointmentDaoImpl {
-	 
+
+	 @Autowired
+	    private static DailyCoService dailyCoService;
+	
 	//To add a new Appointment
 	public static HashMap<String, Object> setAppointment(HashMap<String, Object> appointmentMap) {
         HashMap<String, Object> response = new HashMap<>();
@@ -118,7 +121,18 @@ public class AppointmentDaoImpl {
                 HashMap<String, String> paymentResponse = PaymentGatewayDaoImpl.setPayment(appointmentMap, appointment.getAppointmentID());
                 response.putAll(paymentResponse);
                 // Count the number of appointments scheduled by the user
-              
+              	if((appointmentCount < 2)) {
+        	String meeting=dailyCoService.createMeeting(null,appointment);
+        	// Parse the appointment time
+	        SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm");
+	        SimpleDateFormat outputFormat = new SimpleDateFormat("hh:mm a"); // 12-hour pattern with AM/PM
+	        outputFormat.setDateFormatSymbols(new DateFormatSymbols(Locale.ENGLISH)); // Set symbols to English to ensure AM/PM is in English
+	        
+	        java.util.Date time = inputFormat.parse(startTime.toString());
+	        String formattedTime = outputFormat.format(time).toUpperCase(); // Convert AM/PM to uppercase
+	        VideoDaoImpl.sendEmail((Integer) appointmentMap.get("docID"), (Integer) appointmentMap.get("userID"), meeting, dateString, formattedTime);
+            
+        }
                 // Check appointment count and set the appropriate count value in the response
                 if (appointmentCount < 2) {
                     response.put("Count", "0");
