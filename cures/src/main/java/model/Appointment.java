@@ -147,6 +147,7 @@ public class Appointment {
     private int status;
 
 	private String meetingLink;
+	@Column(name = "IsPaid", nullable = true, columnDefinition = "TINYINT(1) DEFAULT NULL")
     private boolean isPaid;
     @Transient
     private String doctorName;
