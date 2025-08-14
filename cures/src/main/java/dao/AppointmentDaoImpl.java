@@ -359,7 +359,7 @@ public class AppointmentDaoImpl {
 	appointment.setImgLoc(obj[9] != null ? (String) obj[9] : "");
 	appointment.setMedicineType(obj[10] != null ? (String) obj[10] : "");
 	appointment.setMeetingLink(obj[11] != null ? (String) obj[11] : "");
-	appointment.setPaid(obj[12] != null ? (Boolean) obj[11] : false);
+	appointment.setPaid(obj[12] != null ? (Boolean) obj[12] : false);
 	AppointmentList.add(appointment);
 	}
 	return AppointmentList;
