@@ -365,24 +365,31 @@ public class AppointmentDaoImpl {
 	return AppointmentList;
 	}
 	//To get Total , unbooked slots and Completely Booked Dates of a particular doctor
-	public static Map<String, Object> findCompletelyBookedAndAvailableDates(int doctorId) {
+	public static Map<String, Object> findCompletelyBookedAndAvailableDates(int doctorId, int userId) {
 	    Map<String, Object> datesMap = new HashMap<>();
 	    List<LocalDate> completelyBookedDates = new ArrayList<>();
 	    Map<LocalDate, Set<LocalTime>> availableDates = new TreeMap<>();
 	    Map<LocalDate, Set<LocalTime>> unbookedSlots = new TreeMap<>();
 		  BigDecimal amount = null;
+		 Long appointmentCount=null;
 	    try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 	        Transaction tx = session.beginTransaction();
 
 	        // Check if the doctor exists
-	     Query query = session.createNativeQuery(
-	                "SELECT sc.Fee,d.docname_first " +
+	    Query query = session.createNativeQuery(
+	                "SELECT sc.Fee,d.docname_first,  (\n"
+	                + "    SELECT COUNT(*) "
+	                + "    FROM Appointment a "
+	                + "    WHERE a.UserID  = :userId "
+	                + "  ) AS appointment_count "
+	                +
 	                "FROM allcures_schema.ServiceContractDetails sc " +
 	                "JOIN registration r ON r.registration_id = sc.UserID " +
 	                "JOIN Doctors_New d ON d.docid = r.DocID " +
-	                "WHERE d.DocID = :doctorId"
+	                "WHERE sc.ServiceID=2 AND d.DocID = :doctorId"
 	            );
 	        query.setParameter("doctorId", doctorId);
+	        query.setParameter("userId", userId);
 	        List<Object[]> resultList = query.getResultList();
 
 	        if (!resultList.isEmpty()) {
@@ -390,7 +397,8 @@ public class AppointmentDaoImpl {
 				
 			for (Object[] row : resultList) {
 	    	                // Assuming the fee is the first column and doctor's name is the second column in the result set
-	    	                 amount = (BigDecimal) row[0];
+	    	                amount = row[0] != null ? (BigDecimal) row[0] : BigDecimal.ZERO;
+	    	                 appointmentCount=row[2] != null ? (Long) row[2] : 0;
 	                	}
 	            LocalDate today = LocalDate.now();
 	            LocalDate end = today.plusDays(30); // Next 30 days
@@ -434,6 +442,7 @@ public class AppointmentDaoImpl {
 	    datesMap.put("completelyBookedDates", completelyBookedDates);
 	    datesMap.put("unbookedSlots", unbookedSlots);
 	    datesMap.put("amount", amount.toString());
+		 datesMap.put("isPaid", (appointmentCount < 2) ? false : true);
 	    return datesMap;
 	}
 
