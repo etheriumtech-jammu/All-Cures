@@ -259,7 +259,9 @@ public class AppointmentDaoImpl {
         "CONCAT(d.docname_first, ' ', d.docname_middle, ' ', d.docname_last) AS DoctorName, " +
         "da.SlotDuration, " +
         "d.img_Loc, " +
-        "m.name " +
+        "m.name, " +
+		 "a.meetingLink, " +
+        "a.IsPaid " +
         "FROM Appointment a " +
         "LEFT JOIN Doctors_New d ON a.DocID = d.docid " +
         "LEFT JOIN DoctorAvailability da ON a.DocID = da.DocID " +
@@ -291,6 +293,8 @@ public class AppointmentDaoImpl {
 	appointment.setSlotDuration(obj[8] != null ? (Integer) obj[8] : 0);
 	appointment.setImgLoc(obj[9] != null ? (String) obj[9] : "");
 	appointment.setMedicineType(obj[10] != null ? (String) obj[10] : "");
+	appointment.setMeetingLink(obj[11] != null ? (String) obj[11] : "");
+	appointment.setPaid(obj[12] != null ? (Boolean) obj[12] : false);
 	AppointmentList.add(appointment);
 	}
 	return AppointmentList;
