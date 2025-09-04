@@ -301,11 +301,11 @@ public class DeltaSiteMapGen {
 // Utility to create SEO-friendly slugs
     public static String generateSlug(String slug) {
         
-    	// Replace spaces, & and : with hyphens
-        slug = slug.replaceAll("[\\s&:]+", "-");
+    	 // Replace spaces, & , and : with hyphens
+        slug = slug.replaceAll("[\\s&,:]+", "-");
 
-        // Remove brackets and other special characters ((), {}, [], quotes, commas, etc.)
-        slug = slug.replaceAll("[\\(\\)\\[\\]\\{\\}\",']", "");
+        // Remove brackets and other special characters ((), {}, [], quotes, etc.)
+        slug = slug.replaceAll("[\\(\\)\\[\\]\\{\\}\"']", "");
 
         // Remove everything except letters, digits, and hyphens
         slug = slug.replaceAll("[^a-zA-Z0-9\\-]", "");
@@ -319,5 +319,6 @@ public class DeltaSiteMapGen {
     }
 	
 }
+
 
 
