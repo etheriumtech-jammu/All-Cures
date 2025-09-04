@@ -298,16 +298,26 @@ public class DeltaSiteMapGen {
 	}
 
 	
-	// Utility to create SEO-friendly slugs
+// Utility to create SEO-friendly slugs
     public static String generateSlug(String slug) {
         
-        slug = slug.replaceAll("[\\s&]+", "-");           // Replace spaces and ampersand with -
-        slug = slug.replaceAll("[^A-Za-z0-9\\-]", "");       // Remove special characters
-        slug = slug.replaceAll("-{2,}", "-");             // Collapse multiple hyphens
-        slug = slug.replaceAll("^-|-$", "");              // Trim hyphens
+    	// Replace spaces, & and : with hyphens
+        slug = slug.replaceAll("[\\s&:]+", "-");
+
+        // Remove brackets and other special characters ((), {}, [], quotes, commas, etc.)
+        slug = slug.replaceAll("[\\(\\)\\[\\]\\{\\}\",']", "");
+
+        // Remove everything except letters, digits, and hyphens
+        slug = slug.replaceAll("[^a-zA-Z0-9\\-]", "");
+
+        // Collapse multiple hyphens into one
+        slug = slug.replaceAll("-{2,}", "-");
+
+        // Trim leading/trailing hyphens
+        slug = slug.replaceAll("^-|-$", "");          
         return slug;
     }
 	
-	
 }
+
 
