@@ -125,14 +125,14 @@ public class DeltaSiteMapGen {
 			rs2_cure = stmt2.executeQuery("Select article_id,title from article  where pubstatus_id=3");
 			System.out.println(rs2_cure.getFetchSize());
 			while (rs2_cure.next()) {
-				String title = rs2_cure.getString(2);
-				title = title.replaceAll(" ", "-");
-				title = title.replaceAll("&", "-");
-				// System.out.println(str);
-				System.out.println();
-				str_add = rs2_cure.getString(1) + "-" + title;
+				String articleId = rs2_cure.getString("article_id");
+				 String title = rs2_cure.getString("title");
 				
-				String final_string = "https://www.all-cures.com/cure/" + str_add + "";
+				 // Generate a clean slug
+				    String slug = generateSlug(title);
+
+				    // Build final SEO-safe URL
+				    String final_string = "https://www.all-cures.com/cure/" + articleId + "-" + slug;
 				System.out.println(final_string);
 				updateSitemap(baseSitemap, final_string, "add");
 			
@@ -215,14 +215,14 @@ public class DeltaSiteMapGen {
 						+ formattedDateTime + "' and pubstatus_id=3");
 				System.out.println(rs2_cure.getFetchSize());
 				while (rs2_cure.next()) {
-					String title = rs2_cure.getString(2);
-					title = title.replaceAll(" ", "-");
-					title = title.replaceAll("&", "-");
-					// System.out.println(str);
-					System.out.println();
-					str_add = rs2_cure.getString(1) + "-" + title;
+					String articleId = rs2_cure.getString("article_id");
+				 String title = rs2_cure.getString("title");
+				
+				 // Generate a clean slug
+				    String slug = generateSlug(title);
 
-					String final_string = "https://www.all-cures.com/cure/" + str_add + "";
+				    // Build final SEO-safe URL
+				    String final_string = "https://www.all-cures.com/cure/" + articleId + "-" + slug;
 					System.out.println(final_string);
 					updateDeltaSitemap(deltaSitemap1, final_string);
 					updateSitemap(baseSitemap1, final_string, "update");
@@ -298,4 +298,16 @@ public class DeltaSiteMapGen {
 	}
 
 	
+	// Utility to create SEO-friendly slugs
+    public static String generateSlug(String slug) {
+        
+        slug = slug.replaceAll("[\\s&]+", "-");           // Replace spaces and ampersand with -
+        slug = slug.replaceAll("[^A-Za-z0-9\\-]", "");       // Remove special characters
+        slug = slug.replaceAll("-{2,}", "-");             // Collapse multiple hyphens
+        slug = slug.replaceAll("^-|-$", "");              // Trim hyphens
+        return slug;
+    }
+	
+	
 }
+
