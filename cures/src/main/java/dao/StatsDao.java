@@ -1,6 +1,7 @@
 package dao;
 
 import org.hibernate.Session;
+import java.util.stream.Collectors;
 import org.hibernate.query.Query;
 
 import util.HibernateUtil;
@@ -14,7 +15,7 @@ public class StatsDao {
 	 public static BigInteger getAppointmentsSummaryByStatus(int status) {
 	        Session session = HibernateUtil.buildSessionFactory();
 	        Query query = session.createNativeQuery(
-	            "SELECT COUNT(AppointmentID) FROM Appointment a WHERE a.Status = :status"
+	            "SELECT COUNT(AppointmentID) FROM appointment a WHERE a.Status = :status"
 	        );
 	        query.setParameter("status", status);
 
@@ -24,7 +25,7 @@ public class StatsDao {
     public static List<Object[]> getMonthlyAppointments(int year) {
         Session session = HibernateUtil.buildSessionFactory();
         String sql = "SELECT MONTH(date_time), COUNT(*) " +
-                     "FROM Appointment " +
+                     "FROM appointment " +
                      "WHERE YEAR(date_time) = :year " +
                      "GROUP BY MONTH(date_time)";
 
@@ -37,7 +38,7 @@ public class StatsDao {
     public static BigInteger getAppointmentsCount(String startDate, String endDate) {
         Session session = HibernateUtil.buildSessionFactory();
 
-        String sql = "SELECT COUNT(*) FROM Appointment " +
+        String sql = "SELECT COUNT(*) FROM appointment " +
                      "WHERE DATE(AppointmentDate) BETWEEN :startDate AND :endDate AND Status=4";
 
         Query query = session.createNativeQuery(sql);
@@ -65,9 +66,9 @@ public class StatsDao {
                 "r.first_name AS user_first_name," +
                 "r.last_name  AS user_last_name, " +
                 "sc.Fee,asm.StatusType, COUNT(*) OVER() AS total_count " +
-            "FROM allcures_schema.Appointment a "+
-            "JOIN Doctors_New d ON d.docid = a.DocID " +
-            "JOIN AppointmentStatusMaster asm ON asm.AppointmentStatusID=a.Status " +
+            "FROM allcures_schema.appointment a "+
+            "JOIN doctors_new d ON d.docid = a.DocID " +
+            "JOIN appointmentstatusmaster asm ON asm.AppointmentStatusID=a.Status " +
             "JOIN registration r ON r.registration_id = a.UserID " +
             "JOIN registration reg ON reg.DocID = a.DocID " +
             "JOIN ServiceContractDetails sc ON sc.UserID = reg.registration_id " +
@@ -120,7 +121,7 @@ public class StatsDao {
                           .stream()
                           .filter(Objects::nonNull)
                           .filter(s -> !s.isBlank())
-                          .toList());
+                          .collect(Collectors.toList()));
             m.put("doctorName", doctorFullName.isBlank() ? null : doctorFullName);
 
             String userFirst = (String) row[i++];
@@ -130,7 +131,7 @@ public class StatsDao {
                           .stream()
                           .filter(Objects::nonNull)
                           .filter(s -> !s.isBlank())
-                          .toList());
+                          .collect(Collectors.toList()));
             m.put("userName", userFullName.isBlank() ? null : userFullName);
             m.put("fee",             (BigDecimal) row[i++]);   // sc.Fee
             m.put("Status",     (String)     row[i++]);  
