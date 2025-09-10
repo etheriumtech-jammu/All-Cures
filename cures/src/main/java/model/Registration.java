@@ -54,6 +54,9 @@ public class Registration implements Serializable {
 	 @Column(name = "Age")
 	 private int Age;
 
+	@Column(name = "CountryCode")
+	 private String CountryCode;
+	 
 	@Transient
 	 private String value;
 	 
@@ -76,7 +79,7 @@ public class Registration implements Serializable {
 	}
 	public Registration(Integer registration_id, String first_name, String last_name, String email_address,
 			String pass_word, Integer registration_type, Boolean acceptance_condition, Boolean privacy_policy,
-			Integer account_state, Integer remember_me, Integer login_attempt, Date last_login_datatime, Long mobile_number, int DocID) {
+			Integer account_state, Integer remember_me, Integer login_attempt, Date last_login_datatime, Long mobile_number, int DocID, String CountryCode) {
 		super();
 		this.registration_id = registration_id;
 		this.first_name = first_name;
@@ -92,6 +95,7 @@ public class Registration implements Serializable {
 		this.last_login_datatime = last_login_datatime;
 		this.mobile_number = mobile_number;
 		this.docID = DocID;
+		this.CountryCode=CountryCode;
 	}
 	public Integer getRegistration_id() {
 		return registration_id;
@@ -179,7 +183,14 @@ public class Registration implements Serializable {
 	
 		this.docID = DocID;
 	}
-	
+	public String getCountryCode() {
+		return CountryCode;
+	}
+
+	public void setCountryCode(String countryCode) {
+		CountryCode = countryCode;
+	}
+	 
 	
 	
 
