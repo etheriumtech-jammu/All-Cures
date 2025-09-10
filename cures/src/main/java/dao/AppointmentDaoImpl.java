@@ -372,6 +372,7 @@ public class AppointmentDaoImpl {
 	    Map<LocalDate, Set<LocalTime>> unbookedSlots = new TreeMap<>();
 		  BigDecimal amount = null;
 		 String CountryCode=null;
+		String CurrencyCode=null;
 		 Long appointmentCount=null;
 	    try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 	        Transaction tx = session.beginTransaction();
@@ -382,11 +383,12 @@ public class AppointmentDaoImpl {
 	                + "    SELECT COUNT(*) "
 	                + "    FROM Appointment a "
 	                + "    WHERE a.UserID  = :userId "
-	                + "  ) AS appointment_count, reg.CountryCode "
+	                + "  ) AS appointment_count, reg.CountryCode,cc.currency_code "
 	                +
 	                "FROM allcures_schema.ServiceContractDetails sc " +
 	                "JOIN registration r ON r.registration_id = sc.UserID " +
 					 "JOIN registration reg ON reg.registration_id = :userId " +
+					"LEFT JOIN countries_currencies cc ON cc.country_code = reg.CountryCode " +
 	                "JOIN Doctors_New d ON d.docid = r.DocID " +
 	                "WHERE sc.ServiceID=2 AND d.DocID = :doctorId"
 	            );
@@ -402,6 +404,7 @@ public class AppointmentDaoImpl {
 	    	                amount = row[0] != null ? (BigDecimal) row[0] : BigDecimal.ZERO;
 	    	                 appointmentCount=row[2] != null ? (Long) row[2] : 0;
 							 CountryCode = row[3] != null ? (String) row[3] : "";
+							CurrencyCode = row[4] != null ? (String) row[4] : "";
 	                	}
 	            LocalDate today = LocalDate.now();
 	            LocalDate end = today.plusDays(30); // Next 30 days
@@ -446,8 +449,10 @@ public class AppointmentDaoImpl {
 	    datesMap.put("unbookedSlots", unbookedSlots);
 	    if (CountryCode == null || CountryCode.trim().isEmpty() || "IN".equalsIgnoreCase(CountryCode)) {
 	        datesMap.put("amount", amount.toString());
+	        datesMap.put("currency", "INR");
 	    } else {
 	        datesMap.put("amount", "0");
+	        datesMap.put("currency", CurrencyCode);
 	    }
 		 datesMap.put("isPaid", (appointmentCount < 2) ? false : true);
 	    return datesMap;
