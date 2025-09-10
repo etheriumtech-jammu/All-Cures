@@ -49,7 +49,7 @@ public class RegistrationDaoImpl_New {
 
 //	@Transactional
 	public static Registration saveRegistration(String f_name, String l_name, String pwd, String email, Boolean accept,
-	        Integer type, Boolean policy, Integer state, Integer rem, Long mobile,Integer Age) {
+	        Integer type, Boolean policy, Integer state, Integer rem, Long mobile,Integer Age, String CountryCode) {
 	    int docid=0;
 	    Registration reg = new Registration();
 	    Session session = null;
@@ -76,6 +76,7 @@ public class RegistrationDaoImpl_New {
 	        reg.setMobile_number(mobile);
 	        reg.setDocID(docid);
 	        reg.setAge(Age);
+			reg.setCountryCode(CountryCode);
 	        session.save(reg);
 	        session.getTransaction().commit();
 	       
@@ -98,6 +99,7 @@ public class RegistrationDaoImpl_New {
 		        reg.setRemember_me(rem);
 		        reg.setMobile_number(mobile);
 		        reg.setDocID(docid);
+				reg.setCountryCode(CountryCode);
 		        session.save(reg);
 		        session.getTransaction().commit();
 	    	
@@ -769,13 +771,14 @@ public class RegistrationDaoImpl_New {
 	             Boolean accPolicy = Constant.ON.equalsIgnoreCase(acceptPolicy);
 	             Integer state = 1;
 	             Integer age=(Integer)RegisterMap.get(Constant.Age)!= null ? (Integer)RegisterMap.get(Constant.Age) : 0;
+				  String countrycode = (String) RegisterMap.get(Constant.CountryCode);
 	              FCM=(String)RegisterMap.get("FCM")!= null ? (String)RegisterMap.get("FCM") : "";
 			deviceType=(String)RegisterMap.get("deviceType")!= null ? (String)RegisterMap.get("deviceType") : "";
 	             try { 
 	                 if (alreadyExists(email)) {
 	                     errMsg = "Email Address already exists in the system";
 	                 } else {
-	                     user = registerUser(firstname, lastname, password, email, accTerms, docOrPatient, accPolicy, state, rememberPassword, mobile,age);
+	                     user = registerUser(firstname, lastname, password, email, accTerms, docOrPatient, accPolicy, state, rememberPassword, mobile,age,countrycode);
 	                     if (user != null) {
 	                         handleSuccessfulRegistration(request, response, user, rememberPassword);
 	                     } else {
@@ -829,13 +832,13 @@ public class RegistrationDaoImpl_New {
 	            }
 	        }
 	        private static Registration registerUser(String fName, String lName, String pass, String email, Boolean acceptTerms, Integer docOrPat,
-	                Boolean acceptPolicy, Integer state, Integer remPwd, Long mobileNumber,Integer Age) {
+	                Boolean acceptPolicy, Integer state, Integer remPwd, Long mobileNumber,Integer Age,String CountryCode) {
 	            Registration user = null;
 	            try {
 	                EnDeCryptor encryptor = new EnDeCryptor();
 	                final String secretKey = Constant.SECRETE;
 	                String hashedPass = encryptor.encrypt(pass, secretKey);
-	                user = saveRegistration(fName, lName, hashedPass, email, acceptTerms, docOrPat, acceptPolicy, state, remPwd, mobileNumber,Age);
+	                user = saveRegistration(fName, lName, hashedPass, email, acceptTerms, docOrPat, acceptPolicy, state, remPwd, mobileNumber,Age, CountryCode);
 	            } catch (Exception e) {
 	                Constant.log("Error while trying to register user", 3);
 	                e.printStackTrace();
