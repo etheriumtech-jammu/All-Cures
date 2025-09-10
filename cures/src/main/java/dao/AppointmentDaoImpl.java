@@ -371,6 +371,7 @@ public class AppointmentDaoImpl {
 	    Map<LocalDate, Set<LocalTime>> availableDates = new TreeMap<>();
 	    Map<LocalDate, Set<LocalTime>> unbookedSlots = new TreeMap<>();
 		  BigDecimal amount = null;
+		 String CountryCode=null;
 		 Long appointmentCount=null;
 	    try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 	        Transaction tx = session.beginTransaction();
@@ -381,10 +382,11 @@ public class AppointmentDaoImpl {
 	                + "    SELECT COUNT(*) "
 	                + "    FROM Appointment a "
 	                + "    WHERE a.UserID  = :userId "
-	                + "  ) AS appointment_count "
+	                + "  ) AS appointment_count, reg.CountryCode "
 	                +
 	                "FROM allcures_schema.ServiceContractDetails sc " +
 	                "JOIN registration r ON r.registration_id = sc.UserID " +
+					 "JOIN registration reg ON reg.registration_id = :userId " +
 	                "JOIN Doctors_New d ON d.docid = r.DocID " +
 	                "WHERE sc.ServiceID=2 AND d.DocID = :doctorId"
 	            );
@@ -399,6 +401,7 @@ public class AppointmentDaoImpl {
 	    	                // Assuming the fee is the first column and doctor's name is the second column in the result set
 	    	                amount = row[0] != null ? (BigDecimal) row[0] : BigDecimal.ZERO;
 	    	                 appointmentCount=row[2] != null ? (Long) row[2] : 0;
+							 CountryCode = row[3] != null ? (String) row[3] : "";
 	                	}
 	            LocalDate today = LocalDate.now();
 	            LocalDate end = today.plusDays(30); // Next 30 days
@@ -441,7 +444,11 @@ public class AppointmentDaoImpl {
 	    datesMap.put("totalDates", availableDates);
 	    datesMap.put("completelyBookedDates", completelyBookedDates);
 	    datesMap.put("unbookedSlots", unbookedSlots);
-	    datesMap.put("amount", amount.toString());
+	    if (CountryCode == null || CountryCode.trim().isEmpty() || "IN".equalsIgnoreCase(CountryCode)) {
+	        datesMap.put("amount", amount.toString());
+	    } else {
+	        datesMap.put("amount", "0");
+	    }
 		 datesMap.put("isPaid", (appointmentCount < 2) ? false : true);
 	    return datesMap;
 	}
