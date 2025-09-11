@@ -11,7 +11,6 @@ public class Constant{
 	public static final String PIN = "pincode";
 	public static final String ROWNO = "rowno";
 	public static final String Age = "Age";
-	public static final String CountryCode = "CountryCode";
 	public static final String NULL ="null";
 	public static final String DOCID ="docid";
 	public static final String GENDER = "gender";
