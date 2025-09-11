@@ -412,17 +412,14 @@ public class AppointmentDaoImpl {
 	    	                 datesMap.put("isPaid", isPaid);              // or Boolean.toString(isPaid)
 
 	    	                 // If you also need amount depending on countryCode (from earlier rule):
-	    	                 if (CountryCode == null || CountryCode.trim().isEmpty()
+	    	                if (CountryCode == null || CountryCode.trim().isEmpty()
 	    	                         || "IN".equalsIgnoreCase(CountryCode)) {
 	    	                     datesMap.put("amount", amount.toString());
+	    	                     datesMap.put("currency_code", "INR");
 	    	                 } else {
 	    	                     datesMap.put("amount", "0");
+	    	                     datesMap.put("currency_code", CurrencyCode);
 	    	                 }
-
-	    	                 // Store extras as needed
-	    	                
-	    	                 datesMap.put("country_code", CountryCode);
-	    	                 datesMap.put("currency_code", CurrencyCode);
 	                	}
 	            LocalDate today = LocalDate.now();
 	            LocalDate end = today.plusDays(30); // Next 30 days
