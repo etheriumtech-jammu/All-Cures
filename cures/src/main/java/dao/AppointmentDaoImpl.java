@@ -373,7 +373,7 @@ public class AppointmentDaoImpl {
 		  BigDecimal amount = null;
 		 String CountryCode=null;
 		String CurrencyCode=null;
-		 Long appointmentCount=null;
+		 Long appointmentCount = 0L;
 	    try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 	        Transaction tx = session.beginTransaction();
 
@@ -402,9 +402,27 @@ public class AppointmentDaoImpl {
 			for (Object[] row : resultList) {
 	    	                // Assuming the fee is the first column and doctor's name is the second column in the result set
 	    	                amount = row[0] != null ? (BigDecimal) row[0] : BigDecimal.ZERO;
-	    	                 appointmentCount=row[2] != null ? (Long) row[2] : 0;
 							 CountryCode = row[3] != null ? (String) row[3] : "";
 							CurrencyCode = row[4] != null ? (String) row[4] : "";
+							 Number apptNum  = (Number) row[2];
+	    	                 long apptCountLong = (apptNum != null) ? apptNum.longValue() : 0L;
+	    	                 appointmentCount = apptCountLong;
+	    	                 // Your isPaid logic (avoid NPEs)
+	    	                 boolean isPaid = apptCountLong < 2;
+	    	                 datesMap.put("isPaid", isPaid);              // or Boolean.toString(isPaid)
+
+	    	                 // If you also need amount depending on countryCode (from earlier rule):
+	    	                 if (CountryCode == null || CountryCode.trim().isEmpty()
+	    	                         || "IN".equalsIgnoreCase(CountryCode)) {
+	    	                     datesMap.put("amount", amount.toString());
+	    	                 } else {
+	    	                     datesMap.put("amount", "0");
+	    	                 }
+
+	    	                 // Store extras as needed
+	    	                
+	    	                 datesMap.put("country_code", CountryCode);
+	    	                 datesMap.put("currency_code", CurrencyCode);
 	                	}
 	            LocalDate today = LocalDate.now();
 	            LocalDate end = today.plusDays(30); // Next 30 days
@@ -447,14 +465,7 @@ public class AppointmentDaoImpl {
 	    datesMap.put("totalDates", availableDates);
 	    datesMap.put("completelyBookedDates", completelyBookedDates);
 	    datesMap.put("unbookedSlots", unbookedSlots);
-	    if (CountryCode == null || CountryCode.trim().isEmpty() || "IN".equalsIgnoreCase(CountryCode)) {
-	        datesMap.put("amount", amount.toString());
-	        datesMap.put("currency", "INR");
-	    } else {
-	        datesMap.put("amount", "0");
-	        datesMap.put("currency", CurrencyCode);
-	    }
-		 datesMap.put("isPaid", (appointmentCount < 2) ? false : true);
+	   
 	    return datesMap;
 	}
 
