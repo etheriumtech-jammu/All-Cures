@@ -53,11 +53,11 @@ public class AppointmentDaoImpl {
         HashMap<String, Object> response = new HashMap<>();
         Session session = HibernateUtil.buildSessionFactory();
         String fullName="";
-        Query<Long> query = session.createQuery(
-                "SELECT COUNT(a) FROM Appointment a WHERE a.userID = :userID", Long.class);
-        query.setParameter("userID", (Integer) appointmentMap.get("userID"));
-        Long appointmentCount = query.uniqueResult();
-
+        // Query<Long> query = session.createQuery(
+        //         "SELECT COUNT(a) FROM Appointment a WHERE a.userID = :userID", Long.class);
+        // query.setParameter("userID", (Integer) appointmentMap.get("userID"));
+        // Long appointmentCount = query.uniqueResult();
+			Long appointmentCount = 0L;
         Query query1 = session.createNativeQuery(
                 "SELECT token_name FROM tip_token WHERE registration_id = :userID");
         query1.setParameter("userID", (Integer) appointmentMap.get("userID"));
@@ -91,6 +91,26 @@ public class AppointmentDaoImpl {
             System.out.println("No doctor found with the given docID.");
         }
         try {
+			 // Retrieve appointment count
+        Object[] row = (Object[]) session.createNativeQuery(
+        	    "SELECT " +
+        	    "   (SELECT COUNT(*) FROM Appointment a WHERE a.UserID = :userId) AS appointment_count, " +
+        	    "   cc.currency_name " +
+        	    "FROM registration r " +
+        	    "LEFT JOIN countries_currencies cc " +
+        	    "       ON UPPER(cc.country_code) = UPPER(r.country_code) " +
+        	    "WHERE r.registration_id = :userId")
+        	    .setParameter("userId", (Integer) appointmentMap.get("userID"))
+        	    .uniqueResult();
+
+        	if (row != null) {
+        		Number apptNum  = (Number) row[0];
+                long apptCountLong = (apptNum != null) ? apptNum.longValue() : 0L;
+                appointmentCount = apptCountLong;
+        	    String currencyName   = (String) row[1];
+
+        	    appointmentMap.put("currency", currencyName != null ? currencyName : "INR");
+        	}
 			 Integer userId = (Integer)(appointmentMap.get("userID"));
       		  Integer docId = (Integer)(appointmentMap.get("docID"));
        
