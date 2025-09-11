@@ -415,10 +415,10 @@ public class AppointmentDaoImpl {
 	    	                if (country_code == null || country_code.trim().isEmpty()
 	    	                         || "IN".equalsIgnoreCase(country_code)) {
 	    	                     datesMap.put("amount", amount.toString());
-	    	                     datesMap.put("currency_symbol", "₹");
+	    	                     datesMap.put("currency_symbol", "₹ ");
 	    	                 } else {
 	    	                     datesMap.put("amount", "0");
-	    	                     datesMap.put("currency_symbol", CurrencySymbol);
+	    	                     datesMap.put("currency_symbol", CurrencySymbol + " ");
 	    	                 }
 	                	}
 	            LocalDate today = LocalDate.now();
