@@ -371,7 +371,7 @@ public class AppointmentDaoImpl {
 	    Map<LocalDate, Set<LocalTime>> availableDates = new TreeMap<>();
 	    Map<LocalDate, Set<LocalTime>> unbookedSlots = new TreeMap<>();
 		  BigDecimal amount = null;
-		 String CountryCode=null;
+		 String country_code=null;
 		String CurrencyCode=null;
 		 Long appointmentCount = 0L;
 	    try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -383,12 +383,12 @@ public class AppointmentDaoImpl {
 	                + "    SELECT COUNT(*) "
 	                + "    FROM Appointment a "
 	                + "    WHERE a.UserID  = :userId "
-	                + "  ) AS appointment_count, reg.CountryCode,cc.currency_code "
+	                + "  ) AS appointment_count, reg.country_code,cc.currency_code "
 	                +
 	                "FROM allcures_schema.ServiceContractDetails sc " +
 	                "JOIN registration r ON r.registration_id = sc.UserID " +
 					 "JOIN registration reg ON reg.registration_id = :userId " +
-					"LEFT JOIN countries_currencies cc ON cc.country_code = reg.CountryCode " +
+					"LEFT JOIN countries_currencies cc ON cc.country_code = reg.country_code " +
 	                "JOIN Doctors_New d ON d.docid = r.DocID " +
 	                "WHERE sc.ServiceID=2 AND d.DocID = :doctorId"
 	            );
@@ -402,7 +402,7 @@ public class AppointmentDaoImpl {
 			for (Object[] row : resultList) {
 	    	                // Assuming the fee is the first column and doctor's name is the second column in the result set
 	    	                amount = row[0] != null ? (BigDecimal) row[0] : BigDecimal.ZERO;
-							 CountryCode = row[3] != null ? (String) row[3] : "";
+							 country_code = row[3] != null ? (String) row[3] : "";
 							CurrencyCode = row[4] != null ? (String) row[4] : "";
 							 Number apptNum  = (Number) row[2];
 	    	                 long apptCountLong = (apptNum != null) ? apptNum.longValue() : 0L;
@@ -411,9 +411,9 @@ public class AppointmentDaoImpl {
 	    	                 boolean isPaid = apptCountLong < 2;
 	    	                 datesMap.put("isPaid", isPaid);              // or Boolean.toString(isPaid)
 
-	    	                 // If you also need amount depending on countryCode (from earlier rule):
-	    	                if (CountryCode == null || CountryCode.trim().isEmpty()
-	    	                         || "IN".equalsIgnoreCase(CountryCode)) {
+	    	                 // If you also need amount depending on countryCode
+	    	                if (country_code == null || country_code.trim().isEmpty()
+	    	                         || "IN".equalsIgnoreCase(country_code)) {
 	    	                     datesMap.put("amount", amount.toString());
 	    	                     datesMap.put("currency_code", "INR");
 	    	                 } else {
