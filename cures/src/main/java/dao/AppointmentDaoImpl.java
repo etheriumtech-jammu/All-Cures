@@ -372,7 +372,7 @@ public class AppointmentDaoImpl {
 	    Map<LocalDate, Set<LocalTime>> unbookedSlots = new TreeMap<>();
 		  BigDecimal amount = null;
 		 String country_code=null;
-		String CurrencyCode=null;
+		String CurrencySymbol=null;
 		 Long appointmentCount = 0L;
 	    try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 	        Transaction tx = session.beginTransaction();
@@ -383,7 +383,7 @@ public class AppointmentDaoImpl {
 	                + "    SELECT COUNT(*) "
 	                + "    FROM Appointment a "
 	                + "    WHERE a.UserID  = :userId "
-	                + "  ) AS appointment_count, reg.country_code,cc.currency_code "
+	                + "  ) AS appointment_count, reg.country_code,cc.currency_symbol "
 	                +
 	                "FROM allcures_schema.ServiceContractDetails sc " +
 	                "JOIN registration r ON r.registration_id = sc.UserID " +
@@ -403,7 +403,7 @@ public class AppointmentDaoImpl {
 	    	                // Assuming the fee is the first column and doctor's name is the second column in the result set
 	    	                amount = row[0] != null ? (BigDecimal) row[0] : BigDecimal.ZERO;
 							 country_code = row[3] != null ? (String) row[3] : "";
-							CurrencyCode = row[4] != null ? (String) row[4] : "";
+							CurrencySymbol = row[4] != null ? (String) row[4] : "";
 							 Number apptNum  = (Number) row[2];
 	    	                 long apptCountLong = (apptNum != null) ? apptNum.longValue() : 0L;
 	    	                 appointmentCount = apptCountLong;
@@ -415,10 +415,10 @@ public class AppointmentDaoImpl {
 	    	                if (country_code == null || country_code.trim().isEmpty()
 	    	                         || "IN".equalsIgnoreCase(country_code)) {
 	    	                     datesMap.put("amount", amount.toString());
-	    	                     datesMap.put("currency_code", "INR");
+	    	                     datesMap.put("currency_symbol", "₹");
 	    	                 } else {
 	    	                     datesMap.put("amount", "0");
-	    	                     datesMap.put("currency_code", CurrencyCode);
+	    	                     datesMap.put("currency_symbol", CurrencySymbol);
 	    	                 }
 	                	}
 	            LocalDate today = LocalDate.now();
