@@ -20,7 +20,7 @@ public class EventMapper {
             e.setRoom(dto.payload.room);
             e.setSessionId(dto.payload.session_id);
             e.setMeetingId(dto.payload.meeting_id);
-
+            
             e.setJoinedAt(TimeUtil.epochDoubleToUtc(dto.payload.joined_at));
             e.setWillEjectAt(TimeUtil.epochDoubleToUtc(dto.payload.will_eject_at));
 
@@ -40,6 +40,27 @@ public class EventMapper {
             e.setDuration(dto.payload.duration);
         }
 
+        if (nonBlank(dto.payload.user_id)) {
+            e.setUserId(dto.payload.user_id);
+        }
+        
+        String displayName = firstNonBlank(
+                dto.payload.display_name,
+                e.getUserId() // fallback
+            );
+            e.setDisplayName(displayName);
+        
         return e;
+    }
+
+    private static boolean nonBlank(String s) {
+        return s != null && !s.isBlank();
+    }
+
+ 
+    // [ADDED] first non-blank string shortcut
+    private static String firstNonBlank(String... vals) {
+        for (String v : vals) if (nonBlank(v)) return v;
+        return null;
     }
 }
