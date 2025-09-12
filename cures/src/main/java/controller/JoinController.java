@@ -32,11 +32,11 @@ public class JoinController {
 
 	    if (docId != null) {
 	        participantId = docId;
-	        displayName   = docId;     // doctor’s visible name = docId
+	        displayName   = "Doctor";     // doctor’s visible name = docId
 	        isOwner = true;            // doctors join as owners
 	    } else {
 	        participantId = userId;
-	        displayName   = userId;    // user’s visible name = userId
+	        displayName   = "User";    // user’s visible name = userId
 	    }
 
 	    // Mint token JIT with display name
