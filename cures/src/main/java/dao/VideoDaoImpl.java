@@ -589,11 +589,11 @@ public class VideoDaoImpl {
 
 			    return failureList;
 			}
-public static Integer sendEmail(int docID, int userID, String meeting, String date, String time) throws IOException {
+public static Integer sendEmail(int docID, int userID, String roomName, String date, String time) throws IOException {
 	     Session session = HibernateUtil.buildSessionFactory();
 	    try {
 	    	
-	        String meeting_url = meeting.replaceFirst("https://", "");
+	        
 	        String docFullName = "";
 	        String docEmail = "";
 	        String userFullName = "";
@@ -640,7 +640,9 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
 	        if (docEmail != null) {
 	            // Construct doctor email
 	            String encDocEmail = new UserController().getEmailEncrypted(docEmail);
-	            String docLink = "https://all-cures.com/notification/" + meeting_url;
+	           String docLink = "https://all-cures.com/notification/join?room=" 
+	                    + roomName 
+	                    + "&docId=" + docID;
 
 	            EmailDTO docEmailDTO = new EmailDTO();
 	            docEmailDTO.setTo(docEmail);
@@ -663,7 +665,8 @@ public static Integer sendEmail(int docID, int userID, String meeting, String da
 	        if (userEmail != null) {
 	            // Construct user email
 	            String encUserEmail = new UserController().getEmailEncrypted(userEmail);
-	            String userLink = "https://all-cures.com/notification/" + meeting_url;
+	             String userLink = "https://all-cures.com/notification/join?room=" + roomName  + "&userId=" + userID;;
+	            
 
 	            EmailDTO userEmailDTO = new EmailDTO();
 	            userEmailDTO.setTo(userEmail);
