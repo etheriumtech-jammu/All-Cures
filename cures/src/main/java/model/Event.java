@@ -25,6 +25,12 @@ public class Event {
     @Column(name = "meeting_id", length = 64)
     private String meetingId;
 
+     @Column(name = "user_id", length = 64)
+    private String userId;   
+    
+    @Column(name = "display_name", length = 64)
+    private String displayName;   // <-- added: helps track who generated the event
+
     @Column(name = "joined_at", columnDefinition = "datetime(3)")
     private LocalDateTime joinedAt;
 
@@ -81,4 +87,17 @@ public class Event {
 
     public Double getDuration() { return duration; }
     public void setDuration(Double duration) { this.duration = duration; }
+
+    public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getDisplayName() {
+		return displayName;
+	}
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
 }
