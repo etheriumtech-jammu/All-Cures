@@ -640,7 +640,7 @@ public static Integer sendEmail(int docID, int userID, String roomName, String d
 	        if (docEmail != null) {
 	            // Construct doctor email
 	            String encDocEmail = new UserController().getEmailEncrypted(docEmail);
-	           String docLink = "https://all-cures.com/notification/join?room=" 
+	           String docLink = "https://all-cures.com:444/cures/notification/join?room=" 
 	                    + roomName 
 	                    + "&docId=" + docID;
 
@@ -665,7 +665,7 @@ public static Integer sendEmail(int docID, int userID, String roomName, String d
 	        if (userEmail != null) {
 	            // Construct user email
 	            String encUserEmail = new UserController().getEmailEncrypted(userEmail);
-	             String userLink = "https://all-cures.com/notification/join?room=" + roomName  + "&userId=" + userID;;
+	             String userLink = "https://all-cures.com:444/cures/notification/join?room=" + roomName  + "&userId=" + userID;;
 	            
 
 	            EmailDTO userEmailDTO = new EmailDTO();
