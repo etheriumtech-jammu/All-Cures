@@ -640,7 +640,7 @@ public class VideoDaoImpl {
 	        if (docEmail != null) {
 	            // Construct doctor email
 	            String encDocEmail = new UserController().getEmailEncrypted(docEmail);
-	            String docLink = "https://uat.all-cures.com/notification/" + meeting_url;
+	            String docLink = "https://all-cures.com/notification/" + meeting_url;
 
 	            EmailDTO docEmailDTO = new EmailDTO();
 	            docEmailDTO.setTo(docEmail);
@@ -663,7 +663,7 @@ public class VideoDaoImpl {
 	        if (userEmail != null) {
 	            // Construct user email
 	            String encUserEmail = new UserController().getEmailEncrypted(userEmail);
-	            String userLink = "https://uat.all-cures.com/notification/" + meeting_url;
+	            String userLink = "https://all-cures.com/notification/" + meeting_url;
 
 	            EmailDTO userEmailDTO = new EmailDTO();
 	            userEmailDTO.setTo(userEmail);
