@@ -16,7 +16,7 @@ public class WebhookEvent {
         public String meeting_id;      // on meeting.started
         public Double start_ts;        // on meeting.started
          public String user_id;
-        public String display_name;
+        public String user_name;
     }
 
     public static class Permissions {
