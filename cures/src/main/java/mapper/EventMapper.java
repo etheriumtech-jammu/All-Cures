@@ -44,11 +44,12 @@ public class EventMapper {
             e.setUserId(dto.payload.user_id);
         }
         
-        String displayName = firstNonBlank(
-                dto.payload.display_name,
+      String userName = firstNonBlank(
+                dto.payload.user_name,
                 e.getUserId() // fallback
             );
-            e.setDisplayName(displayName);
+            e.setDisplayName(userName);
+        
         
         return e;
     }
