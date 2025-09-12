@@ -150,13 +150,13 @@ public class DailyCoService {
   }
 
   // ------------------ Persistence ------------------
-
-  private void persistAppointmentChanges(HttpServletRequest request,
+private void persistAppointmentChanges(HttpServletRequest request,
                                          Appointment directAppointment,
                                          String roomUrl) {
-    // Open a Hibernate Session correctly
-    SessionFactory sf = HibernateUtil.getSessionFactory(); // expected to return a SessionFactory
-    try (Session session = sf.openSession()) {
+	 
+	   Session session = null;
+	    session=HibernateUtil.buildSessionFactory(); 
+    try {
       Transaction tx = session.beginTransaction();
       try {
         if (request != null) {
@@ -195,7 +195,9 @@ public class DailyCoService {
         if (tx != null) tx.rollback();
         throw e;
       }
-    }
+    } catch (Exception e) {
+        throw e;
+      }
   }
 
   // ------------------ Utilities ------------------
