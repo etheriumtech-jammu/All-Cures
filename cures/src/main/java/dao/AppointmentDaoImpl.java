@@ -323,42 +323,71 @@ public class AppointmentDaoImpl {
 	return AppointmentList;
 	}
 	//To get Total , unbooked slots and Completely Booked Dates of a particular doctor
-	//To get Total , unbooked slots and Completely Booked Dates of a particular doctor
-	public static Map<String, Object> findCompletelyBookedAndAvailableDates(int doctorId) {
+	public static Map<String, Object> findCompletelyBookedAndAvailableDates(int doctorId, int userId) {
 	    Map<String, Object> datesMap = new HashMap<>();
 	    List<LocalDate> completelyBookedDates = new ArrayList<>();
 	    Map<LocalDate, Set<LocalTime>> availableDates = new TreeMap<>();
 	    Map<LocalDate, Set<LocalTime>> unbookedSlots = new TreeMap<>();
 		  BigDecimal amount = null;
+		 String country_code=null;
+		String CurrencySymbol=null;
+		 Long appointmentCount = 0L;
 	    try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 	        Transaction tx = session.beginTransaction();
 
 	        // Check if the doctor exists
-	     Query query = session.createNativeQuery(
-	                "SELECT sc.Fee,d.docname_first " +
+	    Query query = session.createNativeQuery(
+	                "SELECT sc.Fee,d.docname_first,  (\n"
+	                + "    SELECT COUNT(*) "
+	                + "    FROM Appointment a "
+	                + "    WHERE a.UserID  = :userId "
+	                + "  ) AS appointment_count, reg.country_code,cc.currency_symbol "
+	                +
 	                "FROM allcures_schema.ServiceContractDetails sc " +
 	                "JOIN registration r ON r.registration_id = sc.UserID " +
+					 "JOIN registration reg ON reg.registration_id = :userId " +
+					"LEFT JOIN countries_currencies cc ON cc.country_code = reg.country_code " +
 	                "JOIN Doctors_New d ON d.docid = r.DocID " +
-	                "WHERE d.DocID = :doctorId"
+	                "WHERE sc.ServiceID=2 AND d.DocID = :doctorId"
 	            );
 	        query.setParameter("doctorId", doctorId);
+	        query.setParameter("userId", userId);
 	        List<Object[]> resultList = query.getResultList();
 
 	        if (!resultList.isEmpty()) {
 	            // Doctor found
+				
 			for (Object[] row : resultList) {
 	    	                // Assuming the fee is the first column and doctor's name is the second column in the result set
-	    	                 amount = (BigDecimal) row[0];
+	    	                amount = row[0] != null ? (BigDecimal) row[0] : BigDecimal.ZERO;
+							 country_code = row[3] != null ? (String) row[3] : "";
+							CurrencySymbol = row[4] != null ? (String) row[4] : "";
+							 Number apptNum  = (Number) row[2];
+	    	                 long apptCountLong = (apptNum != null) ? apptNum.longValue() : 0L;
+	    	                 appointmentCount = apptCountLong;
+	    	                 // Your isPaid logic (avoid NPEs)
+	    	                 boolean isPaid = apptCountLong < 2;
+	    	                 datesMap.put("isPaid", isPaid);              // or Boolean.toString(isPaid)
+
+	    	                 // If you also need amount depending on countryCode
+	    	                if (country_code == null || country_code.trim().isEmpty()
+	    	                         || "IN".equalsIgnoreCase(country_code)) {
+	    	                     datesMap.put("amount", amount.toString());
+	    	                     datesMap.put("currency_symbol", "₹ ");
+	    	                 } else {
+	    	                     datesMap.put("amount", "0");
+	    	                     datesMap.put("currency_symbol", CurrencySymbol + " ");
+	    	                 }
 	                	}
 	            LocalDate today = LocalDate.now();
 	            LocalDate end = today.plusDays(30); // Next 30 days
 
 	            for (LocalDate date = today; !date.isAfter(end); date = date.plusDays(1)) {
 	                DayOfWeek dayOfWeek = date.getDayOfWeek();
-
+					 
 	                if (isDoctorAvailableOnDay(session, doctorId, dayOfWeek)) {
 	                    TreeSet<LocalTime> bookedSlotsTime = getAppointmentsStartTimesForDate(doctorId, date);
-				
+						
 	                    TreeSet<LocalTime> slotStartTimes = calculateTotalSlots(doctorId);
 				
 				  if (date.equals(today)) {
@@ -371,8 +400,8 @@ public class AppointmentDaoImpl {
 	                    TreeSet<LocalTime> unbookedSlotsTime = new TreeSet<>(slotStartTimes);
 	                    unbookedSlotsTime.removeAll(bookedSlotsTime);
 	                    unbookedSlots.put(date, unbookedSlotsTime);
-	//		    System.out.println("slotStartTimes.size()"+slotStartTimes.size());
-	//		    System.out.println("bookedSlotsTime.size()"+bookedSlotsTime.size());
+			//		    System.out.println("slotStartTimes.size()"+slotStartTimes.size());
+			//		    System.out.println("bookedSlotsTime.size()"+bookedSlotsTime.size());
 	                    if (bookedSlotsTime.size() >= slotStartTimes.size()) {
 	                        completelyBookedDates.add(date);
 	                    }
@@ -391,7 +420,7 @@ public class AppointmentDaoImpl {
 	    datesMap.put("totalDates", availableDates);
 	    datesMap.put("completelyBookedDates", completelyBookedDates);
 	    datesMap.put("unbookedSlots", unbookedSlots);
-	    datesMap.put("amount", amount.toString());
+	   
 	    return datesMap;
 	}
 
