@@ -84,6 +84,7 @@
 	    	<mapping class="model.ConsultCount"/>
 	     <mapping class="model.RotationTracker"/>
 	    <mapping class="model.DoctorVideos"/>
+		 <mapping class="model.Event"/>
    <!--   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password">root</property>
