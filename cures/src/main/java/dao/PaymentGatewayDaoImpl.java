@@ -48,6 +48,7 @@ public class PaymentGatewayDaoImpl {
 		String ccaRequest = "ccaRequesttid=" + ccaRequestTid + "&merchant_id=" + merchantId + "&order_id=" + orderId
 				+ "&currency=" + currency + "&amount=" + amount + "&redirect_url=" + redirectUrl + "&cancel_url="
 				+ cancelUrl + "&language=EN";
+		System.out.println(ccaRequest);
 		AesCryptUtil aesUtil = new AesCryptUtil(workingKey);
 		String encRequest = aesUtil.encrypt(ccaRequest);
 //		System.out.println(encRequest);
