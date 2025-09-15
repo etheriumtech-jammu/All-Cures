@@ -49,7 +49,7 @@ public class RegistrationDaoImpl_New {
 
 //	@Transactional
 	public static Registration saveRegistration(String f_name, String l_name, String pwd, String email, Boolean accept,
-	        Integer type, Boolean policy, Integer state, Integer rem, Long mobile,Integer Age, String CountryCode) {
+	        Integer type, Boolean policy, Integer state, Integer rem, Long mobile,Integer Age, String country_code) {
 	    int docid=0;
 	    Registration reg = new Registration();
 	    Session session = null;
