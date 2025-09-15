@@ -1,3 +1,4 @@
+
 package controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,23 +28,23 @@ public class JoinController {
 
 	    // Decide who’s joining
 	    String participantId;
-	    String displayName;
+	    String userName;
 	    boolean isOwner = false;
 
 	    if (docId != null) {
 	        participantId = docId;
-	        displayName   = docId;     // doctor’s visible name = docId
+	        userName   = "Doctor";     // doctor’s visible name = docId
 	        isOwner = true;            // doctors join as owners
 	    } else {
 	        participantId = userId;
-	        displayName   = userId;    // user’s visible name = userId
+	        userName   = "User";    // user’s visible name = userId
 	    }
 
 	    // Mint token JIT with display name
 	    String token = dailyCoService.createMeetingToken(
 	        roomName,
 	        participantId,   // user_id claim
-	        displayName,     // user_name claim (visible in call)
+	        userName,     // user_name claim (visible in call)
 	        isOwner,
 	        600              // TTL in seconds
 	    );
