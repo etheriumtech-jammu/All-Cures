@@ -589,9 +589,11 @@ public class VideoDaoImpl {
 
 			    return failureList;
 			}
-	public static Integer sendEmail(int docID, int userID, String meeting, String date, String time) throws IOException {
-	        Session session = HibernateUtil.buildSessionFactory();
-	        String meeting_url = meeting.replaceFirst("https://", "");
+	public static Integer sendEmail(int docID, int userID, String roomName, String date, String time) throws IOException {
+	     Session session = HibernateUtil.buildSessionFactory();
+	    try {
+	    	
+	        
 	        String docFullName = "";
 	        String docEmail = "";
 	        String userFullName = "";
@@ -599,8 +601,6 @@ public class VideoDaoImpl {
 	        String template_name="";
 	        String userReturnEmail="";
 	        String docReturnEmail="";
-	      
-	       
 	        // Fetch doctor details
 	        Query docQuery = session.createNativeQuery(
 	            "SELECT prefix, docname_first, docname_middle, docname_last, email FROM Doctors_New WHERE DocID = " + docID + ";");
@@ -640,12 +640,14 @@ public class VideoDaoImpl {
 	        if (docEmail != null) {
 	            // Construct doctor email
 	            String encDocEmail = new UserController().getEmailEncrypted(docEmail);
-	            String docLink = "https://all-cures.com/notification/" + meeting_url;
+	           String docLink = "https://all-cures.com:444/cures/notification/join?room=" 
+	                    + roomName 
+	                    + "&docId=" + docID;
 
 	            EmailDTO docEmailDTO = new EmailDTO();
 	            docEmailDTO.setTo(docEmail);
 	            docEmailDTO.setSubject("Video Consultation Appointment Confirmation");
-		    docEmailDTO.setFrom("All-Cures INFO <info@all-cures.com>");
+
 	            Map<String, Object> docTemplateData = new HashMap<>();
 	            docTemplateData.put("templatefile", "email/video.ftlh");
 	            docTemplateData.put("videoChatLink", docLink);
@@ -663,12 +665,13 @@ public class VideoDaoImpl {
 	        if (userEmail != null) {
 	            // Construct user email
 	            String encUserEmail = new UserController().getEmailEncrypted(userEmail);
-	            String userLink = "https://all-cures.com/notification/" + meeting_url;
+	             String userLink = "https://all-cures.com:444/cures/notification/join?room=" + roomName  + "&userId=" + userID;;
+	            
 
 	            EmailDTO userEmailDTO = new EmailDTO();
 	            userEmailDTO.setTo(userEmail);
 	            userEmailDTO.setSubject("Video Consultation Appointment Confirmation");
-		    userEmailDTO.setFrom("All-Cures INFO <info@all-cures.com>");
+
 	            Map<String, Object> userTemplateData = new HashMap<>();
 	            userTemplateData.put("templatefile", "email/video_user.ftlh");
 	            userTemplateData.put("videoChatLink", userLink);
@@ -689,8 +692,11 @@ public class VideoDaoImpl {
 	            System.out.println("Email Address(es) Not Found");
 	            return 0;
 	        }
-	    }
-
+	    }catch (Exception e) {
+        e.printStackTrace(); // Log the exception or handle it appropriately
+        return 0; // Return 0 if email sending fails
+    }
+}
 	 public static HashMap<String, Object> getDoctors(Integer offset, Integer medTypeID) {
 	        Session session = HibernateUtil.buildSessionFactory();
 	        	
