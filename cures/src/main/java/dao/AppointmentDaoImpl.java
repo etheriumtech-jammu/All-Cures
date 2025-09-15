@@ -49,15 +49,37 @@ public class AppointmentDaoImpl {
     Transaction tx = null;
     HashMap<String, String> res = new HashMap<>();
 	LocalTime startTime = null;
+	Long appointmentCount = 0L;
     try {
         session = HibernateUtil.buildSessionFactory();
         tx = session.beginTransaction();
 
-        // Retrieve appointment count
-        Query<Long> query = session.createQuery(
-            "SELECT COUNT(a) FROM Appointment a WHERE a.userID = :userID", Long.class);
-        query.setParameter("userID", (Integer) appointmentMap.get("userID"));
-        Long appointmentCount = query.uniqueResult();
+   //      Retrieve appointment count
+			 // Retrieve appointment count
+        Object[] row = (Object[]) session.createNativeQuery(
+        	    "SELECT " +
+        	    "   (SELECT COUNT(*) FROM Appointment a WHERE a.UserID = :userId) AS appointment_count, " +
+        	    "   cc.currency_name " +
+        	    "FROM registration r " +
+        	    "LEFT JOIN allcures_schema.countries_currencies cc " +
+        	    "       ON UPPER(cc.country_code) = UPPER(r.country_code) " +
+        	    "WHERE r.registration_id = :userId")
+        	    .setParameter("userId", (Integer) appointmentMap.get("userID"))
+        	    .uniqueResult();
+			if (row != null) {
+        		Number apptNum  = (Number) row[0];
+                long apptCountLong = (apptNum != null) ? apptNum.longValue() : 0L;
+                appointmentCount = apptCountLong;
+        	    String currencyName   = (String) row[1];
+
+        	    appointmentMap.put("currency", currencyName != null ? currencyName : "INR");
+        	}
+
+        // Query<Long> query = session.createQuery(
+        //     "SELECT COUNT(a) FROM Appointment a WHERE a.userID = :userID", Long.class);
+        // query.setParameter("userID", (Integer) appointmentMap.get("userID"));
+        // Long appointmentCount = query.uniqueResult();
+		
         // Create new appointment
 		 Integer userId = (Integer)(appointmentMap.get("userID"));
       	Integer docId = (Integer)(appointmentMap.get("docID"));
@@ -95,25 +117,20 @@ public class AppointmentDaoImpl {
         session.save(appointment);
         tx.commit();
 
-        // Initiate payment process
-        res = PaymentGatewayDaoImpl.setPayment(appointmentMap, appointment.getAppointmentID());
-		 // Count the number of appointments scheduled by the user
-                if (appointmentCount < 2 && startTime != null) {
+         // ==== Free vs Paid logic ====
+        if (appointmentCount < 2) {
+            // FREE: create meeting & send email; DO NOT take payment
             String meeting = null;
             try {
-                // Non-payment path: request = null, pass persisted appointment
-				
-            	DailyCoService svc = new DailyCoService(new org.springframework.web.client.RestTemplate());
-                meeting = svc.createMeeting(null, appointment); 
-                
+                DailyCoService svc = new DailyCoService(new org.springframework.web.client.RestTemplate());
+                meeting = svc.createMeeting(null, appointment);
             } catch (Exception ex) {
-                // Don’t fail the whole flow if meeting creation fails
                 ex.printStackTrace();
                 res.put("MeetingError", "Failed to create meeting link: " + ex.getMessage());
             }
 
             if (meeting != null && !meeting.isEmpty()) {
-                // Format time to 12-hour with AM/PM (English)
+                // Format time to 12-hour with AM/PM
                 SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm");
                 SimpleDateFormat outputFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
                 java.util.Date time = inputFormat.parse(startTime.toString());
@@ -126,9 +143,15 @@ public class AppointmentDaoImpl {
                     res.put("EmailError", "Failed to send email: " + mailEx.getMessage());
                 }
             }
+
+            // Indicate free path
+            res.put("Count", "0"); // 0 => free (under 2)
+        } else {
+            // PAID: initiate payment
+            HashMap<String, String> payRes = PaymentGatewayDaoImpl.setPayment(appointmentMap, appointment.getAppointmentID());
+            if (payRes != null) res.putAll(payRes);
+            res.put("Count", "1"); // 1 => paid (2 or more)
         }
-        // Set appointment count response
-        res.put("Count", (appointmentCount < 2) ? "0" : "1");
         return res;
     } catch (Exception e) {
        if (tx != null && tx.getStatus().canRollback()) {
