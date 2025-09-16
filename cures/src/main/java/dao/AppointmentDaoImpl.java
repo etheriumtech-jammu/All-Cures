@@ -53,6 +53,7 @@ public class AppointmentDaoImpl {
         HashMap<String, Object> response = new HashMap<>();
         Session session = HibernateUtil.buildSessionFactory();
         String fullName="";
+		String currencyName="";
         // Query<Long> query = session.createQuery(
         //         "SELECT COUNT(a) FROM Appointment a WHERE a.userID = :userID", Long.class);
         // query.setParameter("userID", (Integer) appointmentMap.get("userID"));
@@ -107,7 +108,7 @@ public class AppointmentDaoImpl {
         		Number apptNum  = (Number) row[0];
                 long apptCountLong = (apptNum != null) ? apptNum.longValue() : 0L;
                 appointmentCount = apptCountLong;
-        	    String currencyName   = (String) row[1];
+        	     currencyName   = (String) row[1];
 
         	    appointmentMap.put("currency", currencyName != null ? currencyName : "INR");
         	}
