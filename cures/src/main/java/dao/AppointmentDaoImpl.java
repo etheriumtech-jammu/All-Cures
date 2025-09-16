@@ -50,6 +50,7 @@ public class AppointmentDaoImpl {
     HashMap<String, String> res = new HashMap<>();
 	LocalTime startTime = null;
 	Long appointmentCount = 0L;
+	String currencyName="";
     try {
         session = HibernateUtil.buildSessionFactory();
         tx = session.beginTransaction();
@@ -70,7 +71,7 @@ public class AppointmentDaoImpl {
         		Number apptNum  = (Number) row[0];
                 long apptCountLong = (apptNum != null) ? apptNum.longValue() : 0L;
                 appointmentCount = apptCountLong;
-        	    String currencyName   = (String) row[1];
+        	    currencyName   = (String) row[1];
 
         	    appointmentMap.put("currency", currencyName != null ? currencyName : "INR");
         	}
@@ -118,7 +119,7 @@ public class AppointmentDaoImpl {
         tx.commit();
 
          // ==== Free vs Paid logic ====
-        if (appointmentCount < 2) {
+        if (appointmentCount < 2 || (!"INR".equalsIgnoreCase(currencyName ))) {
             // FREE: create meeting & send email; DO NOT take payment
             String meeting = null;
             try {
