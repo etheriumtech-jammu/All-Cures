@@ -122,6 +122,7 @@ public class PaymentGatewayDaoImpl {
 	    		String orderId = hs.get("order_id"); // Get the order_id from the parameters
 			
 		   String transDateStr = hs.get("trans_date");
+			String orderStatus  = hs.get("order_status");
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date transDate = dateFormat.parse(transDateStr);
 		Double amount=Double.parseDouble(hs.get("amount"));
@@ -146,9 +147,15 @@ public class PaymentGatewayDaoImpl {
 	*/		
 			query.executeUpdate();
 			tx.commit();
-			Integer docid= sendEmail(orderId,meeting);
-			 updateWalletAmount(amount,docid);
-			return "Success";
+			 // 2) Only if order_status is Success, perform success actions
+	        if ("Success".equalsIgnoreCase(orderStatus)) {
+	            Integer docid = sendEmail(orderId, meeting);
+	            updateWalletAmount(amount, docid);
+	            return "Success";
+	        } else {
+	            // No email / wallet updates for non-success statuses
+	            return "Payment not successful";
+	        }
 		} catch (Exception e) {
 			e.printStackTrace(); // Log the exception or handle it appropriately
 			return "Error";
