@@ -429,16 +429,19 @@ public class AppointmentDaoImpl {
 	    	                 appointmentCount = apptCountLong;
 	    	                 // Your isPaid logic (avoid NPEs)
 	    	                 boolean isPaid = apptCountLong < 2;
-	    	                 datesMap.put("isPaid", isPaid);              // or Boolean.toString(isPaid)
-
+	    	               
 	    	                 // If you also need amount depending on countryCode
 	    	                if (country_code == null || country_code.trim().isEmpty()
 	    	                         || "IN".equalsIgnoreCase(country_code)) {
 	    	                     datesMap.put("amount", amount.toString());
 	    	                     datesMap.put("currency_symbol", "₹ ");
+								  datesMap.put("isPaid", isPaid);              // or Boolean.toString(isPaid)
+
 	    	                 } else {
 	    	                     datesMap.put("amount", "0");
 	    	                     datesMap.put("currency_symbol", CurrencySymbol + " ");
+								  datesMap.put("isPaid", false);              // or Boolean.toString(isPaid)
+
 	    	                 }
 	                	}
 	            LocalDate today = LocalDate.now();
