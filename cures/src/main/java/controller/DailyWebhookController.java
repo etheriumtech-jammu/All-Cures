@@ -22,7 +22,7 @@ private static final Logger log = LoggerFactory.getLogger(DailyWebhookController
 @PostMapping(value = "/daily-webhook", consumes = MediaType.APPLICATION_JSON_VALUE)
 @ResponseStatus(HttpStatus.OK)
 public void receive(@RequestBody WebhookEvent event,
-                    @RequestHeader(value = "X-Webhook-Signature", required = false) String sig,
+                    @RequestHeader(value = "X-Daily-Signature", required = false) String sig,
                     @RequestHeader(value = "X-Webhook-Timestamp", required = false) String ts) {
 
     log.info("Received webhook: type={}, ts={}, signature={}", event.type, event.event_ts, sig);
