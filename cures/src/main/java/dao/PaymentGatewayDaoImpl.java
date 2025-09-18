@@ -217,9 +217,9 @@ public class PaymentGatewayDaoImpl {
 	        double wallet3Amount = amount * 0.70; // Doctor
 
 	        // 1) Insert ledger rows (status=SUCCESS)
-	        insertLeg(session, paymentGatewayTransactionId, 2, null, docId, wallet2Amount, "CREDIT", "SUCCESS", "20% platform");
-	        insertLeg(session, paymentGatewayTransactionId, 1, null, docId, wallet1Amount, "CREDIT", "SUCCESS", "10% GST");
-	        insertLeg(session, paymentGatewayTransactionId, 3, docId, docId, wallet3Amount, "CREDIT", "SUCCESS", "70% doctor");
+	         insertLeg(session, paymentGatewayTransactionId, 2, null, wallet2Amount, "CREDIT", "SUCCESS", "20% platform");
+	        insertLeg(session, paymentGatewayTransactionId, 1, null, wallet1Amount, "CREDIT", "SUCCESS", "10% GST");
+	        insertLeg(session, paymentGatewayTransactionId, 3, docId,wallet3Amount, "CREDIT", "SUCCESS", "70% doctor");
 
 	        // 2) Update balances
 	        bumpWallet(session, 2, wallet2Amount, null);
@@ -240,7 +240,6 @@ public class PaymentGatewayDaoImpl {
 	private static void insertLeg(Session s,
 	                              int pgId,
 	                              int walletMasterTypeId,
-	                              Integer ownerId,
 	                              Integer docId,
 	                              double amount,
 	                              String direction,   // "CREDIT" or "DEBIT"
@@ -249,13 +248,12 @@ public class PaymentGatewayDaoImpl {
 	    try {
 	        Query q = s.createNativeQuery(
 	            "INSERT INTO WalletTransaction " +
-	            "(payment_gateway_transaction_id, wallet_master_type_id, owner_id, doc_id, " +
+	            "(payment_gateway_transaction_id, wallet_master_type_id, doc_id, " +
 	            " amount, direction, status, description, created_at, updated_at) " +
 	            "VALUES (:pg, :wm, :own, :doc, :amt, :dir, :st, :desc, NOW(), NOW())"
 	        );
 	        q.setParameter("pg", pgId);
 	        q.setParameter("wm", walletMasterTypeId);
-	        q.setParameter("own", ownerId);
 	        q.setParameter("doc", docId);
 	        q.setParameter("amt", amount);
 	        q.setParameter("dir", direction);
@@ -266,7 +264,6 @@ public class PaymentGatewayDaoImpl {
 	        System.err.println(
 	            "insertLeg failed: pgId=" + pgId +
 	            ", wmTypeId=" + walletMasterTypeId +
-	            ", ownerId=" + ownerId +
 	            ", docId=" + docId +
 	            ", amount=" + amount +
 	            ", direction=" + direction +
@@ -276,7 +273,6 @@ public class PaymentGatewayDaoImpl {
 	        throw e; // propagate so outer tx rolls back
 	    }
 	}
-
 	// === Helper: bump WalletHistory balance, with logging + rethrow ===
 	private static void bumpWallet(Session s, int walletMasterId, double amount, Integer ownerId) {
 	    try {
