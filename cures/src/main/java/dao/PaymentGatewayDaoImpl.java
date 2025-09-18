@@ -253,7 +253,7 @@ public class PaymentGatewayDaoImpl {
 	            "INSERT INTO WalletTransaction " +
 	            "(payment_gateway_transaction_id, wallet_master_type_id, doc_id, " +
 	            " amount, direction, status, description, created_at, updated_at) " +
-	            "VALUES (:pg, :wm, :own, :doc, :amt, :dir, :st, :desc, NOW(), NOW())"
+	            "VALUES (:pg, :wm, :doc, :amt, :dir, :st, :desc, NOW(), NOW())"
 	        );
 	        q.setParameter("pg", pgId);
 	        q.setParameter("wm", walletMasterTypeId);
