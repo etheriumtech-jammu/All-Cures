@@ -25,12 +25,14 @@ import util.AesCryptUtil;
 import util.Constant;
 import util.HibernateUtil;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PaymentGatewayDaoImpl {
 
 	// Synchronization lock object
 	private static final Object paymentLock = new Object();
-
+	private static final Logger LOG = LoggerFactory.getLogger("wallet");
 	public static HashMap<String, String> setPayment(HashMap<String, Object> appointmentMap, int appointmentID) {
 		HashMap<String, String> resultMap = new HashMap<>();
 		UUID uuid = UUID.randomUUID();
@@ -230,8 +232,9 @@ public class PaymentGatewayDaoImpl {
 	        System.out.println("Wallet + ledger updated successfully for pgId=" + paymentGatewayTransactionId);
 	    } catch (Exception e) {
 	        if (tx != null) tx.rollback();   // keep atomicity
-	        System.err.println("updateWalletAmount failed for pgId=" + paymentGatewayTransactionId
-	                + ", docId=" + docId + ", amount=" + amount);
+	       LOG.error("updateWalletAmount failed for pgId={}, docId={}, amount={}",
+	                  paymentGatewayTransactionId, docId, amount, e);
+	       
 	        e.printStackTrace();
 	    } 
 	}
@@ -261,14 +264,9 @@ public class PaymentGatewayDaoImpl {
 	        q.setParameter("desc", description);
 	        q.executeUpdate();
 	    } catch (Exception e) {
-	        System.err.println(
-	            "insertLeg failed: pgId=" + pgId +
-	            ", wmTypeId=" + walletMasterTypeId +
-	            ", docId=" + docId +
-	            ", amount=" + amount +
-	            ", direction=" + direction +
-	            ", status=" + status
-	        );
+	        LOG.error("insertLeg failed pgId={}, wmTypeId={}, docId={}, amount={}, direction={}, status={}",
+	                    pgId, walletMasterTypeId, docId, amount, direction, status, e);
+	           
 	        e.printStackTrace();
 	        throw e; // propagate so outer tx rolls back
 	    }
@@ -292,23 +290,12 @@ public class PaymentGatewayDaoImpl {
 
 	        int updated = q.executeUpdate();
 	        if (updated == 0) {
-	            // Optional: upsert behavior — create the row if it doesn't exist
-	            // Uncomment if you need it:
-	            // Query ins = s.createNativeQuery(
-	            //     "INSERT INTO WalletHistory (WalletMasterTypeID, OwnerID, WalletAmount) VALUES (:wm, :own, :amt)"
-	            // );
-	            // ins.setParameter("wm", walletMasterId);
-	            // ins.setParameter("own", ownerId);
-	            // ins.setParameter("amt", amount);
-	            // ins.executeUpdate();
-	            System.err.println("bumpWallet warning: no rows updated for wm=" + walletMasterId + ", ownerId=" + ownerId);
-	        }
+	        	 LOG.warn("bumpWallet updated 0 rows wm={}, ownerId={}, amount={}",
+	                        walletMasterId, ownerId, amount);
+	        	 }
 	    } catch (Exception e) {
-	        System.err.println(
-	            "bumpWallet failed: wm=" + walletMasterId +
-	            ", ownerId=" + ownerId +
-	            ", amount=" + amount
-	        );
+	        LOG.error("bumpWallet failed wm={}, ownerId={}, amount={}",
+	                    walletMasterId, ownerId, amount, e);
 	        e.printStackTrace();
 	        throw e; // propagate so outer tx rolls back
 	    }
