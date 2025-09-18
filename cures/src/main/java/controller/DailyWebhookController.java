@@ -19,33 +19,33 @@ import util.HibernateUtil;
 public class DailyWebhookController {
 private static final Logger log = LoggerFactory.getLogger(DailyWebhookController.class);
 
-// @PostMapping(value = "/daily-webhook", consumes = MediaType.APPLICATION_JSON_VALUE)
-// @ResponseStatus(HttpStatus.OK)
+@PostMapping(value = "/daily-webhook", consumes = MediaType.APPLICATION_JSON_VALUE)
+@ResponseStatus(HttpStatus.OK)
   
-// public void receive(@RequestBody WebhookEvent event,
-//                     @RequestHeader(value = "X-Webhook-Signature", required = false) String sig,
-//                     @RequestHeader(value = "X-Webhook-Timestamp", required = false) String ts) {
+public void receive(@RequestBody WebhookEvent event,
+                    @RequestHeader(value = "X-Webhook-Signature", required = false) String sig,
+                    @RequestHeader(value = "X-Webhook-Timestamp", required = false) String ts) {
 
-//     log.info("Received webhook: type={}, ts={}, signature={}", event.type, event.event_ts, sig);
+    log.info("Received webhook: type={}, ts={}, signature={}", event.type, event.event_ts, sig);
 
-//     Event entity = EventMapper.toEntity(event);
+    Event entity = EventMapper.toEntity(event);
 
-//     Session session = null;
-//     Transaction tx = null;
-//     try {
-//         session = HibernateUtil.buildSessionFactory();
-//         tx = session.beginTransaction();
+    Session session = null;
+    Transaction tx = null;
+    try {
+        session = HibernateUtil.buildSessionFactory();
+        tx = session.beginTransaction();
 
-//         session.persist(entity);
+        session.persist(entity);
 
-//         tx.commit();
-//         log.info("Persisted event id={}, type={}", entity.getId(), entity.getType());
-//     } catch (Exception e) {
-//         if (tx != null) tx.rollback();
-//         log.error("Failed to persist webhook event", e);
-//         throw e; // propagate -> Spring returns 500
-//     } 
-//}
+        tx.commit();
+        log.info("Persisted event id={}, type={}", entity.getId(), entity.getType());
+    } catch (Exception e) {
+        if (tx != null) tx.rollback();
+        log.error("Failed to persist webhook event", e);
+        throw e; // propagate -> Spring returns 500
+    } 
+}
 
   	@GetMapping(value = "/daily-webhook")
 	public void receive() {
