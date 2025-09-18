@@ -19,7 +19,7 @@ import util.HibernateUtil;
 public class DailyWebhookController {
 private static final Logger log = LoggerFactory.getLogger(DailyWebhookController.class);
 
-@PostMapping(value = "/daily-webhook", consumes = MediaType.APPLICATION_JSON_VALUE)
+@PostMapping(value = "/daily/webhook", consumes = MediaType.APPLICATION_JSON_VALUE)
 @ResponseStatus(HttpStatus.OK)
   
 public void receive(@RequestBody WebhookEvent event,
