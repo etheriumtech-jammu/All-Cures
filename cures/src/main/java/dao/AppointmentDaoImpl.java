@@ -119,7 +119,9 @@ public class AppointmentDaoImpl {
         tx.commit();
 
          // ==== Free vs Paid logic ====
-        if (appointmentCount < 2 || (!"INR".equalsIgnoreCase(currencyName ))) {
+               if (appointmentCount < 2 
+        	    || (currencyName != null && !currencyName.trim().isEmpty() 
+        	        && !"INR".equalsIgnoreCase(currencyName))) {
             // FREE: create meeting & send email; DO NOT take payment
             String meeting = null;
             try {
