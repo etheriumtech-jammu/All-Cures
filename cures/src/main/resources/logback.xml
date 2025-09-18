@@ -11,7 +11,7 @@
         <file>logs/wallet-errors.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- Daily rollover, gzipped -->
-            <fileNamePattern>logs/wallet-errors.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <fileNamePattern>/home/etheriumtechnologies/Production/logs/wallet-errors.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
             <!-- Keep 30 days -->
             <maxHistory>30</maxHistory>
         </rollingPolicy>
