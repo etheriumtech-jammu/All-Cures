@@ -43,4 +43,16 @@ public class StatsService {
             String startDate, String endDate, Integer docId, int page, int size, Integer status) {
         return StatsDao.listSucceededAppointments(startDate, endDate, docId, page, size, status);
     }
+
+	  public Map<String, Object> getDoctorsSummary() {
+        BigInteger totalActive = StatsDao.countActiveDoctors();
+        BigInteger totalSigned = StatsDao.countSignedDoctors();
+        List<Map<String, Object>> byType = StatsDao.signedDoctorsByMedicineType();
+
+        Map<String, Object> summary = new HashMap<>();
+        summary.put("totalActiveDoctors", totalActive);
+        summary.put("totalSignedDoctors", totalSigned);
+        summary.put("signedByMedicineType", byType);
+        return summary;
+    }
 }
