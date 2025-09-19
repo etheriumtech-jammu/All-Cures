@@ -138,12 +138,11 @@ public class StatsDao {
                           .collect(Collectors.toList()));
             m.put("userName", userFullName.isBlank() ? null : userFullName);
             m.put("fee",             (BigDecimal) row[i++]);   // sc.Fee
-           String status = (String) row[i++];
-				if (status == null) {
-			    status = "Cancelled";
-				}
-					m.put("Status", status);
-
+           String mstatus = (String) row[i++];
+			if (mstatus == null) {
+			    mstatus = "Cancelled";
+			}
+			m.put("Status", mstatus);
          // skip the window column in items (it’s at row[i] now)
             i++; // total_count
             out.add(m);
