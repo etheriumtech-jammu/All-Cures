@@ -145,4 +145,86 @@ public class StatsDao {
         result.put("totalPages", totalPages);
         return result;
     }
+
+	// 1) Active doctors
+    public static BigInteger countActiveDoctors() {
+        Session session = HibernateUtil.buildSessionFactory();
+        Object result = null;
+        try {
+            Query query = session.createNativeQuery(
+                "SELECT COUNT(*) " +
+                "FROM Doctors_New d " +
+                "WHERE d.MedicineTypeID IS NOT NULL " +
+                "  AND (d.docid <= 63 OR d.docid >= 14487)"
+            );
+            result = query.getSingleResult();
+            return toBigInt(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BigInteger.ZERO;
+        } 
+    }
+
+    public static BigInteger countSignedDoctors() {
+        Session session = HibernateUtil.buildSessionFactory();
+        Object result = null;
+        try {
+            Query query = session.createNativeQuery(
+                "SELECT COUNT(DISTINCT r.DocID) " +
+                "FROM registration r " +
+                "JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID " +
+                "WHERE sr.ServiceID = 2 " +
+                "  AND sr.EndDate >= CURRENT_DATE"
+            );
+            result = query.getSingleResult();
+            return toBigInt(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BigInteger.ZERO;
+        }
+    }
+
+    // Signed by MedicineType (returns List<Map<String,Object>> with name + total)
+    public static List<Map<String, Object>> signedDoctorsByMedicineType() {
+        Session session = HibernateUtil.buildSessionFactory();
+        try {
+            Query query = session.createNativeQuery(
+                "SELECT m.name AS medicine_type, COUNT(DISTINCT r.DocID) AS total_signed " +
+                "FROM Doctors_New d " +
+                "JOIN registration r            ON r.DocID = d.docid " +
+                "JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID " +
+                "JOIN medicinetype m            ON d.MedicineTypeID = m.id " +
+                "WHERE sr.ServiceID = 2 " +
+                "  AND sr.EndDate >= CURRENT_DATE " +
+                "  AND d.MedicineTypeID IS NOT NULL " +
+                "GROUP BY m.name " +
+                "ORDER BY m.name"
+            );
+
+            @SuppressWarnings("unchecked")
+            List<Object[]> rows = (List<Object[]>) query.getResultList();
+
+            ArrayList<Map<String, Object>> out = new ArrayList<>();
+            Iterator<?> itr = rows.iterator();
+            while (itr.hasNext()) {
+                Object[] obj = (Object[]) itr.next();
+                Map<String, Object> rec = new LinkedHashMap<>();
+                rec.put("medicineTypeName", obj[0] == null ? null : String.valueOf(obj[0])); // name, not ID
+                rec.put("total",            obj[1] == null ? BigInteger.ZERO : toBigInt(obj[1]));
+                out.add(rec);
+            }
+            return out;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        } 
+    }
+
+    private static BigInteger toBigInt(Object n) {
+        if (n == null) return BigInteger.ZERO;
+        if (n instanceof BigInteger) return (BigInteger) n;
+        if (n instanceof Number) return BigInteger.valueOf(((Number) n).longValue());
+        return new BigInteger(String.valueOf(n));
+    }
+
 }
