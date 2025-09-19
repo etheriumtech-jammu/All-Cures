@@ -2,6 +2,7 @@ package controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import service.StatsService;
 import java.time.LocalDate;
 import java.util.*;
@@ -60,4 +61,15 @@ public class StatsController {
     ) {
         return statsService.getDoctorsSummary(startDate, endDate);
     }
+
+     @GetMapping("/appointments")
+    public ResponseEntity<Map<String, Object>> getAppointmentStats(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
+    ) {
+        Map<String, Object> stats = statsService.getAppointmentStats(startDate, endDate);
+        return ResponseEntity.ok(stats);
+    }
+
+    
 }
