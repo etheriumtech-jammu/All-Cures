@@ -72,7 +72,7 @@ public class StatsDao {
                 "sc.Fee,asm.StatusType, COUNT(*) OVER() AS total_count " +
             "FROM allcures_schema.Appointment a "+
             "JOIN Doctors_New d ON d.docid = a.DocID " +
-            "JOIN AppointmentStatusMaster asm ON asm.AppointmentStatusID=a.Status " +
+            " LEFT JOIN AppointmentStatusMaster asm ON asm.AppointmentStatusID=a.Status " +
             "JOIN registration r ON r.registration_id = a.UserID " +
             "JOIN registration reg ON reg.DocID = a.DocID " +
             "JOIN ServiceContractDetails sc ON sc.UserID = reg.registration_id " +
