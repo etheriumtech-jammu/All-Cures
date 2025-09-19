@@ -273,4 +273,53 @@ public class StatsDao {
         return new BigInteger(String.valueOf(n));
     }
 
+	public static Map<String, Object> getAppointmentStats(LocalDate startDate, LocalDate endDate) {
+		Session session = HibernateUtil.buildSessionFactory();
+		try {
+			String dateCol = "a.AppointmentDate";
+
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT ").append("  COUNT(*) AS total, ").append("  SUM(CASE WHEN a.Status = ")
+					.append(STATUS_SUCCESS).append(" THEN 1 ELSE 0 END) AS success, ")
+					.append("  SUM(CASE WHEN a.Status = ").append(STATUS_FAILED)
+					.append(" THEN 1 ELSE 0 END) AS failed, ").append("  SUM(CASE WHEN a.Status = ")
+					.append(STATUS_PENDING).append(" THEN 1 ELSE 0 END) AS upcoming, ")
+					.append("  SUM(CASE WHEN (COALESCE(a.IsPaid,0)=1 OR COALESCE(a.PaymentStatus,0)=1) THEN 1 ELSE 0 END) AS paid, ")
+					.append("  SUM(CASE WHEN (COALESCE(a.IsPaid,0)=1 OR COALESCE(a.PaymentStatus,0)=1) THEN 0 ELSE 1 END) AS free ")
+					.append("FROM appointment a ").append("WHERE 1=1 ");
+
+			if (startDate != null && endDate != null) {
+				sql.append(" AND ").append(dateCol).append(" >= :startDate ").append(" AND ").append(dateCol)
+						.append(" <= :endDate ");
+			} else if (startDate != null) {
+				sql.append(" AND ").append(dateCol).append(" >= :startDate ").append(" AND ").append(dateCol)
+						.append(" <= CURRENT_DATE ");
+			} else if (endDate != null) {
+				sql.append(" AND ").append(dateCol).append(" <= :endDate ");
+			}
+
+			Query query = session.createNativeQuery(sql.toString());
+			if (startDate != null)
+				query.setParameter("startDate", java.sql.Date.valueOf(startDate));
+			if (endDate != null)
+				query.setParameter("endDate", java.sql.Date.valueOf(endDate));
+
+			Object[] row = (Object[]) query.getSingleResult();
+
+			Map<String, Object> out = new LinkedHashMap<>();
+			out.put("totalAppointments", toBigInt(row[0]));
+			out.put("successAppointments", toBigInt(row[1]));
+			out.put("failedAppointments", toBigInt(row[2]));
+			out.put("upcomingAppointments", toBigInt(row[3]));
+			out.put("paidAppointments", toBigInt(row[4]));
+			out.put("freeAppointments", toBigInt(row[5]));
+			return out;
+
+		} catch (Exception e) {
+// no return here
+			throw (e instanceof RuntimeException) ? (RuntimeException) e
+					: new RuntimeException("Failed to fetch appointment stats", e);
+		}
+
+	}
 }
