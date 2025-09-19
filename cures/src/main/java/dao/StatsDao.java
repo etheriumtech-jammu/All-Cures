@@ -289,7 +289,7 @@ public class StatsDao {
 					.append(STATUS_PENDING).append(" THEN 1 ELSE 0 END) AS upcoming, ")
 					.append("  SUM(CASE WHEN (COALESCE(a.IsPaid,0)=1 OR COALESCE(a.PaymentStatus,0)=1) THEN 1 ELSE 0 END) AS paid, ")
 					.append("  SUM(CASE WHEN (COALESCE(a.IsPaid,0)=1 OR COALESCE(a.PaymentStatus,0)=1) THEN 0 ELSE 1 END) AS free ")
-					.append("FROM appointment a ").append("WHERE 1=1 ");
+					.append("FROM Appointment a ").append("WHERE 1=1 ");
 
 			if (startDate != null && endDate != null) {
 				sql.append(" AND ").append(dateCol).append(" >= :startDate ").append(" AND ").append(dateCol)
