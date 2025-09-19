@@ -56,4 +56,10 @@ public class StatsService {
         summary.put("signedByMedicineType", byType);
         return summary;
     }
+
+	 public Map<String, Object> getAppointmentStats(LocalDate startDate,
+            LocalDate endDate) {
+// DAO throws on error; we let it bubble up
+return StatsDao.getAppointmentStats(startDate, endDate);
+}
 }
