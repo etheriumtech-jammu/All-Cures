@@ -2,7 +2,7 @@ package service;
 import org.springframework.stereotype.Service;
 
 import dao.StatsDao;
-
+import java.time.LocalDate;
 import java.math.BigInteger;
 import java.util.*;
 
@@ -44,10 +44,10 @@ public class StatsService {
         return StatsDao.listSucceededAppointments(startDate, endDate, docId, page, size, status);
     }
 
-	  public Map<String, Object> getDoctorsSummary() {
-        BigInteger totalActive = StatsDao.countActiveDoctors();
-        BigInteger totalSigned = StatsDao.countSignedDoctors();
-        List<Map<String, Object>> byType = StatsDao.signedDoctorsByMedicineType();
+	public Map<String, Object> getDoctorsSummary(LocalDate startDate, LocalDate endDate) {
+        BigInteger totalActive = StatsDao.countActiveDoctors(startDate, endDate);
+        BigInteger totalSigned = StatsDao.countSignedDoctors(startDate, endDate);
+        List<Map<String, Object>> byType = StatsDao.signedDoctorsByMedicineType(startDate, endDate);
 
         Map<String, Object> summary = new HashMap<>();
         summary.put("totalActiveDoctors", totalActive);
