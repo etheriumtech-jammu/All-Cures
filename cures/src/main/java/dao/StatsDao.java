@@ -12,6 +12,9 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.*;
 public class StatsDao {
+		public static final int STATUS_PENDING = 1; // upcoming
+	public static final int STATUS_SUCCESS = 4;
+	public static final int STATUS_FAILED = 5;
 
 	 public static BigInteger getAppointmentsSummaryByStatus(int status) {
 	        Session session = HibernateUtil.buildSessionFactory();
