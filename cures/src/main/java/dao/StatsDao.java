@@ -196,9 +196,7 @@ public class StatsDao {
         } catch (Exception e) {
             e.printStackTrace();
             return BigInteger.ZERO;
-        } finally {
-            if (session != null) session.close();
-        }
+        } 
     }
 
     // 2) Signed doctors with optional CreatedDate filter on ServiceContractDetails
@@ -223,9 +221,7 @@ public class StatsDao {
         } catch (Exception e) {
             e.printStackTrace();
             return BigInteger.ZERO;
-        } finally {
-            if (session != null) session.close();
-        }
+        } 
     }
 
     // 3) Signed by MedicineType (CreatedDate filter on ServiceContractDetails or Doctors_New? Usually "newly signed" => sr.CreatedDate)
@@ -267,9 +263,7 @@ public class StatsDao {
         } catch (Exception e) {
             e.printStackTrace();
             return new ArrayList<>();
-        } finally {
-            if (session != null) session.close();
-        }
+        } 
     }
 
     private static BigInteger toBigInt(Object n) {
