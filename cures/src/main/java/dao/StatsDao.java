@@ -1,5 +1,6 @@
 package dao;
 
+
 import org.hibernate.Session;
 import java.util.stream.Collectors;
 import org.hibernate.query.Query;
@@ -8,8 +9,8 @@ import util.HibernateUtil;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.util.*;
-
 public class StatsDao {
 
 	 public static BigInteger getAppointmentsSummaryByStatus(int status) {
@@ -146,17 +147,50 @@ public class StatsDao {
         return result;
     }
 
-	// 1) Active doctors
-    public static BigInteger countActiveDoctors() {
+	 // 1) Active doctors
+    // Helper: apply CreatedDate filter only when startDate != null or endDate != null.
+    private static void appendCreatedDateFilter(StringBuilder sql, String alias, LocalDate startDate, LocalDate endDate) {
+        if (startDate != null || endDate != null) {
+            sql.append(" AND ").append(alias).append(".CreatedDate ");
+            if (startDate != null) {
+                sql.append(">= :startDate ");
+                if (endDate != null) {
+                    sql.append("AND ").append(alias).append(".CreatedDate <= :endDate ");
+                } else {
+                    sql.append("AND ").append(alias).append(".CreatedDate <= CURRENT_DATE ");
+                }
+            } else {
+                // only end provided
+                sql.append("<= :endDate ");
+            }
+        }
+    }
+
+    private static void bindCreatedDateParams(Query query, LocalDate startDate, LocalDate endDate) {
+        if (startDate != null) {
+            query.setParameter("startDate", startDate);
+        }
+        if (endDate != null) {
+            query.setParameter("endDate", endDate);
+        }
+    }
+
+    // 1) Active doctors with optional CreatedDate filter on Doctors_New
+    public static BigInteger countActiveDoctors(LocalDate startDate, LocalDate endDate) {
         Session session = HibernateUtil.buildSessionFactory();
         Object result = null;
         try {
-            Query query = session.createNativeQuery(
+            StringBuilder sql = new StringBuilder(
                 "SELECT COUNT(*) " +
                 "FROM Doctors_New d " +
                 "WHERE d.MedicineTypeID IS NOT NULL " +
                 "  AND (d.docid <= 63 OR d.docid >= 14487)"
             );
+            appendCreatedDateFilter(sql, "d", startDate, endDate);
+
+            Query query = session.createNativeQuery(sql.toString());
+            bindCreatedDateParams(query, startDate, endDate);
+
             result = query.getSingleResult();
             return toBigInt(result);
         } catch (Exception e) {
@@ -165,30 +199,36 @@ public class StatsDao {
         } 
     }
 
-    public static BigInteger countSignedDoctors() {
+    // 2) Signed doctors with optional CreatedDate filter on ServiceContractDetails
+    public static BigInteger countSignedDoctors(LocalDate startDate, LocalDate endDate) {
         Session session = HibernateUtil.buildSessionFactory();
         Object result = null;
         try {
-            Query query = session.createNativeQuery(
+            StringBuilder sql = new StringBuilder(
                 "SELECT COUNT(DISTINCT r.DocID) " +
                 "FROM registration r " +
                 "JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID " +
                 "WHERE sr.ServiceID = 2 " +
                 "  AND sr.EndDate >= CURRENT_DATE"
             );
+            appendCreatedDateFilter(sql, "sr", startDate, endDate);
+
+            Query query = session.createNativeQuery(sql.toString());
+            bindCreatedDateParams(query, startDate, endDate);
+
             result = query.getSingleResult();
             return toBigInt(result);
         } catch (Exception e) {
             e.printStackTrace();
             return BigInteger.ZERO;
-        }
+        } 
     }
 
-    // Signed by MedicineType (returns List<Map<String,Object>> with name + total)
-    public static List<Map<String, Object>> signedDoctorsByMedicineType() {
+    // 3) Signed by MedicineType (CreatedDate filter on ServiceContractDetails or Doctors_New? Usually "newly signed" => sr.CreatedDate)
+    public static List<Map<String, Object>> signedDoctorsByMedicineType(LocalDate startDate, LocalDate endDate) {
         Session session = HibernateUtil.buildSessionFactory();
         try {
-            Query query = session.createNativeQuery(
+            StringBuilder sql = new StringBuilder(
                 "SELECT m.name AS medicine_type, COUNT(DISTINCT r.DocID) AS total_signed " +
                 "FROM Doctors_New d " +
                 "JOIN registration r            ON r.DocID = d.docid " +
@@ -196,10 +236,16 @@ public class StatsDao {
                 "JOIN medicinetype m            ON d.MedicineTypeID = m.id " +
                 "WHERE sr.ServiceID = 2 " +
                 "  AND sr.EndDate >= CURRENT_DATE " +
-                "  AND d.MedicineTypeID IS NOT NULL " +
-                "GROUP BY m.name " +
-                "ORDER BY m.name"
+                "  AND d.MedicineTypeID IS NOT NULL"
             );
+            // Filter by when the doctor was signed (sr.CreatedDate). If you instead need d.CreatedDate, switch alias to "d".
+            appendCreatedDateFilter(sql, "sr", startDate, endDate);
+
+            sql.append(" GROUP BY m.name ");
+            sql.append(" ORDER BY m.name ");
+
+            Query query = session.createNativeQuery(sql.toString());
+            bindCreatedDateParams(query, startDate, endDate);
 
             @SuppressWarnings("unchecked")
             List<Object[]> rows = (List<Object[]>) query.getResultList();
@@ -209,8 +255,8 @@ public class StatsDao {
             while (itr.hasNext()) {
                 Object[] obj = (Object[]) itr.next();
                 Map<String, Object> rec = new LinkedHashMap<>();
-                rec.put("medicineTypeName", obj[0] == null ? null : String.valueOf(obj[0])); // name, not ID
-                rec.put("total",            obj[1] == null ? BigInteger.ZERO : toBigInt(obj[1]));
+                rec.put("medicineTypeName", obj[0] == null ? null : String.valueOf(obj[0]));        // name
+                rec.put("total",            obj[1] == null ? BigInteger.ZERO : toBigInt(obj[1]));   // count
                 out.add(rec);
             }
             return out;
