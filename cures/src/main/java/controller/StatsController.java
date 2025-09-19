@@ -7,23 +7,23 @@ import service.StatsService;
 import java.util.*;
 
 @RestController
-@RequestMapping("/stats/appointments")
+@RequestMapping("/stats")
 public class StatsController {
 
     @Autowired
     private StatsService statsService;
     // ✅ Successful appointments summary
-    @GetMapping("/summary/success")
+    @GetMapping("/appointments/summary/success")
     public Map<String, Object> getAppointmentsSummarySuccess() {
         return statsService.getAppointmentsSummaryByStatus(4); // Status=4 → success
     }
 
     // ✅ Failed appointments summary
-    @GetMapping("/summary/failed")
+    @GetMapping("/appointments/summary/failed")
     public Map<String, Object> getAppointmentsSummaryFailed() {
         return statsService.getAppointmentsSummaryByStatus(3); // Status=3 → failed
     }
-    @GetMapping("/count")
+    @GetMapping("/appointments/count")
     public Map<String, Object> getAppointmentsCount(
             @RequestParam String startDate,
             @RequestParam(required = false) String endDate) {
@@ -37,7 +37,7 @@ public class StatsController {
     }
 
     
-    @GetMapping("/success/list")
+    @GetMapping("/appointments/list")
     public Map<String, Object> getAppointments(
             @RequestParam(required = false) String startDate,
             @RequestParam(required = false) String endDate,
@@ -51,5 +51,10 @@ public class StatsController {
         }
 
         return statsService.listSucceededAppointments(startDate, endDate,docId,limit,offset,status);
+    }
+    
+    @GetMapping("/doctors/summary")
+    public Map<String, Object> getSummary() {
+        return statsService.getDoctorsSummary();
     }
 }
