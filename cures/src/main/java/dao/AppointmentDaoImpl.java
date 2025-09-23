@@ -369,7 +369,7 @@ public class AppointmentDaoImpl {
 	    	                 long apptCountLong = (apptNum != null) ? apptNum.longValue() : 0L;
 	    	                 appointmentCount = apptCountLong;
 	    	                 // Your isPaid logic (avoid NPEs)
-	    	                 boolean isPaid = apptCountLong < 2;
+	    	                 boolean isPaid = apptCountLong >= 2;
 	    	               
 
 	    	                 // If you also need amount depending on countryCode
