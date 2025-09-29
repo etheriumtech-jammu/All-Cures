@@ -99,7 +99,12 @@ public class DeltaSiteMapGen {
 			try {
 	
 				Class.forName("com.mysql.jdbc.Driver");
-		con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db, user, pass);
+		// Build a JDBC URL with explicit Unicode settings
+				String url = "jdbc:mysql://localhost:3306/" + db
+				           + "?useUnicode=true&characterEncoding=UTF-8&useSSL=false";
+
+				// Open connection
+				con = DriverManager.getConnection(url, user, pass);
 			stmt2 = con.createStatement();
 	/*		stmt = con.createStatement();
 			rs_doc = stmt
@@ -188,8 +193,12 @@ public class DeltaSiteMapGen {
 				System.out.println("Last Modified Time: " + formattedDateTime);
 		
 				Class.forName("com.mysql.jdbc.Driver");
-				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + db, user, pass);
-				
+				// Build a JDBC URL with explicit Unicode settings
+				String url = "jdbc:mysql://localhost:3306/" + db
+				           + "?useUnicode=true&characterEncoding=UTF-8&useSSL=false";
+
+				// Open connection
+				con = DriverManager.getConnection(url, user, pass);
 				stmt2 = con.createStatement();
 	/*			stmt = con.createStatement();
 				rs_doc = stmt
@@ -326,6 +335,7 @@ public class DeltaSiteMapGen {
     }
 	
 }
+
 
 
 
