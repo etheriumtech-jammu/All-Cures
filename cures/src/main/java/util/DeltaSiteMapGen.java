@@ -130,10 +130,13 @@ public class DeltaSiteMapGen {
 				
 				 // Generate a clean slug
 				    String slug = generateSlug(title);
-
+					 // Special condition: log/display slug if article_id is 2857
+				    if ("2857".equals(articleId)) {
+				        System.out.println("DEBUG >> Article 2857 slug = " + slug);
+				    }
 				    // Build final SEO-safe URL
 				    String final_string = "https://www.all-cures.com/cure/" + articleId + "-" + slug;
-				System.out.println(final_string);
+		//		System.out.println(final_string);
 				updateSitemap(baseSitemap, final_string, "add");
 			
 			}
@@ -223,7 +226,7 @@ public class DeltaSiteMapGen {
 
 				    // Build final SEO-safe URL
 				    String final_string = "https://www.all-cures.com/cure/" + articleId + "-" + slug;
-					System.out.println(final_string);
+	//				System.out.println(final_string);
 					updateDeltaSitemap(deltaSitemap1, final_string);
 					updateSitemap(baseSitemap1, final_string, "update");
 					
@@ -319,6 +322,7 @@ public class DeltaSiteMapGen {
     }
 	
 }
+
 
 
 
