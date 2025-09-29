@@ -312,7 +312,11 @@ public class DeltaSiteMapGen {
 
         // Remove everything except letters, digits, and hyphens
         slug = slug.replaceAll("[^a-zA-Z0-9\\-]", "");
-		 slug = slug.replaceAll("[\\p{Zs}\\s&,:]+", "-");
+		// Normalize first (converts odd forms; helps across platforms)
+       slug = java.text.Normalizer.normalize(slug, java.text.Normalizer.Form.NFKC);
+        // Replace ANY kind of space (&nbsp;, narrow no-break, figure space, etc.) and &, : with hyphens
+        slug = slug.replaceAll("[\\p{Z}\\p{javaSpaceChar}\\p{javaWhitespace}&,:]+", "-");
+
         // Collapse multiple hyphens into one
         slug = slug.replaceAll("-{2,}", "-");
 
@@ -322,6 +326,7 @@ public class DeltaSiteMapGen {
     }
 	
 }
+
 
 
 
