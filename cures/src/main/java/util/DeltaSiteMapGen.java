@@ -309,7 +309,7 @@ public class DeltaSiteMapGen {
 
         // Remove everything except letters, digits, and hyphens
         slug = slug.replaceAll("[^a-zA-Z0-9\\-]", "");
-
+		slug = slug.replaceAll("[\\s\\u00A0&,:]+", "-");
         // Collapse multiple hyphens into one
         slug = slug.replaceAll("-{2,}", "-");
 
@@ -319,6 +319,7 @@ public class DeltaSiteMapGen {
     }
 	
 }
+
 
 
 
