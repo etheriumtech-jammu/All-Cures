@@ -314,7 +314,8 @@ public class DeltaSiteMapGen {
 	
 // Utility to create SEO-friendly slugs
     public static String generateSlug(String slug) {
-        
+        // Normalize first (converts odd forms; helps across platforms)
+       slug = java.text.Normalizer.normalize(slug, java.text.Normalizer.Form.NFKC);
     	 // Replace spaces, & , and : with hyphens
         slug = slug.replaceAll("[\\s&,:]+", "-");
 
@@ -323,10 +324,15 @@ public class DeltaSiteMapGen {
 
         // Remove everything except letters, digits, and hyphens
         slug = slug.replaceAll("[^a-zA-Z0-9\\-]", "");
-		// Normalize first (converts odd forms; helps across platforms)
-       slug = java.text.Normalizer.normalize(slug, java.text.Normalizer.Form.NFKC);
+		
         // Replace ANY kind of space (&nbsp;, narrow no-break, figure space, etc.) and &, : with hyphens
-        slug = slug.replaceAll("[\\p{Z}\\p{javaSpaceChar}\\p{javaWhitespace}&,:]+", "-");
+       slug = slug.replaceAll(
+    	        "[\\p{Z}\\p{Cf}\\p{javaWhitespace}\\p{javaSpaceChar}\\u00A0\\u200B-\\u200D\\u2060\\uFEFF&,:]+",
+    	        "-"
+    	    );
+       
+       // Normalize various dashes to a simple hyphen
+       slug = slug.replaceAll("[\u2010\u2011\u2012\u2013\u2014\u2015]", "-");
 
         // Collapse multiple hyphens into one
         slug = slug.replaceAll("-{2,}", "-");
@@ -337,6 +343,7 @@ public class DeltaSiteMapGen {
     }
 	
 }
+
 
 
 
