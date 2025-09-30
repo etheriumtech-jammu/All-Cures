@@ -132,15 +132,10 @@ public class DeltaSiteMapGen {
 			while (rs2_cure.next()) {
 				String articleId = rs2_cure.getString("article_id");
 				 String title = rs2_cure.getString("title");
-				if ("2857".equals(articleId)) {
-				        System.out.println("DEBUG >> Article 2857 slug = " + title);
-				    }
+			
 				 // Generate a clean slug
 				    String slug = generateSlug(title);
-					 // Special condition: log/display slug if article_id is 2857
-				    if ("2857".equals(articleId)) {
-				        System.out.println("DEBUG >> Article 2857 slug = " + slug);
-				    }
+
 				    // Build final SEO-safe URL
 				    String final_string = "https://www.all-cures.com/cure/" + articleId + "-" + slug;
 		//		System.out.println(final_string);
@@ -343,6 +338,7 @@ public class DeltaSiteMapGen {
     }
 	
 }
+
 
 
 
