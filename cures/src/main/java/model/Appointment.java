@@ -137,7 +137,7 @@ public class Appointment {
     @Column(name = "FailureID")
     private int failureID;
 
-    @Column(name = "CreatedDate")
+    @Column(name = "CreatedDate", nullable = false)
     private Timestamp createdDate;
 
     @Column(name = "LastUpdatedDate")
@@ -211,6 +211,10 @@ public class Appointment {
 		this.isPaid = isPaid;
 	}
 
+	 @PrePersist
+    protected void onCreate() {
+        if (createdDate == null) createdDate = new Date();
+    }
   
     // Getters and setters
 }
