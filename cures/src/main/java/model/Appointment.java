@@ -3,6 +3,7 @@ package model;
 import java.sql.Date;
 import java.sql.Timestamp;
 
+import javax.persistence.PrePersist;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -211,10 +212,12 @@ public class Appointment {
 		this.isPaid = isPaid;
 	}
 
-	 @PrePersist
-    protected void onCreate() {
-        if (createdDate == null) createdDate = new Date();
-    }
-  
+ @PrePersist
+	    protected void onCreate() {
+	        if (this.createdDate == null) {
+	            this.createdDate = new Timestamp(System.currentTimeMillis());
+	        }
+	        
+	    }
     // Getters and setters
 }
