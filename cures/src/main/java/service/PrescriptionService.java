@@ -159,7 +159,7 @@ public class PrescriptionService {
 						// --- Native query: doctors_new table for doctor name/username ---
 						if (docId != null) {
 							try {
-								String docSql = "SELECT prefix, docname_first, docname_middle, docname_last FROM doctors_new WHERE docid = :did LIMIT 1";
+								String docSql = "SELECT prefix, docname_first, docname_middle, docname_last FROM Doctors_New WHERE docid = :did LIMIT 1";
 								@SuppressWarnings("unchecked")
 								java.util.List<Object[]> doctorRows = session.createNativeQuery(docSql)
 										.setParameter("did", docId).getResultList();
