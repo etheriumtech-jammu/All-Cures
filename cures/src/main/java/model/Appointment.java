@@ -8,8 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.*;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Where;
 @Entity
 public class Appointment {
     @Id
@@ -155,6 +160,12 @@ public class Appointment {
     @Transient
     private Integer slotDuration;
 
+	@OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "AppointmentID", referencedColumnName = "appointment_id", insertable = false, updatable = false)
+    @Where(clause = "status = 'ACTIVE'")
+    @Fetch(FetchMode.JOIN)  // optional if you usually want to load together
+    private Prescription prescription;
+
 	public Integer getSlotDuration() {
 		return slotDuration;
 	}
@@ -222,6 +233,13 @@ public class Appointment {
 		this.isPaid = isPaid;
 	}
 
-  
+  public Prescription getPrescription() {
+		return prescription;
+	}
+
+	public void setPrescription(Prescription prescription) {
+		this.prescription = prescription;
+	}
+
     // Getters and setters
 }
