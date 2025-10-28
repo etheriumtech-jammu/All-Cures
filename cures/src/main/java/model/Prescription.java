@@ -1,6 +1,9 @@
 package model;
 
 import javax.persistence.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Where;
 import java.time.LocalDateTime;
 
 @Entity
@@ -39,6 +42,12 @@ public class Prescription {
 
     @Column(name = "status", length = 32, nullable = false)
     private String status = "ACTIVE";
+
+     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "AppointmentID", referencedColumnName = "appointment_id", insertable = false, updatable = false)
+    @Where(clause = "status = 'ACTIVE'")
+    @Fetch(FetchMode.JOIN)  // optional if you usually want to load together
+    private Prescription prescription;
 
     public Prescription() {}
 
