@@ -38,6 +38,7 @@ import util.Constant;
 import util.HibernateUtil;
 import util.SchedulerService;
 import service.DailyCoService;
+import model.Prescription;
 public class AppointmentDaoImpl {
 
 	 // STATIC field used by the static method
@@ -347,11 +348,27 @@ public class AppointmentDaoImpl {
         "d.img_Loc, " +
         "m.name, " +
 		 "a.meetingLink, " +
-        "a.IsPaid " +
+       "a.IsPaid, " +
+	  "p.pres_id, " +                  
+	  "p.file_path, " +                
+	  "p.original_name, " +            
+	  "p.notes, " +                    
+	  "p.issued_at, " +                
+	  "p.uploaded_by, " +              
+	  "p.uploaded_at, " +              
+	  "p.status " +                     
         "FROM Appointment a " +
         "LEFT JOIN Doctors_New d ON a.DocID = d.docid " +
         "LEFT JOIN DoctorAvailability da ON a.DocID = da.DocID " +
         "LEFT JOIN medicinetype m ON m.id = d.MedicineTypeID " +
+		// LEFT JOIN latest prescription per appointment (MySQL)
+        "LEFT JOIN prescription p ON p.pres_id = ("
+        + "    SELECT pres_id FROM prescription p2"
+        + "    WHERE p2.appointment_id = a.AppointmentID"
+        + "      AND p2.status = 'ACTIVE'"
+        + "    ORDER BY p2.uploaded_at DESC"
+        + "    LIMIT 1"
+        + ") " +
         "WHERE (a.IsPaid = FALSE OR a.PaymentStatus = 1) AND a.UserID = :userID"
     );
 
@@ -381,6 +398,46 @@ public class AppointmentDaoImpl {
 	appointment.setMedicineType(obj[10] != null ? (String) obj[10] : "");
 	appointment.setMeetingLink(obj[11] != null ? (String) obj[11] : "");
 	appointment.setPaid(obj[12] != null ? (Boolean) obj[12] : false);
+
+		 // Prescription mapping (may be null if no prescription)
+    if (obj[13] != null) {
+        Prescription pres = new Prescription();
+        // pres_id (13)
+        pres.setPresId(obj[13] != null ? ((Number) obj[13]).intValue() : null);
+        // file_path (14)
+        pres.setFilePath(obj[14] != null ? (String) obj[14] : null);
+        // original_name (15)
+        pres.setOriginalName(obj[15] != null ? (String) obj[15] : null);
+        // notes (16)
+        pres.setNotes(obj[16] != null ? (String) obj[16] : null);
+        // issued_at (17) -> java.sql.Timestamp or java.util.Date might be returned
+        if (obj[17] != null) {
+            Object issuedObj = obj[17];
+            if (issuedObj instanceof java.sql.Timestamp) {
+                pres.setIssuedAt(((java.sql.Timestamp) issuedObj).toLocalDateTime());
+            } else if (issuedObj instanceof java.util.Date) {
+                pres.setIssuedAt(((java.util.Date) issuedObj).toInstant().atZone(ZoneOffset.systemDefault()).toLocalDateTime());
+            }
+        }
+        // uploaded_by (18)
+        pres.setUploadedBy(obj[18] != null ? ((Number) obj[18]).intValue() : null);
+        // uploaded_at (19)
+        if (obj[19] != null) {
+            Object upObj = obj[19];
+            if (upObj instanceof java.sql.Timestamp) {
+                pres.setUploadedAt(((java.sql.Timestamp) upObj).toLocalDateTime());
+            } else if (upObj instanceof java.util.Date) {
+                pres.setUploadedAt(((java.util.Date) upObj).toInstant().atZone(ZoneOffset.systemDefault()).toLocalDateTime());
+            }
+        }
+        // status (20)
+        pres.setStatus(obj[20] != null ? (String) obj[20] : null);
+        // Attach the prescription object to appointment
+        appointment.setPrescription(pres);
+    } else {
+        // no prescription — ensure null
+        appointment.setPrescription(null);
+    }
 	AppointmentList.add(appointment);
 	}
 	return AppointmentList;
