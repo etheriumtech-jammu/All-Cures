@@ -9,8 +9,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotNull;
-
 @RestController
 @RequestMapping("/prescriptions")
 @Validated
@@ -24,9 +22,9 @@ public class PrescriptionUploadController {
 
     @PostMapping(path = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<AttachmentResponse> upload(
-            @RequestParam("file") @NotNull MultipartFile file,
-            @RequestParam("appointmentId") @NotNull Integer appointmentId,
-            @RequestParam("uploadedBy") @NotNull Integer uploadedBy,
+            @RequestParam(value = "file", required = true) MultipartFile file,
+            @RequestParam(value = "appointmentId", required = true) Integer appointmentId,
+            @RequestParam(value = "uploadedBy", required = true)  Integer uploadedBy,
             @RequestParam(value = "notes", required = false) String notes,
             @RequestParam(value = "issuedAt", required = false) String issuedAtIso, // optional ISO
             @RequestParam(value = "followUpDate", required = false) String followUpIso
