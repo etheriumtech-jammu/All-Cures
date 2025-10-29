@@ -92,7 +92,7 @@ public class PrescriptionService {
 				try {
 					Object idFromEntity = session.getIdentifier(p);
 					generatedId = (idFromEntity instanceof Number) ? ((Number) idFromEntity).intValue() : null;
-					System.out.print(generatedId);
+					
 				} catch (Exception ex) {
 					LOGGER.log(Level.WARNING, "Could not obtain generated id", ex);
 				}
@@ -250,14 +250,6 @@ public class PrescriptionService {
 			}
 
 			throw ex;
-		} finally {
-			if (session != null && session.isOpen()) {
-				try {
-					session.close();
-				} catch (Exception closeEx) {
-					LOGGER.log(Level.FINE, "Failed to close session", closeEx);
-				}
-			}
 		}
 	}
 
