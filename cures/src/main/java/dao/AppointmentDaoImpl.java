@@ -343,7 +343,7 @@ public class AppointmentDaoImpl {
 	                "SELECT sc.Fee,d.docname_first,  (\n"
 	                + "    SELECT COUNT(*) "
 	                + "    FROM Appointment a "
-	                + "    WHERE a.UserID  = :userId "
+	                + "    WHERE a.UserID  = :userId and a.Status=4 "
 	                + "  ) AS appointment_count, reg.country_code,cc.currency_symbol "
 	                +
 	                "FROM allcures_schema.ServiceContractDetails sc " +
