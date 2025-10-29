@@ -33,32 +33,5 @@ public class FeedbackController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    // GET all feedbacks (with pagination)
-    @GetMapping
-    public ResponseEntity<List<Feedback>> getAll(
-            @RequestParam(defaultValue = "50") int limit,
-            @RequestParam(defaultValue = "0") int offset) {
-
-        List<Feedback> list = feedbackDao.findAll(limit, offset);
-        if (list.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(list);
-    }
-
-    // GET feedback by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Feedback> getById(@PathVariable Long id) {
-        return feedbackDao.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-    }
-
-    // GET feedback by email (optional convenience endpoint)
-    @GetMapping("/email/{email}")
-    public ResponseEntity<Feedback> getByEmail(@PathVariable String email) {
-        return feedbackDao.findByEmail(email)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-    }
+  
 }
