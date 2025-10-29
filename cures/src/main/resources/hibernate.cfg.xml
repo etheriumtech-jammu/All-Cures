@@ -95,6 +95,7 @@
 	    <mapping class="model.DoctorVideos"/>
 		 <mapping class="model.Event"/>
 		 <mapping class="model.Prescription"/>
+		 <mapping class="model.Feedback"/>
    <!--   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password">root</property>
