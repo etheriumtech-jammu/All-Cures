@@ -406,7 +406,13 @@ public class AppointmentDaoImpl {
         // pres_id (13)
         pres.setPresId(obj[13] != null ? ((Number) obj[13]).intValue() : null);
         // file_path (14)
-        pres.setFilePath(obj[14] != null ? (String) obj[14] : null);
+        if (obj[14] != null) {
+            String filePath = (String) obj[14];
+            filePath = filePath.replace("/home/uat/Production/installers/tomcat/webapps/", "https://uat.all-cures.com/");
+            pres.setFilePath(filePath);
+        } else {
+            pres.setFilePath(null);
+        }
         // original_name (15)
         pres.setOriginalName(obj[15] != null ? (String) obj[15] : null);
         // notes (16)
