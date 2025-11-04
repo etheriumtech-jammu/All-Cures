@@ -22,7 +22,7 @@ public class LocalFileStorageService implements FileStorageService {
    
  //   private String basePath="C:\\Users\\Divya\\Documents\\Desktop"; // default ./uploads if not specified
 
-	private String basePath="/home/uat/Production/installers/tomcat/webapps/cures_articleimages/prescription";
+	private String basePath="/home/etheriumtechnologies/Production/installers/tomcat/webapps/cures_articleimages/prescription";
     @Override
     public FileStorageResult save(MultipartFile file) {
         try {
