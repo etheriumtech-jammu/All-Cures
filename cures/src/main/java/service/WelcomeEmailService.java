@@ -295,7 +295,7 @@ public class WelcomeEmailService {
                 .append(escapeHtml(tempPassword)).append("</td></tr>");
         sb.append("</table>");
 
-        sb.append("<p>If you did not request this account, please contact our support team immediately.</p>");
+        sb.append("<p>If you did not request this account, please contact our support team.</p>");
 
         sb.append("<p style='margin-top:20px;'>Warm regards,<br/><strong> All-Cures Team</strong></p>");
         sb.append("</div>");
