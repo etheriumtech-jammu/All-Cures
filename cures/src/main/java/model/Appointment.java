@@ -160,7 +160,7 @@ public class Appointment {
     @Transient
     private Integer slotDuration;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "AppointmentID", referencedColumnName = "appointment_id", insertable = false, updatable = false)
     @Where(clause = "status = 'ACTIVE'")
     @Fetch(FetchMode.JOIN)  // optional if you usually want to load together
