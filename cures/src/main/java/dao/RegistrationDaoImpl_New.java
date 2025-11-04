@@ -953,13 +953,20 @@ public class RegistrationDaoImpl_New {
 // Set session/cookies if needed
 			handleSuccessfulRegistration(request, response, user, rememberPassword);
 
-			// ✅ Send Welcome Email with auto-generated password
 			try {
-			    welcomeEmailService.sendWelcomeEmailAsync(email, firstname, password);
-			} catch (Exception e) {
-			    Constant.log("Failed to send welcome email to " + email + " : " + e.getMessage(), 2);
-			    e.printStackTrace(); // optional for debugging
+			    service.WelcomeEmailService welcomeEmailService =
+			        service.ApplicationContextProvider.getBean(service.WelcomeEmailService.class);
+			    System.out.println(welcomeEmailService);
+			    if (welcomeEmailService != null) {
+			        welcomeEmailService.sendWelcomeEmailAsync(email, firstname, password);
+			    } else {
+			        Constant.log("WelcomeEmailService bean not found; skipping welcome email.", 2);
+			    }
+			} catch (Exception ex) {
+			    Constant.log("Failed to send welcome email to " + email + " : " + ex.getMessage(), 2);
+			    ex.printStackTrace();
 			}
+
 // Return success response
 			resp.put("success", true);
 			resp.put("user", user);
@@ -991,6 +998,7 @@ public class RegistrationDaoImpl_New {
 			return "user@123";
 		}
 	}
+
 
 }
 
