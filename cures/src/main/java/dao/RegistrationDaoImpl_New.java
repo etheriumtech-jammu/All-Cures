@@ -961,7 +961,7 @@ public class RegistrationDaoImpl_New {
 			    e.printStackTrace(); // optional for debugging
 			}
 // Return success response
-			
+			resp.put("success", true);
 			resp.put("user", user);
 			return gson.toJson(resp);
 
