@@ -32,6 +32,7 @@ import model.AvailabilitySchedule;
 import model.EmailDTO;
 import model.Registration;
 import service.SendEmailService;
+import service.WelcomeEmailService;
 import util.Constant;
 import util.CookieManager;
 import util.EnDeCryptor;
@@ -43,6 +44,9 @@ import dao.DeleteDaoImpl;
 
 @Component
 public class RegistrationDaoImpl_New {
+
+	@Autowired
+	private static WelcomeEmailService welcomeEmailService=new WelcomeEmailService();
 
 	@Autowired
 	private static SendEmailService emailUtil = new SendEmailService();
@@ -863,5 +867,130 @@ public class RegistrationDaoImpl_New {
 				//Default to Patient Reg
 			return 2;
 			}}
+
+	public static String RegisterUserAuto(HashMap<String, Object> RegisterMap, HttpServletRequest request,
+			HttpServletResponse response) {
+		Gson gson = new GsonBuilder().serializeNulls().create();
+		Map<String, Object> resp = new HashMap<>();
+		Registration user = null;
+
+		try {
+// Required fields
+			String firstname = safeTrim((String) RegisterMap.get(Constant.FIRSTNAME));
+			String email = safeTrim((String) RegisterMap.get(Constant.EMAIL));
+			String mobileRaw = safeTrim((String) RegisterMap.get(Constant.MOBILE_NUMBER));
+			String lastname = safeTrim((String) RegisterMap.get(Constant.LASTNAME));
+
+// Optional field: country code
+			String country_code = safeTrim((String) RegisterMap.get(Constant.COUNTRY_CODE));
+			if (country_code == null || country_code.isEmpty()) {
+				country_code = "IN"; // ✅ Default to India or your preferred default
+			}
+
+// Basic validation
+			if (firstname == null || firstname.isEmpty()) {
+				resp.put("success", false);
+				resp.put("message", "First name is required");
+				return gson.toJson(resp);
+			}
+			if (email == null || email.isEmpty()) {
+				resp.put("success", false);
+				resp.put("message", "Email is required");
+				return gson.toJson(resp);
+			}
+			if (mobileRaw == null || mobileRaw.isEmpty()) {
+				resp.put("success", false);
+				resp.put("message", "Mobile number is required");
+				return gson.toJson(resp);
+			}
+
+// Normalize mobile number
+			// Validate mobile number format: only digits allowed
+			if (!mobileRaw.matches("\\d+")) {
+			    resp.put("success", false);
+			    resp.put("message", "Invalid mobile number format");
+			    return gson.toJson(resp);
+			}
+
+			Long mobile;
+			try {
+			    mobile = Long.parseLong(mobileRaw);
+			} catch (NumberFormatException e) {
+			    resp.put("success", false);
+			    resp.put("message", "Invalid mobile number");
+			    return gson.toJson(resp);
+			}
+
+
+// Check if email already exists
+			if (alreadyExists(email)) {
+				resp.put("success", false);
+				resp.put("message", "Email address already exists in the system");
+				return gson.toJson(resp);
+			}
+
+// ✅ Auto-generate password using email prefix + "@123"
+			String password = generateEmailBasedPassword(email);
+
+// Default auto-set values
+			Boolean accTerms = false;
+			Boolean accPolicy = false;
+			Integer docOrPatient = 0;
+			Integer rememberPassword = 0;
+			Integer state = 1;
+			Integer age = 0;
+
+// Register the user
+			user = registerUser(firstname, lastname, password, email, accTerms, docOrPatient, accPolicy, state,
+					rememberPassword, mobile, age, country_code);
+
+			if (user == null) {
+				resp.put("success", false);
+				resp.put("message", "Error while creating account");
+				return gson.toJson(resp);
+			}
+
+// Set session/cookies if needed
+			handleSuccessfulRegistration(request, response, user, rememberPassword);
+
+			// ✅ Send Welcome Email with auto-generated password
+			try {
+			    welcomeEmailService.sendWelcomeEmailAsync(email, firstname, password);
+			} catch (Exception e) {
+			    Constant.log("Failed to send welcome email to " + email + " : " + e.getMessage(), 2);
+			    e.printStackTrace(); // optional for debugging
+			}
+// Return success response
+			
+			resp.put("user", user);
+			return gson.toJson(resp);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			resp.put("success", false);
+			resp.put("message", "Internal server error");
+			return gson.toJson(resp);
+		}
+	}
+
+	/* helper to trim safely */
+	private static String safeTrim(String s) {
+		return s == null ? null : s.trim();
+	}
+
+	/* ✅ helper to generate password: prefix of email + "@123" */
+	private static String generateEmailBasedPassword(String email) {
+		try {
+			if (email == null || !email.contains("@"))
+				return "user@123";
+			String prefix = email.substring(0, email.indexOf("@"));
+			if (prefix.isEmpty())
+				prefix = "user";
+			return prefix + "@123";
+		} catch (Exception e) {
+			return "user@123";
+		}
+	}
+
 }
 
