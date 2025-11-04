@@ -160,11 +160,11 @@ public class Appointment {
     @Transient
     private Integer slotDuration;
 
-	@OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "AppointmentID", referencedColumnName = "appointment_id", insertable = false, updatable = false)
-    @Where(clause = "status = 'ACTIVE'")
-    @Fetch(FetchMode.JOIN)  // optional if you usually want to load together
-    private Prescription prescription;
+	// @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, orphanRemoval = true)
+ //    @JoinColumn(name = "AppointmentID", referencedColumnName = "appointment_id", insertable = false, updatable = false)
+ //    @Where(clause = "status = 'ACTIVE'")
+ //    @Fetch(FetchMode.JOIN)  // optional if you usually want to load together
+ //    private Prescription prescription;
 
 	public Integer getSlotDuration() {
 		return slotDuration;
@@ -233,13 +233,13 @@ public class Appointment {
 		this.isPaid = isPaid;
 	}
 
-  public Prescription getPrescription() {
-		return prescription;
-	}
+ //  public Prescription getPrescription() {
+	// 	return prescription;
+	// }
 
-	public void setPrescription(Prescription prescription) {
-		this.prescription = prescription;
-	}
+	// public void setPrescription(Prescription prescription) {
+	// 	this.prescription = prescription;
+	// }
 
     // Getters and setters
 }
