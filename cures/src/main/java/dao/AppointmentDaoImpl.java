@@ -331,124 +331,124 @@ public class AppointmentDaoImpl {
 			return AppointmentList;
 		}
 
-	//To get Appointments of a particular User
-	public static List<Appointment> getAllAppointmentsOfUser(Integer userID, Date currentDate) {
-	Session session = HibernateUtil.buildSessionFactory();
+	// //To get Appointments of a particular User
+	// public static List<Appointment> getAllAppointmentsOfUser(Integer userID, Date currentDate) {
+	// Session session = HibernateUtil.buildSessionFactory();
 
-    StringBuilder sql = new StringBuilder(
-        "SELECT " +
-        "a.DocID, " +
-        "a.AppointmentDate, " +
-        "a.StartTime, " +
-        "a.EndTime, " +
-        "a.Status, " +
-        "a.RequestStatus, " +
-        "a.UserID, " +
-        "CONCAT(d.docname_first, ' ', d.docname_middle, ' ', d.docname_last) AS DoctorName, " +
-        "da.SlotDuration, " +
-        "d.img_Loc, " +
-        "m.name, " +
-		 "a.meetingLink, " +
-       "a.IsPaid, " +
-	  "p.pres_id, " +                  
-	  "p.file_path, " +                
-	  "p.original_name, " +            
-	  "p.notes, " +                    
-	  "p.issued_at, " +                
-	  "p.uploaded_by, " +              
-	  "p.uploaded_at, " +              
-	  "p.status " +                     
-        "FROM Appointment a " +
-        "LEFT JOIN Doctors_New d ON a.DocID = d.docid " +
-        "LEFT JOIN DoctorAvailability da ON a.DocID = da.DocID " +
-        "LEFT JOIN medicinetype m ON m.id = d.MedicineTypeID " +
-		// LEFT JOIN latest prescription per appointment (MySQL)
-        "LEFT JOIN prescription p ON p.pres_id = ("
-        + "    SELECT pres_id FROM prescription p2"
-        + "    WHERE p2.appointment_id = a.AppointmentID"
-        + "      AND p2.status = 'ACTIVE'"
-        + "    ORDER BY p2.uploaded_at DESC"
-        + "    LIMIT 1"
-        + ") " +
-        "WHERE (a.IsPaid = FALSE OR a.PaymentStatus = 1) AND a.UserID = :userID"
-    );
+ //    StringBuilder sql = new StringBuilder(
+ //        "SELECT " +
+ //        "a.DocID, " +
+ //        "a.AppointmentDate, " +
+ //        "a.StartTime, " +
+ //        "a.EndTime, " +
+ //        "a.Status, " +
+ //        "a.RequestStatus, " +
+ //        "a.UserID, " +
+ //        "CONCAT(d.docname_first, ' ', d.docname_middle, ' ', d.docname_last) AS DoctorName, " +
+ //        "da.SlotDuration, " +
+ //        "d.img_Loc, " +
+ //        "m.name, " +
+	// 	 "a.meetingLink, " +
+ //       "a.IsPaid, " +
+	//   "p.pres_id, " +                  
+	//   "p.file_path, " +                
+	//   "p.original_name, " +            
+	//   "p.notes, " +                    
+	//   "p.issued_at, " +                
+	//   "p.uploaded_by, " +              
+	//   "p.uploaded_at, " +              
+	//   "p.status " +                     
+ //        "FROM Appointment a " +
+ //        "LEFT JOIN Doctors_New d ON a.DocID = d.docid " +
+ //        "LEFT JOIN DoctorAvailability da ON a.DocID = da.DocID " +
+ //        "LEFT JOIN medicinetype m ON m.id = d.MedicineTypeID " +
+	// 	// LEFT JOIN latest prescription per appointment (MySQL)
+ //        "LEFT JOIN prescription p ON p.pres_id = ("
+ //        + "    SELECT pres_id FROM prescription p2"
+ //        + "    WHERE p2.appointment_id = a.AppointmentID"
+ //        + "      AND p2.status = 'ACTIVE'"
+ //        + "    ORDER BY p2.uploaded_at DESC"
+ //        + "    LIMIT 1"
+ //        + ") " +
+ //        "WHERE (a.IsPaid = FALSE OR a.PaymentStatus = 1) AND a.UserID = :userID"
+ //    );
 
-    if (currentDate != null) {
-        sql.append(" AND a.AppointmentDate >= :currentDate");
-    }
-    Query query = session.createNativeQuery(sql.toString());
-    query.setParameter("userID", userID);
-    if (currentDate != null) {
-        query.setParameter("currentDate", currentDate);
-    }
-	List<Appointment> AppointmentList = new ArrayList<>();
-	List<Object[]> resultList = query.getResultList();
-	Constant.log("Executed Query and Got: " + resultList.size() + " Appointment Lists back", 1);
-	for (Object[] obj : resultList) {
-	Appointment appointment = new Appointment();
-	appointment.setDocID(obj[0] != null ? (Integer) obj[0] : 0);
-	Date date=(Date)obj[1];
-	appointment.setAppointmentDate(date);
-	appointment.setStartTime(obj[2] != null ? (String) obj[2] : "");
-	appointment.setEndTime(obj[3] != null ? (String) obj[3] : "");
-	appointment.setStatus(obj[4] != null ? (Integer) obj[4] : 0);
-	appointment.setRequestStatus(obj[5] != null ? (Integer) obj[5] : 0);
-	appointment.setDoctorName(obj[7] != null ? (String) obj[7] : "");
-	appointment.setSlotDuration(obj[8] != null ? (Integer) obj[8] : 0);
-	appointment.setImgLoc(obj[9] != null ? (String) obj[9] : "");
-	appointment.setMedicineType(obj[10] != null ? (String) obj[10] : "");
-	appointment.setMeetingLink(obj[11] != null ? (String) obj[11] : "");
-	appointment.setPaid(obj[12] != null ? (Boolean) obj[12] : false);
+ //    if (currentDate != null) {
+ //        sql.append(" AND a.AppointmentDate >= :currentDate");
+ //    }
+ //    Query query = session.createNativeQuery(sql.toString());
+ //    query.setParameter("userID", userID);
+ //    if (currentDate != null) {
+ //        query.setParameter("currentDate", currentDate);
+ //    }
+	// List<Appointment> AppointmentList = new ArrayList<>();
+	// List<Object[]> resultList = query.getResultList();
+	// Constant.log("Executed Query and Got: " + resultList.size() + " Appointment Lists back", 1);
+	// for (Object[] obj : resultList) {
+	// Appointment appointment = new Appointment();
+	// appointment.setDocID(obj[0] != null ? (Integer) obj[0] : 0);
+	// Date date=(Date)obj[1];
+	// appointment.setAppointmentDate(date);
+	// appointment.setStartTime(obj[2] != null ? (String) obj[2] : "");
+	// appointment.setEndTime(obj[3] != null ? (String) obj[3] : "");
+	// appointment.setStatus(obj[4] != null ? (Integer) obj[4] : 0);
+	// appointment.setRequestStatus(obj[5] != null ? (Integer) obj[5] : 0);
+	// appointment.setDoctorName(obj[7] != null ? (String) obj[7] : "");
+	// appointment.setSlotDuration(obj[8] != null ? (Integer) obj[8] : 0);
+	// appointment.setImgLoc(obj[9] != null ? (String) obj[9] : "");
+	// appointment.setMedicineType(obj[10] != null ? (String) obj[10] : "");
+	// appointment.setMeetingLink(obj[11] != null ? (String) obj[11] : "");
+	// appointment.setPaid(obj[12] != null ? (Boolean) obj[12] : false);
 
-		 // Prescription mapping (may be null if no prescription)
-    if (obj[13] != null) {
-        Prescription pres = new Prescription();
-        // pres_id (13)
-        pres.setPresId(obj[13] != null ? ((Number) obj[13]).intValue() : null);
-        // file_path (14)
-        if (obj[14] != null) {
-            String filePath = (String) obj[14];
-            filePath = filePath.replace("/home/uat/Production/installers/tomcat/webapps/", "https://uat.all-cures.com/");
-            pres.setFilePath(filePath);
-        } else {
-            pres.setFilePath(null);
-        }
-        // original_name (15)
-        pres.setOriginalName(obj[15] != null ? (String) obj[15] : null);
-        // notes (16)
-        pres.setNotes(obj[16] != null ? (String) obj[16] : null);
-        // issued_at (17) -> java.sql.Timestamp or java.util.Date might be returned
-        if (obj[17] != null) {
-            Object issuedObj = obj[17];
-            if (issuedObj instanceof java.sql.Timestamp) {
-                pres.setIssuedAt(((java.sql.Timestamp) issuedObj).toLocalDateTime());
-            } else if (issuedObj instanceof java.util.Date) {
-                pres.setIssuedAt(((java.util.Date) issuedObj).toInstant().atZone(ZoneOffset.systemDefault()).toLocalDateTime());
-            }
-        }
-        // uploaded_by (18)
-        pres.setUploadedBy(obj[18] != null ? ((Number) obj[18]).intValue() : null);
-        // uploaded_at (19)
-        if (obj[19] != null) {
-            Object upObj = obj[19];
-            if (upObj instanceof java.sql.Timestamp) {
-                pres.setUploadedAt(((java.sql.Timestamp) upObj).toLocalDateTime());
-            } else if (upObj instanceof java.util.Date) {
-                pres.setUploadedAt(((java.util.Date) upObj).toInstant().atZone(ZoneOffset.systemDefault()).toLocalDateTime());
-            }
-        }
-        // status (20)
-        pres.setStatus(obj[20] != null ? (String) obj[20] : null);
-        // Attach the prescription object to appointment
-        appointment.setPrescription(pres);
-    } else {
-        // no prescription — ensure null
-        appointment.setPrescription(null);
-    }
-	AppointmentList.add(appointment);
-	}
-	return AppointmentList;
-	}
+	// 	 // Prescription mapping (may be null if no prescription)
+ //    if (obj[13] != null) {
+ //        Prescription pres = new Prescription();
+ //        // pres_id (13)
+ //        pres.setPresId(obj[13] != null ? ((Number) obj[13]).intValue() : null);
+ //        // file_path (14)
+ //        if (obj[14] != null) {
+ //            String filePath = (String) obj[14];
+ //            filePath = filePath.replace("/home/uat/Production/installers/tomcat/webapps/", "https://uat.all-cures.com/");
+ //            pres.setFilePath(filePath);
+ //        } else {
+ //            pres.setFilePath(null);
+ //        }
+ //        // original_name (15)
+ //        pres.setOriginalName(obj[15] != null ? (String) obj[15] : null);
+ //        // notes (16)
+ //        pres.setNotes(obj[16] != null ? (String) obj[16] : null);
+ //        // issued_at (17) -> java.sql.Timestamp or java.util.Date might be returned
+ //        if (obj[17] != null) {
+ //            Object issuedObj = obj[17];
+ //            if (issuedObj instanceof java.sql.Timestamp) {
+ //                pres.setIssuedAt(((java.sql.Timestamp) issuedObj).toLocalDateTime());
+ //            } else if (issuedObj instanceof java.util.Date) {
+ //                pres.setIssuedAt(((java.util.Date) issuedObj).toInstant().atZone(ZoneOffset.systemDefault()).toLocalDateTime());
+ //            }
+ //        }
+ //        // uploaded_by (18)
+ //        pres.setUploadedBy(obj[18] != null ? ((Number) obj[18]).intValue() : null);
+ //        // uploaded_at (19)
+ //        if (obj[19] != null) {
+ //            Object upObj = obj[19];
+ //            if (upObj instanceof java.sql.Timestamp) {
+ //                pres.setUploadedAt(((java.sql.Timestamp) upObj).toLocalDateTime());
+ //            } else if (upObj instanceof java.util.Date) {
+ //                pres.setUploadedAt(((java.util.Date) upObj).toInstant().atZone(ZoneOffset.systemDefault()).toLocalDateTime());
+ //            }
+ //        }
+ //        // status (20)
+ //        pres.setStatus(obj[20] != null ? (String) obj[20] : null);
+ //        // Attach the prescription object to appointment
+ //        appointment.setPrescription(pres);
+ //    } else {
+ //        // no prescription — ensure null
+ //        appointment.setPrescription(null);
+ //    }
+	// AppointmentList.add(appointment);
+	// }
+	// return AppointmentList;
+	// }
 	//To get Total , unbooked slots and Completely Booked Dates of a particular doctor
 	public static Map<String, Object> findCompletelyBookedAndAvailableDates(int doctorId, int userId) {
 	    Map<String, Object> datesMap = new HashMap<>();
