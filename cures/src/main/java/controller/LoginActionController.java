@@ -66,9 +66,10 @@ public class LoginActionController extends HttpServlet {
 		//ToDo: This implementation should not be static as this will cause overwrite issues in a multi user environment
 		Registration user = RegistrationDaoImpl_New.findAllUsers(email, hashedPassword);
 		
-		user.setValue(value);
+		
 		if(user != null){
 
+			user.setValue(value);
 			//Logging Password in Logs only in DEBUG Mode
 			Constant.log("Found at least one user with:"+email+" and pass combination"+hashedPassword, 0);
 			if (null != user.getLogin_attempt() && user.getLogin_attempt() > Constant.login_attempts_max) {
