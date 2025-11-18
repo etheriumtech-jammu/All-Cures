@@ -789,7 +789,7 @@ public static Integer sendEmail(int docID, int userID, String roomName, String d
 	        		+ "ORDER BY \r\n"
 	        		+ (medTypeID == null
 	        		    ? "    CASE \r\n"
-	        		      + "        WHEN doctors.docid IN (40,14515,51,14506,14511) THEN FIELD(doctors.docid, 40,14515,51,14506,14511) \r\n"  // preserve exact order among these 5
+	        		      + "        WHEN doctors.docid IN (40,14515,51,14507,20) THEN FIELD(doctors.docid, 40,14515,51,14507,20) \r\n"  // preserve exact order among these 5
 	        		      + "        WHEN doctors.MedicineTypeID = 1 THEN 100 \r\n"
 	        		      + "        WHEN doctors.MedicineTypeID = 8 THEN 200 \r\n"
 	        		      + "        ELSE 300 \r\n"
@@ -800,7 +800,7 @@ public static Integer sendEmail(int docID, int userID, String roomName, String d
 	        		+ "        WHEN doctors.MedicineTypeID = 1 THEN \r\n"
 	        		+ "            CASE WHEN doctors.docid IN (40,14515,51,14500) THEN FIELD(doctors.docid, 40,14515,51,14500) ELSE 9999 END \r\n"
 	        		+ "        WHEN doctors.MedicineTypeID = 8 THEN \r\n"
-	        		+ "            CASE WHEN doctors.docid IN (14506,14511) THEN FIELD(doctors.docid, 14506,14511) ELSE 9999 END \r\n"
+	        		+ "            CASE WHEN doctors.docid IN (14507,20) THEN FIELD(doctors.docid, 14507,20) ELSE 9999 END \r\n"
 	        		+ "        WHEN videoService = 1 THEN 10000 \r\n"
 	        		+ "        ELSE 10001 \r\n"
 	        		+ "    END ASC, \r\n"
