@@ -710,7 +710,7 @@ public static Integer sendEmail(int docID, int userID, String roomName, String d
 	                "JOIN medicinetype AS mt ON d.MedicineTypeID = mt.id " +
 	                "WHERE sr.ServiceID=2 and EndDate>=current_date();");
 */
-	        Query query1 = session.createNativeQuery("SELECT\r\n"
+	         Query query1 = session.createNativeQuery("SELECT\r\n"
 	        		+ "    doctors.docid, doctors.gender, doctors.insurance_accept,\r\n"
 	        		+ "    doctors.awards, doctors.telephone_nos, doctors.other_spls, doctors.over_allrating,\r\n"
 	        		+ "    doctors.prefix, doctors.docname_first, doctors.docname_middle, doctors.docname_last,\r\n"
@@ -771,8 +771,11 @@ public static Integer sendEmail(int docID, int userID, String roomName, String d
 	        		+ "WHERE \r\n"
 	        		+ "    (doctors.docid <= 63 OR doctors.docid >= 14487) \r\n"
 	        		+ "    AND doctors.about IS NOT NULL\r\n"
-	        		+ "	AND (:medTypeID IS NULL OR doctors.MedicineTypeID = :medTypeID) \r\n"
+	        		+ "    AND (:medTypeID IS NULL OR doctors.MedicineTypeID = :medTypeID) \r\n"
+
 	        		+ "GROUP BY \r\n"
+
+	        	
 	        		+ "    doctors.docid, doctors.gender, doctors.insurance_accept, doctors.awards, \r\n"
 	        		+ "    doctors.telephone_nos, doctors.other_spls, doctors.over_allrating, doctors.prefix, \r\n"
 	        		+ "    doctors.docname_first, doctors.docname_middle, doctors.docname_last, doctors.email, \r\n"
@@ -783,38 +786,27 @@ public static Integer sendEmail(int docID, int userID, String roomName, String d
 	        		+ "    address_states.statename, co.countryname, mat.AddressType, mdd.DegDesc, dd.YearOfGrad, mun.UnivName, \r\n"
 	        		+ "    uc.cityname, us.statename, uco.countryname, mt.id, address_states.codeid, uc.citycode, co.countrycodeid, \r\n"
 	        		+ "    mdd.DegID, s.splid, h.hospitalid\r\n"
-	        		+ "ORDER BY \n"
-	        		+ "    CASE \n"
-	        		+ "         WHEN MAX(sr.ServiceID) = 2 \n"
-	        		+ "            AND doctors.MedicineTypeID = 1 \n"
-	        		+ "            AND doctors.docid IN (14500, 18,26,46,4,14505,2,14520,44,8) \n"
-	        		+ "        THEN 0\n"
-	        		+ "        WHEN MAX(sr.ServiceID) = 2 \n"
-	        		+ "            AND doctors.MedicineTypeID = 8 \n"
-	        		+ "            AND doctors.docid IN (14511, 14506, 14507, 20, 39, 14494, 30, 45, 63, 24) \n"
-	        		+ "        THEN 0\n"
-	        		+ "        WHEN MAX(sr.ServiceID) = 2 \n"
-	        		+ "        THEN 1  \n"
-	        		+ "        WHEN doctors.MedicineTypeID = 1 \n"
-	        		+ "            AND doctors.docid IN (14500, 18,26,46,4,14505,2,14520,44,8) \n"
-	        		+ "        THEN 2\n"
-	        		+ "        WHEN doctors.MedicineTypeID = 8 \n"
-	        		+ "            AND doctors.docid IN (14511, 14506, 14507, 20, 39, 14494, 30, 45, 63, 24) \n"
-	        		+ "        THEN 3\n"
-	        		+ "        ELSE 999\n"
-	        		+ "    END,\n"
-	        		+ "   \n"
-	        		+ "    FIELD(\n"
-	        		+ "        doctors.docid, \n"
-	        		+ "    \n"
-	        		+ "       14500, 18,26,46,4,14505,2,14520,44,8,\n"
-	        		+ "        \n"
-	        		+ "        14511, 14506, 14507, 20, 39, 14494, 30, 45, 63, 24\n"
-	        		+ "    ),\n"
-	        		+ "    doctors.docid DESC\n"
-	   //     		+ " LIMIT 10 OFFSET "  + offset 
-					  + ";");
-	       
+	        		+ "ORDER BY \r\n"
+	        		+ (medTypeID == null
+	        		    ? "    CASE \r\n"
+	        		      + "        WHEN doctors.docid IN (40,14515,51,14506,14511) THEN FIELD(doctors.docid, 40,14515,51,14506,14511) \r\n"  // preserve exact order among these 5
+	        		      + "        WHEN doctors.MedicineTypeID = 1 THEN 100 \r\n"
+	        		      + "        WHEN doctors.MedicineTypeID = 8 THEN 200 \r\n"
+	        		      + "        ELSE 300 \r\n"
+	        		      + "    END ASC, \r\n"
+	        		    : ""
+	        		  )
+	        		+ "    CASE \r\n"
+	        		+ "        WHEN doctors.MedicineTypeID = 1 THEN \r\n"
+	        		+ "            CASE WHEN doctors.docid IN (40,14515,51,14500) THEN FIELD(doctors.docid, 40,14515,51,14500) ELSE 9999 END \r\n"
+	        		+ "        WHEN doctors.MedicineTypeID = 8 THEN \r\n"
+	        		+ "            CASE WHEN doctors.docid IN (14506,14511) THEN FIELD(doctors.docid, 14506,14511) ELSE 9999 END \r\n"
+	        		+ "        WHEN videoService = 1 THEN 10000 \r\n"
+	        		+ "        ELSE 10001 \r\n"
+	        		+ "    END ASC, \r\n"
+	        		+ "    doctors.docid DESC \r\n"
+	        		+ " LIMIT 10 OFFSET " + offset + ";");
+
 	        List<HashMap<String, Object>> doctorList = new ArrayList<>();
 		 query1.setParameter("medTypeID", medTypeID);
 	        List<Object[]> resultList = query1.getResultList();
