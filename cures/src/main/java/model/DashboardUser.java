@@ -1,7 +1,7 @@
 package model;
 
 public enum DashboardUser {
-	 MARKETING("marketing.etheriumtech@gmail.com", "Password@123"),
+	 MARKETING("marketing.etheriumtech@gmail.com", "Marketing@123"),
 	    ADMIN("admin@etheriumtech.com", "Admin@1234"); 
 	
 	private final String email;
