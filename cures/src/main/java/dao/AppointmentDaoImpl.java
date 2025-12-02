@@ -512,7 +512,7 @@ public class AppointmentDaoImpl {
 	    	     				BigDecimal totalFee = feeCalculatorService.calculateTotalFee(baseFee);
 
 	    	     				// build breakdown map
-	    	     				Map<String, BigDecimal> breakdown = feeCalculatorService.buildBreakdown(baseFee);
+	    	     				Map<String, BigDecimal> breakdown = feeCalculatorService.buildBreakdown(totalFee);
 
 	    	     				// create nested object for "fee"
 	    	     				Map<String, Object> feeObject = new HashMap<>();
