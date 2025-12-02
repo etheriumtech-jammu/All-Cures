@@ -890,7 +890,7 @@ public static Integer sendEmail(int docID, int userID, String roomName, String d
 				BigDecimal totalFee = feeCalculatorService.calculateTotalFee(baseFee);
 
 				// build breakdown map
-				Map<String, BigDecimal> breakdown = feeCalculatorService.buildBreakdown(totalFee);
+				Map<String, BigDecimal> breakdown = feeCalculatorService.buildBreakdown(baseFee);
 
 				// create nested object for "fee"
 				Map<String, Object> feeObject = new HashMap<>();
