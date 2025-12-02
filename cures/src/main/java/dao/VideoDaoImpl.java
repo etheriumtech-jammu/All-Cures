@@ -895,7 +895,7 @@ public static Integer sendEmail(int docID, int userID, String roomName, String d
 				// create nested object for "fee"
 				Map<String, Object> feeObject = new HashMap<>();
 				feeObject.putAll(breakdown);    // gst, baseFee, etc.
-				feeObject.put("totalFee", totalFee);  // final amount
+				
 
 				// put into doctor
 				doctor.put("fee", feeObject);
