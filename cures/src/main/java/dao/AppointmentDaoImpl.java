@@ -41,15 +41,16 @@ import service.DailyCoService;
 import service.FeeCalculatorService;
 import model.Prescription;
 import java.time.ZoneOffset;
+import org.springframework.stereotype.Component;
+@Component
 public class AppointmentDaoImpl {
 
-	 private static FeeCalculatorService feeCalculatorService;
+	private static FeeCalculatorService feeCalculatorService;
     // constructor injection (preferred)
     @Autowired
     public AppointmentDaoImpl(FeeCalculatorService feeCalculatorService) {
         this.feeCalculatorService = feeCalculatorService;
     }
-
 	 // STATIC field used by the static method
     private static DailyCoService dailyCoService;
 
