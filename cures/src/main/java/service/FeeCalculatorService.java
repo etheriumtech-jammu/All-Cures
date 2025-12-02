@@ -71,7 +71,7 @@ public class FeeCalculatorService {
   //      map.put("baseFee", baseFee.setScale(SCALE, ROUNDING));
         map.put("gst", gst);
         map.put("etheriumPart", eth);
-        map.put("fee", total);
+        map.put("fee", baseFee);
 
         return map;
     }
