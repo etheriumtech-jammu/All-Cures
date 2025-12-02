@@ -26,6 +26,7 @@ import util.Constant;
 import util.HibernateUtil;
 import model.VideoFailure;
 import java.io.IOException;
+import java.math.BigDecimal;
 import model.ConsultCount;
 @Component
 public class VideoDaoImpl {
