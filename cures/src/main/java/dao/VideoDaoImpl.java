@@ -16,6 +16,7 @@ import controller.UserController;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import service.FeeCalculatorService;
 import service.SendEmailService;
 import model.EmailDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,13 @@ import java.io.IOException;
 import model.ConsultCount;
 @Component
 public class VideoDaoImpl {
+
+	private static FeeCalculatorService feeCalculatorService;
+	    // constructor injection (preferred)
+	    @Autowired
+	    public VideoDaoImpl(FeeCalculatorService feeCalculatorService) {
+	        this.feeCalculatorService = feeCalculatorService;
+	    }
 
 	@Autowired
 	private static SendEmailService emailUtil = new SendEmailService();
@@ -876,6 +884,22 @@ public static Integer sendEmail(int docID, int userID, String roomName, String d
                 doctor.put("hospitalID", row[48]);
                 doctor.put("ratingValueAverage", row[49]);
                 doctor.put("fee", row[50]);
+				BigDecimal baseFee = feeCalculatorService.toBigDecimal(row[50]);
+
+				BigDecimal totalFee = feeCalculatorService.calculateTotalFee(baseFee);
+
+				// build breakdown map
+				Map<String, BigDecimal> breakdown = feeCalculatorService.buildBreakdown(totalFee);
+
+				// create nested object for "fee"
+				Map<String, Object> feeObject = new HashMap<>();
+				feeObject.putAll(breakdown);    // gst, baseFee, etc.
+				feeObject.put("totalFee", totalFee);  // final amount
+
+				// put into doctor
+				doctor.put("fee", feeObject);
+
+
                 doctor.put("videoService", row[51] != null ? (BigInteger) row[51] : 0);
                 totalPagesCount.put("totalPages", totalPages);
                 doctorList.add(doctor);	
