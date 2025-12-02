@@ -59,20 +59,46 @@ public class FeeCalculatorService {
         return baseFee.add(gst).add(eth).setScale(SCALE, ROUNDING);
     }
 
-    // Full breakdown (optional)
-    public Map<String, BigDecimal> buildBreakdown(BigDecimal baseFee) {
-        if (baseFee == null) baseFee = BigDecimal.ZERO.setScale(SCALE, ROUNDING);
+  // inside FeeCalculatorService
+    public Map<String, BigDecimal> buildBreakdown(BigDecimal totalFee) {
+        if (totalFee == null) {
+            totalFee = BigDecimal.ZERO.setScale(SCALE, ROUNDING);
+        } else {
+            totalFee = totalFee.setScale(SCALE, ROUNDING);
+        }
 
-        BigDecimal gst = baseFee.multiply(feeProperties.getGstRate()).setScale(SCALE, ROUNDING);
-        BigDecimal eth = baseFee.multiply(feeProperties.getEthereumRate()).setScale(SCALE, ROUNDING);
-        BigDecimal total = baseFee.add(gst).add(eth).setScale(SCALE, ROUNDING);
+        BigDecimal gstRate = feeProperties.getGstRate() == null
+                ? BigDecimal.ZERO
+                : feeProperties.getGstRate().setScale(SCALE + 4, ROUNDING); // extra precision while calculating
+        BigDecimal ethRate = feeProperties.getEthereumRate() == null
+                ? BigDecimal.ZERO
+                : feeProperties.getEthereumRate().setScale(SCALE + 4, ROUNDING);
+
+        // divisor = 1 + gstRate + ethRate
+        BigDecimal divisor = BigDecimal.ONE.add(gstRate).add(ethRate);
+
+        if (divisor.compareTo(BigDecimal.ZERO) == 0) {
+            // defensive: avoid division by zero (shouldn't happen if rates are sensible)
+            throw new IllegalStateException("Sum of rates must not be -1.0");
+        }
+
+        // base = total / (1 + gstRate + ethRate)
+        BigDecimal baseFee = totalFee.divide(divisor, SCALE + 4, ROUNDING).setScale(SCALE, ROUNDING);
+
+        // compute parts from base
+        BigDecimal gst = baseFee.multiply(gstRate).setScale(SCALE, ROUNDING);
+        BigDecimal ethereumPart = baseFee.multiply(ethRate).setScale(SCALE, ROUNDING);
+
+        // recomposed total (useful to check rounding effects)
+        BigDecimal recomposedTotal = baseFee.add(gst).add(ethereumPart).setScale(SCALE, ROUNDING);
 
         Map<String, BigDecimal> map = new HashMap<>();
-  //      map.put("baseFee", baseFee.setScale(SCALE, ROUNDING));
+        map.put("baseFee", baseFee);
         map.put("gst", gst);
-        map.put("etheriumPart", eth);
-        map.put("fee", baseFee);
+        map.put("etheriumPart", ethereumPart);
+        map.put("totalFee", recomposedTotal);
 
         return map;
     }
+
 }
