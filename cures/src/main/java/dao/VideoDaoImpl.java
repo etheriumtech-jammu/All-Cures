@@ -15,6 +15,7 @@ import controller.UserController;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import service.FeeCalculatorService;
 import service.SendEmailService;
 import model.EmailDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,17 @@ import util.HibernateUtil;
 import model.VideoFailure;
 import java.io.IOException;
 import model.ConsultCount;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 @Component
 public class VideoDaoImpl {
 
+	private static FeeCalculatorService feeCalculatorService;
+	    // constructor injection (preferred)
+	    @Autowired
+	    public VideoDaoImpl(FeeCalculatorService feeCalculatorService) {
+	        this.feeCalculatorService = feeCalculatorService;
+	    }
 	@Autowired
 	private static SendEmailService emailUtil = new SendEmailService();
 
@@ -783,38 +791,27 @@ public class VideoDaoImpl {
 	        		+ "    address_states.statename, co.countryname, mat.AddressType, mdd.DegDesc, dd.YearOfGrad, mun.UnivName, \r\n"
 	        		+ "    uc.cityname, us.statename, uco.countryname, mt.id, address_states.codeid, uc.citycode, co.countrycodeid, \r\n"
 	        		+ "    mdd.DegID, s.splid, h.hospitalid\r\n"
-	        		+ "ORDER BY \n"
-	        		+ "    CASE \n"
-	        		+ "         WHEN MAX(sr.ServiceID) = 2 \n"
-	        		+ "            AND doctors.MedicineTypeID = 1 \n"
-	        		+ "            AND doctors.docid IN (14500, 18,26,46,4,14505,2,14520,44,8) \n"
-	        		+ "        THEN 0\n"
-	        		+ "        WHEN MAX(sr.ServiceID) = 2 \n"
-	        		+ "            AND doctors.MedicineTypeID = 8 \n"
-	        		+ "            AND doctors.docid IN (14511, 14506, 14507, 20, 39, 14494, 30, 45, 63, 24) \n"
-	        		+ "        THEN 0\n"
-	        		+ "        WHEN MAX(sr.ServiceID) = 2 \n"
-	        		+ "        THEN 1  \n"
-	        		+ "        WHEN doctors.MedicineTypeID = 1 \n"
-	        		+ "            AND doctors.docid IN (14500, 18,26,46,4,14505,2,14520,44,8) \n"
-	        		+ "        THEN 2\n"
-	        		+ "        WHEN doctors.MedicineTypeID = 8 \n"
-	        		+ "            AND doctors.docid IN (14511, 14506, 14507, 20, 39, 14494, 30, 45, 63, 24) \n"
-	        		+ "        THEN 3\n"
-	        		+ "        ELSE 999\n"
-	        		+ "    END,\n"
-	        		+ "   \n"
-	        		+ "    FIELD(\n"
-	        		+ "        doctors.docid, \n"
-	        		+ "    \n"
-	        		+ "       14500, 18,26,46,4,14505,2,14520,44,8,\n"
-	        		+ "        \n"
-	        		+ "        14511, 14506, 14507, 20, 39, 14494, 30, 45, 63, 24\n"
-	        		+ "    ),\n"
-	        		+ "    doctors.docid DESC\n"
-	   //     		+ " LIMIT 10 OFFSET "  + offset 
-					  + ";");
-	       
+	        		+ "ORDER BY \r\n"
+	        		+ (medTypeID == null
+	        		    ? "    CASE \r\n"
+	        		      + "        WHEN doctors.docid IN (40,14515,51,14507,20) THEN FIELD(doctors.docid, 40,14515,51,14507,20) \r\n"  // preserve exact order among these 5
+	        		      + "        WHEN doctors.MedicineTypeID = 1 THEN 100 \r\n"
+	        		      + "        WHEN doctors.MedicineTypeID = 8 THEN 200 \r\n"
+	        		      + "        ELSE 300 \r\n"
+	        		      + "    END ASC, \r\n"
+	        		    : ""
+	        		  )
+	        		+ "    CASE \r\n"
+	        		+ "        WHEN doctors.MedicineTypeID = 1 THEN \r\n"
+	        		+ "            CASE WHEN doctors.docid IN (40,14515,51,14500) THEN FIELD(doctors.docid, 40,14515,51,14500) ELSE 9999 END \r\n"
+	        		+ "        WHEN doctors.MedicineTypeID = 8 THEN \r\n"
+	        		+ "            CASE WHEN doctors.docid IN (14507,20) THEN FIELD(doctors.docid, 14507,20) ELSE 9999 END \r\n"
+	        		+ "        WHEN videoService = 1 THEN 10000 \r\n"
+	        		+ "        ELSE 10001 \r\n"
+	        		+ "    END ASC, \r\n"
+	        		+ "    doctors.docid DESC \r\n"
+	        		+ " LIMIT 10 OFFSET " + offset + ";");
+		 
 	        List<HashMap<String, Object>> doctorList = new ArrayList<>();
 		 query1.setParameter("medTypeID", medTypeID);
 	        List<Object[]> resultList = query1.getResultList();
@@ -883,7 +880,21 @@ public class VideoDaoImpl {
                 doctor.put("specialtyID", row[47]);
                 doctor.put("hospitalID", row[48]);
                 doctor.put("ratingValueAverage", row[49]);
-                doctor.put("fee", row[50]);
+               BigDecimal baseFee = feeCalculatorService.toBigDecimal(row[50]);
+
+				BigDecimal totalFee = feeCalculatorService.calculateTotalFee(baseFee);
+
+				// build breakdown map
+				Map<String, BigDecimal> breakdown = feeCalculatorService.buildBreakdown(totalFee);
+
+				// create nested object for "fee"
+				Map<String, Object> feeObject = new HashMap<>();
+				feeObject.putAll(breakdown);    // gst, baseFee, etc.
+				
+
+				// put into doctor
+				doctor.put("fee", feeObject);
+
                 doctor.put("videoService", row[51] != null ? (BigInteger) row[51] : 0);
                 totalPagesCount.put("totalPages", totalPages);
                 doctorList.add(doctor);	
