@@ -20,6 +20,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import util.PaymentUtil;
+import service.FeeCalculatorService;
 import model.PaymentGatewayTransaction;
 import util.AesCryptUtil;
 import util.Constant;
@@ -27,6 +28,7 @@ import util.HibernateUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
