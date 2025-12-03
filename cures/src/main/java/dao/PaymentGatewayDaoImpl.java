@@ -27,8 +27,17 @@ import util.HibernateUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PaymentGatewayDaoImpl {
+
+	  private static FeeCalculatorService feeCalculatorService;
+    // constructor injection (preferred)
+    @Autowired
+    public PaymentGatewayDaoImpl(FeeCalculatorService feeCalculatorService) {
+        this.feeCalculatorService = feeCalculatorService;
+    }
 
 	// Synchronization lock object
 	private static final Object paymentLock = new Object();
@@ -214,19 +223,21 @@ public class PaymentGatewayDaoImpl {
 	        tx = session.beginTransaction();
 
 	        // Split
-	        double wallet2Amount = amount * 0.20; // Platform / All Cures
-	        double wallet1Amount = amount * 0.10; // GST
-	        double wallet3Amount = amount * 0.70; // Doctor
+	       Map<String, BigDecimal> breakdown = feeCalculatorService.buildBreakdown(feeCalculatorService.toBigDecimal(amount));
+	        BigDecimal baseFee = breakdown.get("baseFee");
+	        BigDecimal gstPart = breakdown.get("gst");
+	        BigDecimal ethPart = breakdown.get("etheriumPart");
 
 	        // 1) Insert ledger rows (status=SUCCESS)
-	         insertLeg(session, paymentGatewayTransactionId, 2, null, wallet2Amount, "CREDIT", "SUCCESS", "20% platform");
-	        insertLeg(session, paymentGatewayTransactionId, 1, null, wallet1Amount, "CREDIT", "SUCCESS", "10% GST");
-	        insertLeg(session, paymentGatewayTransactionId, 3, docId,wallet3Amount, "CREDIT", "SUCCESS", "70% doctor");
+	        insertLeg(session, paymentGatewayTransactionId, 2, null, ethPart.doubleValue(), "CREDIT", "SUCCESS", "10% platform");
+	        insertLeg(session, paymentGatewayTransactionId, 1, null, gstPart.doubleValue(), "CREDIT", "SUCCESS", "18% GST");
+	        insertLeg(session, paymentGatewayTransactionId, 3, docId,baseFee.doubleValue(), "CREDIT", "SUCCESS", "72% doctor");
 
 	        // 2) Update balances
-	        bumpWallet(session, 2, wallet2Amount, null);
-	        bumpWallet(session, 1, wallet1Amount, null);
-	        bumpWallet(session, 3, wallet3Amount, docId);
+	       bumpWallet(session, 2, ethPart.doubleValue(), null);
+	        bumpWallet(session, 1, gstPart.doubleValue(), null);
+	        bumpWallet(session, 3, baseFee.doubleValue(), docId);
+
 
 	        tx.commit();
 	        System.out.println("Wallet + ledger updated successfully for pgId=" + paymentGatewayTransactionId);
