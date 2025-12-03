@@ -731,9 +731,7 @@ public class VideoDaoImpl {
 	        long totalCount = totalCountNumber != null ? totalCountNumber.longValue() : 0L;
 
 	        int totalPages = (int) Math.ceil(totalCount / (double) pageSize);
-	        Constant.log("Total doctors: " + totalCount + ", totalPages: " + totalPages, 1);
-
-	        // 2️⃣ Actual data query (NO LIMIT here; Hibernate will handle it)
+	        
 	        String sql =
 	                "SELECT " +
 	                "    doctors.docid, doctors.gender, doctors.insurance_accept, " +
@@ -900,7 +898,7 @@ public class VideoDaoImpl {
 	        totalPagesCount.put("totalPages", totalCount);
 
 	        response.put("data", doctorList);
-	        response.put("totalPagesCount", totalPagesCount);
+	        response.put("totalPagesCount", totalPages);
 	        
 	        return response;
 
