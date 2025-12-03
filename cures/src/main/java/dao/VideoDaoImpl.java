@@ -895,10 +895,10 @@ public class VideoDaoImpl {
 	        }
 
 	        HashMap<String, Object> totalPagesCount = new HashMap<>();
-	        totalPagesCount.put("totalPages", totalCount);
+	        totalPagesCount.put("totalPages", totalPages);
 
 	        response.put("data", doctorList);
-	        response.put("totalPagesCount", totalPages);
+	        response.put("totalPagesCount", totalPagesCount);
 	        
 	        return response;
 
