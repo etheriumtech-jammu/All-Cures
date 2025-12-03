@@ -792,7 +792,7 @@ public class VideoDaoImpl {
 	        		+ "    uc.cityname, us.statename, uco.countryname, mt.id, address_states.codeid, uc.citycode, co.countrycodeid, \r\n"
 	        		+ "    mdd.DegID, s.splid, h.hospitalid\r\n"
 	        		+ "ORDER BY \r\n"
-	        		+ "    CASE WHEN doctors.videoService = 1 THEN 0 ELSE 1 END, \r\n"
+	        		+ "    CASE WHEN videoService = 1 THEN 0 ELSE 1 END, \r\n"
 	        		+ (medTypeID == null
 	        		    ? "    CASE \r\n"
 	        		      + "        WHEN doctors.docid IN (40,14515,51,14507,20) THEN FIELD(doctors.docid, 40,14515,51,14507,20) \r\n"
