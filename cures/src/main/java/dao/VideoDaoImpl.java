@@ -706,206 +706,208 @@ public class VideoDaoImpl {
     }
 }
 	 public static HashMap<String, Object> getDoctors(Integer offset, Integer medTypeID) {
-	        Session session = HibernateUtil.buildSessionFactory();
-	        	
-			/*	        Query query1 = session.createNativeQuery("SELECT d.docid, d.prefix, d.docname_first, d.docname_middle, d.docname_last,d.img_Loc " +
-	                "mt.name AS MedicineTypeName, h.hospital_affliated " +
-	                "FROM Doctors_New d " +
-	                " LEFT JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID " +
-	                "JOIN registration r ON d.docid = r.DocID " +
-	                
-	                "LEFT JOIN hospital AS h ON d.hospital_affliated = h.hospitalid " +
-	                "JOIN medicinetype AS mt ON d.MedicineTypeID = mt.id " +
-	                "WHERE sr.ServiceID=2 and EndDate>=current_date();");
-*/
-	        Query query1 = session.createNativeQuery("SELECT\r\n"
-	        		+ "    doctors.docid, doctors.gender, doctors.insurance_accept,\r\n"
-	        		+ "    doctors.awards, doctors.telephone_nos, doctors.other_spls, doctors.over_allrating,\r\n"
-	        		+ "    doctors.prefix, doctors.docname_first, doctors.docname_middle, doctors.docname_last,\r\n"
-	        		+ "    doctors.email, doctors.waiting_time, doctors.verified, doctors.about, doctors.docactive,\r\n"
-	        		+ "    doctors.website_url, doctors.featured_doctor_date, doctors.img_loc, doctors.Natl_Reg_Date,\r\n"
-	        		+ "    doctors.NatlRegNo, doctors.CreatedDate, doctors.CreatedBy, doctors.Status,\r\n"
-	        		+ "    doctors.LastUpdatedDate, doctors.UpdatedBy, h.hospital_affliated, s.spl_name,\r\n"
-	        		+ "    st.statename AS state_name, mt.name AS MedicineTypeName,\r\n"
-	        		+ "    da.Address1, da.Address2, c.cityname, address_states.statename AS address_state,\r\n"
-	        		+ "    co.countryname AS address_country, mat.AddressType,\r\n"
-	        		+ "    mdd.DegDesc, dd.YearOfGrad, mun.UnivName,\r\n"
-	        		+ "    uc.cityname AS univ_city, us.statename AS univ_state, uco.countryname AS univ_country,\r\n"
-	        		+ "    mt.id, address_states.codeid, uc.citycode, co.countrycodeid,\r\n"
-	        		+ "    mdd.DegID, s.splid, h.hospitalid, \r\n"
-	        		+ "    AVG(dr.ratingVal) AS ratingValAVG, -- Ensure aggregation here\r\n"
-	        		+ "    MAX(sr.fee) AS fee, -- Use MAX() to avoid GROUP BY errors\r\n"
-	        		+ "    CASE WHEN MAX(sr.ServiceID) = 2 THEN 1 ELSE 0 END AS videoService\r\n"
-	        		+ "FROM\r\n"
-	        		+ "    Doctors_New AS doctors\r\n"
-	        		+ "LEFT JOIN\r\n"
-	        		+ "    DoctorAddresses AS da ON doctors.docid = da.DocID\r\n"
-	        		+ "LEFT JOIN\r\n"
-	        		+ "    DoctorDegrees AS dd ON doctors.docid = dd.DocID\r\n"
-	        		+ "LEFT JOIN\r\n"
-	        		+ "    masterdocdegrees AS mdd ON dd.DegreeID = mdd.DegID\r\n"
-	        		+ "LEFT JOIN\r\n"
-	        		+ "    masteruniversities AS mun ON dd.UnivID = mun.UnivID\r\n"
-	        		+ "LEFT JOIN\r\n"
-	        		+ "    hospital AS h ON doctors.hospital_affliated = h.hospitalid\r\n"
-	        		+ "LEFT JOIN\r\n"
-	        		+ "    specialties AS s ON doctors.primary_spl = s.splid\r\n"
-	        		+ "LEFT JOIN\r\n"
-	        		+ "    states AS st ON doctors.RegWithStateBoardID = st.codeid\r\n"
-	        		+ "LEFT JOIN\r\n"
-	        		+ "    medicinetype AS mt ON doctors.MedicineTypeID = mt.id\r\n"
-	        		+ "LEFT JOIN\r\n"
-	        		+ "    city AS c ON da.City = c.citycode\r\n"
-	        		+ "LEFT JOIN\r\n"
-	        		+ "    states AS address_states ON da.State = address_states.codeid\r\n"
-	        		+ "LEFT JOIN\r\n"
-	        		+ "    countries AS co ON da.Country = co.countrycodeid\r\n"
-	        		+ "LEFT JOIN\r\n"
-	        		+ "    city AS uc ON mun.UnivCity = uc.citycode\r\n"
-	        		+ "LEFT JOIN\r\n"
-	        		+ "    states us ON mun.UnivState = us.codeid\r\n"
-	        		+ "LEFT JOIN\r\n"
-	        		+ "    countries AS uco ON mun.UnivCountry = uco.countrycodeid\r\n"
-	        		+ "LEFT JOIN\r\n"
-	        		+ "    masteraddresstype AS mat ON da.AddressTypeID = mat.ID\r\n"
-	        		+ "LEFT JOIN (\r\n"
-	        		+ "    SELECT r.DocID, sr.ServiceID, sr.fee\r\n"
-	        		+ "    FROM registration r\r\n"
-	        		+ "    JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID\r\n"
-	        		+ "    WHERE sr.ServiceID = 2 AND EndDate >= CURRENT_DATE\r\n"
-	        		+ ") AS sr ON doctors.docid = sr.DocID\r\n"
-	        		+ "LEFT JOIN \r\n"
-	        		+ "    doctorsrating AS dr ON dr.target_id = doctors.docid AND dr.target_type_id = 1\r\n"
-	        		+ "WHERE \r\n"
-	        		+ "    (doctors.docid <= 63 OR doctors.docid >= 14487) \r\n"
-	        		+ "    AND doctors.about IS NOT NULL\r\n"
-	        		+ "	AND (:medTypeID IS NULL OR doctors.MedicineTypeID = :medTypeID) \r\n"
-	        		+ "GROUP BY \r\n"
-	        		+ "    doctors.docid, doctors.gender, doctors.insurance_accept, doctors.awards, \r\n"
-	        		+ "    doctors.telephone_nos, doctors.other_spls, doctors.over_allrating, doctors.prefix, \r\n"
-	        		+ "    doctors.docname_first, doctors.docname_middle, doctors.docname_last, doctors.email, \r\n"
-	        		+ "    doctors.waiting_time, doctors.verified, doctors.about, doctors.docactive, doctors.website_url, \r\n"
-	        		+ "    doctors.featured_doctor_date, doctors.img_loc, doctors.Natl_Reg_Date, doctors.NatlRegNo, \r\n"
-	        		+ "    doctors.CreatedDate, doctors.CreatedBy, doctors.Status, doctors.LastUpdatedDate, doctors.UpdatedBy, \r\n"
-	        		+ "    h.hospital_affliated, s.spl_name, st.statename, mt.name, da.Address1, da.Address2, c.cityname, \r\n"
-	        		+ "    address_states.statename, co.countryname, mat.AddressType, mdd.DegDesc, dd.YearOfGrad, mun.UnivName, \r\n"
-	        		+ "    uc.cityname, us.statename, uco.countryname, mt.id, address_states.codeid, uc.citycode, co.countrycodeid, \r\n"
-	        		+ "    mdd.DegID, s.splid, h.hospitalid\r\n"
-	        		+ "ORDER BY \r\n"
-	        		+ "    CASE WHEN videoService = 1 THEN 0 ELSE 1 END, \r\n"
-	        		+ (medTypeID == null
-	        		    ? "    CASE \r\n"
-	        		      + "        WHEN doctors.docid IN (40,14515,51,14507,20) THEN FIELD(doctors.docid, 40,14515,51,14507,20) \r\n"
-	        		      + "        WHEN doctors.MedicineTypeID = 1 THEN 100 \r\n"
-	        		      + "        WHEN doctors.MedicineTypeID = 8 THEN 200 \r\n"
-	        		      + "        ELSE 300 \r\n"
-	        		      + "    END ASC, \r\n"
-	        		    : ""
-	        		  )
-	        		+ "    CASE \r\n"
-	        		+ "        WHEN doctors.MedicineTypeID = 1 THEN \r\n"
-	        		+ "            CASE WHEN doctors.docid IN (40,14515,51,14500) THEN FIELD(doctors.docid,40,14515,51,14500) ELSE 9999 END \r\n"
-	        		+ "        WHEN doctors.MedicineTypeID = 8 THEN \r\n"
-	        		+ "            CASE WHEN doctors.docid IN (14507,20) THEN FIELD(doctors.docid, 14507,20) ELSE 9999 END \r\n"
-	        		+ "        ELSE 10001 \r\n"
-	        		+ "    END, \r\n"
-	        		+ "    doctors.docid DESC \r\n"
-	        		+ " LIMIT 10 OFFSET " + offset + ";");
-		 
-	        List<HashMap<String, Object>> doctorList = new ArrayList<>();
-		 query1.setParameter("medTypeID", medTypeID);
-	        List<Object[]> resultList = query1.getResultList();
-	        Constant.log("Executed Query and Got: " + resultList.size() + " Doctor Lists back", 1);
-	        int totalPages = (int) Math.ceil(resultList.size() / 10.0); // Rounds up
-	        Constant.log("Got TotalPages " + totalPages , 1);
-	        
-	     // Apply manual pagination (LIMIT & OFFSET)
-	        int pageSize = 10; // Number of results per page
-	        int startIndex = offset; // Starting index based on offset
-	        int endIndex = Math.min(startIndex + pageSize, resultList.size()); // Ending index
 
-	        List<Object[]> paginatedResults = resultList.subList(startIndex, endIndex); // Manual LIMIT
-	        HashMap<String, Object> totalPagesCount = new HashMap<>();
-	     // Iterate through results and map each row to a HashMap
-            for (Object[] row : paginatedResults) {
-                HashMap<String, Object> doctor = new HashMap<>();
-               
-                doctor.put("docID", row[0]);
-                doctor.put("gender", row[1]);
-                doctor.put("insuranceAccept", row[2]);
-                doctor.put("awards", row[3]);
-                doctor.put("telephoneNos", row[4]);
-                doctor.put("otherSpecializations", row[5]);
-                doctor.put("overallRating", row[6]);
-                doctor.put("prefix", row[7]);
-                doctor.put("firstName", row[8]);
-                doctor.put("middleName", row[9]);
-                doctor.put("lastName", row[10]);
-                doctor.put("email", row[11]);
-                doctor.put("waitingTime", row[12]);
-                doctor.put("verified", row[13]);
-                doctor.put("about", row[14]);
-                doctor.put("docActive", row[15]);
-                doctor.put("websiteUrl", row[16]);
-                doctor.put("featuredDoctorDate", row[17]);
-                doctor.put("imgLoc", row[18]);
-                doctor.put("nationalRegDate", row[19]);
-                doctor.put("nationalRegNo", row[20]);
-                doctor.put("createdDate", row[21]);
-                doctor.put("createdBy", row[22]);
-                doctor.put("status", row[23]);
-                doctor.put("lastUpdatedDate", row[24]);
-                doctor.put("updatedBy", row[25]);
-                doctor.put("hospitalAffiliated", row[26]);
-                doctor.put("specialtyName", row[27]);
-                doctor.put("stateName", row[28]);
-                doctor.put("medicineTypeName", row[29]);
-                doctor.put("address1", row[30]);
-                doctor.put("address2", row[31]);
-                doctor.put("cityName", row[32]);
-                doctor.put("addressState", row[33]);
-                doctor.put("addressCountry", row[34]);
-                doctor.put("addressType", row[35]);
-                doctor.put("degreeDescription", row[36]);
-                doctor.put("yearOfGraduation", row[37]);
-                doctor.put("universityName", row[38]);
-                doctor.put("universityCity", row[39]);
-                doctor.put("universityState", row[40]);
-                doctor.put("universityCountry", row[41]);
-                doctor.put("medicineTypeID", row[42]);
-                doctor.put("addressStateID", row[43]);
-                doctor.put("univCityCode", row[44]);
-                doctor.put("addressCountryID", row[45]);
-                doctor.put("degreeID", row[46]);
-                doctor.put("specialtyID", row[47]);
-                doctor.put("hospitalID", row[48]);
-                doctor.put("ratingValueAverage", row[49]);
-               BigDecimal baseFee = feeCalculatorService.toBigDecimal(row[50]);
+	    Session session = HibernateUtil.buildSessionFactory();
+	    HashMap<String, Object> response = new HashMap<>();
 
-				BigDecimal totalFee = feeCalculatorService.calculateTotalFee(baseFee);
-
-				// build breakdown map
-				Map<String, BigDecimal> breakdown = feeCalculatorService.buildBreakdown(totalFee);
-
-				// create nested object for "fee"
-				Map<String, Object> feeObject = new HashMap<>();
-				feeObject.putAll(breakdown);    // gst, baseFee, etc.
-				
-
-				// put into doctor
-				doctor.put("fee", feeObject);
-
-                doctor.put("videoService", row[51] != null ? (BigInteger) row[51] : 0);
-                totalPagesCount.put("totalPages", totalPages);
-                doctorList.add(doctor);	
-                
-                }
-           // **Wrap the data in a single response object**
-            HashMap<String, Object> response = new HashMap<>();
-            response.put("data", doctorList);
-            response.put("totalPagesCount", totalPagesCount);
-	        return response;
+	    int pageSize = 10;
+	    if (offset == null || offset < 0) {
+	        offset = 0;
 	    }
+
+	    try {
+	        // 1️⃣ Get TOTAL COUNT for pagination (no joins needed, just same WHERE conditions)
+	        String countSql =
+	                "SELECT COUNT(*) " +
+	                "FROM Doctors_New doctors " +
+	                "WHERE (doctors.docid <= 63 OR doctors.docid >= 14487) " +
+	                "  AND doctors.about IS NOT NULL " +
+	                "  AND (:medTypeID IS NULL OR doctors.MedicineTypeID = :medTypeID)";
+
+	        Query countQuery = session.createNativeQuery(countSql);
+	        countQuery.setParameter("medTypeID", medTypeID);
+
+	        Number totalCountNumber = (Number) countQuery.getSingleResult();
+	        long totalCount = totalCountNumber != null ? totalCountNumber.longValue() : 0L;
+
+	        int totalPages = (int) Math.ceil(totalCount / (double) pageSize);
+	        Constant.log("Total doctors: " + totalCount + ", totalPages: " + totalPages, 1);
+
+	        // 2️⃣ Actual data query (NO LIMIT here; Hibernate will handle it)
+	        String sql =
+	                "SELECT " +
+	                "    doctors.docid, doctors.gender, doctors.insurance_accept, " +
+	                "    doctors.awards, doctors.telephone_nos, doctors.other_spls, doctors.over_allrating, " +
+	                "    doctors.prefix, doctors.docname_first, doctors.docname_middle, doctors.docname_last, " +
+	                "    doctors.email, doctors.waiting_time, doctors.verified, doctors.about, doctors.docactive, " +
+	                "    doctors.website_url, doctors.featured_doctor_date, doctors.img_loc, doctors.Natl_Reg_Date, " +
+	                "    doctors.NatlRegNo, doctors.CreatedDate, doctors.CreatedBy, doctors.Status, " +
+	                "    doctors.LastUpdatedDate, doctors.UpdatedBy, h.hospital_affliated, s.spl_name, " +
+	                "    st.statename AS state_name, mt.name AS MedicineTypeName, " +
+	                "    da.Address1, da.Address2, c.cityname, address_states.statename AS address_state, " +
+	                "    co.countryname AS address_country, mat.AddressType, " +
+	                "    mdd.DegDesc, dd.YearOfGrad, mun.UnivName, " +
+	                "    uc.cityname AS univ_city, us.statename AS univ_state, uco.countryname AS univ_country, " +
+	                "    mt.id, address_states.codeid, uc.citycode, co.countrycodeid, " +
+	                "    mdd.DegID, s.splid, h.hospitalid, " +
+	                "    AVG(dr.ratingVal) AS ratingValAVG, " +
+	                "    MAX(sr.fee) AS fee, " +
+	                "    CASE WHEN MAX(sr.ServiceID) = 2 THEN 1 ELSE 0 END AS videoService " +
+	                "FROM Doctors_New AS doctors " +
+	                "LEFT JOIN DoctorAddresses AS da ON doctors.docid = da.DocID " +
+	                "LEFT JOIN DoctorDegrees AS dd ON doctors.docid = dd.DocID " +
+	                "LEFT JOIN masterdocdegrees AS mdd ON dd.DegreeID = mdd.DegID " +
+	                "LEFT JOIN masteruniversities AS mun ON dd.UnivID = mun.UnivID " +
+	                "LEFT JOIN hospital AS h ON doctors.hospital_affliated = h.hospitalid " +
+	                "LEFT JOIN specialties AS s ON doctors.primary_spl = s.splid " +
+	                "LEFT JOIN states AS st ON doctors.RegWithStateBoardID = st.codeid " +
+	                "LEFT JOIN medicinetype AS mt ON doctors.MedicineTypeID = mt.id " +
+	                "LEFT JOIN city AS c ON da.City = c.citycode " +
+	                "LEFT JOIN states AS address_states ON da.State = address_states.codeid " +
+	                "LEFT JOIN countries AS co ON da.Country = co.countrycodeid " +
+	                "LEFT JOIN city AS uc ON mun.UnivCity = uc.citycode " +
+	                "LEFT JOIN states us ON mun.UnivState = us.codeid " +
+	                "LEFT JOIN countries AS uco ON mun.UnivCountry = uco.countrycodeid " +
+	                "LEFT JOIN masteraddresstype AS mat ON da.AddressTypeID = mat.ID " +
+	                "LEFT JOIN ( " +
+	                "    SELECT r.DocID, sr.ServiceID, sr.fee " +
+	                "    FROM registration r " +
+	                "    JOIN ServiceContractDetails sr ON r.registration_id = sr.UserID " +
+	                "    WHERE sr.ServiceID = 2 AND EndDate >= CURRENT_DATE " +
+	                ") AS sr ON doctors.docid = sr.DocID " +
+	                "LEFT JOIN doctorsrating AS dr " +
+	                "       ON dr.target_id = doctors.docid AND dr.target_type_id = 1 " +
+	                "WHERE (doctors.docid <= 63 OR doctors.docid >= 14487) " +
+	                "  AND doctors.about IS NOT NULL " +
+	                "  AND (:medTypeID IS NULL OR doctors.MedicineTypeID = :medTypeID) " +
+	                "GROUP BY " +
+	                "    doctors.docid, doctors.gender, doctors.insurance_accept, doctors.awards, " +
+	                "    doctors.telephone_nos, doctors.other_spls, doctors.over_allrating, doctors.prefix, " +
+	                "    doctors.docname_first, doctors.docname_middle, doctors.docname_last, doctors.email, " +
+	                "    doctors.waiting_time, doctors.verified, doctors.about, doctors.docactive, doctors.website_url, " +
+	                "    doctors.featured_doctor_date, doctors.img_loc, doctors.Natl_Reg_Date, doctors.NatlRegNo, " +
+	                "    doctors.CreatedDate, doctors.CreatedBy, doctors.Status, doctors.LastUpdatedDate, doctors.UpdatedBy, " +
+	                "    h.hospital_affliated, s.spl_name, st.statename, mt.name, da.Address1, da.Address2, c.cityname, " +
+	                "    address_states.statename, co.countryname, mat.AddressType, mdd.DegDesc, dd.YearOfGrad, mun.UnivName, " +
+	                "    uc.cityname, us.statename, uco.countryname, mt.id, address_states.codeid, uc.citycode, " +
+	                "    co.countrycodeid, mdd.DegID, s.splid, h.hospitalid " +
+	                "ORDER BY " +
+	                "    CASE WHEN videoService = 1 THEN 0 ELSE 1 END, " +
+	                (medTypeID == null
+	                    ? "    CASE " +
+	                      "        WHEN doctors.docid IN (40,14515,51,14507,20) " +
+	                      "        THEN FIELD(doctors.docid, 40,14515,51,14507,20) " +
+	                      "        WHEN doctors.MedicineTypeID = 1 THEN 100 " +
+	                      "        WHEN doctors.MedicineTypeID = 8 THEN 200 " +
+	                      "        ELSE 300 " +
+	                      "    END ASC, "
+	                    : "") +
+	                "    CASE " +
+	                "        WHEN doctors.MedicineTypeID = 1 THEN " +
+	                "            CASE WHEN doctors.docid IN (40,14515,51,14500) " +
+	                "                 THEN FIELD(doctors.docid,40,14515,51,14500) ELSE 9999 END " +
+	                "        WHEN doctors.MedicineTypeID = 8 THEN " +
+	                "            CASE WHEN doctors.docid IN (14507,20) " +
+	                "                 THEN FIELD(doctors.docid, 14507,20) ELSE 9999 END " +
+	                "        ELSE 10001 " +
+	                "    END, " +
+	                "    doctors.docid DESC";
+
+	        Query query1 = session.createNativeQuery(sql);
+	        query1.setParameter("medTypeID", medTypeID);
+
+	        // ✅ DB-side pagination instead of LIMIT in SQL string
+	        query1.setFirstResult(offset);
+	        query1.setMaxResults(pageSize);
+
+	        @SuppressWarnings("unchecked")
+	        List<Object[]> resultList = query1.getResultList();
+	        Constant.log("Executed Query and Got: " + resultList.size() + " Doctor rows back", 1);
+
+	        // 3️⃣ Build doctor list from this *paged* result
+	        List<HashMap<String, Object>> doctorList = new ArrayList<>();
+
+	        for (Object[] row : resultList) {
+	            HashMap<String, Object> doctor = new HashMap<>();
+
+	            doctor.put("docID", row[0]);
+	            doctor.put("gender", row[1]);
+	            doctor.put("insuranceAccept", row[2]);
+	            doctor.put("awards", row[3]);
+	            doctor.put("telephoneNos", row[4]);
+	            doctor.put("otherSpecializations", row[5]);
+	            doctor.put("overallRating", row[6]);
+	            doctor.put("prefix", row[7]);
+	            doctor.put("firstName", row[8]);
+	            doctor.put("middleName", row[9]);
+	            doctor.put("lastName", row[10]);
+	            doctor.put("email", row[11]);
+	            doctor.put("waitingTime", row[12]);
+	            doctor.put("verified", row[13]);
+	            doctor.put("about", row[14]);
+	            doctor.put("docActive", row[15]);
+	            doctor.put("websiteUrl", row[16]);
+	            doctor.put("featuredDoctorDate", row[17]);
+	            doctor.put("imgLoc", row[18]);
+	            doctor.put("nationalRegDate", row[19]);
+	            doctor.put("nationalRegNo", row[20]);
+	            doctor.put("createdDate", row[21]);
+	            doctor.put("createdBy", row[22]);
+	            doctor.put("status", row[23]);
+	            doctor.put("lastUpdatedDate", row[24]);
+	            doctor.put("updatedBy", row[25]);
+	            doctor.put("hospitalAffiliated", row[26]);
+	            doctor.put("specialtyName", row[27]);
+	            doctor.put("stateName", row[28]);
+	            doctor.put("medicineTypeName", row[29]);
+	            doctor.put("address1", row[30]);
+	            doctor.put("address2", row[31]);
+	            doctor.put("cityName", row[32]);
+	            doctor.put("addressState", row[33]);
+	            doctor.put("addressCountry", row[34]);
+	            doctor.put("addressType", row[35]);
+	            doctor.put("degreeDescription", row[36]);
+	            doctor.put("yearOfGraduation", row[37]);
+	            doctor.put("universityName", row[38]);
+	            doctor.put("universityCity", row[39]);
+	            doctor.put("universityState", row[40]);
+	            doctor.put("universityCountry", row[41]);
+	            doctor.put("medicineTypeID", row[42]);
+	            doctor.put("addressStateID", row[43]);
+	            doctor.put("univCityCode", row[44]);
+	            doctor.put("addressCountryID", row[45]);
+	            doctor.put("degreeID", row[46]);
+	            doctor.put("specialtyID", row[47]);
+	            doctor.put("hospitalID", row[48]);
+	            doctor.put("ratingValueAverage", row[49]);
+
+	            // fee & breakdown
+	            BigDecimal baseFee = feeCalculatorService.toBigDecimal(row[50]);
+	            BigDecimal totalFee = feeCalculatorService.calculateTotalFee(baseFee);
+	            Map<String, BigDecimal> breakdown = feeCalculatorService.buildBreakdown(totalFee);
+
+	            Map<String, Object> feeObject = new HashMap<>();
+	            feeObject.putAll(breakdown);
+	            doctor.put("fee", feeObject);
+
+	            // video service flag
+	            doctor.put("videoService", row[51] != null ? row[51] : 0);
+
+	            doctorList.add(doctor);
+	        }
+
+	        HashMap<String, Object> totalPagesCount = new HashMap<>();
+	        totalPagesCount.put("totalPages", totalCount);
+
+	        response.put("data", doctorList);
+	        response.put("totalPagesCount", totalPagesCount);
+	        
+	        return response;
+
+	    } finally {
+	        
+	    }
+	}
 	public static  List<HashMap<String, Object>> getDoctorsList(Integer offset) {
 	        Session session = HibernateUtil.buildSessionFactory();
 	        	
