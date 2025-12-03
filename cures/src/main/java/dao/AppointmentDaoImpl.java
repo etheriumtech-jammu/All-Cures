@@ -33,8 +33,17 @@ import model.ServicePayment;
 import util.Constant;
 import util.HibernateUtil;
 import service.DailyCoService;
-
+import service.FeeCalculatorService;
+import org.springframework.stereotype.Component;
+@Component
 public class AppointmentDaoImpl {
+
+	private static FeeCalculatorService feeCalculatorService;
+    // constructor injection (preferred)
+    @Autowired
+    public AppointmentDaoImpl(FeeCalculatorService feeCalculatorService) {
+        this.feeCalculatorService = feeCalculatorService;
+    }
 	  // STATIC field used by the static method
     private static DailyCoService dailyCoService;
 
@@ -375,7 +384,19 @@ public class AppointmentDaoImpl {
 	    	                 // If you also need amount depending on countryCode
 	    	                if (country_code == null || country_code.trim().isEmpty()
 	    	                         || "IN".equalsIgnoreCase(country_code)) {
-	    	                     datesMap.put("amount", amount.toString());
+	    	                     BigDecimal baseFee = feeCalculatorService.toBigDecimal(row[0]);
+
+	    	     				BigDecimal totalFee = feeCalculatorService.calculateTotalFee(baseFee);
+
+	    	     				// build breakdown map
+	    	     				Map<String, BigDecimal> breakdown = feeCalculatorService.buildBreakdown(totalFee);
+
+	    	     				// create nested object for "fee"
+	    	     				Map<String, Object> feeObject = new HashMap<>();
+	    	     				feeObject.putAll(breakdown);    // gst, baseFee, etc.
+
+	    	     				// put into doctor
+	    	     				datesMap.put("amount", feeObject);
 	    	                     datesMap.put("currency_symbol", "₹ ");
 								  datesMap.put("isPaid", isPaid);              // or Boolean.toString(isPaid)
 	    	                 } else {
