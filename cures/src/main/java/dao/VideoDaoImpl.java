@@ -808,7 +808,7 @@ public class VideoDaoImpl {
 	        		+ "        WHEN doctors.MedicineTypeID = 8 THEN \r\n"
 	        		+ "            CASE WHEN doctors.docid IN (14507,20) THEN FIELD(doctors.docid, 14507,20) ELSE 9999 END \r\n"
 	        		+ "        ELSE 10001 \r\n"
-	        		+ "    END \r\n"
+	        		+ "    END, \r\n"
 	        		+ "    doctors.docid DESC \r\n"
 	        		+ " LIMIT 10 OFFSET " + offset + ";");
 		 
