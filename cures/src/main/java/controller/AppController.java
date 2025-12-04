@@ -35,37 +35,37 @@ public class AppController {
 	@Autowired
 	private Cache<String, String> pageCache;
 
-	@Autowired
-	private ViewResolver viewResolver;
+	// @Autowired
+	// private ViewResolver viewResolver;
 
-	private String renderJsp(String viewName, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-	    // Prepare writer to capture output
-	    StringWriter stringWriter = new StringWriter();
-	    PrintWriter printWriter = new PrintWriter(stringWriter);
+	// private String renderJsp(String viewName, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+	//     // Prepare writer to capture output
+	//     StringWriter stringWriter = new StringWriter();
+	//     PrintWriter printWriter = new PrintWriter(stringWriter);
 
-	    // Wrap response and override getWriter(), then cast it to HttpServletResponse
-	    HttpServletResponse wrappedResponse = (HttpServletResponse) new HttpServletResponseWrapper(response) {
-	        @Override
-	        public PrintWriter getWriter() {
-	            return printWriter;
-	        }
-	    };
+	//     // Wrap response and override getWriter(), then cast it to HttpServletResponse
+	//     HttpServletResponse wrappedResponse = (HttpServletResponse) new HttpServletResponseWrapper(response) {
+	//         @Override
+	//         public PrintWriter getWriter() {
+	//             return printWriter;
+	//         }
+	//     };
 
-	    // Convert Model to ModelMap
-	    ModelMap modelMap = new ModelMap();
-	    modelMap.addAllAttributes(model.asMap());
+	//     // Convert Model to ModelMap
+	//     ModelMap modelMap = new ModelMap();
+	//     modelMap.addAllAttributes(model.asMap());
 
-	    // Resolve and render the view
-	    View view = viewResolver.resolveViewName(viewName, Locale.getDefault());
-	    if (view != null) {
-	        view.render(modelMap, request, wrappedResponse);
-	        printWriter.flush(); // Ensure output is written
-	    } else {
-	        throw new IllegalArgumentException("View not found: " + viewName);
-	    }
+	//     // Resolve and render the view
+	//     View view = viewResolver.resolveViewName(viewName, Locale.getDefault());
+	//     if (view != null) {
+	//         view.render(modelMap, request, wrappedResponse);
+	//         printWriter.flush(); // Ensure output is written
+	//     } else {
+	//         throw new IllegalArgumentException("View not found: " + viewName);
+	//     }
 
-	    return stringWriter.toString();
-	}
+	//     return stringWriter.toString();
+	// }
 
 
     
