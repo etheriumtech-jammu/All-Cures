@@ -105,7 +105,7 @@ public class AppointmentDaoImpl {
 			 // Retrieve appointment count
         Object[] row = (Object[]) session.createNativeQuery(
         	    "SELECT " +
-        	    "   (SELECT COUNT(*) FROM Appointment a WHERE a.UserID = :userId) AS appointment_count, " +
+        	    "   (SELECT COUNT(*) FROM Appointment a WHERE a.UserID = :userId and a.Status=4) AS appointment_count, " +
         	    "   cc.currency_name " +
         	    "FROM registration r " +
         	    "LEFT JOIN countries_currencies cc " +
