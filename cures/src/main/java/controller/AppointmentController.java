@@ -53,7 +53,7 @@ public class AppointmentController {
 					
 	    }
 
-	To get Appointments of a particular user 
+//	To get Appointments of a particular user 
 			@RequestMapping(value = "/get/user/{userID}", produces = "application/json", method = RequestMethod.GET)
 		public @ResponseBody List<Appointment> getAppointmentsOfUser(
 		        @PathVariable Integer userID,
