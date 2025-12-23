@@ -346,7 +346,7 @@ public class AppointmentDaoImpl {
 	        // paid (IsPaid)
 	        if (obj[17] != null) {
 	            if (appointment.getClass().getDeclaredFields() != null) {
-	                try { appointment.getClass().getMethod("setPaid", Boolean.class).invoke(appointment, (Boolean) obj[17]); } catch (Exception e) { /* ignore if not present */ }
+	                try { appointment.getClass().getMethod("setIsPaid", Boolean.class).invoke(appointment, (Boolean) obj[17]); } catch (Exception e) { /* ignore if not present */ }
 	            }
 	        }
 	        // Prescription file path
