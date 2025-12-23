@@ -406,8 +406,12 @@ public class AppointmentDaoImpl {
 				appointment.setAppointmentID(obj[0] != null ? (Integer) obj[0] : 0);
 				appointment.setDocID(obj[1] != null ? (Integer) obj[1] : 0);
 				appointment.setUserID(obj[2] != null ? (Integer) obj[2] : 0);
-				Date date=(Date)obj[3];
-				appointment.setAppointmentDate(date);
+				 if (obj[3] != null) {
+	            Timestamp ts = (Timestamp) obj[3];
+	            appointment.setAppointmentDate(new Date(ts.getTime()));
+	        } else {
+	            appointment.setAppointmentDate(null);
+	        }
 				appointment.setStartTime(obj[4] != null ? (String) obj[4] : "");
 				appointment.setEndTime(obj[5] != null ? (String) obj[5] : "");
 				appointment.setRequestStatus(obj[6] != null ? (Integer) obj[6] : 0);
