@@ -53,14 +53,14 @@ public class AppointmentController {
 					
 	    }
 
-	//To get Appointments of a particular user 
-		// 	@RequestMapping(value = "/get/user/{userID}", produces = "application/json", method = RequestMethod.GET)
-		// public @ResponseBody List<Appointment> getAppointmentsOfUser(
-		//         @PathVariable Integer userID,
-		//         @RequestParam(value = "currentDate", required = false) Date currentDate) {
+	To get Appointments of a particular user 
+			@RequestMapping(value = "/get/user/{userID}", produces = "application/json", method = RequestMethod.GET)
+		public @ResponseBody List<Appointment> getAppointmentsOfUser(
+		        @PathVariable Integer userID,
+		        @RequestParam(value = "currentDate", required = false) Date currentDate) {
 		    
-		//     return AppointmentDaoImpl.getAllAppointmentsOfUser(userID, currentDate);
-		// }
+		    return AppointmentDaoImpl.getAllAppointmentsOfUser(userID, currentDate);
+		}
 	
 	//To get Total , unbooked slots and Completely Booked Dates of a particular doctor
 	@RequestMapping(value = "/get/Slots/{docID}/{userID}", produces = "application/json", method = RequestMethod.GET)  
