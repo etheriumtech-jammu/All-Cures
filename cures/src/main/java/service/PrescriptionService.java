@@ -48,7 +48,7 @@ public class PrescriptionService {
 
 		validateFile(file);
 
-		// 1) Save file first
+		// Save file first
 		FileStorageResult saved = storage.save(file);
 		String filePath = saved.getPath();
 
@@ -57,6 +57,15 @@ public class PrescriptionService {
 		Integer generatedId = null;
 
 		try {
+			session = HibernateUtil.buildSessionFactory();
+			tx = session.beginTransaction();
+
+			// 1) Validate appointment exists
+			Appointment appointment = session.get(Appointment.class, appointmentId);
+			if (appointment == null) {
+				throw new IllegalArgumentException("Appointment not found for id: " + appointmentId);
+			}
+
 			// 2) Build entity
 			Prescription p = new Prescription();
 			p.setAppointmentId(appointmentId);
@@ -75,9 +84,6 @@ public class PrescriptionService {
 			p.setStatus("ACTIVE");
 
 			// 3) Persist using Hibernate Session / Transaction
-			session = HibernateUtil.buildSessionFactory();
-			tx = session.beginTransaction();
-
 			Object idObj = session.save(p); // returns Serializable (Number for IDENTITY)
 			session.flush();
 
@@ -92,7 +98,7 @@ public class PrescriptionService {
 				try {
 					Object idFromEntity = session.getIdentifier(p);
 					generatedId = (idFromEntity instanceof Number) ? ((Number) idFromEntity).intValue() : null;
-					
+					System.out.print(generatedId);
 				} catch (Exception ex) {
 					LOGGER.log(Level.WARNING, "Could not obtain generated id", ex);
 				}
@@ -111,16 +117,13 @@ public class PrescriptionService {
 			// ... after tx.commit() and generatedId resolution
 
 			// 4) Lookup patient and doctor details (use same session if still open)
-			// 4) Lookup patient and doctor details (use same session if still open)
 			String patientEmail = null;
 			String patientName = null;
 			String doctorName = null;
-			String doctorUsername = null;
 
 			try {
 				if (appointmentId != null) {
-					// reload appointment to get userID/docID (uses your Appointment entity)
-					Appointment appointment = session.get(Appointment.class, appointmentId);
+					// Use the already fetched appointment object
 					if (appointment == null) {
 						LOGGER.warning("Could not find Appointment for id=" + appointmentId);
 					} else {
@@ -133,16 +136,16 @@ public class PrescriptionService {
 								String patientSql = "SELECT email_address, first_name, last_name FROM registration WHERE registration_id = :uid LIMIT 1";
 								@SuppressWarnings("unchecked")
 								java.util.List<Object[]> patientRows = session.createNativeQuery(patientSql)
-										.setParameter("uid", patientId).getResultList();
+									.setParameter("uid", patientId).getResultList();
 
 								if (patientRows != null && !patientRows.isEmpty()) {
 									Object[] row = patientRows.get(0);
 									if (row.length > 0 && row[0] != null)
 										patientEmail = String.valueOf(row[0]).trim();
 									String pFirst = (row.length > 1 && row[1] != null) ? String.valueOf(row[1]).trim()
-											: "";
+										: "";
 									String pLast = (row.length > 2 && row[2] != null) ? String.valueOf(row[2]).trim()
-											: "";
+										: "";
 									String combined = (pFirst + " " + pLast).trim();
 									patientName = combined.isEmpty() ? null : combined;
 								} else {
@@ -150,7 +153,7 @@ public class PrescriptionService {
 								}
 							} catch (Exception e) {
 								LOGGER.log(Level.WARNING,
-										"Failed to query registration table for registration_id=" + patientId, e);
+									"Failed to query registration table for registration_id=" + patientId, e);
 							}
 						} else {
 							LOGGER.warning("Appointment.userID is null for appointmentId=" + appointmentId);
@@ -159,25 +162,25 @@ public class PrescriptionService {
 						// --- Native query: doctors_new table for doctor name/username ---
 						if (docId != null) {
 							try {
-								String docSql = "SELECT prefix, docname_first, docname_middle, docname_last FROM Doctors_New WHERE docid = :did LIMIT 1";
+								String docSql = "SELECT prefix, docname_first, docname_middle, docname_last FROM doctors_new WHERE docid = :did LIMIT 1";
 								@SuppressWarnings("unchecked")
 								java.util.List<Object[]> doctorRows = session.createNativeQuery(docSql)
-										.setParameter("did", docId).getResultList();
+									.setParameter("did", docId).getResultList();
 
 								if (doctorRows != null && !doctorRows.isEmpty()) {
 									Object[] drow = doctorRows.get(0);
 
 									String prefix = (drow.length > 0 && drow[0] != null)
-											? String.valueOf(drow[0]).trim()
-											: "";
+										? String.valueOf(drow[0]).trim()
+										: "";
 									String dFirst = (drow.length > 1 && drow[1] != null)
-											? String.valueOf(drow[1]).trim()
-											: "";
+										? String.valueOf(drow[1]).trim()
+										: "";
 									String dMiddle = (drow.length > 2 && drow[2] != null)
-											? String.valueOf(drow[2]).trim()
-											: "";
+										? String.valueOf(drow[2]).trim()
+										: "";
 									String dLast = (drow.length > 3 && drow[3] != null) ? String.valueOf(drow[3]).trim()
-											: "";
+										: "";
 
 									// Build a friendly doctor name: include prefix and middle name if present
 									StringBuilder nameBuilder = new StringBuilder();
@@ -222,7 +225,7 @@ public class PrescriptionService {
 					if (!sent) {
 						LOGGER.log(Level.WARNING,
 								"Prescription email was not sent (sendPrescriptionEmail returned false) for presId="
-										+ generatedId);
+									+ generatedId);
 					}
 				} catch (Exception e) {
 					LOGGER.log(Level.WARNING, "Failed to send notification email", e);
@@ -250,7 +253,64 @@ public class PrescriptionService {
 			}
 
 			throw ex;
+		} 
+	}
+
+	/**
+	 * Updates an existing prescription. Allows updating notes, followUpDate, issuedAt, and file.
+	 * @param presId The prescription ID to update
+	 * @param notes Updated notes (nullable)
+	 * @param issuedAtIso Updated issuedAt in ISO format (nullable)
+	 * @param followUpIso Updated followUpDate in ISO format (nullable)
+	 * @param file New file to replace the old one (nullable)
+	 * @return The updated Prescription entity
+	 */
+	public Prescription updatePrescription(Integer presId, String notes, String issuedAtIso, String followUpIso, MultipartFile file) {
+		Session session = null;
+		Transaction tx = null;
+		Prescription prescription = null;
+		try {
+			session = HibernateUtil.buildSessionFactory();
+			tx = session.beginTransaction();
+
+			prescription = session.get(Prescription.class, presId);
+			if (prescription == null) {
+				throw new IllegalArgumentException("Prescription not found for id: " + presId);
+			}
+
+			// Validate appointment exists before updating prescription
+			if (prescription != null) {
+				Appointment appointment = session.get(Appointment.class, prescription.getAppointmentId());
+				if (appointment == null) {
+					throw new IllegalArgumentException("Appointment not found for id: " + prescription.getAppointmentId());
+				}
+			}
+
+			if (notes != null) prescription.setNotes(notes);
+			if (StringUtils.hasText(issuedAtIso)) prescription.setIssuedAt(parseIsoToLocalDateTime(issuedAtIso));
+			if (StringUtils.hasText(followUpIso)) prescription.setFollowUpDate(parseIsoToLocalDateTime(followUpIso));
+
+			if (file != null && !file.isEmpty()) {
+				validateFile(file);
+				// Delete old file if needed
+				String oldFilePath = prescription.getFilePath();
+				if (oldFilePath != null) {
+					try { storage.delete(oldFilePath); } catch (Exception ex) { LOGGER.log(Level.WARNING, "Failed to delete old file: " + oldFilePath, ex); }
+				}
+				FileStorageResult saved = storage.save(file);
+				prescription.setFilePath(saved.getPath());
+				prescription.setOriginalName(file.getOriginalFilename());
+			}
+
+			session.update(prescription);
+			tx.commit();
+		} catch (RuntimeException ex) {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+			throw ex;
 		}
+		return prescription;
 	}
 
 	private void validateFile(MultipartFile file) {
