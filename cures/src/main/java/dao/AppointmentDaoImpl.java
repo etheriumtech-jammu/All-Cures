@@ -277,34 +277,113 @@ public class AppointmentDaoImpl {
 		return AppointmentList;
 	}
 	//To get Appointments of a particular doctor
+	//To get Appointments of a particular doctor
 	public static List<Appointment> getAppointmentsOfDoc(Integer docID) {
-		Session session = HibernateUtil.buildSessionFactory();
-		Query query1 = session.createNativeQuery(
-				"SELECT r.first_name,r.last_name,AppointmentDate,StartTime,EndTime,Status  FROM allcures_schema.Appointment a Join registration r on r.registration_id=a.UserID where a.DocID=" +docID + ";");
-		List<Appointment> AppointmentList = new ArrayList<>();
-
-		List<Object[]> resultList = query1.getResultList();
-		Constant.log("Executed Query and Got: " + resultList.size() + " Appointment Lists back", 1);
-
-		for (Object[] obj : resultList) {
-			Appointment appointment = new Appointment();
-			
-	        // Extracting first and last names
-	        String firstName = obj[0] != null ? (String) obj[0] : "";
-	        String lastName = obj[1] != null ? (String) obj[1] : "";
-	        
-	        // Setting concatenated username
-	        String username = firstName + " " + lastName;
-	        appointment.setUserName(username);
-			Date date=(Date)obj[2];
-			appointment.setAppointmentDate(date);
-			appointment.setStartTime(obj[3] != null ? (String) obj[3] : "");
-			appointment.setEndTime(obj[4] != null ? (String) obj[4] : "");
-			appointment.setStatus(obj[5] != null ? (Integer) obj[5] : 0);
-			AppointmentList.add(appointment);
-		}
-
-		return AppointmentList;
+	    Session session = HibernateUtil.buildSessionFactory();
+	    StringBuilder sql = new StringBuilder(
+	        "SELECT " +
+	        "a.AppointmentID, " +           // 0
+	        "a.DocID, " +                   // 1
+	        "a.UserID, " +                  // 2
+	        "a.AppointmentDate, " +         // 3
+	        "a.StartTime, " +               // 4
+	        "a.EndTime, " +                 // 5
+	        "a.RequestStatus, " +           // 6
+	        "a.PaymentStatus, " +           // 7
+	        "a.FailureID, " +               // 8
+	        "a.CreatedDate, " +             // 9
+	        "a.LastUpdatedDate, " +         // 10
+	        "a.Status, " +                  // 11
+	        "a.MeetingLink, " +             // 12
+	        "CONCAT(d.docname_first, ' ', d.docname_middle, ' ', d.docname_last) AS DoctorName, " + // 13
+	        "da.SlotDuration, " +           // 14
+	        "d.img_Loc, " +                 // 15
+	        "m.name, " +                    // 16
+	        "a.IsPaid, " +                  // 17 (paid)
+	        // Prescription fields
+	        "p.file_path " +                 // 18
+	        "FROM Appointment a " +
+	        "LEFT JOIN Doctors_New d ON a.DocID = d.docid " +
+	        "LEFT JOIN DoctorAvailability da ON a.DocID = da.DocID " +
+	        "LEFT JOIN medicinetype m ON m.id = d.MedicineTypeID " +
+	        // Robust prescription join: join to a derived table for latest ACTIVE prescription per appointment
+	        "LEFT JOIN ( " +
+	        "    SELECT p1.pres_id, p1.appointment_id, p1.file_path FROM prescription p1 " +
+	        "    INNER JOIN ( " +
+	        "        SELECT appointment_id, MAX(uploaded_at) AS max_uploaded_at " +
+	        "        FROM prescription " +
+	       
+	        "        GROUP BY appointment_id " +
+	        "    ) p2 ON p1.appointment_id = p2.appointment_id AND p1.uploaded_at = p2.max_uploaded_at " +
+	     
+	        ") p ON p.appointment_id = a.AppointmentID " +
+	        "WHERE a.DocID = :docID"
+	    );
+	    Query query = session.createNativeQuery(sql.toString());
+	    query.setParameter("docID", docID);
+	    List<Appointment> AppointmentList = new ArrayList<>();
+	    List<Object[]> resultList = query.getResultList();
+	    Constant.log("Executed Query and Got: " + resultList.size() + " Appointment Lists back", 1);
+	    for (Object[] obj : resultList) {
+	        Appointment appointment = new Appointment();
+	        appointment.setAppointmentID(obj[0] != null ? ((Number) obj[0]).intValue() : 0);
+	        appointment.setDocID(obj[1] != null ? ((Number) obj[1]).intValue() : 0);
+	        appointment.setUserID(obj[2] != null ? ((Number) obj[2]).intValue() : 0);
+	        appointment.setAppointmentDate(obj[3] != null ? (Date) obj[3] : null);
+	        appointment.setStartTime(obj[4] != null ? (String) obj[4] : "");
+	        appointment.setEndTime(obj[5] != null ? (String) obj[5] : "");
+	        appointment.setRequestStatus(obj[6] != null ? ((Number) obj[6]).intValue() : 0);
+	        appointment.setPaymentStatus(obj[7] != null ? ((Number) obj[7]).intValue() : 0);
+	        appointment.setFailureID(obj[8] != null ? ((Number) obj[8]).intValue() : 0);
+	        appointment.setCreatedDate(obj[9] != null ? (Timestamp) obj[9] : null);
+	        appointment.setLastUpdatedDate(obj[10] != null ? (Timestamp) obj[10] : null);
+	        appointment.setStatus(obj[11] != null ? ((Number) obj[11]).intValue() : 0);
+	        appointment.setMeetingLink(obj[12] != null ? (String) obj[12] : null);
+	        appointment.setDoctorName(obj[13] != null ? (String) obj[13] : null);
+	        appointment.setSlotDuration(obj[14] != null ? ((Number) obj[14]).intValue() : null);
+	        appointment.setImgLoc(obj[15] != null ? (String) obj[15] : null);
+	        appointment.setMedicineType(obj[16] != null ? (String) obj[16] : null);
+	        // paid (IsPaid)
+	        if (obj[17] != null) {
+	            if (appointment.getClass().getDeclaredFields() != null) {
+	                try { appointment.getClass().getMethod("setPaid", Boolean.class).invoke(appointment, (Boolean) obj[17]); } catch (Exception e) { /* ignore if not present */ }
+	            }
+	        }
+	        // Prescription file path
+	        if (obj[18] != null) {
+	            Prescription pres = new Prescription();
+	            String filePath = (String) obj[18];
+	            if (filePath != null && !filePath.isEmpty()) {
+	                // Extract date and filename from the file path
+	                // Example: /home/uat/Production/installers/tomcat/webapps/cures_articleimages/prescription/2025-11-04/1762236304679_3cae6cf4-23f0-4553-a967-baea5ad46c50_eg.webp
+	                String[] parts = filePath.replace("\\", "/").split("/prescription/");
+	                if (parts.length == 2) {
+	                    String[] dateAndFile = parts[1].split("/", 2);
+	                    if (dateAndFile.length == 2) {
+	                        String date = dateAndFile[0];
+	                        String filename = dateAndFile[1];
+	                        filePath = "https://uat.all-cures.com/cures_articleimages/prescription/" + date + "/" + filename;
+	                    } else {
+	                        // fallback: just use filename
+	                        filePath = "https://uat.all-cures.com/cures_articleimages/prescription/" + dateAndFile[0];
+	                    }
+	                } else {
+	                    // fallback: just use the filename
+	                    int lastSlash = filePath.lastIndexOf("/");
+	                    String filename = lastSlash >= 0 ? filePath.substring(lastSlash + 1) : filePath;
+	                    filePath = "https://uat.all-cures.com/cures_articleimages/prescription/" + filename;
+	                }
+	            } else {
+	                filePath = null;
+	            }
+	            pres.setFilePath(filePath);
+	            appointment.setPrescription(pres);
+	        } else {
+	            appointment.setPrescription(null);
+	        }
+	        AppointmentList.add(appointment);
+	    }
+	    return AppointmentList;
 	}
 	
 	//To get Appointments of a particular User
@@ -340,123 +419,123 @@ public class AppointmentDaoImpl {
 		}
 
 	// //To get Appointments of a particular User
-	// public static List<Appointment> getAllAppointmentsOfUser(Integer userID, Date currentDate) {
-	// Session session = HibernateUtil.buildSessionFactory();
+	public static List<Appointment> getAllAppointmentsOfUser(Integer userID, Date currentDate) {
+        Session session = HibernateUtil.buildSessionFactory();
 
- //    StringBuilder sql = new StringBuilder(
- //        "SELECT " +
- //        "a.DocID, " +
- //        "a.AppointmentDate, " +
- //        "a.StartTime, " +
- //        "a.EndTime, " +
- //        "a.Status, " +
- //        "a.RequestStatus, " +
- //        "a.UserID, " +
- //        "CONCAT(d.docname_first, ' ', d.docname_middle, ' ', d.docname_last) AS DoctorName, " +
- //        "da.SlotDuration, " +
- //        "d.img_Loc, " +
- //        "m.name, " +
-	// 	 "a.meetingLink, " +
- //       "a.IsPaid, " +
-	//   "p.pres_id, " +                  
-	//   "p.file_path, " +                
-	//   "p.original_name, " +            
-	//   "p.notes, " +                    
-	//   "p.issued_at, " +                
-	//   "p.uploaded_by, " +              
-	//   "p.uploaded_at, " +              
-	//   "p.status " +                     
- //        "FROM Appointment a " +
- //        "LEFT JOIN Doctors_New d ON a.DocID = d.docid " +
- //        "LEFT JOIN DoctorAvailability da ON a.DocID = da.DocID " +
- //        "LEFT JOIN medicinetype m ON m.id = d.MedicineTypeID " +
-	// 	// LEFT JOIN latest prescription per appointment (MySQL)
- //        "LEFT JOIN prescription p ON p.pres_id = ("
- //        + "    SELECT pres_id FROM prescription p2"
- //        + "    WHERE p2.appointment_id = a.AppointmentID"
- //        + "      AND p2.status = 'ACTIVE'"
- //        + "    ORDER BY p2.uploaded_at DESC"
- //        + "    LIMIT 1"
- //        + ") " +
- //        "WHERE (a.IsPaid = FALSE OR a.PaymentStatus = 1) AND a.UserID = :userID"
- //    );
+        StringBuilder sql = new StringBuilder(
+            "SELECT " +
+            "a.AppointmentID, " +           // 0
+            "a.DocID, " +                   // 1
+            "a.UserID, " +                  // 2
+            "a.AppointmentDate, " +         // 3
+            "a.StartTime, " +               // 4
+            "a.EndTime, " +                 // 5
+            "a.RequestStatus, " +           // 6
+            "a.MeetingLink, " +             // 7
+            "a.IsPaid, " +                  // 8
+            "a.PaymentStatus, " +           // 9
+            "a.FailureID, " +               // 10
+            "a.CreatedDate, " +             // 11
+            "a.LastUpdatedDate, " +         // 12
+            "a.Status, " +                  // 13
+            "CONCAT(d.docname_first, ' ', d.docname_middle, ' ', d.docname_last) AS DoctorName, " + // 14
+            "da.SlotDuration, " +           // 15
+            "d.img_Loc, " +                 // 16
+            "m.name, " +                    // 17
+            // Prescription fields
+            "p.pres_id, " +                 // 18
+            "p.file_path, " +               // 19
+            "p.original_name, " +           // 20
+            "p.notes, " +                   // 21
+            "p.issued_at, " +               // 22
+            "p.uploaded_by, " +             // 23
+            "p.uploaded_at, " +             // 24
+            "p.status " +                   // 25
+            "FROM Appointment a " +
+            "LEFT JOIN Doctors_New d ON a.DocID = d.docid " +
+            "LEFT JOIN DoctorAvailability da ON a.DocID = da.DocID " +
+            "LEFT JOIN medicinetype m ON m.id = d.MedicineTypeID " +
+            // LEFT JOIN latest prescription per appointment (MySQL)
+            "LEFT JOIN prescription p ON p.pres_id = ("
+            + "    SELECT pres_id FROM prescription p2"
+            + "    WHERE p2.appointment_id = a.AppointmentID"
+            + "      AND p2.status = 'ACTIVE'"
+            + "    ORDER BY p2.uploaded_at DESC"
+            + "    LIMIT 1"
+            + ") "
+            + "WHERE (a.IsPaid = FALSE OR a.PaymentStatus = 1) AND a.UserID = :userID"
+        );
 
- //    if (currentDate != null) {
- //        sql.append(" AND a.AppointmentDate >= :currentDate");
- //    }
- //    Query query = session.createNativeQuery(sql.toString());
- //    query.setParameter("userID", userID);
- //    if (currentDate != null) {
- //        query.setParameter("currentDate", currentDate);
- //    }
-	// List<Appointment> AppointmentList = new ArrayList<>();
-	// List<Object[]> resultList = query.getResultList();
-	// Constant.log("Executed Query and Got: " + resultList.size() + " Appointment Lists back", 1);
-	// for (Object[] obj : resultList) {
-	// Appointment appointment = new Appointment();
-	// appointment.setDocID(obj[0] != null ? (Integer) obj[0] : 0);
-	// Date date=(Date)obj[1];
-	// appointment.setAppointmentDate(date);
-	// appointment.setStartTime(obj[2] != null ? (String) obj[2] : "");
-	// appointment.setEndTime(obj[3] != null ? (String) obj[3] : "");
-	// appointment.setStatus(obj[4] != null ? (Integer) obj[4] : 0);
-	// appointment.setRequestStatus(obj[5] != null ? (Integer) obj[5] : 0);
-	// appointment.setDoctorName(obj[7] != null ? (String) obj[7] : "");
-	// appointment.setSlotDuration(obj[8] != null ? (Integer) obj[8] : 0);
-	// appointment.setImgLoc(obj[9] != null ? (String) obj[9] : "");
-	// appointment.setMedicineType(obj[10] != null ? (String) obj[10] : "");
-	// appointment.setMeetingLink(obj[11] != null ? (String) obj[11] : "");
-	// appointment.setPaid(obj[12] != null ? (Boolean) obj[12] : false);
-
-	// 	 // Prescription mapping (may be null if no prescription)
- //    if (obj[13] != null) {
- //        Prescription pres = new Prescription();
- //        // pres_id (13)
- //        pres.setPresId(obj[13] != null ? ((Number) obj[13]).intValue() : null);
- //        // file_path (14)
- //        if (obj[14] != null) {
- //            String filePath = (String) obj[14];
- //            filePath = filePath.replace("/home/uat/Production/installers/tomcat/webapps/", "https://uat.all-cures.com/");
- //            pres.setFilePath(filePath);
- //        } else {
- //            pres.setFilePath(null);
- //        }
- //        // original_name (15)
- //        pres.setOriginalName(obj[15] != null ? (String) obj[15] : null);
- //        // notes (16)
- //        pres.setNotes(obj[16] != null ? (String) obj[16] : null);
- //        // issued_at (17) -> java.sql.Timestamp or java.util.Date might be returned
- //        if (obj[17] != null) {
- //            Object issuedObj = obj[17];
- //            if (issuedObj instanceof java.sql.Timestamp) {
- //                pres.setIssuedAt(((java.sql.Timestamp) issuedObj).toLocalDateTime());
- //            } else if (issuedObj instanceof java.util.Date) {
- //                pres.setIssuedAt(((java.util.Date) issuedObj).toInstant().atZone(ZoneOffset.systemDefault()).toLocalDateTime());
- //            }
- //        }
- //        // uploaded_by (18)
- //        pres.setUploadedBy(obj[18] != null ? ((Number) obj[18]).intValue() : null);
- //        // uploaded_at (19)
- //        if (obj[19] != null) {
- //            Object upObj = obj[19];
- //            if (upObj instanceof java.sql.Timestamp) {
- //                pres.setUploadedAt(((java.sql.Timestamp) upObj).toLocalDateTime());
- //            } else if (upObj instanceof java.util.Date) {
- //                pres.setUploadedAt(((java.util.Date) upObj).toInstant().atZone(ZoneOffset.systemDefault()).toLocalDateTime());
- //            }
- //        }
- //        // status (20)
- //        pres.setStatus(obj[20] != null ? (String) obj[20] : null);
- //        // Attach the prescription object to appointment
- //        appointment.setPrescription(pres);
- //    } else {
- //        // no prescription — ensure null
- //        appointment.setPrescription(null);
- //    }
-	// AppointmentList.add(appointment);
-	// }
-	// return AppointmentList;
-	// }
+        if (currentDate != null) {
+            sql.append(" AND a.AppointmentDate >= :currentDate");
+        }
+        Query query = session.createNativeQuery(sql.toString());
+        query.setParameter("userID", userID);
+        if (currentDate != null) {
+            query.setParameter("currentDate", currentDate);
+        }
+        List<Appointment> AppointmentList = new ArrayList<>();
+        List<Object[]> resultList = query.getResultList();
+        Constant.log("Executed Query and Got: " + resultList.size() + " Appointment Lists back", 1);
+        for (Object[] obj : resultList) {
+            Appointment appointment = new Appointment();
+            appointment.setAppointmentID(obj[0] != null ? ((Number) obj[0]).intValue() : 0);
+            appointment.setDocID(obj[1] != null ? ((Number) obj[1]).intValue() : 0);
+            appointment.setUserID(obj[2] != null ? ((Number) obj[2]).intValue() : 0);
+            appointment.setAppointmentDate(obj[3] != null ? (Date) obj[3] : null);
+            appointment.setStartTime(obj[4] != null ? (String) obj[4] : "");
+            appointment.setEndTime(obj[5] != null ? (String) obj[5] : "");
+            appointment.setRequestStatus(obj[6] != null ? ((Number) obj[6]).intValue() : 0);
+            appointment.setMeetingLink(obj[7] != null ? (String) obj[7] : "");
+            appointment.setIsPaid(obj[8] != null ? ((Boolean) obj[8]) : false);
+            appointment.setPaymentStatus(obj[9] != null ? ((Number) obj[9]).intValue() : 0);
+            appointment.setFailureID(obj[10] != null ? ((Number) obj[10]).intValue() : 0);
+            appointment.setCreatedDate(obj[11] != null ? (Timestamp) obj[11] : null);
+            appointment.setLastUpdatedDate(obj[12] != null ? (Timestamp) obj[12] : null);
+            appointment.setStatus(obj[13] != null ? ((Number) obj[13]).intValue() : 0);
+            appointment.setDoctorName(obj[14] != null ? (String) obj[14] : "");
+            appointment.setSlotDuration(obj[15] != null ? ((Number) obj[15]).intValue() : 0);
+            appointment.setImgLoc(obj[16] != null ? (String) obj[16] : "");
+            appointment.setMedicineType(obj[17] != null ? (String) obj[17] : "");
+            // Prescription mapping (may be null if no prescription)
+            if (obj[18] != null) {
+                Prescription pres = new Prescription();
+                pres.setPresId(obj[18] != null ? ((Number) obj[18]).intValue() : null);
+                if (obj[19] != null) {
+                    String filePath = (String) obj[19];
+                    filePath = filePath.replace("/home/uat/Production/installers/tomcat/webapps/", "https://uat.all-cures.com/");
+                    pres.setFilePath(filePath);
+                } else {
+                    pres.setFilePath(null);
+                }
+                pres.setOriginalName(obj[20] != null ? (String) obj[20] : null);
+                pres.setNotes(obj[21] != null ? (String) obj[21] : null);
+                if (obj[22] != null) {
+                    Object issuedObj = obj[22];
+                    if (issuedObj instanceof java.sql.Timestamp) {
+                        pres.setIssuedAt(((java.sql.Timestamp) issuedObj).toLocalDateTime());
+                    } else if (issuedObj instanceof java.util.Date) {
+                        pres.setIssuedAt(((java.util.Date) issuedObj).toInstant().atZone(ZoneOffset.systemDefault()).toLocalDateTime());
+                    }
+                }
+                pres.setUploadedBy(obj[23] != null ? ((Number) obj[23]).intValue() : null);
+                if (obj[24] != null) {
+                    Object upObj = obj[24];
+                    if (upObj instanceof java.sql.Timestamp) {
+                        pres.setUploadedAt(((java.sql.Timestamp) upObj).toLocalDateTime());
+                    } else if (upObj instanceof java.util.Date) {
+                        pres.setUploadedAt(((java.util.Date) upObj).toInstant().atZone(ZoneOffset.systemDefault()).toLocalDateTime());
+                    }
+                }
+                pres.setStatus(obj[25] != null ? (String) obj[25] : null);
+                appointment.setPrescription(pres);
+            } else {
+                appointment.setPrescription(null);
+            }
+            AppointmentList.add(appointment);
+        }
+        return AppointmentList;
+    }
 	//To get Total , unbooked slots and Completely Booked Dates of a particular doctor
 	public static Map<String, Object> findCompletelyBookedAndAvailableDates(int doctorId, int userId) {
 	    Map<String, Object> datesMap = new HashMap<>();
