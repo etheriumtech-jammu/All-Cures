@@ -306,16 +306,16 @@ public class AppointmentDaoImpl {
 	                    if (dateAndFile.length == 2) {
 	                        String date = dateAndFile[0];
 	                        String filename = dateAndFile[1];
-	                        filePath = "https://uat.all-cures.com/cures_articleimages/prescription/" + date + "/" + filename;
+	                        filePath = "https://www.all-cures.com/cures_articleimages/prescription/" + date + "/" + filename;
 	                    } else {
 	                        // fallback: just use filename
-	                        filePath = "https://uat.all-cures.com/cures_articleimages/prescription/" + dateAndFile[0];
+	                        filePath = "https://www.all-cures.com/cures_articleimages/prescription/" + dateAndFile[0];
 	                    }
 	                } else {
 	                    // fallback: just use the filename
 	                    int lastSlash = filePath.lastIndexOf("/");
 	                    String filename = lastSlash >= 0 ? filePath.substring(lastSlash + 1) : filePath;
-	                    filePath = "https://uat.all-cures.com/cures_articleimages/prescription/" + filename;
+	                    filePath = "https://www.all-cures.com/cures_articleimages/prescription/" + filename;
 	                }
 	            } else {
 	                filePath = null;
@@ -459,7 +459,7 @@ public class AppointmentDaoImpl {
                 pres.setPresId(obj[18] != null ? ((Number) obj[18]).intValue() : null);
                 if (obj[19] != null) {
                     String filePath = (String) obj[19];
-                    filePath = filePath.replace("/home/uat/Production/installers/tomcat/webapps/", "https://uat.all-cures.com/");
+                    filePath = filePath.replace("/home/etheriumtechnologies/Production/installers/tomcat/webapps/", "https://www.all-cures.com/");
                     pres.setFilePath(filePath);
                 } else {
                     pres.setFilePath(null);
