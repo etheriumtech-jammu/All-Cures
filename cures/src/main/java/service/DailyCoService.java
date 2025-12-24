@@ -174,7 +174,7 @@ private void persistAppointmentChanges(HttpServletRequest request,
             Appointment appt = session.get(Appointment.class, appointmentId);
             if (appt != null) {
               appt.setMeetingLink(roomUrl);
-              appt.setPaid(true);
+              appt.setIsPaid(true);
 			 appt.setStatus(1);
               session.merge(appt);
             } else {
@@ -186,7 +186,7 @@ private void persistAppointmentChanges(HttpServletRequest request,
         } else if (directAppointment != null) {
           // CASE 2: Non-payment flow
           directAppointment.setMeetingLink(roomUrl);
-          directAppointment.setPaid(false);
+          directAppointment.setIsPaid(false);
 			 directAppointment.setStatus(1);
           session.merge(directAppointment);
         } else {
