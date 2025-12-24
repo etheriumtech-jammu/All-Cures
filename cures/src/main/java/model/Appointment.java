@@ -2,9 +2,7 @@ package model;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.JoinColumn;
 import javax.persistence.Transient;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -56,12 +56,11 @@ public class Appointment {
     @Column(name = "FailureID")
     private int failureID;
 
-    @Column(name = "CreatedDate", nullable = false, updatable = false)
-private LocalDateTime createdDate;
+   @Column(name = "CreatedDate", nullable = false, updatable = false)
+private Timestamp createdDate;
 
 @Column(name = "LastUpdatedDate", nullable = true)
-private LocalDateTime lastUpdatedDate;
-
+private Timestamp lastUpdatedDate;
 
     @Column(name = "Status")
     private int status;
@@ -156,22 +155,22 @@ private LocalDateTime lastUpdatedDate;
     public void setFailureID(int failureID) {
         this.failureID = failureID;
     }
-public LocalDateTime getCreatedDate() {
-    return createdDate;
-}
 
-public void setCreatedDate(LocalDateTime createdDate) {
-    this.createdDate = createdDate;
-}
+    public Timestamp getCreatedDate() {
+        return createdDate;
+    }
 
-public LocalDateTime getLastUpdatedDate() {
-    return lastUpdatedDate;
-}
+    public void setCreatedDate(Timestamp createdDate) {
+        this.createdDate = createdDate;
+    }
 
-public void setLastUpdatedDate(LocalDateTime lastUpdatedDate) {
-    this.lastUpdatedDate = lastUpdatedDate;
-}
+    public Timestamp getLastUpdatedDate() {
+        return lastUpdatedDate;
+    }
 
+    public void setLastUpdatedDate(Timestamp lastUpdatedDate) {
+        this.lastUpdatedDate = lastUpdatedDate;
+    }
 
     public int getStatus() {
         return status;
@@ -237,14 +236,16 @@ public void setLastUpdatedDate(LocalDateTime lastUpdatedDate) {
         this.prescription = prescription;
     }
 
-@PrePersist
-protected void onCreate() {
-    this.createdDate = LocalDateTime.now();
-}
+     @PrePersist
+    protected void onCreate() {
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        this.createdDate = now;
+       
+    }
 
-@PreUpdate
-protected void onUpdate() {
-    this.lastUpdatedDate = LocalDateTime.now();
-}
-
+    @PreUpdate
+    protected void onUpdate() {
+        this.lastUpdatedDate = new Timestamp(System.currentTimeMillis());
+    }
+    
 }
