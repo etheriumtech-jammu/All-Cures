@@ -18,6 +18,7 @@ import javax.persistence.PreUpdate;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 public class Appointment {
@@ -57,9 +58,15 @@ public class Appointment {
     private int failureID;
 
    @Column(name = "CreatedDate", nullable = false, updatable = false)
+       @JsonFormat(shape = JsonFormat.Shape.STRING,
+    pattern = "yyyy-MM-dd HH:mm:ss",
+    timezone = "Asia/Kolkata")
 private Timestamp createdDate;
 
 @Column(name = "LastUpdatedDate", nullable = true)
+       @JsonFormat(shape = JsonFormat.Shape.STRING,
+    pattern = "yyyy-MM-dd HH:mm:ss",
+    timezone = "Asia/Kolkata")
 private Timestamp lastUpdatedDate;
 
     @Column(name = "Status")
