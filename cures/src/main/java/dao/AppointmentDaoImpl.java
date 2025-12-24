@@ -296,7 +296,7 @@ public class AppointmentDaoImpl {
 	                if (parts.length == 2) {
 	                    String[] dateAndFile = parts[1].split("/", 2);
 	                    if (dateAndFile.length == 2) {
-	                        String date = dateAndFile[0];
+	                        String date1 = dateAndFile[0];
 	                        String filename = dateAndFile[1];
 	                        filePath = "https://www.all-cures.com/cures_articleimages/prescription/" + date + "/" + filename;
 	                    } else {
