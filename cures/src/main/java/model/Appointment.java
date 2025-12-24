@@ -55,11 +55,12 @@ public class Appointment {
     @Column(name = "FailureID")
     private int failureID;
 
-   @Column(name = "CreatedDate", nullable = false, updatable = false)
-private Timestamp createdDate;
+    @Column(name = "CreatedDate", nullable = false, updatable = false)
+private LocalDateTime createdDate;
 
 @Column(name = "LastUpdatedDate", nullable = true)
-private Timestamp lastUpdatedDate;
+private LocalDateTime lastUpdatedDate;
+
 
     @Column(name = "Status")
     private int status;
@@ -154,22 +155,22 @@ private Timestamp lastUpdatedDate;
     public void setFailureID(int failureID) {
         this.failureID = failureID;
     }
+public LocalDateTime getCreatedDate() {
+    return createdDate;
+}
 
-    public Timestamp getCreatedDate() {
-        return createdDate;
-    }
+public void setCreatedDate(LocalDateTime createdDate) {
+    this.createdDate = createdDate;
+}
 
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
-    }
+public LocalDateTime getLastUpdatedDate() {
+    return lastUpdatedDate;
+}
 
-    public Timestamp getLastUpdatedDate() {
-        return lastUpdatedDate;
-    }
+public void setLastUpdatedDate(LocalDateTime lastUpdatedDate) {
+    this.lastUpdatedDate = lastUpdatedDate;
+}
 
-    public void setLastUpdatedDate(Timestamp lastUpdatedDate) {
-        this.lastUpdatedDate = lastUpdatedDate;
-    }
 
     public int getStatus() {
         return status;
@@ -235,15 +236,14 @@ private Timestamp lastUpdatedDate;
         this.prescription = prescription;
     }
 
-    @PrePersist
+@PrePersist
 protected void onCreate() {
-    Timestamp now = new Timestamp(System.currentTimeMillis());
-    this.createdDate = now;
+    this.createdDate = LocalDateTime.now();
 }
 
 @PreUpdate
 protected void onUpdate() {
-    this.lastUpdatedDate = new Timestamp(System.currentTimeMillis());
+    this.lastUpdatedDate = LocalDateTime.now();
 }
 
 }
