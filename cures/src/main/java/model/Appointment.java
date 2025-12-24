@@ -2,7 +2,8 @@ package model;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -54,11 +55,11 @@ public class Appointment {
     @Column(name = "FailureID")
     private int failureID;
 
-    @Column(name = "CreatedDate")
-    private Timestamp createdDate;
+   @Column(name = "CreatedDate", nullable = false, updatable = false)
+private Timestamp createdDate;
 
-    @Column(name = "LastUpdatedDate")
-    private Timestamp lastUpdatedDate;
+@Column(name = "LastUpdatedDate", nullable = true)
+private Timestamp lastUpdatedDate;
 
     @Column(name = "Status")
     private int status;
