@@ -34,6 +34,8 @@ import util.Constant;
 import util.HibernateUtil;
 import service.DailyCoService;
 import service.FeeCalculatorService;
+import model.Prescription;
+import java.time.ZoneOffset;
 import org.springframework.stereotype.Component;
 @Component
 public class AppointmentDaoImpl {
