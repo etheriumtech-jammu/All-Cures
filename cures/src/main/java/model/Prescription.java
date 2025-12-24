@@ -1,9 +1,11 @@
 package model;
 
 import javax.persistence.*;
+
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,7 +13,7 @@ import java.time.LocalDateTime;
 public class Prescription {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // MySQL AUTO_INCREMENT
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pres_id")
     private Integer presId;
 
@@ -43,15 +45,13 @@ public class Prescription {
     @Column(name = "status", length = 32, nullable = false)
     private String status = "ACTIVE";
 
-     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "AppointmentID", referencedColumnName = "appointment_id", insertable = false, updatable = false)
-    @Where(clause = "status = 'ACTIVE'")
-    @Fetch(FetchMode.JOIN)  // optional if you usually want to load together
-    private Prescription prescription;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "appointment_id", referencedColumnName = "AppointmentID", insertable = false, updatable = false)
+    
+    @Fetch(FetchMode.JOIN)
+    private Appointment appointment;
 
     public Prescription() {}
-
-    // getters / setters omitted for brevity — add them or use Lombok
 
     @PrePersist
     protected void onCreate() {
@@ -59,7 +59,6 @@ public class Prescription {
         if (issuedAt == null) issuedAt = uploadedAt;
     }
 
-    // getters & setters...
     public Integer getPresId() { return presId; }
     public void setPresId(Integer presId) { this.presId = presId; }
 
@@ -89,4 +88,7 @@ public class Prescription {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public Appointment getAppointment() { return appointment; }
+    public void setAppointment(Appointment appointment) { this.appointment = appointment; }
 }
