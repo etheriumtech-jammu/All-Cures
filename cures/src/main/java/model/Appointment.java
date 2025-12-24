@@ -233,4 +233,16 @@ public class Appointment {
     public void setPrescription(Prescription prescription) {
         this.prescription = prescription;
     }
+
+    @PrePersist
+protected void onCreate() {
+    Timestamp now = new Timestamp(System.currentTimeMillis());
+    this.createdDate = now;
+}
+
+@PreUpdate
+protected void onUpdate() {
+    this.lastUpdatedDate = new Timestamp(System.currentTimeMillis());
+}
+
 }
