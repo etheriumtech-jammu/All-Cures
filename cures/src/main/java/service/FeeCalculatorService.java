@@ -51,8 +51,8 @@ public class FeeCalculatorService {
         if (baseFee == null) baseFee = BigDecimal.ZERO.setScale(SCALE, ROUNDING);
 
         // debug: prints bound property values
-        System.out.println("DEBUG gstRate  = " + feeProperties.getGstRate());
-        System.out.println("DEBUG ethRate  = " + feeProperties.getEthereumRate());
+ //       System.out.println("DEBUG gstRate  = " + feeProperties.getGstRate());
+//        System.out.println("DEBUG ethRate  = " + feeProperties.getEthereumRate());
 
         BigDecimal gst = baseFee.multiply(feeProperties.getGstRate());
         BigDecimal eth = baseFee.multiply(feeProperties.getEthereumRate());
