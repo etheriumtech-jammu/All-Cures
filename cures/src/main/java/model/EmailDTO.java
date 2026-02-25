@@ -9,7 +9,7 @@ public class EmailDTO {
 	private String subject;
 	private Map<String, Object> emailTemplateData;
 	private String emailtext;
-
+	private String cc;
 	// Generate Getters and Setters...
 
 	public String getTo() {
@@ -50,6 +50,14 @@ public class EmailDTO {
 
 	public void setEmailtext(String emailtext) {
 		this.emailtext = emailtext;
+	}
+
+	public void setCc(String cc) {
+		this.cc = cc;
+	}
+
+	public String getCc() {
+		return cc;
 	}
 
 }
