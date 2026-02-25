@@ -131,7 +131,8 @@ public class AppointmentDaoImpl {
 				   BigDecimal backendAmount = null;
         	    if (row[2] != null) {
         	        backendAmount = new BigDecimal(row[2].toString());
-        	        appointmentMap.put("amount", backendAmount.toString());  // store temporarily
+        	       BigDecimal totalFee = feeCalculatorService.calculateTotalFee(backendAmount);
+        	        appointmentMap.put("amount", totalFee.toString());  // store temporarily
         	    } else {
         	        throw new Exception("Consultation fee not found.");
         	    }
