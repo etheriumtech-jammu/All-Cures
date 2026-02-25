@@ -62,24 +62,29 @@ public class AppointmentDaoImpl {
 	LocalTime startTime = null;
 	Long appointmentCount = 0L;
 	String currencyName="";
+	 Integer userId = (Integer)(appointmentMap.get("userID"));
+      	Integer docId = (Integer)(appointmentMap.get("docID"));
     try {
         session = HibernateUtil.buildSessionFactory();
         tx = session.beginTransaction();
 
    //      Retrieve appointment count
-			 // Retrieve appointment count
-       Object[] row = (Object[]) session.createNativeQuery(
+	    Object[] row = (Object[]) session.createNativeQuery(
                 "SELECT " +
-                "   (SELECT COUNT(*) FROM Appointment a WHERE a.UserID = :userId and a.Status=4) AS appointment_count, " +
+                "   (SELECT COUNT(*) FROM Appointment " +
+                "       WHERE UserID = :userId AND Status = 4) AS appointment_count, " +
                 "   cc.currency_name, " +
-                "   sc.Fee " + 
+                "   (SELECT sc.Fee FROM ServiceContractDetails sc " +
+                "       WHERE sc.UserID = ( " +
+                "           SELECT r2.registration_id FROM registration r2 " +
+                "           WHERE r2.DocID = :docId LIMIT 1) " +
+                "       LIMIT 1) AS Fee " +
                 "FROM registration r " +
-                "LEFT JOIN allcures_schema.countries_currencies cc " +
+                "LEFT JOIN countries_currencies cc " +
                 "       ON UPPER(cc.country_code) = UPPER(r.country_code) " +
-                "LEFT JOIN ServiceContractDetails sc " +  
-                "       ON sc.UserID = r.registration_id AND sc.DocID = r.DocID " + 
                 "WHERE r.registration_id = :userId")
-                .setParameter("userId", (Integer) appointmentMap.get("userID"))
+                .setParameter("userId", userId)
+                .setParameter("docId", docId)
                 .uniqueResult();
 			if (row != null) {
         		Number apptNum  = (Number) row[0];
@@ -102,9 +107,7 @@ public class AppointmentDaoImpl {
         // Long appointmentCount = query.uniqueResult();
 		
         // Create new appointment
-		 Integer userId = (Integer)(appointmentMap.get("userID"));
-      	Integer docId = (Integer)(appointmentMap.get("docID"));
-       
+		
         Appointment appointment = new Appointment();
         appointment.setDocID(docId);
         appointment.setUserID(userId);
