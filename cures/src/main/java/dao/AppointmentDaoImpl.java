@@ -104,22 +104,31 @@ public class AppointmentDaoImpl {
         try {
 			 // Retrieve appointment count
         Object[] row = (Object[]) session.createNativeQuery(
-        	    "SELECT " +
-        	    "   (SELECT COUNT(*) FROM Appointment a WHERE a.UserID = :userId and a.Status=4) AS appointment_count, " +
-        	    "   cc.currency_name " +
-        	    "FROM registration r " +
-        	    "LEFT JOIN countries_currencies cc " +
-        	    "       ON UPPER(cc.country_code) = UPPER(r.country_code) " +
-        	    "WHERE r.registration_id = :userId")
-        	    .setParameter("userId", (Integer) appointmentMap.get("userID"))
-        	    .uniqueResult();
+                "SELECT " +
+                "   (SELECT COUNT(*) FROM Appointment a WHERE a.UserID = :userId and a.Status=4) AS appointment_count, " +
+                "   cc.currency_name, " +
+                "   sc.Fee " + 
+                "FROM registration r " +
+                "LEFT JOIN allcures_schema.countries_currencies cc " +
+                "       ON UPPER(cc.country_code) = UPPER(r.country_code) " +
+                "LEFT JOIN ServiceContractDetails sc " +  
+                "       ON sc.UserID = r.registration_id AND sc.DocID = r.DocID " + 
+                "WHERE r.registration_id = :userId")
+                .setParameter("userId", (Integer) appointmentMap.get("userID"))
+                .uniqueResult();
 
         	if (row != null) {
         		Number apptNum  = (Number) row[0];
                 long apptCountLong = (apptNum != null) ? apptNum.longValue() : 0L;
                 appointmentCount = apptCountLong;
         	     currencyName   = (String) row[1];
-
+				   BigDecimal backendAmount = null;
+        	    if (row[2] != null) {
+        	        backendAmount = new BigDecimal(row[2].toString());
+        	        appointmentMap.put("amount", backendAmount.toString());  // store temporarily
+        	    } else {
+        	        throw new Exception("Consultation fee not found.");
+        	    }
         	    appointmentMap.put("currency", currencyName != null ? currencyName : "INR");
         	}
 			 Integer userId = (Integer)(appointmentMap.get("userID"));
