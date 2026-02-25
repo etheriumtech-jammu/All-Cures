@@ -220,7 +220,7 @@ public class AppointmentDaoImpl {
                 } else {
                     System.out.println("Gap is less than 24 hours; notification not scheduled.");
                 }
-
+				System.out.println("response"+response);
                 return response; // Return response with payment response and appointment count
 
             } else {
