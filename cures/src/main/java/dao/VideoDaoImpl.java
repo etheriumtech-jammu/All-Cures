@@ -610,7 +610,7 @@ public class VideoDaoImpl {
 	        String userReturnEmail="";
 	        String docReturnEmail="";
 			 // Admin Email
-	        String adminEmail = "info@etheriumtech.com"; 
+	        String adminEmail = "ranyal123divya@gmail.com"; 
 	        // Fetch doctor details
 	        Query docQuery = session.createNativeQuery(
 	            "SELECT prefix, docname_first, docname_middle, docname_last, email FROM Doctors_New WHERE DocID = " + docID + ";");
