@@ -657,7 +657,7 @@ public class VideoDaoImpl {
 	            EmailDTO docEmailDTO = new EmailDTO();
 	            docEmailDTO.setTo(docEmail);
 	            docEmailDTO.setSubject("Video Consultation Appointment Confirmation");
-				docEmailDTO.setbcc(adminEmail);
+				docEmailDTO.setBcc(adminEmail);
 	            Map<String, Object> docTemplateData = new HashMap<>();
 	            docTemplateData.put("templatefile", "email/video.ftlh");
 	            docTemplateData.put("videoChatLink", docLink);
@@ -681,7 +681,7 @@ public class VideoDaoImpl {
 	            EmailDTO userEmailDTO = new EmailDTO();
 	            userEmailDTO.setTo(userEmail);
 	            userEmailDTO.setSubject("Video Consultation Appointment Confirmation");
-				 userEmailDTO.setbcc(adminEmail);
+				 userEmailDTO.setBcc(adminEmail);
 	            Map<String, Object> userTemplateData = new HashMap<>();
 	            userTemplateData.put("templatefile", "email/video_user.ftlh");
 	            userTemplateData.put("videoChatLink", userLink);
