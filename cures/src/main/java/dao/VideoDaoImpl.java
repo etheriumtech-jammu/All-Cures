@@ -658,7 +658,7 @@ public static Integer sendEmail(int docID, int userID, String roomName, String d
 	            EmailDTO docEmailDTO = new EmailDTO();
 	            docEmailDTO.setTo(docEmail);
 	            docEmailDTO.setSubject("Video Consultation Appointment Confirmation");
-				docEmailDTO.setCc(adminEmail);
+				docEmailDTO.setBcc(adminEmail);
 	            Map<String, Object> docTemplateData = new HashMap<>();
 	            docTemplateData.put("templatefile", "email/video.ftlh");
 	            docTemplateData.put("videoChatLink", docLink);
@@ -682,7 +682,7 @@ public static Integer sendEmail(int docID, int userID, String roomName, String d
 	            EmailDTO userEmailDTO = new EmailDTO();
 	            userEmailDTO.setTo(userEmail);
 	            userEmailDTO.setSubject("Video Consultation Appointment Confirmation");
-				 userEmailDTO.setCc(adminEmail);
+				 userEmailDTO.setBcc(adminEmail);
 	            Map<String, Object> userTemplateData = new HashMap<>();
 	            userTemplateData.put("templatefile", "email/video_user.ftlh");
 	            userTemplateData.put("videoChatLink", userLink);
