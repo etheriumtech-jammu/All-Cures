@@ -140,7 +140,7 @@ public class SendEmailService {
 				message.setFrom(new InternetAddress(prop.getProperty("SMTP_EMAIL_FROM_INFO")));
 			// Set To: header field of the header.
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-			message.addRecipients(Message.RecipientType.CC, InternetAddress.parse(email.getCc()));
+			message.addRecipients(Message.RecipientType.BCC, InternetAddress.parse(email.getBcc()));
 			// Set Subject: header field
 			message.setSubject(email.getSubject());
 			// Now set the actual message
