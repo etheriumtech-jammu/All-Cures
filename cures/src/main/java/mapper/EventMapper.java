@@ -7,7 +7,7 @@ import util.TimeUtil;
 public class EventMapper {
     public static Event toEntity(WebhookEvent dto) {
         Event e = new Event();
-
+         System.out.println(dto.payload);
         e.setType(dto.type);
         // Prefer payload.start_ts if present for meeting.started; else event_ts
         if (dto.payload != null && dto.payload.start_ts != null) {
