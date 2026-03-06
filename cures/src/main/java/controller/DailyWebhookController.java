@@ -27,7 +27,7 @@ public void receive(@RequestBody WebhookEvent event,
                     @RequestHeader(value = "X-Webhook-Timestamp", required = false) String ts) {
 
     log.info("Received webhook: type={}, ts={}, signature={}", event.type, event.event_ts, sig);
-
+	System.out.println("Webhook received: " + event);
     Event entity = EventMapper.toEntity(event);
 
     Session session = null;
