@@ -178,6 +178,7 @@ public class AppointmentDaoImpl {
             HashMap<String, String> payRes = PaymentGatewayDaoImpl.setPayment(appointmentMap, appointment.getAppointmentID());
             if (payRes != null) res.putAll(payRes);
             res.put("Count", "1"); // 1 => paid (2 or more)
+			res.put("accessCode", "AVWN42KL59BP42NWPB");
         }
         return res;
     } catch (Exception e) {
