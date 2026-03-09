@@ -191,6 +191,122 @@ public class AppointmentDaoImpl {
     } 
 }
 
+	//To add a new Appointment
+		public static HashMap<String, String> setAppointmentPaid(HashMap<String, Object> appointmentMap) {
+	    Session session = null;
+	    Transaction tx = null;
+	    HashMap<String, String> res = new HashMap<>();
+		LocalTime startTime = null;
+		Long appointmentCount = 0L;
+		String currencyName="";
+		 Integer userId = (Integer)(appointmentMap.get("userID"));
+	   	Integer docId = (Integer)(appointmentMap.get("docID"));
+	    try {
+	        session = HibernateUtil.buildSessionFactory();
+	        // Fetch currency and consultation fee
+	        Object[] row = (Object[]) session.createNativeQuery(
+	                "SELECT cc.currency_name, " +
+	                " (SELECT sc.Fee FROM ServiceContractDetails sc " +
+	                "   WHERE sc.UserID = ( " +
+	                "       SELECT r2.registration_id FROM registration r2 " +
+	                "       WHERE r2.DocID = :docId LIMIT 1) " +
+	                "   LIMIT 1) AS Fee " +
+	                "FROM registration r " +
+	                "LEFT JOIN countries_currencies cc " +
+	                "   ON UPPER(cc.country_code) = UPPER(r.country_code) " +
+	                "WHERE r.registration_id = :userId")
+	                .setParameter("userId", userId)
+	                .setParameter("docId", docId)
+	                .uniqueResult();
+	        
+	        if (row != null) {
+
+	            currencyName = (String) row[0];
+
+	            BigDecimal backendAmount;
+
+	            if (row[1] != null) {
+
+	                backendAmount = new BigDecimal(row[1].toString());
+
+	                BigDecimal totalFee =
+	                        feeCalculatorService.calculateTotalFee(backendAmount);
+
+	                appointmentMap.put("amount", totalFee.toString());
+
+	            } else {
+	                throw new Exception("Consultation fee not found.");
+	            }
+
+	            appointmentMap.put("currency",
+	                    currencyName != null ? currencyName : "INR");
+	        }
+
+
+	        // Query<Long> query = session.createQuery(
+	        //     "SELECT COUNT(a) FROM Appointment a WHERE a.userID = :userID", Long.class);
+	        // query.setParameter("userID", (Integer) appointmentMap.get("userID"));
+	        // Long appointmentCount = query.uniqueResult();
+			
+	        // Create new appointment
+			
+	       
+	        Appointment appointment = new Appointment();
+	        appointment.setDocID(docId);
+	        appointment.setUserID(userId);
+
+	        // Parse and set appointment date
+	        String dateString = (String) appointmentMap.get("appointmentDate");
+	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	        java.util.Date parsedDate = dateFormat.parse(dateString);
+	        appointment.setAppointmentDate(new java.sql.Date(parsedDate.getTime()));
+
+	        // Retrieve doctor's availability
+	        AvailabilitySchedule doctorAvailability = session.get(
+	            AvailabilitySchedule.class, (Integer) appointmentMap.get("docID"));
+
+	        if (doctorAvailability != null) {
+	            int slotDuration = doctorAvailability.getSlotDuration();
+	            startTime = LocalTime.parse((String) appointmentMap.get("startTime"));
+	            LocalTime endTime = startTime.plusMinutes(slotDuration);
+
+	            appointment.setStartTime(startTime.toString());
+	            appointment.setEndTime(endTime.toString());
+	        } else {
+	            throw new Exception("Doctor availability not found for docID: " + appointmentMap.get("docID"));
+	        }
+
+	        // Set other appointment details
+	        appointment.setPaymentStatus((Integer) appointmentMap.get("paymentStatus"));
+	        appointment.setStatus(0);
+
+	        // Save the appointment
+	        session.save(appointment);
+	        tx.commit();
+
+	        // ===== ALWAYS PAID FLOW =====
+
+	        HashMap<String, String> payRes =
+	                PaymentGatewayDaoImpl.setPayment(
+	                        appointmentMap,
+	                        appointment.getAppointmentID());
+
+	        if (payRes != null) {
+	            res.putAll(payRes);
+	        }
+
+	               
+	        return res;
+	    } catch (Exception e) {
+	       if (tx != null && tx.getStatus().canRollback()) {
+	        tx.rollback();
+	    }
+	        e.printStackTrace(); // Replace with proper logging
+	        res.put("Error", "Failed to set appointment: " + e.getMessage());
+	        return res;
+	    } 
+	}
+
 
 
 	
