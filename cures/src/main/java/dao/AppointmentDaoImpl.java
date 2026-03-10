@@ -294,6 +294,7 @@ public class AppointmentDaoImpl {
 
 	        if (payRes != null) {
 	            res.putAll(payRes);
+				res.put("accessCode", "AVWN42KL59BP42NWPB");
 	        }
 
 	               
