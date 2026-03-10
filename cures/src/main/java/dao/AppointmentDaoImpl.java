@@ -203,6 +203,7 @@ public class AppointmentDaoImpl {
 	   	Integer docId = (Integer)(appointmentMap.get("docID"));
 	    try {
 	        session = HibernateUtil.buildSessionFactory();
+			 tx = session.beginTransaction();
 	        // Fetch currency and consultation fee
 	        Object[] row = (Object[]) session.createNativeQuery(
 	                "SELECT cc.currency_name, " +
