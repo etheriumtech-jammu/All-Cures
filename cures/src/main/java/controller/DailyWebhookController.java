@@ -28,23 +28,23 @@ public void receive(@RequestBody(required = false)  WebhookEvent event,
 
 //    log.info("Received webhook: type={}, ts={}, signature={}", event.type, event.event_ts, sig);
 	System.out.println("Webhook received: " + event);
-    Event entity = EventMapper.toEntity(event);
+    // Event entity = EventMapper.toEntity(event);
 
-    Session session = null;
-    Transaction tx = null;
-    try {
-        session = HibernateUtil.buildSessionFactory();
-        tx = session.beginTransaction();
+    // Session session = null;
+    // Transaction tx = null;
+    // try {
+    //     session = HibernateUtil.buildSessionFactory();
+    //     tx = session.beginTransaction();
 
-        session.persist(entity);
+    //     session.persist(entity);
 
-        tx.commit();
-        log.info("Persisted event id={}, type={}", entity.getId(), entity.getType());
-    } catch (Exception e) {
-        if (tx != null) tx.rollback();
-        log.error("Failed to persist webhook event", e);
-        throw e; // propagate -> Spring returns 500
-    } 
+    //     tx.commit();
+    //     log.info("Persisted event id={}, type={}", entity.getId(), entity.getType());
+    // } catch (Exception e) {
+    //     if (tx != null) tx.rollback();
+    //     log.error("Failed to persist webhook event", e);
+    //     throw e; // propagate -> Spring returns 500
+    // } 
 }
 
   	@GetMapping(value = "/daily-webhook")
