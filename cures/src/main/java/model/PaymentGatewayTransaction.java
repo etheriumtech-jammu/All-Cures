@@ -60,7 +60,13 @@ public class PaymentGatewayTransaction {
 
     @Column(name = "LastUpdatedDate")
     private Date lastUpdatedDate;
-
+	
+	 @Column(name = "slot_id")
+    private Long slotId; 
+	
+    @Column(name = "user_id")
+    private Integer userId; 
+	
 	public Long getPaymentGatewayTransactionId() {
 		return paymentGatewayTransactionId;
 	}
@@ -197,5 +203,21 @@ public class PaymentGatewayTransaction {
 		this.lastUpdatedDate = lastUpdatedDate;
 	}
 
+	 public Long getSlotId() {
+		return slotId;
+	}
+    
+    	public void setSlotId(Long slotId) {
+		this.slotId = slotId;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+	
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+	
     // Getters and setters omitted for brevity
 }
