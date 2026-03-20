@@ -28,11 +28,11 @@ public class TokenValidationInterceptor implements HandlerInterceptor {
         } else {
             final_url+= url;
         }
-        logger.info("TokenValidationInterceptor: Request received with token: {}", token);
+     //   logger.info("TokenValidationInterceptor: Request received with token: {}", token);
         try {
             if (!(token == null )) {
                 int result=TokenValidator.isValidToken(token,final_url);
-                System.out.println("Result: " + result);
+       //         System.out.println("Result: " + result);
                 if(result==0)
                 {
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or missing token.");
