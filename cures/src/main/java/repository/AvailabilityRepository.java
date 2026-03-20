@@ -18,7 +18,7 @@ public class AvailabilityRepository {
 
     public List<AvailabilitySchedule> findAllActiveDoctors() {
 
-        String sql = "SELECT * FROM doctoravailability WHERE Status = 1";
+        String sql = "SELECT * FROM DoctorAvailability WHERE Status = 1";
 
         return session
                 .createNativeQuery(sql, AvailabilitySchedule.class)
