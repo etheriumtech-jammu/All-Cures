@@ -10,52 +10,75 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.UUID;
-import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import service.AuditService;
 import model.PaymentGatewayTransaction;
-import service.DailyCoService;
+import service.FeeCalculatorService;
 import util.AesCryptUtil;
 import util.Constant;
 import util.HibernateUtil;
 import util.PaymentUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PaymentGatewayDaoImpl {
+
+    private static FeeCalculatorService feeCalculatorService;
+    // constructor injection (preferred)
+    
+    @Autowired
+    public PaymentGatewayDaoImpl(FeeCalculatorService feeCalculatorService) {
+        this.feeCalculatorService = feeCalculatorService;
+    }
 
 	// Synchronization lock object
 	private static final Object paymentLock = new Object();
-
+	private static final Logger LOG = LoggerFactory.getLogger("wallet");
 	public static HashMap<String, String> setPayment(HashMap<String, Object> appointmentMap, int appointmentID) {
 		HashMap<String, String> resultMap = new HashMap<>();
 		UUID uuid = UUID.randomUUID();
 		String orderId = uuid.toString();
-
 		String currency = (String) appointmentMap.get("currency");
 //		String workingKey = "80923CFC322F5875BA18A25A84B3F05B";
-		String workingKey = "039AE11691FCF783D1539D35C6188AF9";
-		BigDecimal amount = new BigDecimal(appointmentMap.get("amount").toString());
-		String redirectUrl = "https://uat.all-cures.com:444/cures/payment/ccavenue-payment-udpates";
-		String cancelUrl = "https://uat.all-cures.com:444/cures/Error.jsp";
+		String workingKey = "0C8A93B072D45A598061718B364E36B5";
+		Object amountObj = appointmentMap.get("amount");
+
+		if (amountObj == null) {
+		    throw new IllegalArgumentException("Payment amount missing.");
+		}
+
+		BigDecimal amount;
+
+		if (amountObj instanceof BigDecimal) {
+		    amount = (BigDecimal) amountObj;   
+		} else {
+		    amount = new BigDecimal(amountObj.toString()); 
+		}
+		String redirectUrl = "https://all-cures.com:444/cures/payment/ccavenue-payment-udpates";
+		String cancelUrl = "";
 		long currentTimeMillis = new Date().getTime();
 		int ccaRequestTid = (int) currentTimeMillis;
 		String merchantId = "3119096";
-
 		String ccaRequest = "ccaRequesttid=" + ccaRequestTid + "&merchant_id=" + merchantId + "&order_id=" + orderId
 				+ "&currency=" + currency + "&amount=" + amount + "&redirect_url=" + redirectUrl + "&cancel_url="
 				+ cancelUrl + "&language=EN";
 		System.out.println(ccaRequest);
 		AesCryptUtil aesUtil = new AesCryptUtil(workingKey);
 		String encRequest = aesUtil.encrypt(ccaRequest);
-		System.out.println(encRequest);
-		System.out.println(orderId);
-		
+//		System.out.println(encRequest);
+//		System.out.println(orderId);
 		int res;
 		synchronized (paymentLock) { // Synchronize payment processing
 			res = saveTransactionDetails(appointmentID, orderId, amount, currency);
@@ -65,10 +88,56 @@ public class PaymentGatewayDaoImpl {
             resultMap.put("encRequest", encRequest);
             resultMap.put("orderID", orderId);
 		} 
-		return resultMap;
-		
+		return resultMap;		
 	}
 
+	public static HashMap<String, String> setSlotPayment(HashMap<String, Object> paymentMap) {
+		HashMap<String, String> resultMap = new HashMap<>();
+		UUID uuid = UUID.randomUUID();
+		String orderId = uuid.toString();
+		String currency = (String) paymentMap.get("currency");
+//		String workingKey = "80923CFC322F5875BA18A25A84B3F05B";
+		String workingKey = "0C8A93B072D45A598061718B364E36B5";
+		Object amountObj = paymentMap.get("amount");
+		Long slotId = (Long) paymentMap.get("slotId");
+		Integer userId = (Integer) paymentMap.get("userID");
+		if (amountObj == null) {
+		    throw new IllegalArgumentException("Payment amount missing.");
+		}
+
+		BigDecimal amount;
+
+		if (amountObj instanceof BigDecimal) {
+		    amount = (BigDecimal) amountObj;   
+		} else {
+		    amount = new BigDecimal(amountObj.toString()); 
+		}
+		String redirectUrl = "https://all-cures.com:444/cures/payment/ccavenue-payment-udpates";
+		String cancelUrl = "";
+		long currentTimeMillis = new Date().getTime();
+		int ccaRequestTid = (int) currentTimeMillis;
+		String merchantId = "3119096";
+		String ccaRequest = "ccaRequesttid=" + ccaRequestTid + "&merchant_id=" + merchantId + "&order_id=" + orderId
+				+ "&currency=" + currency + "&amount=" + amount + "&redirect_url=" + redirectUrl + "&cancel_url="
+				+ cancelUrl + "&language=EN";
+		System.out.println(ccaRequest);
+		AesCryptUtil aesUtil = new AesCryptUtil(workingKey);
+		String encRequest = aesUtil.encrypt(ccaRequest);
+//		System.out.println(encRequest);
+//		System.out.println(orderId);
+		int res;
+		synchronized (paymentLock) { // Synchronize payment processing
+			res = saveTransactionDetails_v2(slotId,userId, orderId, amount, currency);
+		}
+		if (res == 1) {
+			// Payment was successful, add encRequest and orderId to resultMap
+            resultMap.put("encRequest", encRequest);
+            resultMap.put("orderID", orderId);
+            
+		} 
+		return resultMap;		
+	}
+	
 	private static int saveTransactionDetails(int appointmentID, String orderID, BigDecimal amount, String currency) {
 
 		Session session = HibernateUtil.buildSessionFactory();
@@ -88,54 +157,126 @@ public class PaymentGatewayDaoImpl {
 			return 0; // Return 0 if insertion fails
 		}
 	}
+		
+	private static int saveTransactionDetails_v2(long slotId,Integer userId, String orderID, BigDecimal amount, String currency) {
 
-	public synchronized  static  String saveTransactionResults(HttpServletRequest request,String meeting) {
-		Map<String, String> hs = PaymentUtil.decryptResponse(request);
 		Session session = HibernateUtil.buildSessionFactory();
-		Transaction tx = session.beginTransaction();
 	    try {
-	    		String orderId = hs.get("order_id"); // Get the order_id from the parameters
-			
-		   String transDateStr = hs.get("trans_date");
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		Date transDate = dateFormat.parse(transDateStr);
-		Double amount=Double.parseDouble(hs.get("amount"));
-			Query query = session.createQuery("UPDATE PaymentGatewayTransaction "
-			        + "SET order_status = '" + hs.get("order_status") + "', " 
-			        + "payment_mode = '" + hs.get("payment_mode") + "', "
-			        + "status_message = '" + hs.get("status_message") + "', "
-			        + "bank_ref_no = '" + hs.get("bank_ref_no") + "', "
-			        + "trans_date = '" + transDate + "', "
-			        + "trackingID = '" + hs.get("tracking_id") + "'"
-			    
-			        + "WHERE order_id = '" + orderId + "'");
-			System.out.println("UPDATE Payment_Gateway_Transactions "
-			        + "SET order_status = '" + hs.get("order_status") + "', " 
-			        + "payment_mode = '" + hs.get("payment_mode") + "', "
-			        + "status_message = '" + hs.get("status_message") + "', "
-			        + "bank_ref_no = '" + hs.get("bank_ref_no") + "', "
-			        + "trans_date = '" + transDate + "', "
-			        + "trackingID = '" + hs.get("tracking_id") + "', "
-			       
-			        + "WHERE order_id = '" + orderId + "'");
-			
-			query.executeUpdate();
+	    	
+			Transaction tx = session.beginTransaction();
+			PaymentGatewayTransaction payment = new PaymentGatewayTransaction();
+			payment.setSlotId(slotId);
+			payment.setUserId(userId);
+			payment.setOrderId(orderID);
+			payment.setAmount(amount);
+			payment.setCurrency(currency);
+			session.save(payment);
 			tx.commit();
-		Integer docid= sendEmail(orderId,meeting);
-			 updateWalletAmount(amount,docid);
-			return "Success";
+			return 1; // Return 1 if insertion is successful
 		} catch (Exception e) {
 			e.printStackTrace(); // Log the exception or handle it appropriately
-			return "Error";
+			return 0; // Return 0 if insertion fails
 		}
 	}
+
+	public synchronized static String saveTransactionResults(HttpServletRequest request, String meeting) {
+	    Map<String, String> hs = PaymentUtil.decryptResponse(request);
+	    Session session = HibernateUtil.buildSessionFactory();
+	    Transaction tx = session.beginTransaction();
+
+	    try {
+	        // Inputs from gateway callback
+	        String orderId      = hs.get("order_id");
+	        String orderStatus  = hs.get("order_status");
+	        String transDateStr = hs.get("trans_date");      // e.g. "dd/MM/yyyy HH:mm:ss"
+	        String paymentMode  = hs.get("payment_mode");
+	        String statusMsg    = hs.get("status_message");
+	        String bankRefNo    = hs.get("bank_ref_no");
+	        String trackingId   = hs.get("tracking_id");
+	        BigDecimal amount   = new BigDecimal(hs.get("amount"));
+	        // Parse trans_date -> java.util.Date (your entity uses Date)
+	        Date transactionDate = null;
+	        if (transDateStr != null && !transDateStr.isEmpty()) {
+	            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	            transactionDate = df.parse(transDateStr);
+	        }
+	        // 1) Load PG row by *entity field* name orderID
+	        PaymentGatewayTransaction pg = session.createQuery(
+	                "FROM PaymentGatewayTransaction p WHERE p.orderID = :oid",
+	                PaymentGatewayTransaction.class)
+	            .setParameter("oid", orderId)
+	            .getSingleResult();
+	        Long pgId = pg.getPaymentGatewayTransactionId(); // <- PK from your model
+
+	        Long slotId = pg.getSlotId();      // 🔥 NEW FIELD
+	        Integer userId = pg.getUserId();   // 🔥 NEW FIELD
+
+	        // 🔥 NEW: AUDIT SERVICE
+	        AuditService auditService = new AuditService();
+
+	        // 2) Update PG entity fields (Hibernate will flush an UPDATE)
+	        pg.setOrderStatus(orderStatus);
+	        pg.setPaymentMode(paymentMode);
+	        pg.setStatusMessage(statusMsg);
+	        pg.setBankRefNo(bankRefNo);
+	        pg.setTransactionDate(transactionDate); // Date, matches your model
+	        pg.setTrackingId(trackingId);
+	        pg.setLastUpdatedDate(new Date());
+
+	        // If 'pg' is managed (it is), no need to merge; commit will flush
+	        tx.commit();
+
+	        // 3) On success, post wallet split using the pgId
+	        if ("Success".equalsIgnoreCase(orderStatus)) {
+	            // 🔥 CONFIRM APPOINTMENT
+	        	AppointmentDaoImpl.confirmAppointmentAfterPayment(session, userId, slotId, auditService);
+
+	            // 🔥 AUDIT LOG
+	            auditService.log(
+	                    session,
+	                    userId,
+	                    null,
+	                    slotId,
+	                    "PAYMENT",
+	                    "SUCCESS",
+	                    "Payment success for order " + orderId
+	            );
+	            Integer docId = sendEmail(orderId, meeting);
+	            updateWalletAmount(amount.doubleValue(), docId, pgId.intValue());
+	            return "Success";
+	        } else {
+	            // 🔥 RELEASE SLOT
+	            session.createNativeQuery(
+	                    "UPDATE doctor_slots SET hold_until = NULL WHERE slot_id = :id")
+	                    .setParameter("id", slotId)
+	                    .executeUpdate();
+
+	            // 🔥 AUDIT LOG
+	            auditService.log(
+	                    session,
+	                    userId,
+	                    null,
+	                    slotId,
+	                    "PAYMENT",
+	                    "FAILED",
+	                    statusMsg
+	            );
+	            return "Failed: " + statusMsg;
+	        }
+
+	    } catch (Exception e) {
+	        if (tx != null) tx.rollback();
+	        e.printStackTrace();
+	        return "Error";
+	    } 
+	}
+
 
 	// Method to get order status by orderId
 	public static String getOrderStatus(String orderId) {
 		String orderStatus="";
 		Session session = HibernateUtil.buildSessionFactory();
-	    try {
-	    	
+	    try {	    	
 	    	Query query1 = session.createNativeQuery("SELECT order_status,status_message FROM PaymentGatewayTransaction  WHERE order_id ='" + orderId + "';");
 	    	List<Object[]> resultList = query1.getResultList();
 			  for (Object[] result : resultList) {
@@ -179,46 +320,106 @@ public class PaymentGatewayDaoImpl {
 	        
 	        java.util.Date time = inputFormat.parse(startTime);
 	        String formattedTime = outputFormat.format(time).toUpperCase(); // Convert AM/PM to uppercase
-//	        VideoDaoImpl.sendEmail(docID, userID, meeting, dateString, formattedTime);
-            
-    		System.out.println("Video Link sent");
-		return docID;
+	        VideoDaoImpl.sendEmail(docID, userID, meeting, dateString, formattedTime);
+            	return docID;
+    	
 	}
 
-	public static void updateWalletAmount(double amount, int docId) {
-		Session session = HibernateUtil.buildSessionFactory();
-		
-        try {
-            Transaction tx = session.beginTransaction();
 
-            // Divide the amount based on the rule
-            double wallet2Amount = amount * 0.2; // 20% to walletmasterid 2 i.e All Cures
-            double wallet1Amount = amount * 0.1; // 10% to walletmasterid 1 i.e GST
-            double wallet3Amount = amount * 0.7; // 70% to walletmasterid 3 if docid matches
+	// === Top-level method: owns the transaction ===
+	public static void updateWalletAmount(double amount, int docId, int paymentGatewayTransactionId) {
+	    Session session = HibernateUtil.buildSessionFactory(); // assuming this returns a Session; otherwise openSession()
+	    Transaction tx = null;
+	    try {
+	        tx = session.beginTransaction();
 
-            // Update rows in the table
-            updateWalletAmount(session, 2, wallet2Amount);
-            updateWalletAmount(session, 1, wallet1Amount);
-            updateWalletAmount(session, 3, wallet3Amount, docId);
-		System.out.println("Updated");
-            tx.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	        Map<String, BigDecimal> breakdown = feeCalculatorService.buildBreakdown(feeCalculatorService.toBigDecimal(amount));
+	        BigDecimal baseFee = breakdown.get("baseFee");
+	        BigDecimal gstPart = breakdown.get("gst");
+	        BigDecimal ethPart = breakdown.get("etheriumPart");
+	        // 1) Insert ledger rows (status=SUCCESS)
+	        insertLeg(session, paymentGatewayTransactionId, 2, null, ethPart.doubleValue(), "CREDIT", "SUCCESS", "10% platform");
+	        insertLeg(session, paymentGatewayTransactionId, 1, null, gstPart.doubleValue(), "CREDIT", "SUCCESS", "18% GST");
+	        insertLeg(session, paymentGatewayTransactionId, 3, docId,baseFee.doubleValue(), "CREDIT", "SUCCESS", "72% doctor");
 
-    private static void updateWalletAmount(Session session, int walletMasterId, double amount) {
-        String hql = "UPDATE WalletHistory SET WalletAmount = WalletAmount + " + amount + " WHERE WalletMasterTypeID = " + walletMasterId + " ";
-        session.createNativeQuery(hql)
-                .executeUpdate();
-	    System.out.println("Updated");
-    }
+	        // 2) Update balances
+	        bumpWallet(session, 2, ethPart.doubleValue(), null);
+	        bumpWallet(session, 1, gstPart.doubleValue(), null);
+	        bumpWallet(session, 3, baseFee.doubleValue(), docId);
 
-    private static void updateWalletAmount(Session session, int walletMasterId, double amount, int docId) {
-        String hql = "UPDATE WalletHistory SET WalletAmount = WalletAmount + " + amount + " WHERE WalletMasterTypeID = "+ walletMasterId + " AND OwnerID = " + docId +"";
-        session.createNativeQuery(hql)
-                .executeUpdate();
-	    System.out.println("Updated");
-    }
+	        tx.commit();
+	        System.out.println("Wallet + ledger updated successfully for pgId=" + paymentGatewayTransactionId);
+	    } catch (Exception e) {
+	        if (tx != null) tx.rollback();   // keep atomicity
+	        LOG.error("updateWalletAmount failed for pgId={}, docId={}, amount={}",
+	                  paymentGatewayTransactionId, docId, amount, e);
+	        e.printStackTrace();
+	    } 
+	}
+
+	// === Helper: insert a single WalletTransaction row, with logging + rethrow ===
+	private static void insertLeg(Session s,
+	                              int pgId,
+	                              int walletMasterTypeId,
+	                              Integer docId,
+	                              double amount,
+	                              String direction,   // "CREDIT" or "DEBIT"
+	                              String status,      // e.g., "SUCCESS"
+	                              String description) {
+	    try {
+	        Query q = s.createNativeQuery(
+	            "INSERT INTO WalletTransaction " +
+	            "(payment_gateway_transaction_id, wallet_master_type_id, doc_id, " +
+	            " amount, direction, status, description, created_at, updated_at) " +
+	            "VALUES (:pg, :wm, :doc, :amt, :dir, :st, :desc, NOW(), NOW())"
+	        );
+	        q.setParameter("pg", pgId);
+	        q.setParameter("wm", walletMasterTypeId);
+	        q.setParameter("doc", docId);
+	        q.setParameter("amt", amount);
+	        q.setParameter("dir", direction);
+	        q.setParameter("st", status);
+	        q.setParameter("desc", description);
+	        q.executeUpdate();
+	    } catch (Exception e) {
+	    	 LOG.error("insertLeg failed pgId={}, wmTypeId={}, docId={}, amount={}, direction={}, status={}",
+	                    pgId, walletMasterTypeId, docId, amount, direction, status, e);
+	           
+	        e.printStackTrace();
+	        throw e; // propagate so outer tx rolls back
+	    }
+	}
+
+	// === Helper: bump WalletHistory balance, with logging + rethrow ===
+	private static void bumpWallet(Session s, int walletMasterId, double amount, Integer ownerId) {
+	    try {
+	        StringBuilder sql = new StringBuilder(
+	            "UPDATE WalletHistory SET WalletAmount = WalletAmount + :amt WHERE WalletMasterTypeID = :wm"
+	        );
+	        if (ownerId != null) {
+	            sql.append(" AND OwnerID = :own");
+	        }
+
+	        Query q = s.createNativeQuery(sql.toString());
+	        q.setParameter("amt", amount);
+	        q.setParameter("wm", walletMasterId);
+	        if (ownerId != null) {
+	            q.setParameter("own", ownerId);
+	        }
+
+	        int updated = q.executeUpdate();
+	        if (updated == 0) {
+	        	 LOG.warn("bumpWallet updated 0 rows wm={}, ownerId={}, amount={}",
+	                        walletMasterId, ownerId, amount);
+	        	 }
+	    } catch (Exception e) {
+	    	 LOG.error("bumpWallet failed wm={}, ownerId={}, amount={}",
+	                    walletMasterId, ownerId, amount, e);
+	        e.printStackTrace();
+	        throw e; // propagate so outer tx rolls back
+	    }
+	}
+
+
 
 }
