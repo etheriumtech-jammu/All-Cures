@@ -33,6 +33,7 @@ import model.Appointment;
 import model.AvailabilitySchedule;
 import model.Doctor_New;
 import model.ServicePayment;
+import service.AuditService;
 import util.Constant;
 import util.HibernateUtil;
 import util.SchedulerService;
@@ -786,6 +787,43 @@ public class AppointmentDaoImpl {
 	    }
 //	    System.out.println("appointmentStartTimes"+appointmentStartTimes);
 	    return appointmentStartTimes;
+	}
+
+	public static void confirmAppointmentAfterPayment(Session session, Integer userId, Long slotId,
+			AuditService auditService) throws Exception {
+
+		Object[] slot = (Object[]) session
+				.createNativeQuery("SELECT doctor_id, start_datetime, end_datetime, is_booked "
+						+ "FROM doctor_slots WHERE slot_id = :slotId FOR UPDATE")
+				.setParameter("slotId", slotId).getSingleResult();
+
+		Integer doctorId = ((Number) slot[0]).intValue();
+		LocalDateTime start = ((java.sql.Timestamp) slot[1]).toLocalDateTime();
+		LocalDateTime end = ((java.sql.Timestamp) slot[2]).toLocalDateTime();
+
+		if (((Number) slot[3]).intValue() == 1) {
+			throw new Exception("Already booked");
+		}
+
+// 🔥 MARK BOOKED
+		session.createNativeQuery("UPDATE doctor_slots SET is_booked = 1, hold_until = NULL " + "WHERE slot_id = :id")
+				.setParameter("id", slotId).executeUpdate();
+
+// 🔥 CREATE APPOINTMENT
+		Appointment appt = new Appointment();
+		appt.setDocID(doctorId);
+		appt.setUserID(userId);
+		appt.setStatus(0);
+		appt.setPaymentStatus(1);
+
+		appt.setAppointmentDate(java.sql.Date.valueOf(start.toLocalDate()));
+		appt.setStartTime(start.toLocalTime().toString());
+		appt.setEndTime(end.toLocalTime().toString());
+
+		session.save(appt);
+
+// 🔥 AUDIT
+		auditService.log(session, userId, doctorId, slotId, "BOOK_APPOINTMENT", "SUCCESS", "Created");
 	}
 
 	
