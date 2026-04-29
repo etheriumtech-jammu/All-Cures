@@ -827,5 +827,108 @@ public class AppointmentDaoImpl {
 		auditService.log(session, userId, doctorId, slotId, "BOOK_APPOINTMENT", "SUCCESS", "Created");
 	}
 
+	public static Map<String, Object> findAvailableDates(int doctorId) {
+		Map<String, Object> datesMap = new HashMap<>();
+		List<LocalDate> completelyBookedDates = new ArrayList<>();
+		Map<LocalDate, Set<LocalTime>> availableDates = new TreeMap<>();
+		Map<LocalDate, Set<LocalTime>> unbookedSlots = new TreeMap<>();
+		BigDecimal amount = null;
+		String country_code = null;
+		String CurrencySymbol = null;
+		
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			Transaction tx = session.beginTransaction();
+
+			// Check if the doctor exists
+			Query query = session.createNativeQuery("SELECT sc.Fee,d.docname_first, r.country_code,cc.currency_symbol "
+					+ "FROM allcures_schema.ServiceContractDetails sc "
+					+ "JOIN registration r ON r.registration_id = sc.UserID "
+					
+					+ "LEFT JOIN countries_currencies cc ON cc.country_code = r.country_code "
+					+ "JOIN Doctors_New d ON d.docid = r.DocID " + "WHERE sc.ServiceID=2 AND d.DocID = :doctorId");
+			query.setParameter("doctorId", doctorId);
+			
+			List<Object[]> resultList = query.getResultList();
+
+			if (!resultList.isEmpty()) {
+				// Doctor found
+
+				for (Object[] row : resultList) {
+					// Assuming the fee is the first column and doctor's name is the second column
+					// in the result set
+					amount = row[0] != null ? (BigDecimal) row[0] : BigDecimal.ZERO;
+					country_code = row[2] != null ? (String) row[2] : "";
+					CurrencySymbol = row[3] != null ? (String) row[3] : "";
+					
+					
+			
+
+					// If you also need amount depending on countryCode
+					if (country_code == null || country_code.trim().isEmpty() || "IN".equalsIgnoreCase(country_code)) {
+						BigDecimal baseFee = feeCalculatorService.toBigDecimal(row[0]);
+
+						BigDecimal totalFee = feeCalculatorService.calculateTotalFee(baseFee);
+
+						// build breakdown map
+						Map<String, BigDecimal> breakdown = feeCalculatorService.buildBreakdown(totalFee);
+
+						// create nested object for "fee"
+						Map<String, Object> feeObject = new HashMap<>();
+						feeObject.putAll(breakdown); // gst, baseFee, etc.
+
+						// put into doctor
+						datesMap.put("amount", feeObject);
+						datesMap.put("currency_symbol", "₹ ");
+						
+					} else {
+						datesMap.put("amount", "0");
+						datesMap.put("currency_symbol", CurrencySymbol + " ");
+						
+					}
+				}
+				LocalDate today = LocalDate.now();
+				LocalDate end = today.plusDays(30); // Next 30 days
+
+				for (LocalDate date = today; !date.isAfter(end); date = date.plusDays(1)) {
+					DayOfWeek dayOfWeek = date.getDayOfWeek();
+
+					if (isDoctorAvailableOnDay(session, doctorId, dayOfWeek)) {
+						TreeSet<LocalTime> bookedSlotsTime = getAppointmentsStartTimesForDate(doctorId, date);
+
+						TreeSet<LocalTime> slotStartTimes = calculateTotalSlots(doctorId);
+
+						if (date.equals(today)) {
+							LocalTime now = LocalTime.now();
+							slotStartTimes.removeIf(slot -> !slot.isAfter(now));
+						}
+						availableDates.put(date, slotStartTimes);
+
+						// Find unbooked slots
+						TreeSet<LocalTime> unbookedSlotsTime = new TreeSet<>(slotStartTimes);
+						unbookedSlotsTime.removeAll(bookedSlotsTime);
+						unbookedSlots.put(date, unbookedSlotsTime);
+						// System.out.println("slotStartTimes.size()"+slotStartTimes.size());
+						// System.out.println("bookedSlotsTime.size()"+bookedSlotsTime.size());
+						if (bookedSlotsTime.size() >= slotStartTimes.size()) {
+							completelyBookedDates.add(date);
+						}
+					}
+				}
+			} else {
+				throw new Exception("Doctor not found with id: " + doctorId);
+			}
+
+			tx.commit();
+		} catch (Exception e) {
+			// Handle other exceptions
+			e.printStackTrace();
+		}
+
+		datesMap.put("totalDates", availableDates);
+		datesMap.put("completelyBookedDates", completelyBookedDates);
+		datesMap.put("unbookedSlots", unbookedSlots);
+
+		return datesMap;
+	}
 	
 }
