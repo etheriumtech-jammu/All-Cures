@@ -97,6 +97,7 @@
 		 <mapping class="model.Prescription"/>
 		 <mapping class="model.Feedback"/>
 		 <mapping class="model.DoctorSlot"/>
+		 <mapping class="model.OtpEntity"/>
    <!--   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password">root</property>
