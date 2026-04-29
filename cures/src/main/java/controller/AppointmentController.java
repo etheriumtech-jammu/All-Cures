@@ -70,7 +70,12 @@ public class AppointmentController {
 		
     }
 	
-
+	//To get Total , unbooked slots and Completely Booked Dates of a particular doctor
+		@RequestMapping(value = "/get/Slots/{docID}", produces = "application/json", method = RequestMethod.GET)  
+		public @ResponseBody Map<String, Object> findAvailableDates(@PathVariable int docID) {
+			     return AppointmentDaoImpl.findAvailableDates(docID);
+	    }
+		
 
 
 
