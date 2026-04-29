@@ -32,8 +32,8 @@ public class GlobalExceptionHandler {
 	        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
 	    
-//	    @PostConstruct
-//	    public void init() {
-//	        System.out.println("GlobalExceptionHandler Loaded");
-//	    }
+	    @PostConstruct
+	    public void init() {
+	        System.out.println("GlobalExceptionHandler Loaded");
+	    }
 }
