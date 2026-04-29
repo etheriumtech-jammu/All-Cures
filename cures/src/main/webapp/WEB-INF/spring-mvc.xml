@@ -201,7 +201,7 @@
 </mvc:interceptor>
 </mvc:interceptors>
 	<context:component-scan
-		base-package="controller,dao,service,repository" />
+		base-package="controller,dao,service,repository,exception" />
 	<context:annotation-config />
 <!--
 	<bean id="mailSender"
