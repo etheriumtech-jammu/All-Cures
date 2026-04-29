@@ -83,7 +83,7 @@ public class DoctorSlotRepository {
                      "VALUES (:doctorId, :start, :end) " +
                      "ON DUPLICATE KEY UPDATE doctor_id = doctor_id";
 
-        System.out.println("Inserting slot: " + doctorId + " | " + start + " - " + end);
+  //      System.out.println("Inserting slot: " + doctorId + " | " + start + " - " + end);
 
         Session session = HibernateUtil.buildSessionFactory();
         Transaction tx = null;
@@ -99,13 +99,13 @@ public class DoctorSlotRepository {
 
             tx.commit();   // ✅ VERY IMPORTANT
 
-            System.out.println("Slot inserted/ignored successfully.");
+  //          System.out.println("Slot inserted/ignored successfully.");
 
         } catch (Exception e) {
 
             if (tx != null) tx.rollback();  // ✅ rollback on failure
 
-            System.out.println("Error inserting slot: " + e.getMessage());
+    //        System.out.println("Error inserting slot: " + e.getMessage());
 
         } 
     }
@@ -124,12 +124,12 @@ public class DoctorSlotRepository {
                 .executeUpdate();
         tx.commit();   // ✅ VERY IMPORTANT
 
-        System.out.println("Slots deleted successfully.");
+//        System.out.println("Slots deleted successfully.");
         } catch (Exception e) {
 
 			if (tx != null) tx.rollback();  // ✅ rollback on failure
 
-			System.out.println("Error deleting old slots: " + e.getMessage());
+//			System.out.println("Error deleting old slots: " + e.getMessage());
 
 		}
     }
