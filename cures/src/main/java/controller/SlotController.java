@@ -101,7 +101,7 @@ public class SlotController {
 
             // ❌ REMOVE LOCK IF OTP FAILED
             slotService.releaseLock(lockId);
-
+            e.printStackTrace();
             throw new RuntimeException("Failed to send OTP");
         }
 
