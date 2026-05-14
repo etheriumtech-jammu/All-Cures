@@ -1,5 +1,6 @@
 package model;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -86,6 +87,9 @@ public class Appointment {
 
     @Transient
     private String medicineType;
+
+    @Column(name = "amount")
+    private BigDecimal amount;
 
     // Getters and setters
     public int getAppointmentID() {
@@ -238,5 +242,13 @@ public class Appointment {
 
     public void setPrescription(Prescription prescription) {
         this.prescription = prescription;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 }

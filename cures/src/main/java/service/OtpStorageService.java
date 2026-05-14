@@ -1,16 +1,17 @@
 package service;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
+import java.time.LocalDateTime;
 
 import javax.transaction.Transactional;
 
 import org.hibernate.Session;
-//import org.springframework.data.redis.core.StringRedisTemplate;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Service;
 
 import exception.OtpException;
-import model.OtpEntity;
+import model.OtpVerification;
 import net.spy.memcached.AddrUtil;
 import net.spy.memcached.ConnectionFactoryBuilder;
 import net.spy.memcached.FailureMode;
@@ -22,152 +23,182 @@ import util.HibernateUtil;
 @Transactional
 public class OtpStorageService {
 
-	   Session session = HibernateUtil.buildSessionFactory();
-	   public static MemcachedClient mcc = null;
+		 private static MemcachedClient mcc = null;
+
     private static final int OTP_EXPIRY = 5; // minutes
-    
-    //Key format: countryCode:mobile
-    private String getKey(String countryCode, String mobile) {
-    	 // clean inputs
+    // 🔑 Key generator
+    private String getKey(String countryCode, Long mobile) {
+
         String cleanCountryCode = countryCode
                 .replace("+", "")
-                .replaceAll("[^0-9]", ""); // only digits
+                .replaceAll("[^0-9]", "");
 
-        String cleanMobile = mobile
-                .replaceAll("[^0-9]", ""); // only digits
+        String cleanMobile = String.valueOf(mobile);
 
         return cleanCountryCode + ":" + cleanMobile;
     }
-    
+
+    // 🔌 Memcache init
     public static MemcachedClient initializeCacheClient() {
-		try {
-			Constant.log("Trying Connection to Memcache server", 0);
-			mcc = new MemcachedClient(
-					new ConnectionFactoryBuilder().setDaemon(true).setFailureMode(FailureMode.Retry).build(),
-					AddrUtil.getAddresses(Constant.ADDRESS));
-			Constant.log("Connection to Memcache server Sucessful", 0);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Constant.log("Connection to Memcache server UN-Sucessful", 3);
-		}
-		return mcc;
-	}
-    public void saveOtp(String countryCode,String mobile, String otp) {
-    	if (mcc == null) {
-			initializeCacheClient();
-		}
+        try {
+            Constant.log("Connecting to Memcache...", 0);
 
-    	 try {
-            OtpEntity entity = new OtpEntity();
+            mcc = new MemcachedClient(
+                    new ConnectionFactoryBuilder()
+                            .setDaemon(true)
+                            .setFailureMode(FailureMode.Retry)
+                            .build(),
+                    AddrUtil.getAddresses(Constant.ADDRESS));
+
+            Constant.log("Memcache connected", 0);
+
+        } catch (IOException e) {
+            Constant.log("Memcache connection failed", 3);
+            e.printStackTrace();
+        }
+        return mcc;
+    }
+
+    // 📱 SAVE OTP
+  
+    public void saveOtp(String countryCode, Long mobile, String otp) {
+
+        if (mcc == null) {
+            initializeCacheClient();
+        }
+        Session session = null;
+        Transaction tx = null;
+        System.out.println(countryCode + mobile + otp + " saveOtp called");
+        try {
+        	session = HibernateUtil.buildSessionFactory();
+      
+        	tx=session.beginTransaction();
+            OtpVerification entity = new OtpVerification();
             entity.setOtp(otp);
-            entity.setCountryCode(countryCode.trim().replace("+", ""));
-            entity.setMobile(mobile.trim()); 
-            entity.setStatus("SENT");
-            entity.setCreatedAt(java.time.LocalDateTime.now());
-            entity.setExpiryTime(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(OTP_EXPIRY));
-             session.beginTransaction();
-            session.save(entity);
-            session.getTransaction().commit();
+            entity.setCountryCode(countryCode.replace("+", "").trim());
+            entity.setMobileNumber(mobile);
+            entity.setCreatedTime(LocalDateTime.now());
+            entity.setExpiryTime(LocalDateTime.now().plusMinutes(OTP_EXPIRY));
+            entity.setAttempts(0);
+            entity.setIsUsed(0);
 
-            
+            session.save(entity);
+            tx.commit();
+            System.out.println("OTP saved to DB: " + entity.getCountryCode());
             String key = getKey(countryCode, mobile);
-            System.out.println("Generated Memcached Key: [" + key + "]");
             mcc.set(key, OTP_EXPIRY * 60, otp);
 
         } catch (Exception e) {
-        	if(session.getTransaction() != null) {
-            	session.getTransaction().rollback();
-            	}
             throw new OtpException("Failed to save OTP", e);
         }
     }
 
-    public String getOtp(String countryCode,String mobile) {
-    	if (mcc == null) {
-			initializeCacheClient();
-		}
-    	 String key = getKey(countryCode, mobile);
-         Object cachedOtp = mcc.get(key);
+    // 🔍 GET OTP
+    public String getOtp(String countryCode, Long mobile) {
+        if (mcc == null) {
+            initializeCacheClient();
+        }
+        String key = getKey(countryCode.replace("+", ""), mobile);
+        Object cachedOtp = mcc.get(key);
+        if (cachedOtp != null) {
+        	System.out.println("OTP fetched from cache: " + cachedOtp.toString());
+            return cachedOtp.toString();
+        }
+        Session session = null;
+        Transaction tx = null;
 
-         if (cachedOtp != null) {
-             System.out.println("OTP fetched from cache");
-             return cachedOtp.toString();
-         }
-    	   Session session = HibernateUtil.buildSessionFactory();
-            try {
-            String hql = "FROM OtpEntity " +
-                         "WHERE mobile = :mobile " +
-                         "AND countryCode = :countryCode " +
-                         "AND expiryTime > :currentTime " +
-                         "ORDER BY createdAt DESC";
+        try {
+        	session = HibernateUtil.buildSessionFactory();
+            String hql = "FROM OtpVerification " +
+                    "WHERE mobileNumber = :mobile " +
+                    "AND countryCode = :countryCode " +
+                    "AND expiryTime > :now " +
+                    "AND isUsed = 0 " +
+                    "ORDER BY createdTime DESC";
 
-            OtpEntity entity = (OtpEntity) session
-                    .createQuery(hql)
-                    .setParameter("mobile", mobile)
-                    .setParameter("countryCode", countryCode.trim().replace("+", ""))
-                    .setParameter("currentTime", System.currentTimeMillis())
-                    .setMaxResults(1)
-                    .uniqueResult();
+            Query<OtpVerification> query = session.createQuery(hql, OtpVerification.class);
+            query.setParameter("mobile", mobile);
+            query.setParameter("countryCode", countryCode.replace("+", ""));
+            query.setParameter("now", LocalDateTime.now());
+            query.setMaxResults(1);
 
-            if (entity == null) {
-                System.out.println("No valid OTP found");
-                return null;
-            }
+            OtpVerification entity = query.uniqueResult();
+            if (entity == null) return null;
             mcc.set(key, OTP_EXPIRY * 60, entity.getOtp());
-
+            System.out.println("OTP fetched from DB and cached: " + entity.getOtp());
+            System.out.println("OTP expiry time: " + entity.getId());
             return entity.getOtp();
 
         } catch (Exception e) {
             throw new OtpException("Failed to fetch OTP", e);
         }
     }
-    public void deleteOtp(String mobile, String countryCode) {
-    	  
-             try {
-            String hql = "DELETE FROM OtpEntity WHERE mobile = :mobile AND countryCode = :countryCode";
-            session.beginTransaction();
+
+    // 🗑 DELETE OTP
+    public void deleteOtp(String countryCode, Long mobile) {
+    	  Session session = null;
+          Transaction tx = null;
+
+          try {
+          	session = HibernateUtil.buildSessionFactory();
+          	tx=session.beginTransaction();
+            String hql = "DELETE FROM OtpVerification WHERE mobileNumber = :mobile AND countryCode = :countryCode";
+
             session
                     .createQuery(hql)
                     .setParameter("mobile", mobile)
-                    .setParameter("countryCode",countryCode)
+                    .setParameter("countryCode", countryCode.replace("+", ""))
                     .executeUpdate();
-            session.getTransaction().commit();
-            System.out.println("OTP deleted successfully");
+            tx.commit();
+
         } catch (Exception e) {
-        	if(session.getTransaction() != null) {
-        	session.getTransaction().rollback();
-        	}
-        	System.out.println("Failed to delete OTP: " + e.getMessage());
             throw new OtpException("Failed to delete OTP", e);
         }
     }
 
-    public void markVerified( String countryCode,String mobile, String otp) {
-    	if (mcc == null) {
-			initializeCacheClient();
-		}
-                
-        try {
-            String hql = "UPDATE OtpEntity SET status='VERIFIED' WHERE mobile = :mobile AND countryCode = :countryCode AND otp = :otp";
-             session.beginTransaction();
-             int updatedRows = session
-            	        .createQuery(hql)
-            	        .setParameter("mobile", mobile)
-            	        .setParameter("countryCode", countryCode.trim().replace("+", ""))
-            	        .setParameter("otp", otp)
-            	        .executeUpdate();
+    // ✅ MARK VERIFIED
+    public void markVerified(String countryCode, Long mobile, String otp) {
 
-            	System.out.println("Rows updated: " + updatedRows);
-             session.getTransaction().commit();
-             mcc.delete(getKey(countryCode, mobile));
-             System.out.println("OTP marked as VERIFIED successfully");
+        if (mcc == null) {
+            initializeCacheClient();
+        }
+        Session session = null;
+        Transaction tx = null;
+
+        try {
+        	session = HibernateUtil.buildSessionFactory();
+            
+            tx = session.beginTransaction();   // 🔥 REQUIRED
+
+            String hql = "UPDATE OtpVerification SET isUsed = 1 " +
+                    "WHERE mobileNumber = :mobile " +
+                    "AND countryCode = :countryCode " +
+                    "AND otp = :otp";
+            try {
+            int updated = session
+                    .createQuery(hql)
+                    .setParameter("mobile", mobile)
+                    .setParameter("countryCode", countryCode.replace("+", ""))
+                    .setParameter("otp", otp)
+                    .executeUpdate();
+            tx.commit();   // 🔥 MUST
+            System.out.println(mobile + countryCode + otp + " markVerified updated rows: " + updated);
+            
+            
+            }catch(Exception e) {
+            	e.printStackTrace();
+            }
+//            if (updated == 0) {
+//                tx.rollback();   // optional but good
+//                throw new OtpException("OTP not found or already used");
+//            }
+
+            mcc.delete(getKey(countryCode, mobile));
+
         } catch (Exception e) {
-        	if(session.getTransaction() != null) {
-            	session.getTransaction().rollback();
-            	}
-        	 System.out.println("Failed to update OTP status: " + e.getMessage());
-            throw new OtpException("Failed to update OTP status", e);
+        	e.printStackTrace();
+            if (tx != null) tx.rollback();   // 🔥 IMPORTANT
+            throw new OtpException("Failed to mark OTP verified", e);
         }
     }
 }

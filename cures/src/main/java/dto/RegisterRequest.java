@@ -1,15 +1,13 @@
 package dto;
+public class RegisterRequest {
 
-public class OtpRequest {
     private Long mobile;
     private String countryCode;
-    private String otp;
+    private String password;
     private String firstName;
     private String lastName;
     private String acceptTnC;
     private String acceptPolicy;
-    private String lockId;
-    private Double amount;
     
 	public Long getMobile() {
 		return mobile;
@@ -23,11 +21,11 @@ public class OtpRequest {
 	public void setCountryCode(String countryCode) {
 		this.countryCode = countryCode;
 	}
-	public String getOtp() {
-		return otp;
+	public String getPassword() {
+		return password;
 	}
-	public void setOtp(String otp) {
-		this.otp = otp;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public String getFirstName() {
 		return firstName;
@@ -54,17 +52,7 @@ public class OtpRequest {
 		this.acceptPolicy = acceptPolicy;
 	}
 
-	public String getLockId() {
-		return lockId;
-	}
-	public Double getAmount() {
-		return amount;
-	}
-	public void setAmount(Double amount) {
-		this.amount = amount;
-	}
 	
-	
-    // getters & setters
+    // getters/setters
     
 }

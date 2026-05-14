@@ -12,13 +12,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.UUID;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dao.PaymentGatewayDaoImpl;
-
+import model.SlotLock;
+import model.SlotLockStatus;
 import repository.DoctorSlotRepository;
 import repository.FeeRepository;
 import util.HibernateUtil;
@@ -26,358 +29,464 @@ import util.HibernateUtil;
 @Service
 public class SlotService {
 
-    @Autowired
-    private DoctorSlotRepository slotRepo;
+	@Autowired
+	private DoctorSlotRepository slotRepo;
 
-    @Autowired
-    private DoctorPriorityManager priorityManager;
+	@Autowired
+	private DoctorPriorityManager priorityManager;
 
-    @Autowired
-    private AuditService auditService;
-    @Autowired
-    private FeeRepository feeRepo;
+	@Autowired
+	private AuditService auditService;
+	@Autowired
+	private FeeRepository feeRepo;
 
-    @Autowired
-    private FeeCalculatorService feeCalculatorService;
+	@Autowired
+	private FeeCalculatorService feeCalculatorService;
 
- //   @Cacheable(value = "slots", key = "#doctorId + '_' + #userId")
-    public Map<String, Object> getSlots(Integer doctorId, Integer userId) {
+	// @Cacheable(value = "slots", key = "#doctorId + '_' + #userId")
+	public Map<String, Object> getSlots(Integer doctorId, Integer userId) {
 
-        Map<String, Object> response = new HashMap<>();
+		Map<String, Object> response = new HashMap<>();
 
-        Map<LocalDate, Set<LocalTime>> availableDates = new TreeMap<>();
-        Map<LocalDate, Set<LocalTime>> unbookedSlots = new TreeMap<>();
-        List<LocalDate> completelyBookedDates = new ArrayList<>();
+		Map<LocalDate, Set<LocalTime>> availableDates = new TreeMap<>();
+		Map<LocalDate, Set<LocalTime>> unbookedSlots = new TreeMap<>();
+		List<LocalDate> completelyBookedDates = new ArrayList<>();
 
-        LocalDate today = LocalDate.now();
-        LocalDate end = today.plusDays(30);
+		LocalDate today = LocalDate.now();
+		LocalDate end = today.plusDays(30);
 
-        List<Object[]> slotData = slotRepo.getSlotsInRange(doctorId, today, end);
+		List<Object[]> slotData = slotRepo.getSlotsInRange(doctorId, today, end);
 
-        Map<LocalDate, List<LocalDateTime>> slotMap = new HashMap<>();
-        Map<LocalDate, Integer> totalMap = new HashMap<>();
-        Map<LocalDate, Integer> bookedMap = new HashMap<>();
+		Map<LocalDate, List<LocalDateTime>> slotMap = new HashMap<>();
+		Map<LocalDate, Integer> totalMap = new HashMap<>();
+		Map<LocalDate, Integer> bookedMap = new HashMap<>();
 
-        for (Object[] row : slotData) {
-            LocalDateTime dt = ((java.sql.Timestamp) row[0]).toLocalDateTime();
-            Number bookedVal = (Number) row[1];
-            boolean isBooked = bookedVal != null && bookedVal.intValue() == 1;
+		for (Object[] row : slotData) {
+			LocalDateTime dt = ((Timestamp) row[0]).toLocalDateTime();
+			Number bookedVal = (Number) row[1];
+			boolean isBooked = bookedVal != null && bookedVal.intValue() == 1;
 
-            LocalDate date = dt.toLocalDate();
+			LocalDate date = dt.toLocalDate();
 
-            if (!isBooked) {
-                slotMap.computeIfAbsent(date, k -> new ArrayList<>()).add(dt);
-            }
+			if (!isBooked) {
+				slotMap.computeIfAbsent(date, k -> new ArrayList<>()).add(dt);
+			}
 
-            totalMap.put(date, totalMap.getOrDefault(date, 0) + 1);
+			totalMap.put(date, totalMap.getOrDefault(date, 0) + 1);
 
-            if (isBooked) {
-                bookedMap.put(date, bookedMap.getOrDefault(date, 0) + 1);
-            }
-        }
+			if (isBooked) {
+				bookedMap.put(date, bookedMap.getOrDefault(date, 0) + 1);
+			}
+		}
 
-        for (LocalDate date = today; !date.isAfter(end); date = date.plusDays(1)) {
+		for (LocalDate date = today; !date.isAfter(end); date = date.plusDays(1)) {
 
-            List<LocalDateTime> slots = slotMap.getOrDefault(date, new ArrayList<>());
+			List<LocalDateTime> slots = slotMap.getOrDefault(date, new ArrayList<>());
 
-            TreeSet<LocalTime> times = new TreeSet<>();
+			TreeSet<LocalTime> times = new TreeSet<>();
 
-            for (LocalDateTime dt : slots) {
-                times.add(dt.toLocalTime());
-            }
+			for (LocalDateTime dt : slots) {
+				times.add(dt.toLocalTime());
+			}
 
-            availableDates.put(date, times);
-            unbookedSlots.put(date, times);
+			availableDates.put(date, times);
+			unbookedSlots.put(date, times);
 
-            int total = totalMap.getOrDefault(date, 0);
-            int booked = bookedMap.getOrDefault(date, 0);
+			int total = totalMap.getOrDefault(date, 0);
+			int booked = bookedMap.getOrDefault(date, 0);
 
-            if (total > 0 && total == booked) {
-                completelyBookedDates.add(date);
-            }
-        }
+			if (total > 0 && total == booked) {
+				completelyBookedDates.add(date);
+			}
+		}
 
-        // ✅ Reusable fee logic
-        response.putAll(getFeeResponse(doctorId, userId));
+		// ✅ Reusable fee logic
+		response.putAll(getFeeResponse(doctorId, userId));
 
-        response.put("totalDates", availableDates);
-        response.put("unbookedSlots", unbookedSlots);
-        response.put("completelyBookedDates", completelyBookedDates);
+		response.put("totalDates", availableDates);
+		response.put("unbookedSlots", unbookedSlots);
+		response.put("completelyBookedDates", completelyBookedDates);
 
-        return response;
-    }
-    
-    
-    public Map<String, Object> holdSlot(String slotStartStr, Integer userId) {
+		return response;
+	}
 
-        Session session = null;
-        Transaction tx = null;
+	public Map<String, Object> holdSlot(String slotStartStr, Integer userId) {
 
-        Map<String, Object> res = new HashMap<>();
+		Session session = null;
+		Transaction tx = null;
 
-        try {
-            session = HibernateUtil.buildSessionFactory();
-            tx = session.beginTransaction();
+		Map<String, Object> res = new HashMap<>();
 
-            // ✅ Validate input
-            if (slotStartStr == null || userId == null) {
-                throw new IllegalArgumentException("slotStartStr or userId is null");
-            }
+		try {
+			session = HibernateUtil.buildSessionFactory();
+			tx = session.beginTransaction();
 
-            LocalDateTime slotStart = LocalDateTime.parse(slotStartStr);
-            
-            System.out.println("Attempting to hold slot at " + slotStart + " for user " + userId);
-            
-            // 🔥 STEP 1: Fetch slots (LOCKED)
-            List<Object[]> slots = session.createNativeQuery(
-                    "SELECT ds.slotId, ds.doctor_id, ds.end_datetime " +
-                    "FROM doctor_slots ds " +
-                    "WHERE ds.start_datetime = :start " +
-                    "AND (ds.is_booked = 0 OR ds.is_booked IS NULL)" +
-                    "AND (ds.hold_until IS NULL OR ds.hold_until < NOW()) " +
-                    "FOR UPDATE")
-            		.setParameter("start", slotStart) 
-                    .getResultList();
-            
-            if (slots == null || slots.isEmpty()) {
-                throw new RuntimeException("No slots available for this time");
-            }
+			// ✅ Validate input
+			if (slotStartStr == null || userId == null) {
+				throw new IllegalArgumentException("slotStartStr or userId is null");
+			}
 
-            // 🔥 STEP 2: Appointment count
-            List<Object[]> counts = session.createNativeQuery(
-                    "SELECT docID, COUNT(*) " +
-                    "FROM Appointment " +
-                    "WHERE DATE(appointmentDate) = CURDATE() " +
-                    "GROUP BY docID")
-                    .getResultList();
+			LocalDateTime slotStart = LocalDateTime.parse(slotStartStr);
 
-            Map<Integer, Integer> countMap = new HashMap<>();
-            for (Object[] row : counts) {
-                countMap.put(
-                    ((Number) row[0]).intValue(),
-                    ((Number) row[1]).intValue()
-                );
-            }
+			System.out.println("Attempting to hold slot at " + slotStart + " for user " + userId);
 
-            // 🔥 STEP 3: Sort by priority
-            slots.sort((a, b) -> {
-                int docA = ((Number) a[1]).intValue();
-                int docB = ((Number) b[1]).intValue();
+			// 🔥 STEP 1: Fetch slots (LOCKED)
+			List<Object[]> slots = session
+					.createNativeQuery("SELECT ds.slotId, ds.doctor_id, ds.end_datetime " + "FROM doctor_slots ds "
+							+ "WHERE ds.start_datetime = :start " + "AND (ds.is_booked = 0 OR ds.is_booked IS NULL)"
+							+ "AND (ds.hold_until IS NULL OR ds.hold_until < NOW()) " + "FOR UPDATE")
+					.setParameter("start", slotStart).getResultList();
 
-                int pA = priorityManager.getPriority(docA);
-                int pB = priorityManager.getPriority(docB);
+			if (slots == null || slots.isEmpty()) {
+				throw new RuntimeException("No slots available for this time");
+			}
 
-                return Integer.compare(pA, pB);
-            });
+			// 🔥 STEP 2: Appointment count
+			List<Object[]> counts = session.createNativeQuery("SELECT docID, COUNT(*) " + "FROM Appointment "
+					+ "WHERE DATE(appointmentDate) = CURDATE() " + "GROUP BY docID").getResultList();
 
-            Object[] selected = null;
-            int MAX_APPOINTMENTS = 2;
+			Map<Integer, Integer> countMap = new HashMap<>();
+			for (Object[] row : counts) {
+				countMap.put(((Number) row[0]).intValue(), ((Number) row[1]).intValue());
+			}
 
-            // 🔥 STEP 4: Apply rule
-            for (Object[] slot : slots) {
-                Integer doctorId = ((Number) slot[1]).intValue();
-                int totalAppointments = countMap.getOrDefault(doctorId, 0);
+			// 🔥 STEP 3: Sort by priority
+			slots.sort((a, b) -> {
+				int docA = ((Number) a[1]).intValue();
+				int docB = ((Number) b[1]).intValue();
 
-                if (totalAppointments < MAX_APPOINTMENTS) {
-                    selected = slot;
-                    break;
-                }
-            }
+				int pA = priorityManager.getPriority(docA);
+				int pB = priorityManager.getPriority(docB);
 
-            if (selected == null) {
-                throw new RuntimeException("All doctors reached max limit for today");
-            }
+				return Integer.compare(pA, pB);
+			});
 
-            // 🔥 STEP 5: HOLD SLOT
-            Long slotId = ((Number) selected[0]).longValue();
-            Integer doctorId = ((Number) selected[1]).intValue();
-            LocalDateTime endTime =
-                    ((java.sql.Timestamp) selected[2]).toLocalDateTime();
+			Object[] selected = null;
+			int MAX_APPOINTMENTS = 2;
 
-            int updated = session.createNativeQuery(
-                    "UPDATE doctor_slots " +
-                    "SET hold_until = NOW() + INTERVAL 5 MINUTE " +
-                    "WHERE slotId = :slotId")
-                    .setParameter("slotId", slotId)
-                    .executeUpdate();
+			// 🔥 STEP 4: Apply rule
+			for (Object[] slot : slots) {
+				Integer doctorId = ((Number) slot[1]).intValue();
+				int totalAppointments = countMap.getOrDefault(doctorId, 0);
 
-            if (updated == 0) {
-                throw new RuntimeException("Failed to hold slot");
-            }
+				if (totalAppointments < MAX_APPOINTMENTS) {
+					selected = slot;
+					break;
+				}
+			}
 
-            // ✅ Commit DB before external call (IMPORTANT)
-            tx.commit();
+			if (selected == null) {
+				throw new RuntimeException("All doctors reached max limit for today");
+			}
 
-            // 🔥 AUDIT SUCCESS
+			// 🔥 STEP 5: HOLD SLOT
+			Long slotId = ((Number) selected[0]).longValue();
+			Integer doctorId = ((Number) selected[1]).intValue();
+			LocalDateTime endTime = ((Timestamp) selected[2]).toLocalDateTime();
+
+			int updated = session.createNativeQuery(
+					"UPDATE doctor_slots " + "SET hold_until = NOW() + INTERVAL 5 MINUTE " + "WHERE slotId = :slotId")
+					.setParameter("slotId", slotId).executeUpdate();
+
+			if (updated == 0) {
+				throw new RuntimeException("Failed to hold slot");
+			}
+
+			// ✅ Commit DB before external call (IMPORTANT)
+			tx.commit();
+
+			// 🔥 AUDIT SUCCESS
 //            auditService.log(session, null, doctorId, slotId,
 //                    "HOLD_SLOT", "SUCCESS", "Slot held");
 
-            Map<String, Object> feeInfo = getFeeResponse(doctorId, userId);
-            // 🔥 PAYMENT CALL (separate try block)
-            try {
-                HashMap<String, Object> paymentMap = new HashMap<>();
-                paymentMap.put("userID", userId);
-                paymentMap.put("docID", doctorId);
-                paymentMap.put("slotId", slotId);
-                if(feeInfo.containsKey("feeError")) {
+			Map<String, Object> feeInfo = getFeeResponse(doctorId, userId);
+			// 🔥 PAYMENT CALL (separate try block)
+			try {
+				HashMap<String, Object> paymentMap = new HashMap<>();
+				paymentMap.put("userID", userId);
+				paymentMap.put("docID", doctorId);
+				paymentMap.put("slotId", slotId);
+				if (feeInfo.containsKey("feeError")) {
 					throw new RuntimeException("Fee info error: " + feeInfo.get("feeError"));
 				}
-                if(!feeInfo.containsKey("amount") || feeInfo.get("amount") == null) {
-               					throw new RuntimeException("Fee info error: amount missing");
-               					}
-                Map<String, Object> amountMap = (Map<String, Object>) feeInfo.get("amount");
+				if (!feeInfo.containsKey("amount") || feeInfo.get("amount") == null) {
+					throw new RuntimeException("Fee info error: amount missing");
+				}
+				Map<String, Object> amountMap = (Map<String, Object>) feeInfo.get("amount");
 
-                if (amountMap == null || !amountMap.containsKey("totalFee") || amountMap.get("totalFee") == null) {
-                    throw new RuntimeException("Fee info error: total amount missing");
-                }
+				if (amountMap == null || !amountMap.containsKey("totalFee") || amountMap.get("totalFee") == null) {
+					throw new RuntimeException("Fee info error: total amount missing");
+				}
 
-                BigDecimal totalAmount = new BigDecimal(amountMap.get("totalFee").toString());
-                paymentMap.put("amount", totalAmount);
-                paymentMap.put("currency",feeInfo.getOrDefault("currency_symbol", "₹ "));
-                System.out.println("Initiating payment with data: " + paymentMap);
-                HashMap<String, String> payRes =
-                        PaymentGatewayDaoImpl.setSlotPayment(paymentMap);
+				BigDecimal totalAmount = new BigDecimal(amountMap.get("totalFee").toString());
+				paymentMap.put("amount", totalAmount);
+				paymentMap.put("currency", feeInfo.getOrDefault("currency_symbol", "₹ "));
+				System.out.println("Initiating payment with data: " + paymentMap);
+				HashMap<String, String> payRes = PaymentGatewayDaoImpl.setSlotPayment(paymentMap);
 
-                if (payRes != null) {
-                    res.putAll(payRes);
-                }
+				if (payRes != null) {
+					res.putAll(payRes);
+				}
 
-                res.put("paymentStatus", "INITIATED");
+				res.put("paymentStatus", "INITIATED");
 
-            } catch (Exception paymentEx) {
-                // ⚠️ Do NOT rollback slot hold
-                res.put("paymentStatus", "FAILED");
-                res.put("paymentError", paymentEx.getMessage());
-            }
+			} catch (Exception paymentEx) {
+				// ⚠️ Do NOT rollback slot hold
+				res.put("paymentStatus", "FAILED");
+				res.put("paymentError", paymentEx.getMessage());
+			}
 
-            // ✅ FINAL RESPONSE
-            res.put("slotId", slotId);
-            res.put("doctorId", doctorId);
-            res.put("endTime", endTime.toString());
-            res.put("status", "HELD");
-            res.put("accessCode", "AVWN42KL59BP42NWPB");
-            res.putAll(feeInfo);
-            return res;
+			// ✅ FINAL RESPONSE
+			res.put("slotId", slotId);
+			res.put("doctorId", doctorId);
+			res.put("endTime", endTime.toString());
+			res.put("status", "HELD");
+			res.put("accessCode", "AVWN42KL59BP42NWPB");
+			res.putAll(feeInfo);
+			return res;
 
-        } catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 
-            if (tx != null && tx.isActive()) tx.rollback();
+			if (tx != null && tx.isActive())
+				tx.rollback();
 
-            res.put("error", "INVALID_INPUT");
-            res.put("message", e.getMessage());
+			res.put("error", "INVALID_INPUT");
+			res.put("message", e.getMessage());
 
-        } catch (RuntimeException e) {
+		} catch (RuntimeException e) {
 
-            if (tx != null && tx.isActive()) tx.rollback();
+			if (tx != null && tx.isActive())
+				tx.rollback();
 
-            res.put("error", "BUSINESS_ERROR");
-            res.put("message", e.getMessage());
+			res.put("error", "BUSINESS_ERROR");
+			res.put("message", e.getMessage());
 
-        } catch (Exception e) {
+		} catch (Exception e) {
 
-            if (tx != null && tx.isActive()) tx.rollback();
+			if (tx != null && tx.isActive())
+				tx.rollback();
 
-            res.put("error", "SYSTEM_ERROR");
-            res.put("message", "Something went wrong");
+			res.put("error", "SYSTEM_ERROR");
+			res.put("message", "Something went wrong");
 
-            e.printStackTrace(); // keep for debugging
+			e.printStackTrace(); // keep for debugging
 
-        } 
+		}
 
-        return res;
-    }
-    
-    public List<Map<String, Object>> getSlotsByDate(String dateStr) {
+		return res;
+	}
 
-        Session session = HibernateUtil.buildSessionFactory();
+	public List<Map<String, Object>> getSlotsByDate(String dateStr) {
 
-        LocalDate requestedDate = LocalDate.parse(dateStr);
-        LocalDate today = LocalDate.now();
+		Session session = HibernateUtil.buildSessionFactory();
 
-        String sql;
+		LocalDate requestedDate = LocalDate.parse(dateStr);
+		LocalDate today = LocalDate.now();
 
-        // 🔥 If today → filter past slots
-        if (requestedDate.equals(today)) {
+		String sql;
 
-            sql = "SELECT TIME(start_datetime), COUNT(*), " +
-                  "SUM(CASE WHEN is_booked = 1 THEN 1 ELSE 0 END) " +
-                  "FROM doctor_slots ds " +
-                  "WHERE DATE(start_datetime) = :date " +
-                  "AND start_datetime >= NOW() " +   // 🔥 KEY LINE
-                  "AND (ds.hold_until IS NULL OR ds.hold_until < NOW()) " +
-                  "GROUP BY TIME(start_datetime)" +
-                  "ORDER BY TIME(start_datetime) ASC"; 
+		// 🔥 If today → filter past slots
+		if (requestedDate.equals(today)) {
 
-        } else {
+			sql = "SELECT TIME(start_datetime), COUNT(*), " + "SUM(CASE WHEN is_booked = 1 THEN 1 ELSE 0 END) "
+					+ "FROM doctor_slots ds " + "WHERE DATE(start_datetime) = :date " + "AND start_datetime >= NOW() " + // 🔥
+																															// KEY
+																															// LINE
+					"AND (ds.hold_until IS NULL OR ds.hold_until < NOW()) " + "GROUP BY TIME(start_datetime)"
+					+ "ORDER BY TIME(start_datetime) ASC";
 
-            // 🔥 Future date → no filter
-            sql = "SELECT TIME(start_datetime), COUNT(*), " +
-                  "SUM(CASE WHEN is_booked = 1 THEN 1 ELSE 0 END) " +
-                  "FROM doctor_slots ds " +
-                  "WHERE DATE(start_datetime) = :date " +
-                  "AND (ds.hold_until IS NULL OR ds.hold_until < NOW()) " +
-                  "GROUP BY TIME(start_datetime)" +
-                  "ORDER BY TIME(start_datetime) ASC"; 
-        }
+		} else {
 
-        List<Object[]> rows = session.createNativeQuery(sql)
-                .setParameter("date", dateStr)
-                .getResultList();
+			// 🔥 Future date → no filter
+			sql = "SELECT TIME(start_datetime), COUNT(*), " + "SUM(CASE WHEN is_booked = 1 THEN 1 ELSE 0 END) "
+					+ "FROM doctor_slots ds " + "WHERE DATE(start_datetime) = :date "
+					+ "AND (ds.hold_until IS NULL OR ds.hold_until < NOW()) " + "GROUP BY TIME(start_datetime)"
+					+ "ORDER BY TIME(start_datetime) ASC";
+		}
 
-        List<Map<String, Object>> result = new ArrayList<>();
+		List<Object[]> rows = session.createNativeQuery(sql).setParameter("date", dateStr).getResultList();
 
-        for (Object[] row : rows) {
+		List<Map<String, Object>> result = new ArrayList<>();
 
-            String time = row[0].toString();
-            int total = ((Number) row[1]).intValue();
-            int booked = row[2] != null ? ((Number) row[2]).intValue() : 0;
+		for (Object[] row : rows) {
 
-            int available = total - booked;
+			String time = row[0].toString();
+			int total = ((Number) row[1]).intValue();
+			int booked = row[2] != null ? ((Number) row[2]).intValue() : 0;
 
-            // 🔥 Optional: skip fully booked slots
-            if (available <= 0) continue;
+			int available = total - booked;
 
-            Map<String, Object> map = new TreeMap<>();
-            map.put("time", time);
-            map.put("available", available);
+			// 🔥 Optional: skip fully booked slots
+			if (available <= 0)
+				continue;
 
-            result.add(map);
-        }
-        
+			Map<String, Object> map = new TreeMap<>();
+			map.put("time", time);
+			map.put("available", available);
 
-        return result;
-    }
-    
-    private Map<String, Object> getFeeResponse(Integer doctorId, Integer userId) {
+			result.add(map);
+		}
 
-        Map<String, Object> feeResponse = new HashMap<>();
+		return result;
+	}
 
-        try {
-            Object[] feeRow = feeRepo.getFeeDetails(doctorId, userId);
+	private Map<String, Object> getFeeResponse(Integer doctorId, Integer userId) {
 
-            BigDecimal baseFee = feeCalculatorService.toBigDecimal(feeRow[0]);
-            String countryCode = (String) feeRow[1];
-            String currencySymbol = (String) feeRow[2];
+		Map<String, Object> feeResponse = new HashMap<>();
 
-            if (countryCode == null || "IN".equalsIgnoreCase(countryCode)) {
+		try {
+			Object[] feeRow = feeRepo.getFeeDetails(doctorId, userId);
 
-                BigDecimal totalFee = feeCalculatorService.calculateTotalFee(baseFee);
+			BigDecimal baseFee = feeCalculatorService.toBigDecimal(feeRow[0]);
+			String countryCode = (String) feeRow[1];
+			String currencySymbol = (String) feeRow[2];
 
-                Map<String, BigDecimal> breakdown =
-                        feeCalculatorService.buildBreakdown(totalFee);
+			if (countryCode == null || "IN".equalsIgnoreCase(countryCode)) {
 
-                feeResponse.put("amount", breakdown);
-                feeResponse.put("currency_symbol", "₹ ");
+				BigDecimal totalFee = feeCalculatorService.calculateTotalFee(baseFee);
 
-            } else {
-                feeResponse.put("amount", "0");
-                feeResponse.put("currency_symbol", currencySymbol + " ");
-            }
+				Map<String, BigDecimal> breakdown = feeCalculatorService.buildBreakdown(totalFee);
 
-        } catch (Exception e) {
-            feeResponse.put("feeError", "Unable to fetch fee");
-        }
+				feeResponse.put("amount", breakdown);
+				feeResponse.put("currency_symbol", "₹ ");
 
-        return feeResponse;
-    }
+			} else {
+				feeResponse.put("amount", "0");
+				feeResponse.put("currency_symbol", currencySymbol + " ");
+			}
+
+		} catch (Exception e) {
+			feeResponse.put("feeError", "Unable to fetch fee");
+		}
+
+		return feeResponse;
+	}
+
+	public boolean isLocked(int doctorId, LocalDateTime time) {
+		Session session = HibernateUtil.buildSessionFactory();
+		String hql = "FROM SlotLock WHERE doctorId = :doc "
+		        + "AND appointmentTime = :time "
+		        + "AND expiryTime > :now "
+		        + "AND status = :status";
+		
+		return session.createQuery(hql, SlotLock.class).setParameter("doc", doctorId).setParameter("time", time)
+				.setParameter("status", SlotLockStatus.LOCKED)
+				.setParameter("now", LocalDateTime.now()).uniqueResult() != null
+				;
+	}
+
+	public void lockSlot(String lockId,int doctorId, LocalDateTime time, Long mobile) {
+		Transaction tx=null;
+		try {
+		Session session = HibernateUtil.buildSessionFactory();
+		tx = session.beginTransaction();
+		SlotLock lock = new SlotLock();
+
+		lock.setDoctorId(doctorId);
+		lock.setAppointmentTime(time);
+		lock.setMobileNumber(mobile);
+		lock.setLockId(lockId);
+		session.save(lock);
+		tx.commit();
+		} catch (Exception e) {
+			
+		if(tx != null && tx.isActive()) tx.rollback();
+			e.printStackTrace();
+			throw new RuntimeException("Failed to lock slot");
+		}
+	}
+	
+	 public void releaseExpiredLocks() {
+	     Transaction tx =null;
+	 
+		 try {
+	        Session session = HibernateUtil.buildSessionFactory();
+	        tx = session.beginTransaction();
+	        String hql = "DELETE FROM SlotLock WHERE expiryTime < :now";
+
+	        session
+	                .createQuery(hql)
+	                .setParameter("now", LocalDateTime.now())
+	                .executeUpdate();
+	        tx.commit();
+	    }catch(Exception e) {
+	    	if(tx != null && tx.isActive()) tx.rollback();
+	    	e.printStackTrace();
+	    }
+	 }
+	 
+	 // =========================================
+	    // 🔍 VALIDATE LOCK
+	    // =========================================
+	   
+	    public SlotLock validateLock(String lockId,
+	                                 Long mobileNumber) {
+	    	Session session = HibernateUtil.buildSessionFactory();
+	        String hql =
+	                "FROM SlotLock " +
+	                "WHERE lockId=:lockId " +
+	                "AND mobileNumber=:mobileNumber " +
+	                "AND status='LOCKED' " +
+	                "AND expiryTime > :now";
+
+	        SlotLock lock =
+	                session
+	                        .createQuery(hql, SlotLock.class)
+	                        .setParameter("lockId", lockId)
+	                        .setParameter("mobileNumber", mobileNumber)
+	                        .setParameter("now", LocalDateTime.now())
+	                        .uniqueResult();
+
+	        if (lock == null) {
+	            throw new RuntimeException(
+	                    "Slot lock expired or invalid"
+	            );
+	        }
+
+	        return lock;
+	    }
+
+	    // =========================================
+	    // ✅ MARK LOCK USED
+	    // =========================================
+	  
+	    public void markLockUsed(SlotLock lock) {
+	    	Session session = null;
+	    	Transaction tx = null;
+	    	try {
+	    		session = HibernateUtil.buildSessionFactory();
+	    		tx = session.beginTransaction();
+	    	session = HibernateUtil.buildSessionFactory();
+	    	
+	        lock.setStatus(SlotLockStatus.USED);
+
+	        session.update(lock);
+	    }catch(Exception e) {
+	    	if(tx != null && tx.isActive()) tx.rollback();
+	    	e.printStackTrace();
+	    	throw new RuntimeException("Failed to mark lock used");
+	    }
+	    }
+	    
+	    public void releaseLock(String lockId) {
+	    	 Transaction tx =null;
+	    	 
+			 try {
+		        Session session = HibernateUtil.buildSessionFactory();
+		        tx = session.beginTransaction();
+		      
+	        String hql =
+	                "DELETE FROM SlotLock WHERE lockId=:lockId";
+
+	        session.createQuery(hql)
+	                .setParameter("lockId", lockId)
+	                .executeUpdate();
+	        tx.commit();
+			    }catch(Exception e) {
+			    	if(tx != null && tx.isActive()) tx.rollback();
+			    	e.printStackTrace();
+			    }
+			 }
+	    	
+
 }

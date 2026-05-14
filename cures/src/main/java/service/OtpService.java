@@ -15,7 +15,7 @@ public class OtpService {
     @Autowired
     private WhatsAppService whatsAppService;
 
-    public void sendOtp(String countryCode,String mobile) {
+    public void sendOtp(String countryCode,Long mobile) {
 
         try {
             String existingOtp = storageService.getOtp(countryCode,mobile);
@@ -26,8 +26,8 @@ public class OtpService {
 
             storageService.saveOtp(countryCode,mobile, otp);
 
-            boolean sent = whatsAppService.sendOtp(countryCode,mobile, otp);
-
+  //          boolean sent = whatsAppService.sendOtp(countryCode,mobile, otp);
+            boolean sent=true;
             if (!sent) {
                 throw new OtpException("Failed to send OTP via WhatsApp");
             }
@@ -39,7 +39,7 @@ public class OtpService {
         }
     }
 
-    public boolean verifyOtp(String countryCode,String mobile, String inputOtp) {
+    public boolean verifyOtp(String countryCode,Long mobile, String inputOtp) {
 
         try {
             String storedOtp = storageService.getOtp(countryCode,mobile);
@@ -53,14 +53,25 @@ public class OtpService {
             }
 
   //          storageService.deleteOtp(countryCode,mobile);
-            storageService.markVerified(countryCode,mobile,inputOtp);
+  //          storageService.markVerified(countryCode,mobile,inputOtp);
 
             return true;
 
         } catch (OtpException e) {
-            throw e;
+        	throw e ;
         } catch (Exception e) {
             throw new OtpException("Error while verifying OTP", e);
         }
+    }
+    public void consumeOtp(
+            String countryCode,
+            Long mobile,
+            String otp) {
+
+        storageService.markVerified(
+                countryCode,
+                mobile,
+                otp
+        );
     }
 }

@@ -49,14 +49,18 @@ public class Registration implements Serializable {
 	 private Date last_login_datatime;
 	
 	 @Column(name = "DocID")
-	 private int docID;
+	 private Integer docID;
 
 	 @Column(name = "Age")
-	 private int Age;
+	 private Integer Age;
 
 	 @Column(name = "country_code")
 	 private String country_code;
-	 
+
+	@Column(name = "is_mobile_verified")
+	private Boolean is_mobile_verified;
+	@Column(name = "registration_method")
+	private Integer registration_method;
 	@Transient
 	 private String value;
 	 
@@ -67,7 +71,7 @@ public class Registration implements Serializable {
 	public void setValue(String value) {
 		this.value = value;
 	}
-	 public int getAge() {
+	 public Integer getAge() {
 		return Age;
 	 }
 	 public void setAge(Integer age) {
@@ -79,7 +83,7 @@ public class Registration implements Serializable {
 	}
 	public Registration(Integer registration_id, String first_name, String last_name, String email_address,
 			String pass_word, Integer registration_type, Boolean acceptance_condition, Boolean privacy_policy,
-			Integer account_state, Integer remember_me, Integer login_attempt, Date last_login_datatime, Long mobile_number, int DocID, String country_code) {
+			Integer account_state, Integer remember_me, Integer login_attempt, Date last_login_datatime, Long mobile_number, Integer DocID, String country_code) {
 		super();
 		this.registration_id = registration_id;
 		this.first_name = first_name;
@@ -176,10 +180,10 @@ public class Registration implements Serializable {
 		this.last_login_datatime = last_login_datatime;
 	}
 	
-	public int getDocID() {
+	public Integer getDocID() {
 		return docID;
 	}
-	public void setDocID(int DocID) {
+	public void setDocID(Integer DocID) {
 	
 		this.docID = DocID;
 	}
@@ -189,6 +193,21 @@ public class Registration implements Serializable {
 
 	public void setCountry_code(String country_code) {
 		this.country_code = country_code;
-	}	
+	}
 
+	public Boolean getIs_mobile_verified() {
+		return is_mobile_verified;
+	}
+
+	public void setIs_mobile_verified(Boolean is_mobile_verified) {
+		this.is_mobile_verified = is_mobile_verified;
+	}
+
+	public Integer getRegistration_method() {
+		return registration_method;
+	}
+
+	public void setRegistration_method(Integer registration_method) {
+		this.registration_method = registration_method;
+	}
 }
