@@ -62,149 +62,169 @@ public class AuthController {
     public ResponseEntity<ApiResponse<Object>> verifyOtp(
             @RequestBody OtpRequest req,
             HttpServletRequest request) {
+        SlotLock lock = null;
+        try {
+            // =========================================
+            // 🔐 VERIFY OTP
+            // =========================================
+            boolean valid =
+                    otpService.verifyOtp(
+                            req.getCountryCode(),
+                            req.getMobile(),
+                            req.getOtp()
+                    );
 
-        // =========================================
-        // 🔐 VERIFY OTP
-        // =========================================
-        boolean valid =
-                otpService.verifyOtp(
+
+            if (!valid) {
+                throw new OtpException("Invalid OTP");
+            }
+
+            // =========================================
+            // 🔍 FIND / CREATE USER
+            // =========================================
+            Registration user =
+                    userService.findByMobile(req.getMobile());
+
+            if (user == null) {
+                user = userService.createOtpUser(req);
+            }
+
+            // =========================================
+            // 🔥 LOGIN SESSION
+            // =========================================
+            HttpSession session =
+                    request.getSession();
+
+            session.setAttribute(Constant.USER, user);
+
+            // =========================================
+            // 🔥 NORMAL LOGIN FLOW
+            // =========================================
+            if (req.getLockId() == null) {
+                otpService.consumeOtp(
                         req.getCountryCode(),
                         req.getMobile(),
                         req.getOtp()
                 );
 
-        
-        if (!valid) {
-            throw new OtpException("Invalid OTP");
-        }
-        otpService.consumeOtp(
-				req.getCountryCode(),
-				req.getMobile(),
-				req.getOtp()
-		);
+                return ResponseEntity.ok(
+                        new ApiResponse<>(
+                                true,
+                                "Login successful",
+                                user
+                        )
+                );
+            }
 
-        // =========================================
-        // 🔍 FIND / CREATE USER
-        // =========================================
-        Registration user =
-                userService.findByMobile(req.getMobile());
+            // =========================================
+            // 🔒 VALIDATE LOCK
+            // =========================================
+            lock =
+                    slotService.validateLock(
+                            req.getLockId(),
+                            req.getMobile()
+                    );
 
-        if (user == null) {
-            user = userService.createOtpUser(req);
-        }
+            // =========================================
+            // 🔥 CREATE PENDING APPOINTMENT
+            // =========================================
+            Appointment appointment =
+                    appointmentService.createPendingAppointment(
+                            user.getRegistration_id(),
+                            lock.getDoctorId(),
+                            lock.getAppointmentTime(),
+                            req.getAmount()
+                    );
 
-        // =========================================
-        // 🔥 LOGIN SESSION
-        // =========================================
-        HttpSession session =
-                request.getSession();
 
-        session.setAttribute(Constant.USER, user);
+            // =========================================
+            // 💳 GENERATE CC AVENUE DATA
+            // =========================================
+            Map<String, Object> response = new HashMap<>();
+            Map<String, String> res = new HashMap<>();
 
-        // =========================================
-        // 🔥 NORMAL LOGIN FLOW
-        // =========================================
-        if (req.getLockId() == null) {
+            // Prepare appointment map for payment gateway
+            HashMap<String, Object> appointmentMap = new HashMap<>();
+            appointmentMap.put("currency", "INR");
+            appointmentMap.put("amount", appointment.getAmount());
+
+            // Generate payment request
+            HashMap<String, String> payRes =
+                    PaymentGatewayDaoImpl.setPayment(
+                            appointmentMap,
+                            appointment.getAppointmentID()
+                    );
+
+            // =========================================
+            // ❌ PAYMENT INIT FAILED
+            // =========================================
+            if (payRes == null || payRes.isEmpty()) {
+
+                // optional
+                appointmentService.cancelAppointment(
+                        appointment.getAppointmentID()
+                );
+
+                throw new RuntimeException(
+                        "Unable to initiate payment"
+                );
+            }
+
+            // =========================================
+            // ✅ NOW CONSUME OTP
+            // =========================================
+            otpService.consumeOtp(
+                    req.getCountryCode(),
+                    req.getMobile(),
+                    req.getOtp()
+            );
+
+            // =========================================
+            // ✅ NOW MARK LOCK USED
+            // =========================================
+            slotService.markLockUsed(lock);
+
+            // =========================================
+            // 🔥 SUCCESS RESPONSE
+            // =========================================
+            res.putAll(payRes);
+
+            // Add access code
+            res.put("accessCode", "AVWN42KL59BP42NWPB");
+
+            // Final response
+            response.put("paymentData", res);
+            response.put("appointmentId",
+                    appointment.getAppointmentID());
 
             return ResponseEntity.ok(
                     new ApiResponse<>(
                             true,
-                            "Login successful",
-                            user
+                            "Proceed to payment",
+                            response
                     )
             );
+
         }
+        catch (Exception e) {
 
-        // =========================================
-        // 🔒 VALIDATE LOCK
-        // =========================================
-        SlotLock lock =
-                slotService.validateLock(
-                        req.getLockId(),
-                        req.getMobile()
-                );
+            // =========================================
+            // 🔥 RELEASE LOCK ON FAILURE
+            // =========================================
+            if (lock != null) {
 
-        // =========================================
-        // 🔥 CREATE PENDING APPOINTMENT
-        // =========================================
-        Appointment appointment =
-                appointmentService.createPendingAppointment(
-                        user.getRegistration_id(),
-                        lock.getDoctorId(),
-                        lock.getAppointmentTime(),
-                        req.getAmount()
-                );
+                try {
+                    slotService.releaseLock(lock.getLockId());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
 
-       
-        // =========================================
-        // 💳 GENERATE CC AVENUE DATA
-        // =========================================
-        Map<String, Object> response = new HashMap<>();
-        Map<String, String> res = new HashMap<>();
-
-        // Prepare appointment map for payment gateway
-        HashMap<String, Object> appointmentMap = new HashMap<>();
-        appointmentMap.put("currency", "INR");
-        appointmentMap.put("amount", appointment.getAmount());
-
-        // Generate payment request
-        HashMap<String, String> payRes =
-                PaymentGatewayDaoImpl.setPayment(
-                        appointmentMap,
-                        appointment.getAppointmentID()
-                );
-
-     // =========================================
-     // ❌ PAYMENT INIT FAILED
-     // =========================================
-     if (payRes == null || payRes.isEmpty()) {
-
-         // optional
-         appointmentService.cancelAppointment(
-                 appointment.getAppointmentID()
-         );
-
-         throw new RuntimeException(
-                 "Unable to initiate payment"
-         );
-     }
-
-     // =========================================
-     // ✅ NOW CONSUME OTP
-     // =========================================
-     otpService.consumeOtp(
-             req.getCountryCode(),
-             req.getMobile(),
-             req.getOtp()
-     );
-
-     // =========================================
-     // ✅ NOW MARK LOCK USED
-     // =========================================
-     slotService.markLockUsed(lock);
-
-     // =========================================
-     // 🔥 SUCCESS RESPONSE
-     // =========================================
-     res.putAll(payRes);
-       
-        // Add access code
-        res.put("accessCode", "AVWN42KL59BP42NWPB");
-
-        // Final response
-        response.put("paymentData", res);
-        response.put("appointmentId",
-                appointment.getAppointmentID());
-       
-        return ResponseEntity.ok(
-                new ApiResponse<>(
-                        true,
-                        "Proceed to payment",
-                        response
-                )
-        );
+            throw new RuntimeException(
+                    e.getMessage()
+            );
+        }
     }
-
     // =========================================
     // 🧾 REGISTER
     // =========================================
