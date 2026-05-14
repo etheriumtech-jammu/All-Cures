@@ -109,6 +109,6 @@ public class SlotController {
 
         response.put("lockId", lockId);
 
-        return ResponseEntity.ok(new ApiResponse<>(true, "OTP sent", response));
+        return ResponseEntity.ok(new ApiResponse<>(true, "Slot locked and OTP sent successfully", response));
     }
 }
