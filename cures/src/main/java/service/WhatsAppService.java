@@ -17,7 +17,7 @@ import util.WAPICommon;
 @Service
 public class WhatsAppService {
 
-      public boolean sendOtp(String countryCode,String mobile, String otp) {
+      public boolean sendOtp(String countryCode,Long mobile, String otp) {
 
         try {
             Properties prop = new WAPICommon().readPropertiesFile("whatsapi.properties");

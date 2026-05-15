@@ -26,8 +26,8 @@ public class OtpService {
 
             storageService.saveOtp(countryCode,mobile, otp);
 
-  //          boolean sent = whatsAppService.sendOtp(countryCode,mobile, otp);
-            boolean sent=true;
+            boolean sent = whatsAppService.sendOtp(countryCode,mobile, otp);
+  //          boolean sent=true;
             if (!sent) {
                 throw new OtpException("Failed to send OTP via WhatsApp");
             }
