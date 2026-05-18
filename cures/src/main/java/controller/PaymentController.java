@@ -119,56 +119,34 @@ public class PaymentController {
     }
 
 	@GetMapping("/basic")
-	public void basicPayment(
-			HttpServletResponse response)
-			throws Exception {
+	public void basicPayment(HttpServletResponse response) throws Exception {
 
-		Map<String, String> payment =
-				paymentService
-						.createPayment();
+		Map<String, String> payment = paymentService.createPayment();
+
+		String encRequest = payment.get("encRequest");
+		String accessCode = payment.get("accessCode");
+
+		// Print in console
+		System.out.println("encRequest = " + encRequest);
+		System.out.println("accessCode = " + accessCode);
 
 		String html =
-
 				"<html>" +
-
 						"<body onload='document.f.submit()'>" +
 
 						"<form name='f' method='post' " +
+						"action='https://secure.ccavenue.com/transaction.do?command=initiateTransaction'>" +
 
-						"action='https://secure.ccavenue.com/" +
+						"<input type='hidden' name='encRequest' value='" + encRequest + "'/>" +
 
-						"transaction/transaction.do?" +
-
-						"command=initiateTransaction'>" +
-
-						"<input type='hidden' " +
-
-						"name='encRequest' value='" +
-
-						payment.get("encRequest") +
-
-						"'/>" +
-
-						"<input type='hidden' " +
-
-						"name='access_code' value='" +
-
-						payment.get("accessCode") +
-
-						"'/>" +
+						"<input type='hidden' name='access_code' value='" + accessCode + "'/>" +
 
 						"</form>" +
 
 						"</body>" +
-
 						"</html>";
 
-		response.setContentType(
-				"text/html"
-		);
-
-		response.getWriter()
-				.write(html);
+		response.setContentType("text/html");
+		response.getWriter().write(html);
 	}
-	
 }
