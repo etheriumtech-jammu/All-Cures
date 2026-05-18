@@ -67,18 +67,14 @@ public class DirectPaymentService {
             // REQUEST
             // =====================================
 
-            String ccaRequest =
+            String redirectUrl = "https://all-cures.com:444/cures/payment/ccavenue-payment-udpates";
+            String cancelUrl = "";
+            long currentTimeMillis = new Date().getTime();
+            int ccaRequestTid = (int) currentTimeMillis;
 
-                    "merchant_id=" + merchantId +
-
-                    "&order_id=" + orderId +
-
-                    "&currency=" + currency +
-
-                    "&amount=" + amount +
-
-                    "&language=EN";
-
+            String ccaRequest = "ccaRequesttid=" + ccaRequestTid + "&merchant_id=" + merchantId + "&order_id=" + orderId
+                    + "&currency=" + currency + "&amount=" + amount + "&redirect_url=" + redirectUrl + "&cancel_url="
+                    + cancelUrl + "&language=EN";
             System.out.println(
                     "CCA REQUEST : " +
                     ccaRequest
