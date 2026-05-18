@@ -93,7 +93,10 @@ public class DirectPaymentService {
                     aesUtil.encrypt(
                             ccaRequest
                     );
-
+            System.out.println(
+                    "Encrypted CCA REQUEST : " +
+                    encRequest
+            );
             // =====================================
             // SAVE TRANSACTION
             // =====================================
