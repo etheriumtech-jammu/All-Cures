@@ -133,7 +133,8 @@ public class PaymentGatewayDaoImpl {
 	            .getSingleResult();
 
 	        Long pgId = pg.getPaymentGatewayTransactionId(); // <- PK from your model
-
+			String paymentType =
+					pg.getPaymentType();
 	        // 2) Update PG entity fields (Hibernate will flush an UPDATE)
 	        pg.setOrderStatus(orderStatus);
 	        pg.setPaymentMode(paymentMode);
@@ -148,9 +149,20 @@ public class PaymentGatewayDaoImpl {
 
 	        // 3) On success, post wallet split using the pgId
 	        if ("Success".equalsIgnoreCase(orderStatus)) {
-	            Integer docId = sendEmail(orderId, meeting);
-	            updateWalletAmount(amount.doubleValue(), docId, pgId.intValue());
-	            return "Success";
+				 if ("DIRECT_AD_PAYMENT"
+						.equalsIgnoreCase(
+								paymentType)) {
+					System.out.println(
+							"DIRECT PAYMENT SUCCESS"
+					);
+				}
+				else {
+					Integer docId = sendEmail(orderId, meeting);
+					updateWalletAmount(amount.doubleValue(), docId, pgId.intValue());
+
+				}
+
+				return "Success";
 	        } else {
 	            return "Payment not successful";
 	        }

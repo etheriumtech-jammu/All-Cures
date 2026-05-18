@@ -3,7 +3,8 @@ package controller;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,14 +21,18 @@ import model.ServicePayment;
 import model.VideoFailure;
 import model.ServicePaymentMethod;
 import service.DailyCoService;
+import service.DirectPaymentService;
 @RestController
 @RequestMapping(path = "/payment")
 public class PaymentController {
 
 	 @Autowired
 	    private DailyCoService dailyCoService;
-	
-		
+	@Autowired
+	private DirectPaymentService paymentService;
+
+
+
 	@RequestMapping(value = "/add", produces = "application/json", method = RequestMethod.POST)
 	public @ResponseBody Integer AddPayment(@RequestBody HashMap PaymentMap,HttpServletRequest request ) throws Exception {
 
@@ -112,6 +117,58 @@ public class PaymentController {
     	return PaymentGatewayDaoImpl.getOrderStatus(orderID);
     	
     }
-	
+
+	@GetMapping("/basic")
+	public void basicPayment(
+			HttpServletResponse response)
+			throws Exception {
+
+		Map<String, String> payment =
+				paymentService
+						.createPayment();
+
+		String html =
+
+				"<html>" +
+
+						"<body onload='document.f.submit()'>" +
+
+						"<form name='f' method='post' " +
+
+						"action='https://secure.ccavenue.com/" +
+
+						"transaction/transaction.do?" +
+
+						"command=initiateTransaction'>" +
+
+						"<input type='hidden' " +
+
+						"name='encRequest' value='" +
+
+						payment.get("encRequest") +
+
+						"'/>" +
+
+						"<input type='hidden' " +
+
+						"name='access_code' value='" +
+
+						payment.get("accessCode") +
+
+						"'/>" +
+
+						"</form>" +
+
+						"</body>" +
+
+						"</html>";
+
+		response.setContentType(
+				"text/html"
+		);
+
+		response.getWriter()
+				.write(html);
+	}
 	
 }

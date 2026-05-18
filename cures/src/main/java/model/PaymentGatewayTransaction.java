@@ -61,6 +61,9 @@ public class PaymentGatewayTransaction {
     @Column(name = "LastUpdatedDate")
     private Date lastUpdatedDate;
 
+	@Column(name = "payment_type")
+	private String paymentType;
+
 	public Long getPaymentGatewayTransactionId() {
 		return paymentGatewayTransactionId;
 	}
@@ -197,5 +200,12 @@ public class PaymentGatewayTransaction {
 		this.lastUpdatedDate = lastUpdatedDate;
 	}
 
+	public String getPaymentType() {
+		return paymentType;
+	}
+
+	public void setPaymentType(String paymentType) {
+		this.paymentType = paymentType;
+	}
     // Getters and setters omitted for brevity
 }

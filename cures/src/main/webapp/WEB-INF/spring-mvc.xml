@@ -17,6 +17,8 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
+	<context:property-placeholder
+			location="classpath:application.properties"/>
 	<!-- Load properties files for placeholder. -->
 	<!-- (1) -->
 	<!-- <context:property-placeholder location="classpath*:/META-INF/spring/*.properties" 
@@ -193,7 +195,7 @@
 
 </mvc:interceptors>
 	<context:component-scan
-		base-package="controller,dao,service" />
+		base-package="controller,dao,service,config" />
 <!--
 	<bean id="mailSender"
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
