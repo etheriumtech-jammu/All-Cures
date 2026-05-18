@@ -13,6 +13,8 @@ public interface UserService {
     Registration registerWithPassword(RegisterRequest request);
 
 	boolean existsByMobile(Long mobile);
+    void handleCookies(HttpServletRequest request, HttpServletResponse response,
+			Registration user, Integer rememberPassword);
 
 	Registration validatePasswordLogin(Long mobile, String password);
 
