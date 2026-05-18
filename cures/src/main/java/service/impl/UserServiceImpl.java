@@ -11,10 +11,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import service.UserService;
 import util.Constant;
+import util.CookieManager;
 import util.EnDeCryptor;
 import util.HibernateUtil;
 
 import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Service
 @Transactional
@@ -160,4 +164,22 @@ public class UserServiceImpl implements UserService {
             value.equals("1")
         );
     }
+    	
+    	// Method to handle cookies
+    	@Override
+    	public void handleCookies(HttpServletRequest request, HttpServletResponse response,
+    			Registration user, Integer rememberPassword) {
+    		Constant.log("User Registered Successfully: " + user.getEmail_address(), 1);
+    		request.getSession().setAttribute(Constant.USER, user);
+    		CookieManager cookieManager = new CookieManager();
+    		Constant.log("Dropping Cookies Now", 0);
+
+    		if (rememberPassword == 1) {
+    			cookieManager.dropAllCookies(response, user);
+    		} else {
+    			Constant.log("No Remember Me Flag Selected", 0);
+    			cookieManager.dropSessionCookies(response, user);
+    		}
+    	}
+
 }
