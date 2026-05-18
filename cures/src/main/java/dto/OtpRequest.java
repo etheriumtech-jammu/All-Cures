@@ -10,7 +10,9 @@ public class OtpRequest {
     private String acceptPolicy;
     private String lockId;
     private Double amount;
-    
+    // ✅ Remember Password / Remember Me
+    private Integer rememberPassword;
+
 	public Long getMobile() {
 		return mobile;
 	}
@@ -64,6 +66,14 @@ public class OtpRequest {
 		this.amount = amount;
 	}
 	
+
+    public Integer getRememberPassword() {
+        return rememberPassword;
+    }
+
+    public void setRememberPassword(Integer rememberPassword) {
+        this.rememberPassword = rememberPassword;
+    }
 	
     // getters & setters
     
