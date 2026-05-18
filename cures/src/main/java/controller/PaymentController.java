@@ -119,34 +119,15 @@ public class PaymentController {
     }
 
 	@GetMapping("/basic")
-	public void basicPayment(HttpServletResponse response) throws Exception {
+	public ResponseEntity<Map<String, String>> basicPayment() throws Exception {
 
 		Map<String, String> payment = paymentService.createPayment();
 
-		String encRequest = payment.get("encRequest");
-		String accessCode = payment.get("accessCode");
+		Map<String, String> response = new HashMap<>();
 
-		// Print in console
-		System.out.println("encRequest = " + encRequest);
-		System.out.println("accessCode = " + accessCode);
+		response.put("encRequest", payment.get("encRequest"));
+		response.put("accessCode", payment.get("accessCode"));
 
-		String html =
-				"<html>" +
-						"<body onload='document.f.submit()'>" +
-
-						"<form name='f' method='post' " +
-						"action='https://secure.ccavenue.com/transaction.do?command=initiateTransaction'>" +
-
-						"<input type='hidden' name='encRequest' value='" + encRequest + "'/>" +
-
-						"<input type='hidden' name='access_code' value='" + accessCode + "'/>" +
-
-						"</form>" +
-
-						"</body>" +
-						"</html>";
-
-		response.setContentType("text/html");
-		response.getWriter().write(html);
+		return ResponseEntity.ok(response);
 	}
 }
