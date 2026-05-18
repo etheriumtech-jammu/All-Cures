@@ -8,7 +8,9 @@ public class RegisterRequest {
     private String lastName;
     private String acceptTnC;
     private String acceptPolicy;
-    
+    // ✅ Remember Password / Remember Me
+    private Integer rememberPassword;
+
 	public Long getMobile() {
 		return mobile;
 	}
@@ -52,7 +54,13 @@ public class RegisterRequest {
 		this.acceptPolicy = acceptPolicy;
 	}
 
+	public Integer getRememberPassword() {
+		return rememberPassword;
+	}
 	
+	public void setRememberPassword(Integer rememberPassword) {
+			this.rememberPassword = rememberPassword;
+	}
     // getters/setters
     
 }
