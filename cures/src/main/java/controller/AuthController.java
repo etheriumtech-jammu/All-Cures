@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import com.google.gson.Gson;
 
 import dao.PaymentGatewayDaoImpl;
+import dao.RegistrationDaoImpl;
+import dao.RegistrationDaoImpl_New;
 import dto.ApiResponse;
 import dto.OtpRequest;
 import dto.RegisterRequest;
@@ -61,178 +64,193 @@ public class AuthController {
     @PostMapping("/verify-otp")
     public ResponseEntity<ApiResponse<Object>> verifyOtp(
             @RequestBody OtpRequest req,
-            HttpServletRequest request) {
-        SlotLock lock = null;
-        try {
-            // =========================================
-            // 🔐 VERIFY OTP
-            // =========================================
-            boolean valid =
-                    otpService.verifyOtp(
-                            req.getCountryCode(),
-                            req.getMobile(),
-                            req.getOtp()
-                    );
-
-
-            if (!valid) {
-                throw new OtpException("Invalid OTP");
-            }
-
-            // =========================================
-            // 🔍 FIND / CREATE USER
-            // =========================================
-            Registration user =
-                    userService.findByMobile(req.getMobile());
-
-            if (user == null) {
-                user = userService.createOtpUser(req);
-            }
-
-            // =========================================
-            // 🔥 LOGIN SESSION
-            // =========================================
-            HttpSession session =
-                    request.getSession();
-
-            session.setAttribute(Constant.USER, user);
-
-            // =========================================
-            // 🔥 NORMAL LOGIN FLOW
-            // =========================================
-            if (req.getLockId() == null) {
-                otpService.consumeOtp(
+            HttpServletRequest request,
+            HttpServletResponse httpresponse) {
+    	SlotLock lock = null;
+    		try {
+        // =========================================
+        // 🔐 VERIFY OTP
+        // =========================================
+        boolean valid =
+                otpService.verifyOtp(
                         req.getCountryCode(),
                         req.getMobile(),
                         req.getOtp()
                 );
 
-                return ResponseEntity.ok(
-                        new ApiResponse<>(
-                                true,
-                                "Login successful",
-                                user
-                        )
-                );
-            }
+        
+        if (!valid) {
+            throw new OtpException("Invalid OTP");
+        }
+       
+        // =========================================
+        // 🔍 FIND / CREATE USER
+        // =========================================
+        Registration user =
+                userService.findByMobile(req.getMobile());
 
-            // =========================================
-            // 🔒 VALIDATE LOCK
-            // =========================================
-            lock =
-                    slotService.validateLock(
-                            req.getLockId(),
-                            req.getMobile()
-                    );
+        if (user == null) {
+            user = userService.createOtpUser(req);
+        }
 
-            // =========================================
-            // 🔥 CREATE PENDING APPOINTMENT
-            // =========================================
-            Appointment appointment =
-                    appointmentService.createPendingAppointment(
-                            user.getRegistration_id(),
-                            lock.getDoctorId(),
-                            lock.getAppointmentTime(),
-                            req.getAmount()
-                    );
+        userService.handleCookies(
+                request,
+                httpresponse,
+                user,
+                req.getRememberPassword()
+        );
+        // =========================================
+        // 🔥 LOGIN SESSION
+        // =========================================
+        HttpSession session =
+                request.getSession();
 
+        session.setAttribute(Constant.USER, user);
 
-            // =========================================
-            // 💳 GENERATE CC AVENUE DATA
-            // =========================================
-            Map<String, Object> response = new HashMap<>();
-            Map<String, String> res = new HashMap<>();
-
-            // Prepare appointment map for payment gateway
-            HashMap<String, Object> appointmentMap = new HashMap<>();
-            appointmentMap.put("currency", "INR");
-            appointmentMap.put("amount", appointment.getAmount());
-
-            // Generate payment request
-            HashMap<String, String> payRes =
-                    PaymentGatewayDaoImpl.setPayment(
-                            appointmentMap,
-                            appointment.getAppointmentID()
-                    );
-
-            // =========================================
-            // ❌ PAYMENT INIT FAILED
-            // =========================================
-            if (payRes == null || payRes.isEmpty()) {
-
-                // optional
-                appointmentService.cancelAppointment(
-                        appointment.getAppointmentID()
-                );
-
-                throw new RuntimeException(
-                        "Unable to initiate payment"
-                );
-            }
-
-            // =========================================
-            // ✅ NOW CONSUME OTP
-            // =========================================
-            otpService.consumeOtp(
-                    req.getCountryCode(),
-                    req.getMobile(),
-                    req.getOtp()
-            );
-
-            // =========================================
-            // ✅ NOW MARK LOCK USED
-            // =========================================
-            slotService.markLockUsed(lock);
-
-            // =========================================
-            // 🔥 SUCCESS RESPONSE
-            // =========================================
-            res.putAll(payRes);
-
-            // Add access code
-            res.put("accessCode", "AVWN42KL59BP42NWPB");
-
-            // Final response
-            response.put("paymentData", res);
-            response.put("appointmentId",
-                    appointment.getAppointmentID());
-
+        // =========================================
+        // 🔥 NORMAL LOGIN FLOW
+        // =========================================
+        if (req.getLockId() == null) {
+        	 otpService.consumeOtp(
+     				req.getCountryCode(),
+     				req.getMobile(),
+     				req.getOtp()
+     		);
+        	
             return ResponseEntity.ok(
                     new ApiResponse<>(
                             true,
-                            "Proceed to payment",
-                            response
+                            "Login successful",
+                            user
                     )
             );
-
         }
-        catch (Exception e) {
 
-            // =========================================
-            // 🔥 RELEASE LOCK ON FAILURE
-            // =========================================
-            if (lock != null) {
+        // =========================================
+        // 🔒 VALIDATE LOCK
+        // =========================================
+       lock =
+                slotService.validateLock(
+                        req.getLockId(),
+                        req.getMobile()
+                );
 
-                try {
-                    slotService.releaseLock(lock.getLockId());
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
+        // =========================================
+        // 🔥 CREATE PENDING APPOINTMENT
+        // =========================================
+        Appointment appointment =
+                appointmentService.createPendingAppointment(
+                        user.getRegistration_id(),
+                        lock.getDoctorId(),
+                        lock.getAppointmentTime(),
+                        req.getAmount()
+                );
 
-            throw new RuntimeException(
-                    e.getMessage()
-            );
-        }
+       
+        // =========================================
+        // 💳 GENERATE CC AVENUE DATA
+        // =========================================
+        Map<String, Object> response = new HashMap<>();
+        Map<String, String> res = new HashMap<>();
+
+        // Prepare appointment map for payment gateway
+        HashMap<String, Object> appointmentMap = new HashMap<>();
+        appointmentMap.put("currency", "INR");
+        appointmentMap.put("amount", appointment.getAmount());
+
+        // Generate payment request
+        HashMap<String, String> payRes =
+                PaymentGatewayDaoImpl.setPayment(
+                        appointmentMap,
+                        appointment.getAppointmentID()
+                );
+
+     // =========================================
+     // ❌ PAYMENT INIT FAILED
+     // =========================================
+     if (payRes == null || payRes.isEmpty()) {
+
+         // optional
+         appointmentService.cancelAppointment(
+                 appointment.getAppointmentID()
+         );
+
+         throw new RuntimeException(
+                 "Unable to initiate payment"
+         );
+     }
+
+     // =========================================
+     // ✅ NOW CONSUME OTP
+     // =========================================
+     otpService.consumeOtp(
+             req.getCountryCode(),
+             req.getMobile(),
+             req.getOtp()
+     );
+
+     // =========================================
+     // ✅ NOW MARK LOCK USED
+     // =========================================
+     slotService.markLockUsed(lock);
+
+     // =========================================
+     // 🔥 SUCCESS RESPONSE
+     // =========================================
+     res.putAll(payRes);
+       
+        // Add access code
+        res.put("accessCode", "AVWN42KL59BP42NWPB");
+
+        // Final response
+        response.put("paymentData", res);
+        response.put("appointmentId",
+                appointment.getAppointmentID());
+       
+        return ResponseEntity.ok(
+                new ApiResponse<>(
+                        true,
+                        "Proceed to payment",
+                        response
+                )
+        );
+        
+    		}
+    		catch (Exception e) {
+
+    	        // =========================================
+    	        // 🔥 RELEASE LOCK ON FAILURE
+    	        // =========================================
+    	        if (lock != null) {
+
+    	            try {
+    	                slotService.releaseLock(lock.getLockId());
+    	            } catch (Exception ex) {
+    	                ex.printStackTrace();
+    	            }
+    	        }
+
+    	        throw new RuntimeException(
+    	                e.getMessage()
+    	        );
+    	    }
     }
+
     // =========================================
     // 🧾 REGISTER
     // =========================================
     @PostMapping("/register-mobile")
-    public ResponseEntity<ApiResponse<Object>> register(@RequestBody RegisterRequest req) {
+    public ResponseEntity<ApiResponse<Object>> register(@RequestBody RegisterRequest req,
+    		 HttpServletRequest request,
+             javax.servlet.http.HttpServletResponse responseHttp) {
 
         Registration user = userService.registerWithPassword(req);
-
+        userService.handleCookies(
+				request,
+				responseHttp,
+				user,
+				req.getRememberPassword()
+		);
         return ResponseEntity.ok(
                 new ApiResponse<>(true, "User registered successfully", user.getRegistration_id())
         );
@@ -251,11 +269,14 @@ public class AuthController {
                 req.getMobile(),
                 req.getPassword()
         );
-
+        userService.handleCookies(
+				request,
+				responseHttp,
+				user,
+				req.getRememberPassword()
+		);
         HttpSession session = request.getSession();
         session.setAttribute(Constant.USER, user);
-
-        new CookieManager().dropSessionCookies(responseHttp, user);
 
         return ResponseEntity.ok(new ApiResponse<>(true, "Login successful", user));
     }
@@ -276,4 +297,6 @@ public class AuthController {
 
         return ResponseEntity.ok(new ApiResponse<>(true, "User fetched", user));
     }
+    
+    
 }
