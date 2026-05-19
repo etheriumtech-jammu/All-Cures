@@ -67,8 +67,8 @@ public class DirectPaymentService {
             // REQUEST
             // =====================================
 
-            String redirectUrl = "https://all-cures.com:444/cures/payment/ccavenue-payment-udpates";
-            String cancelUrl = "";
+            String redirectUrl = "https://all-cures.com:444/cures/payment/ccavenue-direct-payment-updates";
+    	   String cancelUrl = "";
             long currentTimeMillis = new Date().getTime();
             int ccaRequestTid = (int) currentTimeMillis;
 
