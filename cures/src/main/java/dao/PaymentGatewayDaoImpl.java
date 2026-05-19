@@ -326,4 +326,104 @@ public class PaymentGatewayDaoImpl {
 	    }
 	}
 
+	public synchronized static String saveDirectTransactionResults(
+	        HttpServletRequest request
+	) {
+
+	    Map<String, String> hs =
+	            PaymentUtil.decryptResponse(request);
+
+	    Session session =
+	            HibernateUtil.buildSessionFactory();
+
+	    Transaction tx = session.beginTransaction();
+
+	    try {
+
+	        String orderId =
+	                hs.get("order_id");
+
+	        String orderStatus =
+	                hs.get("order_status");
+
+	        String transDateStr =
+	                hs.get("trans_date");
+
+	        String paymentMode =
+	                hs.get("payment_mode");
+
+	        String statusMsg =
+	                hs.get("status_message");
+
+	        String bankRefNo =
+	                hs.get("bank_ref_no");
+
+	        String trackingId =
+	                hs.get("tracking_id");
+
+	        Date transactionDate = null;
+
+	        if (
+	                transDateStr != null
+	                        &&
+	                        !transDateStr.isEmpty()
+	        ) {
+
+	            SimpleDateFormat df =
+	                    new SimpleDateFormat(
+	                            "dd/MM/yyyy HH:mm:ss"
+	                    );
+
+	            transactionDate =
+	                    df.parse(transDateStr);
+	        }
+
+	        PaymentGatewayTransaction pg =
+	                session.createQuery(
+	                                "FROM PaymentGatewayTransaction p WHERE p.orderID = :oid",
+	                                PaymentGatewayTransaction.class
+	                        )
+	                        .setParameter("oid", orderId)
+	                        .getSingleResult();
+
+	        pg.setOrderStatus(orderStatus);
+
+	        pg.setPaymentMode(paymentMode);
+
+	        pg.setStatusMessage(statusMsg);
+
+	        pg.setBankRefNo(bankRefNo);
+
+	        pg.setTransactionDate(transactionDate);
+
+	        pg.setTrackingId(trackingId);
+
+	        pg.setLastUpdatedDate(new Date());
+
+	        tx.commit();
+
+	        if ("Success".equalsIgnoreCase(orderStatus)) {
+
+	            return "{\"status\":\"Success\",\"orderId\":\""
+	                    + orderId +
+	                    "\"}";
+	        }
+
+	        return "{\"status\":\"Failed\",\"orderId\":\""
+	                + orderId +
+	                "\"}";
+
+	    } catch (Exception e) {
+
+	        if (tx != null) {
+	            tx.rollback();
+	        }
+
+	        e.printStackTrace();
+
+	        return "{\"status\":\"Error\"}";
+	    }
+	}
+
+
 }
