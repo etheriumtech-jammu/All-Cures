@@ -129,6 +129,24 @@ public class PaymentController {
 			String orderId = hs.get("order_id");
 
 			response.sendRedirect("https://all-cures.com/directPaymentStatus?orderId=" + orderId);
+			
+			new Thread(() -> {
+
+			    try {
+
+			        WhatsAppService service =
+			                new WhatsAppService();
+
+			        service.sendAdminPaymentAlert(
+			        		orderId
+			        );
+
+			    } catch (Exception e) {
+
+			        e.printStackTrace();
+			    }
+
+			}).start();
 
 		} catch (Exception e) {
 
@@ -136,6 +154,7 @@ public class PaymentController {
 
 		}
 	}
+
 	
 	@RequestMapping(value = "get/payment-udpates/{orderID}", method = RequestMethod.GET)
     public String getOrderStatus(HttpServletRequest request,@PathVariable String orderID ) {
