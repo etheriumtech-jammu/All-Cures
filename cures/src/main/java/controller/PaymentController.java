@@ -23,6 +23,7 @@ import model.VideoFailure;
 import model.ServicePaymentMethod;
 import service.DailyCoService;
 import service.DirectPaymentService;
+import util.PaymentUtil;
 @RestController
 @RequestMapping(path = "/payment")
 public class PaymentController {
@@ -112,6 +113,29 @@ public class PaymentController {
 	response.sendRedirect("https://all-cures.com/paymentStatus"); 
     	return res;
     }
+@RequestMapping(value = "/ccavenue-direct-payment-updates", method = RequestMethod.POST)
+	public void directPaymentUpdates(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		System.out.println("Direct Payment update received");
+
+		String res = PaymentGatewayDaoImpl.saveDirectTransactionResults(request);
+
+		System.out.println(res);
+
+		try {
+
+			Map<String, String> hs = PaymentUtil.decryptResponse(request);
+
+			String orderId = hs.get("order_id");
+
+			response.sendRedirect("https://all-cures.com/directPaymentStatus?orderId=" + orderId);
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+	}
 	
 	@RequestMapping(value = "get/payment-udpates/{orderID}", method = RequestMethod.GET)
     public String getOrderStatus(HttpServletRequest request,@PathVariable String orderID ) {
