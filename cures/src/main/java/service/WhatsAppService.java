@@ -101,8 +101,8 @@ public class WhatsAppService {
     	                        );
 
     	        // 🔥 Admin Numbers
-    	        String admin1 = "917006268978";
-    	        String admin2 = "919654746673";
+    	        String admin1 = "7006268978";
+    	        String admin2 = "9654746673";
 
     	        // 🔥 Send to both admins
     	        sendTemplate(
