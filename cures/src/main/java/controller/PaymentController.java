@@ -130,6 +130,10 @@ public class PaymentController {
 			String orderId = hs.get("order_id");
 
 			response.sendRedirect("https://all-cures.com/directPaymentStatus?orderId=" + orderId);
+			String orderStatus =
+	                hs.get("order_status");
+			
+			 if ("Success".equalsIgnoreCase(orderStatus)) {
 			
 			new Thread(() -> {
 
@@ -148,6 +152,7 @@ public class PaymentController {
 			    }
 
 			}).start();
+			 }
 
 		} catch (Exception e) {
 
