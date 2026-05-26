@@ -108,9 +108,7 @@ public class AuthDao {
 
         try {
 
-            session = HibernateUtil
-                    .getSessionFactory()
-                    .openSession();
+            session = HibernateUtil.buildSessionFactory();
 
             String hql =
                     "FROM Registration " +
@@ -145,9 +143,7 @@ public class AuthDao {
 
         try {
 
-            session = HibernateUtil
-                    .getSessionFactory()
-                    .openSession();
+            session = HibernateUtil.buildSessionFactory();
 
             String hql =
                     "FROM Registration " +
@@ -183,9 +179,7 @@ public class AuthDao {
 
         try {
 
-            session = HibernateUtil
-                    .getSessionFactory()
-                    .openSession();
+            session = HibernateUtil.buildSessionFactory();
 
             Registration user = null;
 
