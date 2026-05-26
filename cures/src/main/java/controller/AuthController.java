@@ -26,6 +26,7 @@ import service.AppointmentService;
 import service.OtpService;
 import service.SlotService;
 import service.UserService;
+import service.AuthService;
 import util.Constant;
 import util.CookieManager;
 import org.springframework.http.ResponseEntity;
@@ -297,6 +298,15 @@ public class AuthController {
 
         return ResponseEntity.ok(new ApiResponse<>(true, "User fetched", user));
     }
-    
+
+
+    @RequestMapping(value = "/register-user", method = RequestMethod.POST)
+    @ResponseBody
+    public String registerUser(@RequestBody HashMap<String, Object> registerMap,
+                               HttpServletRequest request,
+                               HttpServletResponse response) {
+
+        return AuthService.registerUser(registerMap, request, response);
+    }
     
 }
