@@ -33,8 +33,7 @@ public class AuthDao {
         try {
 
             session = HibernateUtil
-                    .getSessionFactory()
-                    .openSession();
+                    .buildSessionFactory();
 
             tx = session.beginTransaction();
 
@@ -53,6 +52,7 @@ public class AuthDao {
 
             user.setPass_word(password);
 
+            System.out.println("Accept Terms: " + acceptTerms);
             user.setAcceptance_condition(acceptTerms);
 
             user.setRegistration_type(registrationType);
@@ -91,9 +91,7 @@ public class AuthDao {
 
         } finally {
 
-            if (session != null) {
-                session.close();
-            }
+
         }
 
         return null;
@@ -131,9 +129,6 @@ public class AuthDao {
 
         } finally {
 
-            if (session != null) {
-                session.close();
-            }
         }
 
         return null;
@@ -171,9 +166,7 @@ public class AuthDao {
 
         } finally {
 
-            if (session != null) {
-                session.close();
-            }
+
         }
 
         return null;
