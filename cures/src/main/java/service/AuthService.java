@@ -20,7 +20,7 @@ import util.CookieManager;
 
 public class AuthService {
 
-    public static String registerUser(HashMap<String, Object> registerMap,
+    public static Object registerUser(HashMap<String, Object> registerMap,
                                       HttpServletRequest request,
                                       HttpServletResponse response) {
 
@@ -163,10 +163,8 @@ public class AuthService {
             return "Internal Server Error";
         }
 
-        Gson gson =
-                new GsonBuilder().serializeNulls().create();
 
-        return gson.toJson(user);
+        return user;
     }
 
     // ===========================

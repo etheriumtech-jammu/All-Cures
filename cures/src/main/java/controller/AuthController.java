@@ -302,7 +302,7 @@ public class AuthController {
 
     @RequestMapping(value = "/register-user", method = RequestMethod.POST)
     @ResponseBody
-    public String registerUser(@RequestBody HashMap<String, Object> registerMap,
+    public Object registerUser(@RequestBody HashMap<String, Object> registerMap,
                                HttpServletRequest request,
                                HttpServletResponse response) {
 
