@@ -144,7 +144,8 @@ public class AuthService {
             );
 
             if (user != null) {
-
+                System.out.println("User registered successfully: " + user.getRegistration_id());
+                System.out.println(user.getRegistration_type());
                 handleSuccessfulRegistration(
                         request,
                         response,
