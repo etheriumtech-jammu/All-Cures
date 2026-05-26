@@ -17,6 +17,7 @@ import dao.AuthDao;
 import model.Registration;
 import util.Constant;
 import util.CookieManager;
+import util.EnDeCryptor;
 
 public class AuthService {
 
@@ -100,7 +101,7 @@ public class AuthService {
 
             Boolean accTerms =
                     Constant.ON.equalsIgnoreCase(acceptTnC);
-
+            System.out.println("accTerms: " + accTerms);
             Boolean accPolicy =
                     Constant.ON.equalsIgnoreCase(acceptPolicy);
 
@@ -120,11 +121,14 @@ public class AuthService {
 
             // PASSWORD ENCRYPTION
 
-            BCryptPasswordEncoder encoder =
-                    new BCryptPasswordEncoder();
-
-            String hashedPassword =
-                    encoder.encode(password);
+//            BCryptPasswordEncoder encoder =
+//                    new BCryptPasswordEncoder();
+//
+//            String hashedPassword =
+//                    encoder.encode(password);
+            EnDeCryptor encryptor = new EnDeCryptor();
+            final String secretKey = Constant.SECRETE;
+            String hashedPassword = encryptor.encrypt(password, secretKey);
 
             // SAVE USER
 
@@ -143,7 +147,9 @@ public class AuthService {
                     countryCode
             );
 
+            System.out.println("User after registration: " + user);
             if (user != null) {
+
                 System.out.println("User registered successfully: " + user.getRegistration_id());
                 System.out.println(user.getRegistration_type());
                 handleSuccessfulRegistration(
@@ -233,4 +239,162 @@ public class AuthService {
 
         return 2;
     }
+
+
+    public static Object loginUser(
+            HashMap<String, Object> loginMap,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+
+        try {
+
+            String loginInput =
+                    (String) loginMap.get("loginInput");
+
+            String password =
+                    (String) loginMap.get("password");
+
+            String otp =
+                    (String) loginMap.get("otp");
+
+            String loginType =
+                    (String) loginMap.get("loginType");
+
+            String remPwd =
+                    loginMap.get("rempwd") == null
+                            ? Constant.OFF
+                            : (String) loginMap.get("rempwd");
+
+            if (loginInput == null ||
+                    loginInput.trim().isEmpty()) {
+
+                return "Email or Mobile is required";
+            }
+
+            Registration user = null;
+
+            // ===========================
+            // FIND USER
+            // ===========================
+
+            if (loginInput.contains("@")) {
+
+                user = AuthDao.getUserFromEmail(
+                        loginInput.trim()
+                );
+
+            } else {
+
+                try {
+
+                    Long mobile =
+                            Long.parseLong(loginInput);
+
+                    user =
+                            AuthDao.getUserFromMobile(mobile);
+
+                } catch (Exception e) {
+
+                    return "Invalid Mobile Number";
+                }
+            }
+
+            if (user == null) {
+
+                return "User not found";
+            }
+
+            // ===========================
+            // OTP LOGIN
+            // ===========================
+
+            if ("OTP".equalsIgnoreCase(loginType)) {
+
+                if (otp == null || otp.trim().isEmpty()) {
+
+                    return "OTP is required";
+                }
+
+                // VERIFY OTP HERE
+
+                boolean otpValid = otp.equals("1234");
+
+                if (!otpValid) {
+
+                    return "Invalid OTP";
+                }
+
+            }
+
+            // ===========================
+            // PASSWORD LOGIN
+            // ===========================
+
+            else {
+
+                if (password == null ||
+                        password.trim().isEmpty()) {
+
+                    return "Password is required";
+                }
+
+                EnDeCryptor decryptor =
+                        new EnDeCryptor();
+
+                final String secretKey =
+                        Constant.SECRETE;
+
+                String decryptedPassword =
+                        decryptor.decrypt(
+                                user.getPass_word(),
+                                secretKey
+                        );
+
+                if (!password.equals(decryptedPassword)) {
+
+                    return "Invalid Password";
+                }
+            }
+
+            // ===========================
+            // LOGIN SUCCESS
+            // ===========================
+
+            request.getSession()
+                    .setAttribute(Constant.USER, user);
+
+            CookieManager cookieManager =
+                    new CookieManager();
+
+            Integer rememberPassword =
+                    Constant.OFF.equalsIgnoreCase(
+                            remPwd.trim()
+                    ) ? 0 : 1;
+
+            if (rememberPassword == 1) {
+
+                cookieManager.dropAllCookies(
+                        response,
+                        user
+                );
+
+            } else {
+
+                cookieManager.dropSessionCookies(
+                        response,
+                        user
+                );
+            }
+
+            return user;
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            return "Internal Server Error";
+        }
+    }
+
+
 }
