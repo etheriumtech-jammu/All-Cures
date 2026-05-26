@@ -113,27 +113,28 @@ public class LogginFilters implements Filter {
 			Constant.log("#########USER IS NOTTTTTTTTTTTT IN SESSION########", 0);
 			CookieManager cookieMgr = new CookieManager();
 			Cookie cookies[] = req.getCookies();
-			if(cookies != null){  
+			if(cookies != null){
+				System.out.println("Length of cookies array: " + cookies.length);
 				Constant.log("#########COOKIES ARE PRESENT IN REQ OBJECT BUT USER OBJ IS NOT IN SESSION########", 0);
-				for (Cookie cookie : cookies) {
-				     if (Constant.DefaultPermCookieName.equals(cookie.getName())) {
-				    	 Constant.log("#########FOUND PERM COOKIE; DROPPING USER IN SESSION########", 0);
-				          //Found the Perm Cookie; Which means the user opted for RememberMe
-				    	 //Construct the User Object by reading the perm cookie and set the user object in session
-				    	 user = cookieMgr.getUserFromPermCookie(cookie.getValue());
-						 session.setAttribute(Constant.USER, user);
-						//Also drop all the Cookies (session cookies)
-						 cookieMgr.dropSessionCookies(res, user);				    	 
-				    	 break;
-				     }else if(Constant.SESSCOOK.equals(cookie.getName())) {
-					     //Found the Session Cookie but not the perm cookie; Which means the user did not opt for Remember Me or 
-				    	 //we have not encountered the Perm Cookie just yet
-				    	 //Ideally this should never happen because if the user object is not in session, the sesscookie cannot be in session
-				    	 //TODO: This Block should ideally be removed unless you wanna do anythihng at the filter level for every request to do with
-				    	 //the session cookie e.g. changing a timestamp on the session cookie for every request that is made etc.
-				     }
-				}
-			}
+//				for (Cookie cookie : cookies) {
+//				     if (Constant.DefaultPermCookieName.equals(cookie.getName())) {
+//				    	 Constant.log("#########FOUND PERM COOKIE; DROPPING USER IN SESSION########", 0);
+//				          //Found the Perm Cookie; Which means the user opted for RememberMe
+//				    	 //Construct the User Object by reading the perm cookie and set the user object in session
+//				    	 user = cookieMgr.getUserFromPermCookie(cookie.getValue());
+//						 session.setAttribute(Constant.USER, user);
+//						//Also drop all the Cookies (session cookies)
+//						 cookieMgr.dropSessionCookies(res, user);
+//				    	 break;
+//				     }else if(Constant.SESSCOOK.equals(cookie.getName())) {
+//					     //Found the Session Cookie but not the perm cookie; Which means the user did not opt for Remember Me or
+//				    	 //we have not encountered the Perm Cookie just yet
+//				    	 //Ideally this should never happen because if the user object is not in session, the sesscookie cannot be in session
+//				    	 //TODO: This Block should ideally be removed unless you wanna do anythihng at the filter level for every request to do with
+//				    	 //the session cookie e.g. changing a timestamp on the session cookie for every request that is made etc.
+//				     }
+//				}
+//			}
 		}
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
