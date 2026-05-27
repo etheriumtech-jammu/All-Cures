@@ -158,6 +158,12 @@ public class CookieManager {
 			Constant.log("Dropping Session Cookies", 1);
 			Cookie defSessCookie = constructCookie(null, Constant.DefaultSessionCookieName, user.getEmail_address()+"|"+user.getRegistration_id()+"|"+user.getRegistration_type(),null, 0);
 			((HttpServletResponse)response).addCookie(defSessCookie);
+			// DEBUG LOGS
+			System.out.println("session COOKIE ADDED SUCCESSFULLY");
+			System.out.println("Cookie Name: " + defSessCookie.getName());
+			System.out.println("Cookie Value: " + defSessCookie.getValue());
+			System.out.println("Cookie Domain: " + defSessCookie.getDomain());
+			System.out.println("Cookie Path: " + defSessCookie.getPath());
 		}catch (Exception e) {
             Constant.log("Error while dropping session cookies: " + e.toString(), 3);
             e.printStackTrace();
@@ -171,6 +177,12 @@ public class CookieManager {
 			Constant.log("Dropping Perm Cookies", 1);
 			Cookie defPermCookie = constructCookie(null, Constant.DefaultPermCookieName, user.getRegistration_id()+"|"+user.getRegistration_type(),null, Constant.DefaultPermCookieDuration);
 			((HttpServletResponse)response).addCookie(defPermCookie);
+			// DEBUG LOGS
+			System.out.println("PERM COOKIE ADDED SUCCESSFULLY");
+			System.out.println("Cookie Name: " + defPermCookie.getName());
+			System.out.println("Cookie Value: " + defPermCookie.getValue());
+			System.out.println("Cookie Domain: " + defPermCookie.getDomain());
+			System.out.println("Cookie Path: " + defPermCookie.getPath());
 		}catch (Exception e) {
             Constant.log("Error while dropping Permanent Cookies: " + e.toString(), 3);
             e.printStackTrace();
