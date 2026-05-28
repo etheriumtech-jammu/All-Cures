@@ -242,6 +242,19 @@ public class LoginService {
                     user.getRegistration_id()
             );
 
+            // =====================================
+            // JWT TOKEN
+            // =====================================
+
+            String token =
+                    JWTTokenValidationInterceptor
+                            .generateJWTToken(
+                                    user.getEmail_address()
+                            );
+
+            user.setValue(
+                    token
+            );
 
             // =====================================
             // COOKIE CREATION
