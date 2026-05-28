@@ -1,10 +1,17 @@
+
+// ===============================
+// LoginController.java
+// ===============================
+
 package controller;
 
 import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import service.LoginService;
 
@@ -17,6 +24,7 @@ public class LoginController extends HttpServlet {
 
     @Override
     public void init() {
+
         loginService = new LoginService();
     }
 
@@ -26,7 +34,10 @@ public class LoginController extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        loginService.login(request, response);
+        loginService.login(
+                request,
+                response
+        );
     }
 
     @Override
@@ -35,6 +46,11 @@ public class LoginController extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        doPost(request, response);
+        doPost(
+                request,
+                response
+        );
     }
 }
+
+

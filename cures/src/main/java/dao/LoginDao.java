@@ -1,3 +1,8 @@
+
+// ===============================
+// LoginDao.java
+// ===============================
+
 package dao;
 
 import org.hibernate.Query;
@@ -8,7 +13,10 @@ import util.HibernateUtil;
 
 public class LoginDao {
 
-   
+    // =====================================
+    // EMAIL LOGIN
+    // =====================================
+
     public Registration loginWithEmail(
             String email,
             String password) {
@@ -20,26 +28,39 @@ public class LoginDao {
 
         try {
 
-            Query query = session.createQuery(
-                    "FROM Registration " +
-                    "WHERE email_address = :email " +
-                    "AND pass_word = :password"
+            Query query =
+                    session.createQuery(
+                            "FROM Registration " +
+                                    "WHERE email_address = :email " +
+                                    "AND pass_word = :password"
+                    );
+
+            query.setParameter(
+                    "email",
+                    email
             );
 
-            query.setParameter("email", email);
-
-            query.setParameter("password", password);
+            query.setParameter(
+                    "password",
+                    password
+            );
 
             return (Registration)
                     query.uniqueResult();
-        }
-         finally {
 
-		//	session.close();
-		}
-        
+        }
+
+        catch (Exception e) {
+
+            e.printStackTrace();
+
+            return null;
+        }
     }
 
+    // =====================================
+    // MOBILE LOGIN
+    // =====================================
 
     public Registration loginWithMobile(
             Long mobile,
@@ -50,29 +71,43 @@ public class LoginDao {
                         .getSessionFactory()
                         .openSession();
 
-        
         try {
 
-            Query query = session.createQuery(
-                    "FROM Registration " +
-                    "WHERE mobile_number = :mobile " +
-                    "AND pass_word = :password"
+            Query query =
+                    session.createQuery(
+                            "FROM Registration " +
+                                    "WHERE mobile_number = :mobile " +
+                                    "AND pass_word = :password"
+                    );
+
+            query.setParameter(
+                    "mobile",
+                    mobile
             );
 
-            query.setParameter("mobile", mobile);
-
-            query.setParameter("password", password);
+            query.setParameter(
+                    "password",
+                    password
+            );
 
             return (Registration)
                     query.uniqueResult();
 
-        } finally {
-
-            session.close();
         }
+
+        catch (Exception e) {
+
+            e.printStackTrace();
+
+            return null;
+        }
+
     }
 
- 
+    // =====================================
+    // OTP LOGIN
+    // =====================================
+
     public Registration loginWithOtp(
             Long mobile,
             String otp) {
@@ -84,22 +119,34 @@ public class LoginDao {
 
         try {
 
-            Query query = session.createQuery(
-                    "FROM Registration " +
-                    "WHERE mobile_number = :mobile " +
-                    "AND otp = :otp"
+            Query query =
+                    session.createQuery(
+                            "FROM Registration " +
+                                    "WHERE mobile_number = :mobile " +
+                                    "AND otp = :otp"
+                    );
+
+            query.setParameter(
+                    "mobile",
+                    mobile
             );
 
-            query.setParameter("mobile", mobile);
-
-            query.setParameter("otp", otp);
+            query.setParameter(
+                    "otp",
+                    otp
+            );
 
             return (Registration)
                     query.uniqueResult();
 
-        } finally {
-
-            session.close();
         }
+
+        catch (Exception e) {
+
+            e.printStackTrace();
+
+            return null;
+        }
+
     }
 }
