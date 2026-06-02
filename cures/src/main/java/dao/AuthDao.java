@@ -1,5 +1,7 @@
 package dao;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -91,7 +93,7 @@ public class AuthDao {
 
         } finally {
 
-
+           
         }
 
         return null;
@@ -100,9 +102,7 @@ public class AuthDao {
     // ===========================
     // GET USER FROM MOBILE
     // ===========================
-
-    public static Registration getUserFromMobile(
-            Long mobile) {
+    public static Registration getUserFromMobile(Long mobile) {
 
         Session session = null;
 
@@ -112,26 +112,29 @@ public class AuthDao {
 
             String hql =
                     "FROM Registration " +
-                            "WHERE mobile_number = :mobile";
+                    "WHERE mobile_number = :mobile";
 
             Query<Registration> query =
                     session.createQuery(hql, Registration.class);
 
             query.setParameter("mobile", mobile);
 
-            return query.uniqueResult();
+            List<Registration> users = query.list();
+
+            if (users != null && !users.isEmpty()) {
+                System.out.println("Found " + users.size()
+                        + " records for mobile: " + mobile);
+                return users.get(0);
+            }
 
         } catch (Exception e) {
 
             e.printStackTrace();
 
-        } finally {
-
-        }
+        } 
 
         return null;
     }
-
     // ===========================
     // GET USER FROM EMAIL
     // ===========================
@@ -143,7 +146,8 @@ public class AuthDao {
 
         try {
 
-            session = HibernateUtil.buildSessionFactory();
+            session = HibernateUtil
+                   .buildSessionFactory();
 
             String hql =
                     "FROM Registration " +
@@ -153,8 +157,13 @@ public class AuthDao {
                     session.createQuery(hql, Registration.class);
 
             query.setParameter("email", email);
+            List<Registration> users = query.list();
 
-            return query.uniqueResult();
+            if (users != null && !users.isEmpty()) {
+                System.out.println("Found " + users.size()
+                        + " records for email: " + email);
+                return users.get(0);
+            }
 
         } catch (Exception e) {
 
@@ -162,7 +171,7 @@ public class AuthDao {
 
         } finally {
 
-
+           
         }
 
         return null;
@@ -179,7 +188,8 @@ public class AuthDao {
 
         try {
 
-            session = HibernateUtil.buildSessionFactory();
+            session = HibernateUtil
+                    .buildSessionFactory();
 
             Registration user = null;
 
@@ -226,4 +236,6 @@ public class AuthDao {
         }
         return null;
     }
+    
+    
 }
