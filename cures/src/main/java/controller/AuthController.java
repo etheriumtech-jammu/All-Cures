@@ -23,10 +23,10 @@ import model.Appointment;
 import model.Registration;
 import model.SlotLock;
 import service.AppointmentService;
+import service.AuthService;
 import service.OtpService;
 import service.SlotService;
 import service.UserService;
-import service.AuthService;
 import util.Constant;
 import util.CookieManager;
 import org.springframework.http.ResponseEntity;
@@ -51,17 +51,47 @@ public class AuthController {
     // 📱 SEND OTP
     // =========================================
     @PostMapping("/send-otp")
-    public ResponseEntity<ApiResponse<Object>> sendOtp(@RequestParam Long mobile,
-                                                       @RequestParam String countryCode) {
+    public ResponseEntity<ApiResponse<Object>> sendOtp(
+            @RequestParam Long mobile,
+            @RequestParam String countryCode,
+            @RequestParam String purpose) {
+
+        Registration user =
+                userService.findByMobile(mobile);
+
+        // ===========================
+        // REGISTER FLOW
+        // ===========================
+        if ("REGISTER".equalsIgnoreCase(purpose)) {
+
+            if (user != null) {
+                throw new RuntimeException(
+                        "Mobile number already registered"
+                );
+            }
+        }
+
+        // ===========================
+        // LOGIN FLOW
+        // ===========================
+        else if ("LOGIN".equalsIgnoreCase(purpose)) {
+
+            if (user == null) {
+                throw new RuntimeException(
+                        "No account found with this mobile number"
+                );
+            }
+        }
 
         otpService.sendOtp(countryCode, mobile);
 
-        return ResponseEntity.ok(new ApiResponse<>(true, "OTP sent"));
+        return ResponseEntity.ok(
+                new ApiResponse<>(true, "OTP sent"));
     }
-
     // =========================================
-    // 🔐 VERIFY OTP + LOGIN
+    // 🔐 VERIFY OTP
     // =========================================
+    
     @PostMapping("/verify-otp")
     public ResponseEntity<ApiResponse<Object>> verifyOtp(
             @RequestBody OtpRequest req,
@@ -90,9 +120,40 @@ public class AuthController {
         Registration user =
                 userService.findByMobile(req.getMobile());
 
-        if (user == null) {
-            user = userService.createOtpUser(req);
-        }
+     // ======================================================
+     // ⭐ NEW : REGISTRATION OTP FLOW
+     // ======================================================
+     if ("REGISTER".equalsIgnoreCase(req.getPurpose())) {
+
+         if (user != null) {
+             throw new RuntimeException(
+                     "Mobile number already registered"
+             );
+         }
+         // NEW
+         otpService.consumeOtp(
+                 req.getCountryCode(),
+                 req.getMobile(),
+				 req.getOtp()
+         );
+
+         // ⭐ NEW
+         return ResponseEntity.ok(
+                 new ApiResponse<>(
+                         true,
+                         "OTP verified successfully"
+                 )
+         );
+     }
+     
+  // ======================================================
+  // ⭐ LOGIN FLOW CONTINUES
+  // ======================================================
+  if (user == null) {
+      throw new RuntimeException(
+              "Account not found"
+      );
+  }
 
         userService.handleCookies(
                 request,
@@ -107,7 +168,7 @@ public class AuthController {
                 request.getSession();
 
         session.setAttribute(Constant.USER, user);
-
+       
         // =========================================
         // 🔥 NORMAL LOGIN FLOW
         // =========================================
@@ -298,8 +359,8 @@ public class AuthController {
 
         return ResponseEntity.ok(new ApiResponse<>(true, "User fetched", user));
     }
-
-
+    
+    
     @RequestMapping(value = "/register-user", method = RequestMethod.POST)
     @ResponseBody
     public Object registerUser(@RequestBody HashMap<String, Object> registerMap,
@@ -309,4 +370,17 @@ public class AuthController {
         return AuthService.registerUser(registerMap, request, response);
     }
     
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @ResponseBody
+    public Object loginUser(
+            @RequestBody HashMap<String, Object> loginMap,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+
+        return AuthService.loginUser(
+                loginMap,
+                request,
+                response
+        );
+    }
 }
