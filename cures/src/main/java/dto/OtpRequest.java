@@ -10,6 +10,7 @@ public class OtpRequest {
     private String acceptPolicy;
     private String lockId;
     private Double amount;
+    private String purpose;
     // ✅ Remember Password / Remember Me
     private Integer rememberPassword;
 
@@ -74,7 +75,14 @@ public class OtpRequest {
     public void setRememberPassword(Integer rememberPassword) {
         this.rememberPassword = rememberPassword;
     }
+	public String getPurpose() {
+		return purpose;
+	}
+	public void setPurpose(String purpose) {
+		this.purpose = purpose;
+	}
 	
+    
     // getters & setters
     
 }
