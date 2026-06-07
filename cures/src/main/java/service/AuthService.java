@@ -30,8 +30,37 @@ public class AuthService {
 
         try {
 
-            String firstName = (String) registerMap.get(Constant.FIRSTNAME);
-            String lastName = (String) registerMap.get(Constant.LASTNAME);
+           String fullName = (String) registerMap.get(Constant.FIRSTNAME);
+
+        	String firstName = "";
+        	String lastName = "";
+
+        	if (fullName != null && !fullName.trim().isEmpty()) {
+
+        	    String[] parts = fullName.trim().split("\\s+");
+
+        	    if (parts.length == 1) {
+
+        	        firstName = parts[0];
+
+        	    } else {
+
+        	        lastName = parts[parts.length - 1];
+
+        	        StringBuilder firstNameBuilder = new StringBuilder();
+
+        	        for (int i = 0; i < parts.length - 1; i++) {
+
+        	            if (i > 0) {
+        	                firstNameBuilder.append(" ");
+        	            }
+
+        	            firstNameBuilder.append(parts[i]);
+        	        }
+
+        	        firstName = firstNameBuilder.toString();
+        	    }
+        	}
 
             // EMAIL OPTIONAL
             String email = registerMap.get(Constant.EMAIL) != null
