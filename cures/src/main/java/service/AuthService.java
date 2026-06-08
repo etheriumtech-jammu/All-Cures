@@ -30,7 +30,7 @@ public class AuthService {
 
         try {
 
-           String fullName = (String) registerMap.get(Constant.FIRSTNAME);
+        	String fullName = (String) registerMap.get(Constant.FIRSTNAME);
 
         	String firstName = "";
         	String lastName = "";
@@ -61,7 +61,6 @@ public class AuthService {
         	        firstName = firstNameBuilder.toString();
         	    }
         	}
-
             // EMAIL OPTIONAL
             String email = registerMap.get(Constant.EMAIL) != null
                     ? ((String) registerMap.get(Constant.EMAIL)).trim()
@@ -70,11 +69,13 @@ public class AuthService {
             if (email != null && email.isEmpty()) {
                 email = null;
             }
+            if(email != null &&
+            		   !email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
 
+            		    return "Invalid email address";
+            		}
             String password = (String) registerMap.get(Constant.PSW);
 
-            String confirmPassword =
-                    (String) registerMap.get(Constant.PSWREPEAT);
 
             String mobileString =
                     (String) registerMap.get(Constant.MOBILE_NUMBER);
@@ -108,10 +109,6 @@ public class AuthService {
 
             if (password == null || password.trim().isEmpty()) {
                 return "Password is required";
-            }
-
-            if (!password.equals(confirmPassword)) {
-                return "Password and Confirm Password do not match";
             }
 
             Long mobile = null;
@@ -156,9 +153,9 @@ public class AuthService {
 //            String hashedPassword =
 //                    encoder.encode(password);
             EnDeCryptor encryptor = new EnDeCryptor();
-            final String secretKey = Constant.SECRETE;
-            String hashedPassword = encryptor.encrypt(password, secretKey);
-
+            final String secretKey = Constant.SECRETE;		
+    		String hashedPassword = encryptor.encrypt(password, secretKey);	
+    		
             // SAVE USER
 
             user = AuthDao.saveRegistration(
@@ -176,11 +173,8 @@ public class AuthService {
                     countryCode
             );
 
-            System.out.println("User after registration: " + user);
             if (user != null) {
 
-                System.out.println("User registered successfully: " + user.getRegistration_id());
-                System.out.println(user.getRegistration_type());
                 handleSuccessfulRegistration(
                         request,
                         response,
@@ -199,7 +193,7 @@ public class AuthService {
             return "Internal Server Error";
         }
 
-
+         
         return user;
     }
 
@@ -268,8 +262,8 @@ public class AuthService {
 
         return 2;
     }
-
-
+    
+    
     public static Object loginUser(
             HashMap<String, Object> loginMap,
             HttpServletRequest request,
@@ -424,6 +418,6 @@ public class AuthService {
             return "Internal Server Error";
         }
     }
-
-
+    
+   
 }
