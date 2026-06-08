@@ -57,7 +57,7 @@ public class AuthController {
             @RequestParam String purpose) {
 
         Registration user =
-                userService.findByMobile(mobile);
+                AuthDao.getUserFromMobile(mobile);
 
         // ===========================
         // REGISTER FLOW
