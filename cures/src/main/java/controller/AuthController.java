@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.google.gson.Gson;
 
+import dao.AuthDao;
 import dao.PaymentGatewayDaoImpl;
 import dao.RegistrationDaoImpl;
 import dao.RegistrationDaoImpl_New;
