@@ -118,8 +118,8 @@ public class AuthController {
         // =========================================
         // 🔍 FIND / CREATE USER
         // =========================================
-        Registration user =
-                userService.findByMobile(req.getMobile());
+           Registration user =
+                AuthDao.getUserFromMobile(req.getMobile());
 
      // ======================================================
      // ⭐ NEW : REGISTRATION OTP FLOW
