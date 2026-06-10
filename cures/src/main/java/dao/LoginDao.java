@@ -5,6 +5,8 @@
 
 package dao;
 
+import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -31,8 +33,8 @@ public class LoginDao {
             Query query =
                     session.createQuery(
                             "FROM Registration " +
-                                    "WHERE email_address = :email " +
-                                    "AND pass_word = :password"
+                            "WHERE email_address = :email " +
+                            "AND pass_word = :password"
                     );
 
             query.setParameter(
@@ -76,8 +78,8 @@ public class LoginDao {
             Query query =
                     session.createQuery(
                             "FROM Registration " +
-                                    "WHERE mobile_number = :mobile " +
-                                    "AND pass_word = :password"
+                            "WHERE mobile_number = :mobile " +
+                            "AND pass_word = :password"
                     );
 
             query.setParameter(
@@ -89,10 +91,13 @@ public class LoginDao {
                     "password",
                     password
             );
+            query.setMaxResults(1);
 
-            return (Registration)
-                    query.uniqueResult();
+            List<Registration> registrations = query.list();
 
+            return registrations.isEmpty()
+                    ? null
+                    : registrations.get(0);
         }
 
         catch (Exception e) {
@@ -122,8 +127,8 @@ public class LoginDao {
             Query query =
                     session.createQuery(
                             "FROM Registration " +
-                                    "WHERE mobile_number = :mobile " +
-                                    "AND otp = :otp"
+                            "WHERE mobile_number = :mobile " +
+                            "AND otp = :otp"
                     );
 
             query.setParameter(
