@@ -444,21 +444,21 @@ public class AuthController {
         HttpSession session =
                 request.getSession(false);
 
-        Long verifiedMobile =
-                session == null
-                        ? null
-                        : (Long) session.getAttribute(
-                        "FORGOT_PASSWORD_VERIFIED"
-                );
-
-        if (verifiedMobile == null ||
-                !verifiedMobile.equals(
-                        req.getMobile())) {
-
-            throw new RuntimeException(
-                    "OTP verification required"
-            );
-        }
+//        Long verifiedMobile =
+//                session == null
+//                        ? null
+//                        : (Long) session.getAttribute(
+//                        "FORGOT_PASSWORD_VERIFIED"
+//                );
+//
+//        if (verifiedMobile == null ||
+//                !verifiedMobile.equals(
+//                        req.getMobile())) {
+//
+//            throw new RuntimeException(
+//                    "OTP verification required"
+//            );
+//        }
 
         Registration user =
                 AuthDao.getUserFromMobile(
