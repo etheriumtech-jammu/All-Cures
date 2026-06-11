@@ -93,7 +93,7 @@ public class AuthDao {
 
         } finally {
 
-           
+
         }
 
         return null;
@@ -112,7 +112,7 @@ public class AuthDao {
 
             String hql =
                     "FROM Registration " +
-                    "WHERE mobile_number = :mobile";
+                            "WHERE mobile_number = :mobile";
 
             Query<Registration> query =
                     session.createQuery(hql, Registration.class);
@@ -131,7 +131,7 @@ public class AuthDao {
 
             e.printStackTrace();
 
-        } 
+        }
 
         return null;
     }
@@ -147,7 +147,7 @@ public class AuthDao {
         try {
 
             session = HibernateUtil
-                   .buildSessionFactory();
+                    .buildSessionFactory();
 
             String hql =
                     "FROM Registration " +
@@ -171,7 +171,7 @@ public class AuthDao {
 
         } finally {
 
-           
+
         }
 
         return null;
@@ -236,6 +236,48 @@ public class AuthDao {
         }
         return null;
     }
-    
-    
+    public static void updatePassword(
+            Long mobile,
+            String password) {
+
+        Session session =
+                HibernateUtil
+                        .buildSessionFactory();
+
+        Transaction tx =
+                session.beginTransaction();
+
+        try {
+
+            Query query =
+                    session.createQuery(
+                            "UPDATE Registration " +
+                                    "SET pass_word = :password " +
+                                    "WHERE mobile_number = :mobile"
+                    );
+
+            query.setParameter(
+                    "password",
+                    password
+            );
+
+            query.setParameter(
+                    "mobile",
+                    mobile
+            );
+
+            query.executeUpdate();
+
+            tx.commit();
+
+        } catch (Exception e) {
+
+            tx.rollback();
+
+            throw e;
+
+        }
+    }
+
+
 }
