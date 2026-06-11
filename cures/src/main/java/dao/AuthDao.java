@@ -7,6 +7,8 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import model.Registration;
+import util.Constant;
+import util.EnDeCryptor;
 import util.HibernateUtil;
 
 public class AuthDao {
@@ -93,7 +95,7 @@ public class AuthDao {
 
         } finally {
 
-
+           
         }
 
         return null;
@@ -112,7 +114,7 @@ public class AuthDao {
 
             String hql =
                     "FROM Registration " +
-                            "WHERE mobile_number = :mobile";
+                    "WHERE mobile_number = :mobile";
 
             Query<Registration> query =
                     session.createQuery(hql, Registration.class);
@@ -131,7 +133,7 @@ public class AuthDao {
 
             e.printStackTrace();
 
-        }
+        } 
 
         return null;
     }
@@ -147,7 +149,7 @@ public class AuthDao {
         try {
 
             session = HibernateUtil
-                    .buildSessionFactory();
+                   .buildSessionFactory();
 
             String hql =
                     "FROM Registration " +
@@ -171,7 +173,7 @@ public class AuthDao {
 
         } finally {
 
-
+           
         }
 
         return null;
@@ -242,23 +244,29 @@ public class AuthDao {
 
         Session session =
                 HibernateUtil
-                        .buildSessionFactory();
+                      .buildSessionFactory();
 
         Transaction tx =
                 session.beginTransaction();
+        // 🔐 Password Encryption
+        final String secretKey = Constant.SECRETE;
+        EnDeCryptor encryptor = new EnDeCryptor();
+
+        String hashedPass = encryptor.encrypt(password, secretKey);
+       
 
         try {
 
             Query query =
                     session.createQuery(
                             "UPDATE Registration " +
-                                    "SET pass_word = :password " +
-                                    "WHERE mobile_number = :mobile"
+                            "SET pass_word = :password " +
+                            "WHERE mobile_number = :mobile"
                     );
 
             query.setParameter(
                     "password",
-                    password
+                    hashedPass
             );
 
             query.setParameter(
@@ -276,8 +284,8 @@ public class AuthDao {
 
             throw e;
 
-        }
+        } 
     }
-
-
+    
+    
 }
