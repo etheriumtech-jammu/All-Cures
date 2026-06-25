@@ -33,6 +33,15 @@ public class AppointmentController {
 		return AppointmentDaoImpl.setAppointment(AppointmentMap);
 		
 	}
+
+	//To add a new Paid Appointment
+		@RequestMapping(value = "/v2/create", produces = "application/json", method = RequestMethod.POST)
+		public @ResponseBody HashMap<String, String> SetAppointmentPaid(@RequestBody HashMap AppointmentMap,HttpServletRequest request ) throws Exception {
+			
+			return AppointmentDaoImpl.setAppointmentPaid(AppointmentMap);
+			
+		}
+	
 	//To get all the Appointments
 	@RequestMapping(value = "/get/all", produces = "application/json", method = RequestMethod.GET)  
 	public @ResponseBody List<Appointment> getAppointments() {
