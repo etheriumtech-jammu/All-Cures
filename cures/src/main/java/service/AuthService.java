@@ -138,10 +138,15 @@ public class AuthService {
                     : 0;
 
             // CHECK EXISTING USER
+             if (mobileExists( mobile)) {
 
-            if (alreadyExists(email, mobile)) {
+                return "Mobile number already exists";
 
-                return "Mobile number or email already exists";
+            }
+
+            if (emailExists(email )) {
+
+                return "Email already exists";
 
             }
 
@@ -201,28 +206,24 @@ public class AuthService {
     // CHECK USER EXISTS
     // ===========================
 
-    private static boolean alreadyExists(String email,
-                                         Long mobile) {
+    private static boolean mobileExists(Long mobile) {
 
-        Registration mobileUser =
-                AuthDao.getUserFromMobile(mobile);
-
-        if (mobileUser != null) {
-            return true;
+        if (mobile == null) {
+            return false;
         }
 
-        if (email != null && !email.trim().isEmpty()) {
-
-            Registration emailUser =
-                    AuthDao.getUserFromEmail(email);
-
-            if (emailUser != null) {
-                return true;
-            }
-        }
-
-        return false;
+        return AuthDao.getUserFromMobile(mobile) != null;
     }
+    
+    private static boolean emailExists(String email) {
+
+        if (email == null || email.trim().isEmpty()) {
+            return false;
+        }
+
+        return AuthDao.getUserFromEmail(email) != null;
+    }
+
 
     // ===========================
     // SESSION + COOKIES
